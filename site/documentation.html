@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HyMaintenance &mdash; La maintenance facile, pour les mainteneurs et les clients</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/normalize.css" />
+<link rel="stylesheet" href="css/typography.css" />
+<link href="https://fonts.googleapis.com/css?family=Zilla+Slab:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet" />
+<link rel="stylesheet" href="css/hymaintenance-lite.css" />
+<style>
+    body {
+        font-family: "Open Sans";
+    }
+
+    .container {
+        padding: 50px 50px 20px 50px;
+        max-width: 1100px;
+    }
+
+    .title {
+        font-family: "Zilla Slab";
+        font-size: 60px;
+        font-weight: 600;
+        font-style: italic;
+    }
+
+    .version {
+        text-transform: uppercase;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.022em;
+        margin-top: 20px;
+        color: #0074D9;
+    }
+
+    .intro {
+        font-family: "Zilla Slab";
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 1.3;
+
+        display: inline-block;
+        max-width: 600px;
+    }
+
+    .intro .brand {
+        font-weight: 600;
+        font-style: italic;
+
+        color: #3D9970;
+    }
+
+    .toc {
+        margin-left: 50px;
+        border-left: 1px solid #ccc;
+        padding-left: 30px;
+        padding-top: 10px;
+    }
+
+    .toc .title {
+        font-size: 22px;
+    }
+
+    .toc ol {
+        padding-left: 19px;
+        font-weight: 500;
+        color: #1d4935;
+    }
+
+    .toc li {
+        padding-left: 6px;
+    }
+
+    .toc li + li {
+        margin-top: 6px;
+    }
+
+    .toc a {
+        text-decoration: none;
+        color: #3D9970;
+        font-weight: 600;
+        font-size: 15px;
+        transition: padding-left ease-in-out 0.15s;
+    }
+
+    .toc a:hover {
+        color: #1d4935;
+        padding-left: 7px;
+    }
+
+    .section {
+        margin-top: 30px;
+    }
+
+    .section .title {
+/*        font-weight: 500;*/
+        font-size: 33px;
+    }
+
+    .section .info {
+        font-family: "Zilla Slab";
+        font-style: italic;
+        font-weight: 400;
+        font-size: 19px;
+
+        background: hsl(0, 0%, 95%);
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 2px;
+        margin-left: 1px;
+        max-width: 500px;
+        line-height: 1.3;
+    }
+
+    .section .info:not(:last-child) {
+        margin-top: 15px;
+    }
+
+    .section p {
+        max-width: 500px;
+        line-height: 1.6;
+        display: block;
+    }
+
+    .section .ui-part {
+        font-style: italic;
+        font-family: "Zilla Slab";
+        font-size: 19px;
+        line-height: 0;
+        font-weight: 500;
+/*        color: #444;*/
+    }
+
+    .section .ui-part.maintenance {
+        color: #3D9970;
+        font-weight: 600;
+    }
+
+    .section .ui-part.support {
+        color: #0074D9;
+        font-weight: 600;
+    }
+
+    .section .ui-part.correction {
+        color: #999;
+        font-weight: 600;
+    }
+
+    .section .ui-button {
+        padding: 3px 8px;
+        border: 1px solid currentColor;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-size: 11px;
+        font-weight: 700;
+        color: #3D9970;
+        margin: 0 4px;
+    }
+
+    .section .ui-button:hover {
+        background: #3D9970;
+        border-color: #3D9970;
+        color: #fff;
+    }
+
+    .columns {
+        display: flex;
+    }
+
+    .section .column + .column {
+        margin-left: 50px;
+    }
+
+    .section.create-project .column + .column {
+        position: relative;
+    }
+
+    .section .column img.create-project {
+        margin-top: 17px;
+        height: 340px;
+        position: absolute;
+        top: -75px;
+    }
+
+    .section .form-row label {
+        min-width: 90px;
+    }
+
+    .section .help {
+        max-width: 370px;
+        margin-top: 10px;
+    }
+
+    .section .help em {
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    @media (max-width: 1150px) {
+        .columns {
+            flex-direction: column;
+        }
+
+        .section .column + .column {
+            margin-left: 2px;
+            border-left: 1px solid #ccc;
+            padding-left: 15px;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+
+        .section .column img.create-project {
+            position: relative;
+            top: -5px;
+        }
+
+        .section .column img:not(.create-project ) {
+            position: relative;
+            left: -5px;
+        }
+
+        .section .columns + .columns {
+            margin-top: 15px;
+        }
+
+        .toc {
+            margin-left: 0;
+            margin-top: 20px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .container {
+            margin: 0 auto;
+        }
+    }
+
+    /* copied from regular site.css */
+
+    a {
+        text-decoration: none;
+    }
+
+    /* navigation */
+
+    .navigation {
+        display: flex;
+        align-items: center;
+
+        position: fixed;
+        width: 100%;
+
+        min-height: 27px;
+        padding-left: 50px;
+
+        text-transform: uppercase;
+
+        font-size: 11px;
+        font-weight: 600;
+        font-weight: 700;
+
+        background-color: hsl(210, 11%, 98%);
+        background: #444;
+        color: white;
+
+        z-index: 1;
+    }
+
+    .navigation ul {
+        display: inline-flex;
+        margin: 0;
+        padding: 0;
+
+        list-style: none;
+    }
+
+    .navigation li + li {
+        margin-left: 40px;
+    }
+
+    .navigation a {
+        color: currentColor;
+    }
+
+    .navigation .main-navigation {
+        flex: 1;
+    }
+
+    .navigation .side-navigation {
+        font-weight: 700;
+        margin-right: 70px;
+/*        color: #3D9970;*/
+    }
+
+    /* navigation - end */
+
+    /* once again copied from site.css */
+    /* footer */
+
+    .footer {
+        min-height: 150px;
+        background-color: #444;
+        padding-left: 150px;
+        padding-right: 150px;
+        padding-top: 25px;
+    }
+
+    .footer-columns {
+        display: flex;
+    }
+
+    .footer-column {
+        flex: 1;
+    }
+
+    .footer.bg5 {
+        background-image: url("data:image/svg+xml,%3Csvg width='56' height='28' viewBox='0 0 56 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M56 26c-2.813 0-5.456.726-7.752 2H56v-2zm-26 2h4.087C38.707 20.783 46.795 16 56 16v-2c-.672 0-1.339.024-1.999.07L54 14a2 2 0 0 1 2-2v-2a4 4 0 0 0-3.98 3.602 28.087 28.087 0 0 0-2.793-3.862A7.994 7.994 0 0 1 56 6V4a9.988 9.988 0 0 0-8.17 4.232 28.156 28.156 0 0 0-3.03-2.634A13.979 13.979 0 0 1 56 0h-7.752a16.078 16.078 0 0 0-5.09 4.454 27.941 27.941 0 0 0-3.536-1.936c.63-.896 1.33-1.738 2.095-2.518H39.03c-.46.557-.893 1.137-1.297 1.737A27.787 27.787 0 0 0 33.723.585c.12-.196.24-.392.364-.585H30l-.001.07A28.406 28.406 0 0 0 26 .07L26 0h-4.087c.124.193.245.389.364.585a27.787 27.787 0 0 0-4.009 1.152c-.404-.6-.837-1.18-1.297-1.737h-2.688c.764.78 1.466 1.622 2.095 2.518-1.23.562-2.41 1.21-3.536 1.936A16.078 16.078 0 0 0 7.752 0H0c4.58 0 8.645 2.199 11.2 5.598a28.156 28.156 0 0 0-3.03 2.634A9.988 9.988 0 0 0 0 4v2a7.994 7.994 0 0 1 6.773 3.74 28.087 28.087 0 0 0-2.793 3.862A4 4 0 0 0 0 10v2a2 2 0 0 1 1.999 2.07C1.339 14.024.672 14 0 14v2c9.205 0 17.292 4.783 21.913 12H26a2 2 0 1 1 4 0zM7.752 28C5.456 26.726 2.812 26 0 26v2h7.752zM56 20c-6.832 0-12.936 3.114-16.971 8h2.688A19.94 19.94 0 0 1 56 22v-2zm-39.029 8C12.936 23.114 6.831 20 0 20v2a19.94 19.94 0 0 1 14.283 6h2.688zm15.01-.398a28.087 28.087 0 0 1 2.792-3.862A7.994 7.994 0 0 0 28 20a7.994 7.994 0 0 0-6.773 3.74 28.087 28.087 0 0 1 2.793 3.862 4 4 0 0 1 7.96 0zm14.287-11.865C42.318 9.864 35.61 6 28 6c-7.61 0-14.318 3.864-18.268 9.737a27.787 27.787 0 0 0-4.009-1.152C10.275 7.043 18.548 2 28 2c9.452 0 17.725 5.043 22.277 12.585a27.787 27.787 0 0 0-4.009 1.152zm-5.426 2.717a27.941 27.941 0 0 1 3.536-1.936C40.76 11.367 34.773 8 28 8s-12.76 3.367-16.378 8.518c1.23.562 2.41 1.21 3.536 1.936C18.075 14.537 22.741 12 28 12s9.925 2.537 12.842 6.454zm-4.672 3.778a28.156 28.156 0 0 1 3.03-2.634A13.979 13.979 0 0 0 28 14c-4.58 0-8.645 2.199-11.2 5.598a28.156 28.156 0 0 1 3.03 2.634A9.988 9.988 0 0 1 28 18a9.988 9.988 0 0 1 8.17 4.232z' fill='%23fdfdfd' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+
+</style>
+</head>
+<body>
+<div class="navigation">
+   <ul class="main-navigation">
+       <li><a href="">hymaintenance</a></li>
+       <li><a href="">Fonctionnalités</a></li>
+       <li><a href="">Documentation</a></li>
+       <li><a href="">Communauté</a></li>
+       <li><a href="">News</a></li>
+   </ul>
+   <ul class="side-navigation">
+<!--           <li class="theme-color1"><a href="">Démo en ligne</a></li>-->
+       <li class="theme-color2"><a href="" class="cta">Pilote gratuit</a></li>
+   </ul>
+</div>
+
+<div class="container">
+    <div class="title">documentation hymaintenance</div>
+    <div class="version">Version 1.0</div>
+
+    <div class="intro-container columns">
+        <div class="column">
+            <div class="intro">
+               Ce guide de démarrage décrit les premiers pas d'utilisation d'<span class="brand">hymaintenance 1.0</span> &mdash; Comment créer et configurer un projet de maintenance, avec ses compteurs et intervenants mainteneurs et clients.
+            </div>
+        </div>
+        <div class="column toc">
+            <div class="title">Dans ce document</div>
+            <ol>
+                <li><a href="#create-project-section">Créer un projet</a></li>
+                <li><a href="#counters-section">Compteurs et visibilité</a></li>
+                <li><a href="#counter-type-section">Un compteur sachant compter</a></li>
+                <li><a href="#maintainers-section">Intervenants</a></li>
+                <li><a href="#managers-section">Managers</a></li>
+                <li><a href="#users-section">Salariés</a></li>
+                <li><a href="#channels-section">Les canaux</a></li>
+                <li><a href="#add-issue-section">Enregistrer une intervention</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="section create-project" id="create-project-section">
+        <div class="title">Créer un projet</div>
+        <div class="info">Lors de votre première connexion, vous aurez l'occasion de créer votre projet initial.</div>
+        <div class="columns">
+            <div class="column">
+                <p>
+                    Le formulaire de création de projet est accessible depuis la page d'accueil des intervenants mainteneurs &mdash; <span class="ui-part">le Tableau de bord</span>.<br/>
+                    On y accède en cliquant sur le bouton <span class="ui-button">Ajouter un projet</span> de la barre récapitulative en haut de la page.
+                </p>
+                <p>Vous pouvez configurer les détails des compteurs du projet, leur façon de compter et leur visibilité. hymaintenance contient 3 types de compteur par défaut. Pour gérer la maintenance évolutive : le compteur <span class="ui-part maintenance">maintenance</span>, puis le compteur du <span class="ui-part support">support</span>, et enfin pour la maintenance corrective &mdash; le compteur <span class="ui-part correction">corrections</span>.</p>
+            </div>
+            <div class="column">
+                <img src="img/tmp-new-project.png" class="create-project" />
+            </div>
+        </div>
+    <!--
+        <p>
+            Le formulaire de création de projet est accessible depuis la page d'accueil des intervenants mainteneurs &mdash; <span class="ui-part">le Tableau de bord</span>.<br/>
+            On y accède en cliquant sur le bouton <span class="ui-button">Ajouter un projet</span> de la barre récapitulative en haut de la page.
+        </p>
+        <p>Vous pouvez configurer les détails des compteurs du projet, leur façon de compter et leur visibilité. hymaintenance contient 3 types de compteur par défaut. Pour gérer la maintenance évolutive : le compteur <span class="ui-part maintenance">maintenance</span>, puis le compteur du <span class="ui-part support">support</span>, et enfin pour la maintenance corrective &mdash; le compteur <span class="ui-part correction">corrections</span>.</p>
+    -->
+    </div>
+    <div class="section" id="counters-section">
+        <div class="title">Compteurs et visibilité</div>
+        <div class="info">Les compteurs peuvent être désactivés projet par projet.</div>
+        <div class="columns">
+            <div class="column">
+                <p>
+                    La visibilité du compteur <span class="ui-part">Visible à tous</span> permet de spécifier qu'il est accessible aux mainteneurs et aux clients.
+                </p>
+                <p>
+                    Un compteur est dédié uniquement aux mainteneurs s'il est <span class="ui-part">Invisible aux clients</span> &mdash; par exemple pour des tâches internes ou non facturées.
+                </p>
+            </div>
+            <div class="column">
+                <div class="form-row">
+                    <label>Compteur</label>
+                    <section class="segmented-selector type-maintenance">
+                        <a href="" class="active" title="">Visible à tous</a>
+                        <a href="" class="inactive" title="">Invisible aux clients</a>
+                        <a href="" class="inactive" title="">Inactif</a>
+                    </section>
+                </div>
+                <div class="help">Ce compteur sera <em>visible par les managers</em> du projet, et <em>utilisable par les intervenants</em> dans les tableaux de bord et pour enregistrer des demandes.</div>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="counter-type-section">
+        <div class="title">Un compteur sachant compter</div>
+        <div class="columns">
+            <div class="column">
+                <p>
+                    Les compteurs de type <span class="ui-part">Total disponible</span> permettent de donner une quantité d'heures disponibles pour le client. Chaque intervention effectuée par les mainteneurs consommera une partie de ce temps disponible. Le client verra toujours le récapitulatif du temps restant utilisable, ainsi que les activités qui ont consommé ce crédit.
+                </p>
+            </div>
+            <div class="column">
+                <img src="img/counter-type1.png" />
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <p>
+                    Pour les compteurs de type <span class="ui-part">Total du temps passé</span>, le client verra le temps total que les mainteneurs ont passé durant les interventions du mois.
+                </p>
+            </div>
+            <div class="column">
+                <img src="img/counter-type2.png" />
+            </div>
+        </div>
+    </div>
+    <div class="section" id="maintainers-section">
+        <div class="title">Intervenants</div>
+        <div class="info">Les mainteneurs qui font &mdash; et enregistrent &mdash; les interventions.</div>
+        <p>
+            Le formulaire d'ajout de mainteneur est accessible depuis <span class="ui-part">le Tableau de bord</span> des mainteneurs.<br/>
+            On y accède en cliquant sur le bouton <span class="ui-button">Ajouter un intervenant</span> de la barre récapitulative en haut de la page.
+        </p>
+        <p>
+            On associe des mainteneurs à un projet précis avec le bouton <span class="ui-button">Modifier</span> de la liste des intervenants présente dans le bloc d'un projet.
+        </p>
+        <div class="info">C'est pas fini! &mdash; Il faut coder et documenter le moyen d'ajouter un intervenant à un projet donné. Le moyen de supprimer un intervenant de l'application en général, mais aussi l'enlever d'un projet. Et aussi comment modifier les informations de l'intervenant &mdash; nom, email, ...</div>
+    </div>
+    <div class="section" id="managers-section">
+        <div class="title">Managers</div>
+        <div class="info">Les utilisateurs clients, qui ont besoin de visibilité sur un projet maintenance.</div>
+        <p>
+            Depuis leur <span class="ui-part">Récapitulatif</span> les managers voient l'état des compteurs, <span class="ui-part">l'historique</span> et <span class="ui-part">la liste des activités</span> qui ont consommé du temps disponible.
+        </p>
+        <p>
+            Le formulaire d'ajout de manager est accessible depuis <span class="ui-part">le Tableau de bord</span> des mainteneurs.<br/>
+            On y accède en cliquant sur le bouton <span class="ui-button">Modifier</span> de la liste des managers présente dans le bloc d'un projet.
+        </p>
+        <div class="info">C'est pas fini! &mdash; Il faut coder et documenter le moyen de supprimer un manager d'un projet donné, et comment modifier les informations du manager &mdash; nom, email, ...</div>
+    </div>
+    <div class="section" id="users-section">
+        <div class="title">Salariés</div>
+        <div class="info">Les auteurs des demandes d'intervention.</div>
+        <p>
+            Le formulaire d'ajout de salarié est accessible depuis <span class="ui-part">le Tableau de bord</span> des mainteneurs.<br/>
+            On y accède en cliquant sur le bouton <span class="ui-button">Modifier</span> de la liste des salariés présente dans le bloc d'un projet.
+        </p>
+        <div class="info">C'est pas fini! &mdash; Il faut coder et documenter le moyen de supprimer un salarié d'un projet donné, et comment modifier le nom du salarié</div>
+    </div>
+    <div class="section" id="channels-section">
+        <div class="title">Les canaux</div>
+        <div class="info">Le moyen de communication utilisé lors d'une demande d'intervention.</div>
+        <p>
+            Les salariés font des demandes d'intervention par un canal de communication qu'il peut être utile de spécifier &mdash; par exemple pour tracer les demandes par téléphone. <span class="ui-part">hymaintenance 1.0</span> contient par défaut 3 canaux dans une liste configurable.
+        </p>
+        <div class="info">C'est pas fini! &mdash; Il faut coder et documenter comment créer un nouveau canal pour un projet donné, comment les modifier et supprimer.</div>
+    </div>
+    <div class="section" id="add-issue-section">
+        <div class="title">Enregistrer une intervention</div>
+        <div class="info">À automatiser en connectant hymaintenance à votre outil de gestion de tickets.</div>
+        <p>
+            Le formulaire d'enregistrement d'intervention est accessible depuis <span class="ui-part">le Tableau de bord</span> des mainteneurs.<br/>
+            On y accède en cliquant sur le bouton <span class="ui-button">Enregistrer une demande</span> dans le bloc d'un projet.
+        </p>
+        <p>
+            Les détails de la demande d'intervention permettent de tracer le besoin et son origine.
+        </p>
+        <p>
+            La résolution permet de comptabiliser le temps passé et le compteur à utiliser, ainsi que les détails de validation utiles au projet.
+        </p>
+    </div>
+
+    <div class="section">
+        <div class="title">Types de maintenance</div>
+        <div class="info">
+            Sûrement plutôt une feature <span class="ui-part">« Renommer les 3 compteurs existant »</span> &mdash; Réfléchir à si c'est au même endroit qu'on doit ajouter les informations
+             de renouvellement automatique des contrats ou si on évite pour l'instant.
+        </div>
+        <p>En plus c'est pas fait...</p>
+    </div>
+</div>
+
+<div class="page-decoration">
+    <div></div>
+    <span title="Cui !">
+        <svg class="icon-hybird" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 20">
+            <path d="M16.36,8.196c0.714,0.068,1.219,0.346,1.762,0.587c1.04-1.811,1.492-4.212,1.678-6.879c0.064-0.122,0.009-0.364,0.028-0.532c0.063-0.158,0.009-0.438,0.027-0.643c0.065-0.076,0.011-0.271,0.028-0.392c0.008-0.158,0.002-0.522-0.056-0.224c-0.548,1.77-1.002,3.812-1.902,5.118c0.326-0.635,0.496-1.425,0.56-2.322c0.064-0.103,0.01-0.325,0.028-0.476c0.046-0.335,0.046-0.866,0-1.202c0-0.252,0.01-0.514-0.056-0.699c0.015,0.108-0.051,0.137-0.029,0.252c-0.391,1.612-0.688,3.319-1.398,4.614c0-0.056,0-0.112,0-0.167c0.065-0.076,0.011-0.271,0.029-0.392c0.064-0.215,0.009-0.551,0.028-0.812c-0.02-0.261,0.036-0.597-0.028-0.811c-0.002-0.438,0.015-0.892-0.057-1.259c0.001,0.065-0.049,0.082-0.027,0.167c-0.794,2.488-1.642,4.923-3.077,6.769c0.61-0.331,1.211-0.674,2.126-0.699C16.137,8.196,16.247,8.196,16.36,8.196z"></path>
+            <path d="M19.156,10.015c-0.903-0.691-1.685-1.364-3.076-1.287c-1.335,0.074-2.107,0.892-2.992,1.454c0.055,0.236,0.403,0.47,0.363,0.615c-2.134-1.083-3.509-2.923-4.222-5.425c0.013-0.089-0.052-0.1-0.029-0.195c-0.064,0.409-0.009,0.94-0.027,1.397C7.909,5.283,7.011,3.627,6.489,1.596C6.456,1.543,6.452,1.464,6.432,1.4C6.367,1.978,6.41,2.69,6.459,3.246c0.083,1.576,0.28,3.039,0.839,4.14C7.032,7.101,6.862,6.722,6.655,6.378C6.587,6.261,6.544,6.117,6.459,6.015C6.126,5.21,5.768,4.433,5.509,3.554C5.42,3.651,5.452,3.87,5.425,4.029c-0.064,0.122-0.01,0.364-0.028,0.531c-0.047,0.168-0.047,0.53,0,0.699C5.416,5.4,5.361,5.613,5.425,5.707c0.124,1.629,0.661,2.845,1.397,3.859c-0.268-0.085-0.468-0.239-0.67-0.392C6.07,9.126,6.022,9.044,5.957,8.979c-0.047-0.047-0.1-0.088-0.14-0.141c-0.012-0.024-0.025-0.05-0.056-0.056c-0.526-0.667-0.945-1.44-1.23-2.349c0.344,2.21,1.049,4.301,2.265,5.733c0.029,0.072,0.111,0.093,0.14,0.167c0.114,0.091,0.217,0.193,0.308,0.308c0.056,0.009,0.054,0.075,0.111,0.084c0.878,0.791,1.914,1.423,3.328,1.679c-0.109,0.142-0.397,0.104-0.587,0.167c-0.168,0-0.336,0-0.504,0c-0.332-0.1-0.825,0.382-1.119,0.644c-0.324,0.288-0.581,0.53-0.838,0.755c-0.576,0.502-1.094,1.095-1.65,1.51c-0.888,0.663-2.005,1.207-2.992,1.791C1.979,19.868,0.982,20.461,0,21.032c0.002,0.054,0.093-0.032,0.168,0c0.233-0.018,0.54,0.037,0.727-0.027c0.149,0,0.298,0,0.448,0c0.26-0.047,0.619,0.004,0.868-0.056c0.148,0,0.297,0,0.447,0c0.093,0,0.186,0,0.279,0c0.624,0.056,1.213,0.147,1.79,0.251c0.027,0,0.055,0,0.084,0c-0.005-0.023,0.011-0.026,0.028-0.027c0.114-0.092,0.216-0.193,0.307-0.308c0.038-0.094,0.164-0.098,0.196-0.196c1.029-0.938,2.201-1.887,3.412-2.769c0.209-0.152,0.359-0.33,0.588-0.363c0.186-0.02,0.447,0.037,0.587-0.028c1.319-0.084,2.47-0.555,3.439-1.146c0.952-0.581,1.934-1.147,2.657-1.902c0.476-0.497,0.823-1.113,1.313-1.594c0.049-0.063,0.116-0.108,0.168-0.168c0.119-0.143,0.25-0.273,0.393-0.392c0.067-0.045,0.123-0.101,0.167-0.168c0.407-0.387,0.98-0.604,1.706-0.672c0.084,0,0.168,0,0.252,0c0.039,0.063,0.195,0.012,0.279,0.028c0.62,0.006,1.057,0.194,1.454,0.419c0-0.019,0-0.037,0-0.056C21.217,11.166,19.899,10.582,19.156,10.015z"></path>
+        </svg>
+    </span>
+    <div></div>
+</div>
+<div class="footer bg5">
+    <div class="footer-baseline">
+        <strong><a href="https://hymaintenance.hybird.org">HyMaintenance</a></strong> est un logiciel libre, développé et hymaintenu en France depuis 2017, par <strong><a href="http://hybird.org">Hybird</a></strong>
+        <span class="footer-baseline-version">— Version 1.0</span>
+    </div>
+    <div class="footer-columns clearfix">
+        <div class="footer-column footer-column-creme">
+            <div class="column-content">
+                <span class="footer-column-title">HyMaintenance</span>
+                <ul>
+                    <li><a href="">Documentation</a></li>
+                    <li><a href="">Support Reamaze</a></li>
+                    <li><a href="https://github.com/HybirdCorp/HyMaintenance">Code source</a></li>
+                    <li class="creme-site">— <a href="https://hymaintenance.hybird.org">hymaintenance.hybird.org</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-column footer-column-hybird">
+            <div class="column-content">
+                <span class="footer-column-title">
+                    Hybird
+                    <span title="Cui !">
+                        <svg class="icon-hybird" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 20">
+                            <path d="M16.36,8.196c0.714,0.068,1.219,0.346,1.762,0.587c1.04-1.811,1.492-4.212,1.678-6.879c0.064-0.122,0.009-0.364,0.028-0.532c0.063-0.158,0.009-0.438,0.027-0.643c0.065-0.076,0.011-0.271,0.028-0.392c0.008-0.158,0.002-0.522-0.056-0.224c-0.548,1.77-1.002,3.812-1.902,5.118c0.326-0.635,0.496-1.425,0.56-2.322c0.064-0.103,0.01-0.325,0.028-0.476c0.046-0.335,0.046-0.866,0-1.202c0-0.252,0.01-0.514-0.056-0.699c0.015,0.108-0.051,0.137-0.029,0.252c-0.391,1.612-0.688,3.319-1.398,4.614c0-0.056,0-0.112,0-0.167c0.065-0.076,0.011-0.271,0.029-0.392c0.064-0.215,0.009-0.551,0.028-0.812c-0.02-0.261,0.036-0.597-0.028-0.811c-0.002-0.438,0.015-0.892-0.057-1.259c0.001,0.065-0.049,0.082-0.027,0.167c-0.794,2.488-1.642,4.923-3.077,6.769c0.61-0.331,1.211-0.674,2.126-0.699C16.137,8.196,16.247,8.196,16.36,8.196z"></path>
+                            <path d="M19.156,10.015c-0.903-0.691-1.685-1.364-3.076-1.287c-1.335,0.074-2.107,0.892-2.992,1.454c0.055,0.236,0.403,0.47,0.363,0.615c-2.134-1.083-3.509-2.923-4.222-5.425c0.013-0.089-0.052-0.1-0.029-0.195c-0.064,0.409-0.009,0.94-0.027,1.397C7.909,5.283,7.011,3.627,6.489,1.596C6.456,1.543,6.452,1.464,6.432,1.4C6.367,1.978,6.41,2.69,6.459,3.246c0.083,1.576,0.28,3.039,0.839,4.14C7.032,7.101,6.862,6.722,6.655,6.378C6.587,6.261,6.544,6.117,6.459,6.015C6.126,5.21,5.768,4.433,5.509,3.554C5.42,3.651,5.452,3.87,5.425,4.029c-0.064,0.122-0.01,0.364-0.028,0.531c-0.047,0.168-0.047,0.53,0,0.699C5.416,5.4,5.361,5.613,5.425,5.707c0.124,1.629,0.661,2.845,1.397,3.859c-0.268-0.085-0.468-0.239-0.67-0.392C6.07,9.126,6.022,9.044,5.957,8.979c-0.047-0.047-0.1-0.088-0.14-0.141c-0.012-0.024-0.025-0.05-0.056-0.056c-0.526-0.667-0.945-1.44-1.23-2.349c0.344,2.21,1.049,4.301,2.265,5.733c0.029,0.072,0.111,0.093,0.14,0.167c0.114,0.091,0.217,0.193,0.308,0.308c0.056,0.009,0.054,0.075,0.111,0.084c0.878,0.791,1.914,1.423,3.328,1.679c-0.109,0.142-0.397,0.104-0.587,0.167c-0.168,0-0.336,0-0.504,0c-0.332-0.1-0.825,0.382-1.119,0.644c-0.324,0.288-0.581,0.53-0.838,0.755c-0.576,0.502-1.094,1.095-1.65,1.51c-0.888,0.663-2.005,1.207-2.992,1.791C1.979,19.868,0.982,20.461,0,21.032c0.002,0.054,0.093-0.032,0.168,0c0.233-0.018,0.54,0.037,0.727-0.027c0.149,0,0.298,0,0.448,0c0.26-0.047,0.619,0.004,0.868-0.056c0.148,0,0.297,0,0.447,0c0.093,0,0.186,0,0.279,0c0.624,0.056,1.213,0.147,1.79,0.251c0.027,0,0.055,0,0.084,0c-0.005-0.023,0.011-0.026,0.028-0.027c0.114-0.092,0.216-0.193,0.307-0.308c0.038-0.094,0.164-0.098,0.196-0.196c1.029-0.938,2.201-1.887,3.412-2.769c0.209-0.152,0.359-0.33,0.588-0.363c0.186-0.02,0.447,0.037,0.587-0.028c1.319-0.084,2.47-0.555,3.439-1.146c0.952-0.581,1.934-1.147,2.657-1.902c0.476-0.497,0.823-1.113,1.313-1.594c0.049-0.063,0.116-0.108,0.168-0.168c0.119-0.143,0.25-0.273,0.393-0.392c0.067-0.045,0.123-0.101,0.167-0.168c0.407-0.387,0.98-0.604,1.706-0.672c0.084,0,0.168,0,0.252,0c0.039,0.063,0.195,0.012,0.279,0.028c0.62,0.006,1.057,0.194,1.454,0.419c0-0.019,0-0.037,0-0.056C21.217,11.166,19.899,10.582,19.156,10.015z"></path>
+                        </svg>
+                    </span>
+                </span>
+                <ul>
+                    <li class="hybird-site">— <a href="http://hybird.org">hybird.org</a></li>
+                    <li class="hybird-phone">
+                        <svg class="icon icon-telephone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg>
+                        04 91 11 87 78
+                    </li>
+                    <li class="hybird-contact">
+                        <svg class="icon icon-email" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
+                        <a href="mailto:hymaintenance@hybird.org?subject=Contact HyMaintenance&amp;body=%0d%0aEnvoyé depuis url.com">hymaintenance@hybird.org</a>
+                    </li>
+                    <li class="hybird-address">
+                        Hôtel Technologique <br>
+                        45 rue Frédéric Joliot Curie <br>
+                        13013 MARSEILLE
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

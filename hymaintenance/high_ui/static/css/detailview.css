@@ -1,0 +1,79 @@
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.container {
+    margin-top: 15px;
+}
+
+.container .container-title {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #aaa;
+}
+
+.home-link-header {
+    margin-left: 25px;
+    padding-top: 15px;
+
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: #666;
+}
+
+.home-link-header {
+    font-weight: 700;
+}
+
+.dashboard-item.item-activity .dashboard-value {
+    text-transform: lowercase;
+}
+
+/* properties */
+
+.property-container {
+    margin-top: 10px;
+}
+
+.property-key {
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 13px;
+    min-width: 120px;
+}
+
+.property-container + .property-container {
+    margin-top: 6px;
+}
+
+.property-multiline .property-key {
+    display: block;
+    margin-top: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+.property-multiline .property-value {
+    display: block;
+    margin-top: 7px;
+    white-space: pre-wrap;
+}
+
+/* properties - end */
+
+/* type specific colors */
+
+.home-link-header.type-maintenance span,
+.resolution-container.type-maintenance .duration {
+    color: #3D9970;
+}
+
+.home-link-header.type-support span,
+.resolution-container.type-support .duration {
+    color: #0074D9;
+}
+
+/* type specific colors - end */

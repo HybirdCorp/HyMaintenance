@@ -1,0 +1,127 @@
+{% load i18n print_fields %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance Hybird &mdash; {{company.name_for_site}}</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/home.css" />
+</head>
+<body>
+    <div class="dashboard type-maintenance">
+        <div class="dashboard-item dashboard-account">
+            <span class="dashboard-title">{% trans "Account" %}</span>
+            <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">{{company.name_for_site}}</a></span>
+        </div>
+
+        {% for contract in contracts %}
+        <div class="dashboard-item">
+            <span class="dashboard-title">{{contract.maintenance_type.label_for_company_detailview}}</span>
+            <span class="dashboard-value">{% pretty_print_minutes contract.get_number_remaining_minutes %} / {{contract.get_number_contract_hours}}h</span>
+        </div>
+        {% endfor %}
+
+        <div class="dashboard-item dashboard-contact">
+            <span class="dashboard-title">{% trans "Your Contact" %}</span>
+            <span class="dashboard-value">{{company.maintenance_contact}}</span>
+        </div>
+        <div class="dashboard-item dashboard-user">
+            <span class="dashboard-title">{{company.name_for_site}}</span>
+            <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
+        </div>
+        <div class="dashboard-item dashboard-button">
+            <div class="dashboard-value">
+                <a href="/logout" title="Quitter l'application">{% trans "Disconnect" %}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="content">
+            <div class="container summary-container">
+                <table class="summary-items">
+                   <thead>
+                        <tr>
+                            <th class="summary-month container-title">{% trans "Summary" %}</th>
+                            {% for contract in contracts %}
+                            <th class="summary-type {{contract.maintenance_type.css_class}}">{{contract.maintenance_type.name}}</th>
+                            <!--<th class="summary-type type-maintenance">Maintenance</th>-->
+                            <!--<th class="summary-type type-support">Support</th>-->
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                        {% for month, infos in activities %}
+                        <tr class="summary-item">
+                            <td class="summary-month">{{month}}</td>
+                            {% for contract, consumed, credited in infos %}
+                                {% if credited == 0 and consumed == 0 %}
+                                <td class="summary-type {{contract.maintenance_type.css_class}}">&mdash;</td>
+                                {% else %}
+                                <td class="summary-type {{contract.maintenance_type.css_class}}">
+                                    {%if consumed != 0 %}
+                                    <span class="duration">{% pretty_print_minutes consumed %}</span> {% trans "consumed" %}<br/>
+                                    {% endif %}
+                                    {%if credited != 0 %}
+                                    <span class="duration">{{credited}}h</span> {% trans "credited" %}
+                                    {% endif %}
+                                </td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                </table>
+            </div>
+
+            <div class="container history-container">
+                <div class="container-title">{% trans "History" %}</div>
+
+                {% for month, infos, info_issues in history %}
+                {% with info_issues|length as issue_count %}
+                <div class="history-month">
+                    <div class="dashboard">
+                        <div class="dashboard-item">
+                            <span class="dashboard-title">Mois</span>
+                            <span class="dashboard-value">{{month}}</span>
+                        </div>
+
+                        <div class="dashboard-item history-month-issues">
+                            <span class="dashboard-title">demandes</span>
+                            <span class="dashboard-value">
+                                {% if issue_count == 0 %} &mdash; {% else %} {{ issue_count }} {% endif %}
+                                {# TMP: make sure the issues don't contain the "credit" operations #}
+                            </span>
+                        </div>
+
+                        {% for contract, consumed, credited in infos %}
+                        <div class="dashboard-item {{contract.maintenance_type.css_class}}">
+                            <span class="dashboard-title">{{contract.maintenance_type.name}}</span>
+                            <span class="dashboard-value">
+                                {% if consumed == 0 %} &mdash; {% else %} {% pretty_print_minutes consumed use_long_minute_format=True %} {% endif %}
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if issue_count %}
+                    <table class="history-items">
+                        {% for issue in info_issues %}
+                        <tr class="history-item {{issue.maintenance_type.css_class}}">
+                            <td class="history-item-date">{{issue.date|date:"d/m"}}</td>
+                            <td class="history-item-duration duration">{% pretty_print_minutes issue.number_minutes %}</td>
+                            <td class="history-item-type"><div class="type-tag">{{issue.maintenance_type.name}}</div></td>
+                            <td class="history-item-summary"><a href="{% url 'high_ui:issue-details' pk=issue.id %}">{{issue.subject}}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+</body>
+</html>

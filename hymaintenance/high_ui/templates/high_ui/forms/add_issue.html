@@ -1,0 +1,286 @@
+{% load i18n print_fields %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance Hybird &mdash; Nouvelle demande {{company.name}}</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<script src="/static/js/segmented-selector.js"></script>
+
+</head>
+<body>
+    {% with default_activity_type=contracts.0.maintenance_type.css_class|default:"type-maintenance" %}
+    <div class="dashboard {{default_activity_type}}">
+        <div class="dashboard-item dashboard-account">
+            <span class="dashboard-title">{% trans "Account" %}</span>
+            <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">{{company.name_for_site}}</a></span>
+        </div>
+
+        {% for contract in contracts %}
+        <div class="dashboard-item">
+            <span class="dashboard-title">{{contract.maintenance_type.label_for_company_detailview}}</span>
+            <span class="dashboard-value">{% pretty_print_minutes contract.get_number_remaining_minutes %} / {{contract.get_number_contract_hours}}h</span>
+        </div>
+        {% endfor %}
+
+        <div class="dashboard-item dashboard-contact">
+            <span class="dashboard-title">{% trans "Your Contact" %}</span>
+            <span class="dashboard-value">{{company.maintenance_contact}}</span>
+        </div>
+        <div class="dashboard-item dashboard-user">
+            <span class="dashboard-title">{{company.name_for_site}}</span>
+            <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
+        </div>
+        <div class="dashboard-item dashboard-button">
+            <div class="dashboard-value">
+                <a href="/logout" title="Quitter l'application">{% trans "Disconnect" %}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content">
+                    <div class="form-group">
+                        <div class="group-title-container">
+                            <div class="group-title">Nouvelle Demande</div>
+                            <label>Compte client</label>
+                            <span>{{company}}</span>
+                        </div>
+
+                        <div class="form-row form-row-author {% if form.consumer_who_ask.errors %}form-error{% endif %}">
+                            <label for="{{form.consumer_who_ask.id_for_label}}">Auteur</label>
+                            {{form.consumer_who_ask}}
+                        </div>
+
+                        <div class="form-row {% if form.date.errors %}form-error{% endif %}">
+                            {% if form.date.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.date.id_for_label}}">Demande faite le *</label>
+                            {{form.date}}
+
+                            {% if form.date.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.date.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        {% if channels %}
+                        <div class="form-row {% if form.incoming_channel.errors %}form-error{% endif %}">
+                            {% if form.incoming_channel.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.incoming_channel.id_for_label}}">Canal</label>
+                            <section class="segmented-selector type-maintenance selector-canal">
+                                {% for channel in channels %}
+                                <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
+                                   data-selector-value="{{channel.pk}}" title="Demande reçue par {{channel.name}}">{{channel.name}}</a>
+                                {% endfor %}
+                                {{form.incoming_channel}}
+                            </section>
+
+                            {% if form.incoming_channel.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.incoming_channel.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <div class="form-row form-label-row {% if form.subject.errors %}form-error{% endif %}">
+                            {% if form.subject.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.subject.id_for_label}}">Titre *</label>
+                            {{form.subject}}
+
+                            {% if form.subject.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.subject.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-row form-label-row {% if form.description.errors %}form-error{% endif %}">
+                            {% if form.description.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.description.id_for_label}}">Détails</label>
+                            {{form.description}}
+
+                            {% if form.description.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.description.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="group-title-container">
+                            <div class="group-title">Résolution</div>
+                        </div>
+
+                        <div class="form-row {% if form.user_who_fix.errors %}form-error{% endif %}">
+                            {% if form.user_who_fix.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.user_who_fix.id_for_label}}">Intervenant</label>
+                            {{form.user_who_fix}}
+
+                            {% if form.user_who_fix.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.user_who_fix.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-row">
+                            <label for="{{form.maintenance_type.id_for_label}}">Type de l'activité</label>
+                            <section class="segmented-selector {{default_activity_type}} selector-activity-type">
+                                {% for contract in contracts %}
+                                <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
+                                   data-selector-key="{{contract.maintenance_type.css_class}}"
+                                   data-selector-value="{{contract.maintenance_type.pk}}"
+                                   title="Activité de type '{{contract.maintenance_type.name}}'">{{contract.maintenance_type.name}}</a>
+                                {% endfor %}
+                                {{form.maintenance_type}}
+                            </section>
+                        </div>
+
+                        <div class="form-row form-row-duration {% if form.duration.errors %}form-error{% endif %}">
+                            {% if form.duration.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.duration.id_for_label}}">Temps passé *</label>
+                            <div class="form-value">
+                                {{form.duration}}
+                                <section class="segmented-selector {{default_activity_type}} selector-duration-type">
+                                    <a href="" class="active" data-selector-value="minutes">minutes</a>
+                                    <a href="" class="inactive" data-selector-value="hours">heures</a>
+                                    {{form.duration_type}}
+                                </section>
+                            </div>
+
+                            {% if form.duration.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.number_minutes.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-row {% if form.resolution_date.errors %}form-error{% endif %}">
+                            {% if form.resolution_date.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.resolution_date.id_for_label}}">Demande résolue le</label>
+                            {{form.resolution_date}}
+
+                            {% if form.resolution_date.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.resolution_date.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-row {% if form.shipping_date.errors %}form-error{% endif %}">
+                            {% if form.shipping_date.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.shipping_date.id_for_label}}">Livraison le</label>
+                            {{form.shipping_date}}
+
+                            {% if form.shipping_date.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.shipping_date.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-row form-label-row {% if form.answer.errors %}form-error{% endif %}">
+                            {% if form.answer.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.answer.id_for_label}}">Commentaire</label>
+                            {{form.answer}}
+
+                            {% if form.answer.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.answer.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                    <div>
+                        {% for error in form.non_field_errors %}
+                            <p><i>{{ error }}</i></p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-footer">
+                        <button type="submit">Sauvegarder cette activité</button>
+                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas sauvegarder</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endwith %}
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script>
+        {% if channels %}
+        var canalSelector = new SegmentedSelector (document.querySelector(".selector-canal"));
+        {% endif %}
+        var activityDurationSelector = new SegmentedSelector (document.querySelector(".selector-duration-type"));
+
+        var activityTypeSelector = new SegmentedSelector (document.querySelector(".selector-activity-type"),
+                                                          function (currentKey, selectedKey) {
+            var currentType = currentKey;
+            var selectedType = selectedKey;
+  
+            var typeDependentElements = document.querySelectorAll("." + currentType);
+            for (var j = 0; j < typeDependentElements.length; ++j) {
+                typeDependentElements[j].className = typeDependentElements[j].className.replace(currentType, selectedType);
+            }
+        });
+    </script>
+</body>
+</html>

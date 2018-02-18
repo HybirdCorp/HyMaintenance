@@ -1,0 +1,96 @@
+{% load i18n print_fields %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance Hybird &mdash; Nouveau salarié {{company.name}}</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<style>
+    .form-content {
+        min-height: auto;
+    }
+</style>
+</head>
+<body>
+    <div class="dashboard type-maintenance">
+        <div class="dashboard-item dashboard-account">
+            <span class="dashboard-title">{% trans "Account" %}</span>
+            <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">{{company.name_for_site}}</a></span>
+        </div>
+
+        {% for contract in contracts %}
+        <div class="dashboard-item">
+            <span class="dashboard-title">{{contract.maintenance_type.label_for_company_detailview}}</span>
+            <span class="dashboard-value">{% pretty_print_minutes contract.get_number_remaining_minutes %} / {{contract.get_number_contract_hours}}h</span>
+        </div>
+        {% endfor %}
+
+        <div class="dashboard-item dashboard-contact">
+            <span class="dashboard-title">{% trans "Your Contact" %}</span>
+            <span class="dashboard-value">{{company.maintenance_contact}}</span>
+        </div>
+        <div class="dashboard-item dashboard-user">
+            <span class="dashboard-title">{{company.name_for_site}}</span>
+            <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
+        </div>
+        <div class="dashboard-item dashboard-button">
+            <div class="dashboard-value">
+                <a href="/logout" title="Quitter l'application">{% trans "Disconnect" %}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content">
+                    <div class="form-group">
+                        <div class="group-title-container">
+                            <div class="group-title">Nouveau salarié</div>
+                            <label>Compte client</label>
+                            <span>{{company}}</span>
+                        </div>
+
+                        <div class="form-row form-label-row {% if form.name.errors %}form-error{% endif %}">
+                            {% if form.name.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.name.id_for_label}}">Nom *</label>
+                            {{form.name}}
+
+                            {% if form.name.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.name.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                    {% if form.non_field_errors %}
+                    <div>
+                        {% for error in form.non_field_errors %}
+                            <p><i>{{ error }}</i></p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-footer">
+                        <button type="submit">Ajouter ce salarié</button>
+                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas ajouter</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+</body>
+</html>

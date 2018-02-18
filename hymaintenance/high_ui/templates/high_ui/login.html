@@ -1,0 +1,420 @@
+{% load i18n backgrounds %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Maintenance Hybird &mdash; {% trans 'Connection' %}</title>
+    <style>
+        @font-face {
+          font-family: 'Open Sans';
+          font-style: normal;
+          font-weight: 400;
+          src: url("/static/fonts/OpenSans-Regular-400.woff") format('woff'); /* Modern Browsers */
+        }
+
+        @font-face {
+          font-family: 'Open Sans';
+          font-style: normal;
+          font-weight: 600;
+          src: url("/static/fonts/OpenSans-Semibold-600.woff") format('woff'); /* Modern Browsers */
+        }
+
+        @font-face {
+          font-family: 'Open Sans';
+          font-style: normal;
+          font-weight: 700;
+          src: url("/static/fonts/OpenSans-Bold-700.woff") format('woff'); /* Modern Browsers */
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #333;
+
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        html, body, input, button {
+            font-family: 'Open Sans', 'Verdana', sans-serif;
+            font-size: 13px;
+        }
+
+        input {
+            padding-left: 5px;
+        }
+
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #container {
+            background: #fcfcfc;
+            background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(rgba(245, 245, 245, 0.8)));
+            background: -moz-linear-gradient(top, #fff 0%, rgba(245, 245, 245, 0.8) 100%);
+            background-repeat: repeat-x;
+
+            width: 500px;
+            /* height: 300px; */
+            margin: 0 auto;
+            margin-top: 25px;
+            margin-bottom: 25px;
+
+            border: 1px solid #000;
+            border-radius: 2px;
+
+            -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        #container-icon {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+        #container-icon img {
+            width: 200px;
+            height: 200px;
+        }
+
+        #content-main {
+            width: 350px;
+            margin: 0 auto;
+            margin-top: 30px;
+        }
+
+        #branding {
+            font-size: 14px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            padding-left: 20px;
+            border-bottom: 1px solid #999;
+            color: #444;
+            text-align: center;
+        }
+
+        #branding .creme-label {
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 700;
+            color: #0875e2;
+        }
+
+        label {
+            display: inline-block;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 5px;
+            width: 150px;
+        }
+
+        .form-row {
+            margin-top: 20px;
+            margin-left: 25px;
+        }
+
+        .submit-row {
+            margin: 0 auto;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        ul.errorlist {
+            margin: 5px 0 0 0;
+            padding-left: 25px;
+            color: #eb1d1d;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* generic icons experiments */
+
+        svg.icon {
+            position: relative;
+            fill: currentColor;
+        }
+
+        .icon.icon-telephone {
+            width: 14px;
+            height: 14px;
+
+            top: 2px;
+        }
+
+        .footer .footer-column-client .icon-telephone {
+            margin-left: 5px;
+        }
+
+        .footer .footer-column-hybird .icon-telephone {
+            margin-right: 2px;
+        }
+
+        .icon.icon-email {
+            width: 14px;
+            height: 14px;
+
+            top: 3px;
+            opacity: 0.92;
+        }
+
+        .footer .footer-column-hybird .icon-email {
+            margin-right: 2px;
+        }
+
+        .icon.icon-telephone:hover {
+            animation: shake 0.1s steps(2) 5 5s,
+                       shake 0.1s steps(2) 8 6.5s,
+                       shake 0.1s steps(2) 5 8s;
+        }
+
+        @keyframes shake {
+          from { transform: translateX(-1px); }
+          to   { transform: translateX(1px); }
+        }
+
+        /* generic icons experiments - end */
+
+        /* end of page decoration */
+
+        .icon-hybird {
+            width: 22px;
+            height: 20px;
+
+            fill: currentColor;
+            position: relative;
+            top: 2px;
+
+            transition: transform 0.5s ease-in-out 5s;
+        }
+
+        .icon-hybird:hover {
+            transform: rotate(720deg);
+        }
+
+        .page-decoration {
+            margin: 15px 15px 0 15px;
+            color: #ddd;
+        }
+
+        .page-decoration > * {
+            display: inline-block;
+        }
+
+        .page-decoration div {
+            width: calc(50% - 20px);
+            border-top: 1px solid currentColor;
+            height: 7px;
+        }
+
+        .page-decoration .icon-hybird {
+            margin: 0 5px;
+        }
+
+        /* end of page decoration - end */
+
+        /* clearfix */
+
+        .clearfix:before,
+        .clearfix:after {
+          content: ' ';
+          display: table;
+        }
+
+        .clearfix:after {
+          clear: both;
+        }
+
+        /* clearfix - end */
+
+        /* giant footer */
+
+        .footer {
+            margin-top: 15px;
+
+            padding-top: 30px;
+            padding-bottom: 25px;
+
+            padding-left: 24px;
+            padding-right: 24px;
+
+            color: #000;
+            font-weight: 600;
+
+            background-color: #414141;
+            background: -webkit-gradient(linear, 0% 0%, 0% 80%, from(rgba(245, 245, 245, 0.7)), to(rgba(245, 245, 245, 0.9)));
+            background: -moz-linear-gradient(top, rgba(245, 245, 245, 0.7) 0%, rgba(245, 245, 245, 0.9) 80%);
+            background-repeat: repeat-x;
+        }
+
+        .footer .footer-baseline strong {
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 700;
+            /* color: #479ef5;*/ 
+            color: #086dd2;
+        }
+
+        .footer .footer-baseline-version {
+            margin-left: 10px;
+
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 700;
+            color: #777;
+        }
+
+        .footer a {
+            color: #000;
+        }
+
+        .footer .footer-baseline a {
+            color: inherit;
+        }
+
+        .footer a:hover {
+            /* color: #479ef5;*/
+            color: #086dd2;
+        }
+
+        .footer ul {
+            list-style: none;
+            margin: 5px 0;
+            padding: 0;
+        }
+
+        .footer-columns {
+            margin-top: 40px;
+        }
+
+        .footer-columns .footer-column {
+            float: left;
+            width: 25%;
+        }
+
+        .footer-columns .footer-column-client {
+            width: 50%;
+        }
+
+        .footer-columns .column-content {
+            max-width: 300px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .footer-columns .footer-column-creme .column-content {
+            margin: 0;
+        }
+
+        .footer .column-content::before {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 100%;
+            background: #888;
+            top: -12px;
+        }
+
+        .footer .footer-column-title {
+            display: inline-block;
+            position: relative;
+
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .footer .footer-column-title .icon-hybird {
+            position: absolute;
+            right: -25px;
+            top: -5px;
+        }
+
+        .footer .footer-column-creme li,
+        .footer .footer-column-client li {
+            margin-top: 5px;
+        }
+
+        .footer .footer-client-logo {
+            max-height: 40px;
+            margin: 10px 0;
+        }
+
+        .footer .footer-client-logo img {
+            max-height: 40px;
+            background: white;
+        }
+
+        .footer .hybird-phone {
+            margin-top: 10px;
+        }
+
+        .footer .hybird-address {
+            margin-top: 10px;
+        }
+
+        body.body-bg1, body.body-bg7 { /* bamboo */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='32' viewBox='0 0 16 32'%3E%3Cg fill='%23fdfdfd' fill-opacity='0.05'%3E%3Cpath fill-rule='evenodd' d='M0 24h4v2H0v-2zm0 4h6v2H0v-2zm0-8h2v2H0v-2zM0 0h4v2H0V0zm0 4h2v2H0V4zm16 20h-6v2h6v-2zm0 4H8v2h8v-2zm0-8h-4v2h4v-2zm0-20h-6v2h6V0zm0 4h-4v2h4V4zm-2 12h2v2h-2v-2zm0-8h2v2h-2V8zM2 8h10v2H2V8zm0 8h10v2H2v-2zm-2-4h14v2H0v-2zm4-8h6v2H4V4zm0 16h6v2H4v-2zM6 0h2v2H6V0zm0 24h2v2H6v-2z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        body.body-bg2 { /* hideout */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23fdfdfd' fill-opacity='0.04'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        body.body-bg3 { /* "zigzags" - charlie brown */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='charlie-brown' fill='%23fdfdfd' fill-opacity='0.06'%3E%3Cpath d='M9.8 12L0 2.2V.8l10 10 10-10v1.4L10.2 12h-.4zm-4 0L0 6.2V4.8L7.2 12H5.8zm8.4 0L20 6.2V4.8L12.8 12h1.4zM9.8 0l.2.2.2-.2h-.4zm-4 0L10 4.2 14.2 0h-1.4L10 2.8 7.2 0H5.8z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        body.body-bg5, body.body-bg4 { /* rain */
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='16' viewBox='0 0 12 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 .99C4 .445 4.444 0 5 0c.552 0 1 .45 1 .99v4.02C6 5.555 5.556 6 5 6c-.552 0-1-.45-1-.99V.99zm6 8c0-.546.444-.99 1-.99.552 0 1 .45 1 .99v4.02c0 .546-.444.99-1 .99-.552 0-1-.45-1-.99V8.99z' fill='%23fdfdfd' fill-opacity='0.04' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        body.body-bg6 { /* "japanese waves" - endless clouds */
+            background-image: url("data:image/svg+xml,%3Csvg width='56' height='28' viewBox='0 0 56 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M56 26c-2.813 0-5.456.726-7.752 2H56v-2zm-26 2h4.087C38.707 20.783 46.795 16 56 16v-2c-.672 0-1.339.024-1.999.07L54 14a2 2 0 0 1 2-2v-2a4 4 0 0 0-3.98 3.602 28.087 28.087 0 0 0-2.793-3.862A7.994 7.994 0 0 1 56 6V4a9.988 9.988 0 0 0-8.17 4.232 28.156 28.156 0 0 0-3.03-2.634A13.979 13.979 0 0 1 56 0h-7.752a16.078 16.078 0 0 0-5.09 4.454 27.941 27.941 0 0 0-3.536-1.936c.63-.896 1.33-1.738 2.095-2.518H39.03c-.46.557-.893 1.137-1.297 1.737A27.787 27.787 0 0 0 33.723.585c.12-.196.24-.392.364-.585H30l-.001.07A28.406 28.406 0 0 0 26 .07L26 0h-4.087c.124.193.245.389.364.585a27.787 27.787 0 0 0-4.009 1.152c-.404-.6-.837-1.18-1.297-1.737h-2.688c.764.78 1.466 1.622 2.095 2.518-1.23.562-2.41 1.21-3.536 1.936A16.078 16.078 0 0 0 7.752 0H0c4.58 0 8.645 2.199 11.2 5.598a28.156 28.156 0 0 0-3.03 2.634A9.988 9.988 0 0 0 0 4v2a7.994 7.994 0 0 1 6.773 3.74 28.087 28.087 0 0 0-2.793 3.862A4 4 0 0 0 0 10v2a2 2 0 0 1 1.999 2.07C1.339 14.024.672 14 0 14v2c9.205 0 17.292 4.783 21.913 12H26a2 2 0 1 1 4 0zM7.752 28C5.456 26.726 2.812 26 0 26v2h7.752zM56 20c-6.832 0-12.936 3.114-16.971 8h2.688A19.94 19.94 0 0 1 56 22v-2zm-39.029 8C12.936 23.114 6.831 20 0 20v2a19.94 19.94 0 0 1 14.283 6h2.688zm15.01-.398a28.087 28.087 0 0 1 2.792-3.862A7.994 7.994 0 0 0 28 20a7.994 7.994 0 0 0-6.773 3.74 28.087 28.087 0 0 1 2.793 3.862 4 4 0 0 1 7.96 0zm14.287-11.865C42.318 9.864 35.61 6 28 6c-7.61 0-14.318 3.864-18.268 9.737a27.787 27.787 0 0 0-4.009-1.152C10.275 7.043 18.548 2 28 2c9.452 0 17.725 5.043 22.277 12.585a27.787 27.787 0 0 0-4.009 1.152zm-5.426 2.717a27.941 27.941 0 0 1 3.536-1.936C40.76 11.367 34.773 8 28 8s-12.76 3.367-16.378 8.518c1.23.562 2.41 1.21 3.536 1.936C18.075 14.537 22.741 12 28 12s9.925 2.537 12.842 6.454zm-4.672 3.778a28.156 28.156 0 0 1 3.03-2.634A13.979 13.979 0 0 0 28 14c-4.58 0-8.645 2.199-11.2 5.598a28.156 28.156 0 0 1 3.03 2.634A9.988 9.988 0 0 1 28 18a9.988 9.988 0 0 1 8.17 4.232z' fill='%23fdfdfd' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        /* giant footer - end */
+    </style>
+</head>
+<body class="body-bg{% random_background %}">
+    <div class="content-container">
+        <div id="container">
+            <div id="container-icon">
+                <img src="/static/img/hybird-logo-big.png" />
+            </div>
+            <p class="errornote">{% if error_message %}{{error_message}}{% endif %}</p>
+            <div id="content-main">
+                <div id="branding">
+                    Se connecter à <span class="creme-label">HyMaintenance</span>
+                </div>
+                <form {% comment %}action="{{app_path}}"{% endcomment %} method="post" id="login-form">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <label for="id_username" autofocus>{% trans 'Username' %}</label>{{form.username}}
+                    </div>
+                    <div>{{form.errors.username}}</div>
+                    <div class="form-row">
+                        <label for="id_password">{% trans 'Password' %}</label>{{form.password}}
+                        <input type="hidden" name="this_is_the_login_form" value="1" />
+                    </div>
+                    <div>{{form.errors.password}}</div>
+                    <div class="submit-row">
+                        <input type="submit" value="{% trans 'Log in' %}" />
+                    </div>
+                    <div>{{form.non_field_errors}}</div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=False %}
+</body>
+</html>

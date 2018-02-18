@@ -1,0 +1,108 @@
+{% load i18n print_fields %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance Hybird &mdash; {{object.company.name_for_site}}, Ticket de {{object.maintenance_type.name}} n° {{object.id}}</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/detailview.css" />
+</head>
+<body>
+    <div class="dashboard {{object.maintenance_type.css_class}}">
+        <div class="dashboard-item dashboard-account">
+            <span class="dashboard-title">Compte</span>
+            <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">{{object.company.name}}</a></span>
+        </div>
+        <div class="dashboard-item">
+            <span class="dashboard-title">Demande n°</span>
+            <span class="dashboard-value">{{object.id}}</span>
+        </div>
+        <div class="dashboard-item item-activity">
+            <span class="dashboard-title">Activité</span>
+            <span class="dashboard-value">{{object.maintenance_type.name}}</span>
+        </div>
+        <div class="dashboard-item">
+            <span class="dashboard-title">Temps passé</span>
+            <span class="dashboard-value">{% pretty_print_minutes object.number_minutes use_long_minute_format=True %}</span>
+        </div>
+        <div class="dashboard-item dashboard-contact">
+            <span class="dashboard-title">Votre contact</span>
+            <span class="dashboard-value">{{object.company.maintenance_contact}}</span>
+        </div>
+        <div class="dashboard-item dashboard-user">
+            <span class="dashboard-title">{{object.company.name_for_site}}</span>
+            <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
+        </div>
+        <div class="dashboard-item dashboard-button">
+            <div class="dashboard-value">
+                <a href="/logout" title="Quitter l'application">Déconnexion</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="home-link-header {{object.maintenance_type.css_class}}">
+            <a href="/" title="Retour à l'accueil">Accueil</a> &nbsp;/&nbsp;
+            <span>Demande n°{{object.id}}</span>
+         </div>
+        <div class="content">
+            <div class="container details-container">
+                <div class="container-title">Demande n° {{object.id}} &mdash; {{object.subject}}</div>
+                <div class="property-container">
+                    <span class="property-key">Auteur</span>
+                    <span class="property-value">{{object.who_ask}}</span>
+                </div>
+                <div class="property-container">
+                    <span class="property-key">Date</span>
+                    <span class="property-value">{{object.date|date:"d/m/Y"}}</span>
+                </div>
+                {% if object.incoming_channel %}
+                <div class="property-container">
+                    <span class="property-key">Canal</span>
+                    <span class="property-value">{{object.incoming_channel}}</span>
+                </div>
+                {% endif %}
+                <div class="property-container property-multiline">
+                    <span class="property-key">Détails</span>
+                    <span class="property-value">{{object.description|linebreaksbr}}</span>
+                </div>
+            </div>
+
+            <div class="container resolution-container {{object.maintenance_type.css_class}}">
+                <div class="container-title">Résolution</div>
+                <div class="property-container">
+                    <span class="property-key">Intervenant</span>
+                    <span class="property-value">{{object.user_who_fix.first_name}} {{object.user_who_fix.last_name}}</span>
+                </div>
+                <div class="property-container">
+                    <span class="property-key">Activité</span>
+                    <span class="property-value type-tag">{{object.maintenance_type.name}}</span>
+                </div>
+                <div class="property-container">
+                    <span class="property-key">Temps passé</span>
+                    <span class="property-value duration">{% pretty_print_minutes object.number_minutes use_long_minute_format=True %}</span>
+                </div>
+                {% if object.resolution_date %}
+                <div class="property-container">
+                    <span class="property-key">Résolution</span>
+                    <span class="property-value">{{object.resolution_date|date:"d/m/Y à H\hi"}}</span>
+                </div>
+                {% endif %}
+                {% if object.shipping_date %}
+                <div class="property-container">
+                    <span class="property-key">Livraison</span>
+                    <span class="property-value">{{object.shipping_date|date:"d/m/Y à H\hi"}}</span>
+                </div>
+                {% endif %}
+                <div class="property-container property-multiline">
+                    <span class="property-key">Commentaire</span>
+                    <span class="property-value">{{object.answer|linebreaksbr}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True company=object.company %}
+</body>
+</html>

@@ -1,0 +1,45 @@
+.form-content {
+    min-height: auto;
+}
+
+.help {
+    font-size: 13px;
+    line-height: 130%;
+    margin-top: 5px;
+}
+
+.help + .form-row {
+    margin-top: 15px;
+}
+
+.help em {
+    font-style: normal;
+    font-weight: 600;
+    color: #2f2f2f;
+
+}
+
+/* counter-activation state machine */
+
+.form-group.activation-inactive .row-counter-type,
+.form-group.activation-inactive .row-credit,
+.form-group.activation-inactive .help-credit {
+    display: none;
+}
+
+.form-group.activation-active .help-activation > span:not(.activation-active),
+.form-group.activation-hidden .help-activation > span:not(.activation-hidden),
+.form-group.activation-inactive .help-activation > span:not(.activation-inactive) {
+    display: none;
+}
+
+/* counter-type state machine */
+
+.form-group.counter-total .row-credit {
+    display: none;
+}
+
+.form-group.counter-total .help-credit > span:not(.counter-total),
+.form-group.counter-credit .help-credit > span:not(.counter-credit) {
+    display: none;
+}
