@@ -6,6 +6,7 @@ from .views import (
     CompanyDetailView, CreateCompanyView, CreateConsumerView, CreateMaintainerView, CreateManagerView, HomeView, IssueCreateView, IssueDetailView
 )
 
+
 app_name = 'high_ui'
 
 urlpatterns = [
