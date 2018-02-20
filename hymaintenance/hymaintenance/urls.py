@@ -14,20 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf import settings
-from django.conf.urls import include, url
+from django.urls import include, path, reverse_lazy
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.core.urlresolvers import reverse_lazy
 from django.views.generic import RedirectView
 
 
 urlpatterns = [
-    url(r'^hymaintadmin/', admin.site.urls),
-    url(r'^high_ui/', include('high_ui.urls', namespace='high_ui')),
-    url(r'^login[/]?$', auth_views.login, {'template_name': 'high_ui/login.html'}, name="login"),
-    url(r'^logout[/]?$', auth_views.logout_then_login, name="logout"),
+    path('hymaintadmin/', admin.site.urls),
+    path('high_ui/', include('high_ui.urls', namespace='high_ui')),
+    path('login', auth_views.login, {'template_name': 'high_ui/login.html'}, name="login"),
+    path('logout', auth_views.logout_then_login, name="logout"),
 
-    url(r'^$', RedirectView.as_view(url=reverse_lazy('high_ui:home'), permanent=False)),
+    path('', RedirectView.as_view(url=reverse_lazy('high_ui:home'), permanent=False)),
 ]
 
 if settings.DEBUG:
