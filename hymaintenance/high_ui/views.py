@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth import decorators
-
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
