@@ -48,7 +48,7 @@ class IssueCreateViewTestCase(TestCase):
 
 class IssueDetailViewTestCase(TestCase):
     def test_user_can_seen_issues_of_this_company(self):
-        first_company = CompanyFactory(name="First Company", name_for_site='First Company !!')
+        first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         issue = MaintenanceIssueFactory(company=first_company)
         client = Client()
@@ -58,7 +58,7 @@ class IssueDetailViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_user_cannot_seen_issues_of_other_company(self):
-        first_company = CompanyFactory(name="First Company", name_for_site='First Company !!')
+        first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         black_mesa = CompanyFactory()
         issue = MaintenanceIssueFactory(company=black_mesa)

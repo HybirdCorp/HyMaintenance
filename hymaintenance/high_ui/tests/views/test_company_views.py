@@ -14,21 +14,19 @@ class CreateCompanyViewTestCase(TestCase):
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
         name = "Black Mesa GG-3883 Experiment"
-        name_for_site = "Black Mesa"
         maintenance_contact = "Gordon F."
 
         response = client.post('/high_ui/company/add/',
                                {"name": name,
-                                "name_for_site": name_for_site,
                                 "maintenance_contact": maintenance_contact}, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(1, Company.objects.filter(name=name, name_for_site=name_for_site, maintenance_contact=maintenance_contact).count())
+        self.assertEqual(1, Company.objects.filter(name=name, maintenance_contact=maintenance_contact).count())
 
 
 class CompanyDetailViewTestCase(TestCase):
     def test_user_can_seen_this_company(self):
-        first_company = CompanyFactory(name="First Company", name_for_site='First Company !!')
+        first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         client = Client()
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
@@ -37,7 +35,7 @@ class CompanyDetailViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_user_cannot_seen_other_company(self):
-        first_company = CompanyFactory(name="First Company", name_for_site='First Company !!')
+        first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         black_mesa = CompanyFactory()
         client = Client()

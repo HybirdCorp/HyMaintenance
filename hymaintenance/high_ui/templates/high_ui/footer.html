@@ -39,7 +39,7 @@
                     {% endif %}
                 </ul>
                 <br/>
-                <span class='footer-column-title'>Prestations {% if company %}{{company.name_for_site}}{% endif %}</span>
+                <span class='footer-column-title'>Prestations {% if company %}{{company.name}}{% endif %}</span>
                 <ul>
                     <li>
                     {% for contract in company.maintenancecontract_set.all %}

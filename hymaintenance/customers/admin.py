@@ -11,7 +11,7 @@ from .models import Company, MaintenanceUser
 
 class CompanyAdmin(admin.ModelAdmin):
     model = Company
-    fields = ('name', 'maintenance_contact', 'name_for_site')
+    fields = ('name', 'maintenance_contact')
     list_display = (
         'name',
         'maintenance_contact'

@@ -6,7 +6,7 @@ from .models import Company, MaintenanceUser
 class CompanyCreateForm(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ('name', 'name_for_site', 'maintenance_contact')
+        fields = ('name', 'maintenance_contact')
 
 
 class MaintenanceUserCreateForm(forms.ModelForm):
