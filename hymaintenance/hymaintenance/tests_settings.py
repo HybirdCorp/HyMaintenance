@@ -2,6 +2,8 @@
 from .settings import *  # noqa: F405, F401
 
 
+MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+
 ALLOWED_HOSTS = '*'
 DEBUG = True
 INSTALLED_APPS.extend(['django_extensions', 'debug_toolbar'])
