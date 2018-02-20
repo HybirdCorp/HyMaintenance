@@ -47,14 +47,11 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
     model = Company
     pk_url_kwarg = "pk"
 
-    def get(self, request, *args, **kwargs):
-        user = request.user
-        company_queryset = None
+    def get_queryset(self):
+        user = self.request.user
         if user.company:
-            company_queryset = Company.objects.filter(pk=user.company.pk)
-        self.object = self.get_object(queryset=company_queryset)
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
+            return Company.objects.filter(pk=user.company.pk)
+        return Company.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super(CompanyDetailView, self).get_context_data(**kwargs)
@@ -107,14 +104,11 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
     model = MaintenanceIssue
     pk_url_kwarg = "pk"
 
-    def get(self, request, *args, **kwargs):
-        user = request.user
-        issue_queryset = None
+    def get_queryset(self):
+        user = self.request.user
         if user.company:
-            issue_queryset = MaintenanceIssue.objects.filter(company_id=user.company.pk)
-        self.object = self.get_object(queryset=issue_queryset)
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
+            return MaintenanceIssue.objects.filter(company_id=user.company.pk)
+        return MaintenanceIssue.objects.all()
 
 
 class CreateCompanyView(LoginRequiredMixin, CreateView):
