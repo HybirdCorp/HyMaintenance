@@ -7,9 +7,9 @@ from .other_models import MaintenanceType
 
 
 class MaintenanceCredit(models.Model):
-    company = models.ForeignKey(Company, verbose_name=_("Company"))
+    company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
     date = models.DateField(_("Date of Action"))
-    maintenance_type = models.ForeignKey(MaintenanceType)
+    maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT)
     hours_number = models.PositiveIntegerField(u"Hours number", default=0)
 
     def __str__(self):

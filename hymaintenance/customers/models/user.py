@@ -65,7 +65,7 @@ class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
                                     help_text=_('Designates whether this user should be treated as '
                                                 'active. Unselect this instead of deleting accounts.'))
 
-    company = models.ForeignKey(Company, null=True, blank=True)
+    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.PROTECT)
 
     objects = MaintenanceUserManager()
 
