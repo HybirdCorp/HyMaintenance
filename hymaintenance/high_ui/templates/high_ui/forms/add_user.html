@@ -19,7 +19,7 @@
     <div class="dashboard type-maintenance">
         <div class="dashboard-item dashboard-account">
             <span class="dashboard-title">{% trans "Account" %}</span>
-            <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">{{company.name_for_site}}</a></span>
+            <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">{{company.name}}</a></span>
         </div>
 
         {% for contract in contracts %}
@@ -34,7 +34,7 @@
             <span class="dashboard-value">{{company.maintenance_contact}}</span>
         </div>
         <div class="dashboard-item dashboard-user">
-            <span class="dashboard-title">{{company.name_for_site}}</span>
+            <span class="dashboard-title">{{company.name}}</span>
             <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
         </div>
         <div class="dashboard-item dashboard-button">

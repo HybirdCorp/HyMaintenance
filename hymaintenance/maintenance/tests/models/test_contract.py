@@ -19,7 +19,7 @@ class MaintenanceContractTestCase(TestCase):
         self.assertEqual(1, MaintenanceContract.objects.count())
 
     def test_str_is_good_for_contract(self):
-        company = CompanyFactory(name_for_site="Reynholm Industries")
+        company = CompanyFactory(name="Reynholm Industries")
         maintenance_type = MaintenanceTypeFactory(name="Support")
         contract = MaintenanceContractFactory(company=company,
                                               maintenance_type=maintenance_type,

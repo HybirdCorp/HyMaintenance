@@ -53,7 +53,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.name.id_for_label}}">Compte &mdash; nom interne *</label>
+                            <label for="{{form.name.id_for_label}}">Compte &mdash; nom *</label>
                             {{form.name}}
 
                             {% if form.name.errors %}
@@ -64,25 +64,7 @@
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
                         </div>
-                        <div class="help">Le nom interne du compte, pour les <em>intervenants Hybird</em></div>
-
-                        <div class="form-row form-label-row {% if form.name_for_site.errors %}form-error{% endif %}">
-                            {% if form.name_for_site.errors %}
-                            <div class="form-row-wrapper">
-                            {% endif %}
-
-                            <label for="{{form.name_for_site.id_for_label}}">Compte &mdash; nom public *</label>
-                            {{form.name_for_site}}
-
-                            {% if form.name_for_site.errors %}
-                            </div>
-                            {% endif %}
-
-                            {% for error in form.name_for_site.errors %}
-                            <div class="form-error-text">{{error|escape}}</div>
-                            {% endfor %}
-                        </div>
-                        <div class="help">Le nom public du compte, pour les <em>clients du projet</em></div>
+                        <div class="help">Le nom du compte, pour les <em>intervenants Hybird</em> et les <em>clients du projet</em></div>
 
                         <div class="form-row form-label-row {% if form.maintenance_contact.errors %}form-error{% endif %}">
                             {% if form.maintenance_contact.errors %}
