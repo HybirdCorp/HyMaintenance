@@ -1,33 +1,34 @@
 
 
-from django.conf.urls import url
+from django.urls import path
 
 from .views import (
     CompanyDetailView, CreateCompanyView, CreateConsumerView, CreateMaintainerView, CreateManagerView, HomeView, IssueCreateView, IssueDetailView
 )
 
+app_name = 'high_ui'
 
 urlpatterns = [
-    url(r'^$', HomeView.as_view(), name='home'),
-    url(r'^company/(?P<pk>\d+)/$', CompanyDetailView.as_view(),
-        name='company-details'),
+    path(r'', HomeView.as_view(), name='home'),
+    path(r'company/<int:pk>/', CompanyDetailView.as_view(),
+         name='company-details'),
 
-    url(r'^company/add/$', CreateCompanyView.as_view(),
-        name='add_company'),
+    path(r'company/add/', CreateCompanyView.as_view(),
+         name='add_company'),
 
-    url(r'^issue/(?P<pk>\d+)/$', IssueDetailView.as_view(),
-        name='issue-details'),
+    path(r'issue/<int:pk>/', IssueDetailView.as_view(),
+         name='issue-details'),
 
-    url(r'^issue/add/(?P<company_id>\d+)/$', IssueCreateView.as_view(),
-        name='company-add_issue'),
+    path(r'issue/add/<int:company_id>/', IssueCreateView.as_view(),
+         name='company-add_issue'),
 
-    url(r'^consumer/add/(?P<company_id>\d+)/$', CreateConsumerView.as_view(),
-        name='company-add_consumer'),
+    path(r'consumer/add/<int:company_id>/', CreateConsumerView.as_view(),
+         name='company-add_consumer'),
 
-    url(r'^manager/add/(?P<company_id>\d+)/$', CreateManagerView.as_view(),
-        name='company-add_manager'),
+    path(r'manager/add/<int:company_id>/', CreateManagerView.as_view(),
+         name='company-add_manager'),
 
-    url(r'^maintainer/add/(?P<company_id>\d+)/$', CreateMaintainerView.as_view(),
-        name='company-add_maintainer'),
+    path(r'maintainer/add/<int:company_id>/', CreateMaintainerView.as_view(),
+         name='company-add_maintainer'),
 
 ]
