@@ -11,8 +11,8 @@ from .other_models import MaintenanceType
 
 
 class MaintenanceContract(models.Model):
-    company = models.ForeignKey(Company, verbose_name=_("Company"))
-    maintenance_type = models.ForeignKey(MaintenanceType)
+    company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
+    maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT)
     start = models.DateField("Start Date")
     number_hours = models.PositiveIntegerField("Number of Hours by contract", default=0)
 

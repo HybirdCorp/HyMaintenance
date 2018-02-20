@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth import decorators
-from django.core.urlresolvers import reverse
+
 from django.http import Http404
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DetailView, TemplateView
 

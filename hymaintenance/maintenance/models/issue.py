@@ -8,17 +8,18 @@ from .other_models import IncomingChannel, MaintenanceType
 
 
 class MaintenanceIssue(models.Model):
-    company = models.ForeignKey(Company, verbose_name=_("Company"))
+    company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
     consumer_who_ask = models.ForeignKey(MaintenanceConsumer, verbose_name="Who ask the question ?", null=True, blank=True,
-                                         related_name="consumers_who_asked")
+                                         related_name="consumers_who_asked", on_delete=models.PROTECT)
 
     user_who_fix = models.ForeignKey(MaintenanceUser, verbose_name="Who fix the issue ? ", null=True, blank=True,
-                                     related_name="users_who_fixed")
-    incoming_channel = models.ForeignKey(IncomingChannel, verbose_name="Incoming Channel", null=True, blank=True)
+                                     related_name="users_who_fixed", on_delete=models.PROTECT)
+    incoming_channel = models.ForeignKey(IncomingChannel, verbose_name="Incoming Channel", null=True, blank=True,
+                                         on_delete=models.PROTECT)
 
     subject = models.CharField(_("Subject"), max_length=500, default="une question")
     date = models.DateField(_("Issue Date"))
-    maintenance_type = models.ForeignKey(MaintenanceType)
+    maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT)
     description = models.TextField(null=True, blank=True)
 
     number_minutes = models.PositiveIntegerField(default=0, blank=True)

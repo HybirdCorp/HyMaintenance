@@ -1,5 +1,6 @@
-from django.core.urlresolvers import reverse
+
 from django.db import models
+from django.urls import reverse
 
 
 # TODO: clean up the semantics of the 2 "names"
