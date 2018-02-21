@@ -53,9 +53,32 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
             return Company.objects.filter(pk=user.company.pk)
         return Company.objects.all()
 
+    def get_maintenance_contracts(self):
+        user = self.request.user
+        if user.company:
+            contracts = MaintenanceContract.objects.filter(company=self.object, maintenance_type__visible=True)
+        else:
+            contracts = MaintenanceContract.objects.filter(company=self.object)
+        return contracts
+
+    def get_maintenance_issues(self, month):
+        user = self.request.user
+        if user.company:
+            issues = MaintenanceIssue.objects.filter(company=self.object,
+                                                     maintenance_type__visible=True,
+                                                     date__month=month.month,
+                                                     date__year=month.year
+                                                     ).order_by("-date")
+        else:
+            issues = MaintenanceIssue.objects.filter(company=self.object,
+                                                     date__month=month.month,
+                                                     date__year=month.year
+                                                     ).order_by("-date")
+        return issues
+
     def get_context_data(self, **kwargs):
         context = super(CompanyDetailView, self).get_context_data(**kwargs)
-        contracts = MaintenanceContract.objects.filter(company=self.object)
+        contracts = self.get_maintenance_contracts()
         now = datetime.now()
         last_month = now - timedelta(days=(now.day + 1))
         months = [now, last_month]
@@ -82,10 +105,7 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
                 info_contract.append((contract, contract.get_number_consumed_minutes_in_month(month),
                                       contract.get_number_credited_hours_in_month(month)))
 
-            issues = MaintenanceIssue.objects.filter(company=self.object,
-                                                     date__month=month.month,
-                                                     date__year=month.year
-                                                     ).order_by("-date")
+            issues = self.get_maintenance_issues(month)
             info_issues = list(issues)
             history.append((label_month, info_contract, info_issues))
 
