@@ -12,10 +12,14 @@ jobs:
   test-py36:
     docker:
       - image: python:3.6
+    environment:
+       COVERALLS_REPO_TOKEN=rVivfLB1a620q6D2kpgCgS71IZurNllL5
     steps:
       - checkout
       - run: pip install tox
+      - run: pip install coveralls
       - run: tox -e "sqlite"
+      - run: coveralls
 
 workflows:
   version: 2
