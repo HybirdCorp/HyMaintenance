@@ -1,0 +1,27 @@
+version: 2
+
+jobs:
+  lint:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run: pip install tox
+      - run: tox -e "flake8"
+
+  test-py36:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run: pip install tox
+      - run: tox -e "sqlite"
+
+workflows:
+  version: 2
+  lint-then-test:
+    jobs:
+      - lint
+      - test-py36:
+          requires:
+            - lint
