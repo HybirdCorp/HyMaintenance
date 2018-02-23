@@ -1,0 +1,243 @@
+.dashboard .dashboard-item:first-child .dashboard-title,
+.dashboard .dashboard-item:first-child .dashboard-value {
+    text-align: left;
+}
+
+.dashboard .dashboard-item + .dashboard-item {
+    border-color: #ccc;
+}
+
+.dashboard-users {
+    margin-top: 12px;
+}
+
+.dashboard-users div {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 13px;
+    color: #666;
+}
+
+.dashboard-users div {
+    margin-top: 8px;
+}
+
+.dashboard-users div:last-child {
+    margin-bottom: 8px;
+}
+
+.dashboard.type-project {
+    background: #38c991;
+/*    background: #39CCCC;*/
+    color: white;
+/*    color: #094848;*/
+}
+
+.dashboard.type-project .dashboard-item + .dashboard-item {
+/*    border-color: #094848;*/
+    border-color: #d3e9df;
+}
+
+.dashboard-button {
+    white-space: nowrap;
+}
+
+/**/
+
+.dashboard-container {
+    width: 60%;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    background: white;
+    min-width: 1080px;
+}
+
+.dashboard .dashboard-item-collapsed {
+/*    display: inline-block;*/
+}
+
+.dashboard-container .dashboard-button {
+/*    background: orange;*/
+}
+
+.dashboard-container .dashboard-button + .dashboard-button {
+/*    background: yellow;*/
+    margin-left: 0;
+    padding-left: 10px;
+}
+
+.dashboard.type-project {
+    height: 85px;
+}
+
+.dashboard-form .dashboard-item {
+    display: inline-block;
+}
+
+.dashboard-form .dashboard-title {
+    display: inline-block;
+}
+
+.dashboard-form .segmented-selector {
+    width: auto;
+    margin-left: 20px;
+}
+
+.dashboard-form {
+    border-top: 1px solid #ccc;
+}
+
+.inner-edit {
+    background: #fafafa;
+/*    background: #fdfdfd;*/
+    border-bottom: 1px solid #ccc;
+}
+
+.dashboard-form .dashboard-item:first-child .dashboard-title {
+/*    background: yellow;*/
+    min-width: 180px;
+}
+
+.form-footer {
+/*    margin-top: 20px;*/
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    text-align: center;
+    background: #fdfdfd;
+}
+
+.dashboard-form .dashboard-item + .dashboard-item {
+    margin-left: 20px;
+/*    border-left: 1px solid transparent;*/
+    padding-left: 15px;
+}
+
+.duration-selector {
+    display: inline-block;
+    margin-left: 37px;
+}
+
+.duration-selector input {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+    text-align: right;
+}
+
+.help {
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.inner-edit-row {
+}
+
+.inner-edit-row + .inner-edit-row {
+    margin-top: 15px;
+}
+
+.inner-edit-row > .dashboard-title {
+    position: relative;
+    top: 1px;
+}
+
+.inner-edit .dashboard-button {
+    margin-top: -3px;
+}
+
+.inner-edit .dashboard-button .dashboard-value {
+    margin-top: -6px;
+}
+
+.dashboard-button.type-delete a:hover {
+    color: white;
+    background-color: #FF4136;
+    border-color: #e60b00;
+}
+
+.dashboard-button.type-delete {
+    color: #FF4136;
+}
+
+.inner-edit .duration.type-maintenance {
+    color: #3D9970;
+}
+
+.history-container {
+    border-top: 1px solid #ccc;
+    background: #fdfdfd;
+}
+
+.history-month {
+    margin: 0 20px;
+    padding-bottom: 20px;
+}
+
+.history-month:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+}
+
+.history-container .dashboard-item:first-child .dashboard-value {
+    font-size: 18px;
+}
+
+.dashboard-button-toggled a {
+    color: #2ca074;
+/*    background-color: white;*/
+    background-color: #d7f4e9;
+}
+
+/* history */
+
+.history-items {
+    margin-top: 0px;
+    margin-left: 2px;
+    border-left: 2px solid #ccc;
+    width: 100%;
+}
+
+.history-item-date {
+    text-align: left;
+    padding-left: 15px;
+    width: 100px;
+}
+
+.history-item-duration {
+    text-align: right;
+    padding-left: 1px;
+    width: 50px;
+}
+
+.history-item-type {
+    padding: 0 30px;
+    vertical-align: top;
+    width: 180px;
+}
+
+.history-item-summary {
+    font-weight: 600;
+    padding-bottom: 8px;
+    padding-left: 20px;
+}
+
+.history-items .history-item:last-child .history-item-summary {
+    padding-bottom: 4px;
+}
+
+/* history - end */
+
+/* operation-type specific colors */
+
+.summary-item .type-maintenance .duration,
+.history-month-summary.type-maintenance .duration,
+.history-item.type-maintenance .duration {
+    color: #3D9970;
+}
+
+.summary-item .type-support .duration,
+.history-month-summary.type-support .duration,
+.history-item.type-support .duration {
+    color: #0074D9;
+}
+
+/* operation-type specific colors - end */

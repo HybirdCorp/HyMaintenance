@@ -1,0 +1,328 @@
+.form-content {
+    width: 600px;
+    background: white;
+    min-height: 500px;
+    margin: 0 auto;
+
+    padding: 20px;
+    padding-top: 0;
+
+    border: 1px solid #bdbdbd;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.1), inset 0 -2px 1px rgba(0, 0, 0, 0.1);
+}
+
+.form-content .form-footer {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.form-footer .cancel {
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+.form-footer .cancel a {
+    margin-left: 5px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #666;
+    text-decoration: underline;
+}
+
+/* form groups */
+
+.form-group {
+    margin-top: 20px;
+}
+
+.form-group + .form-group {
+    margin-top: 30px;
+}
+
+.form-group .group-title-container {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 6px;
+    align-items: flex-end;
+}
+
+.group-title-container .group-title {
+    flex: 1;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.group-title-container label {
+    margin-right: 10px;
+    position: relative;
+    top: -1px;
+}
+
+.group-title-container span {
+    font-weight: 700;
+}
+
+/* form groups - ends */
+
+/* form rows */
+
+.form-row {
+    display: flex;
+    align-items: center;
+}
+
+.form-row + .form-row {
+    margin-top: 7px;
+}
+
+.form-row label {
+    min-width: 150px; /* eyeballed */
+}
+
+.form-row.form-label-row {
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 11px;
+}
+
+.form-row.form-label-row .form-value {
+    margin-top: 5px;
+}
+
+/* form rows - end */
+
+/* form errors */
+
+.form-error {
+    flex-direction: column;
+    align-items: stretch;
+
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+
+    border: 1px solid #FF4136;
+    padding: 7px;
+
+    background: rgba(255, 0, 0, 0.02);
+}
+
+.form-error .form-row-wrapper {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.form-error.form-label-row  .form-row-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.form-error label {
+    color: #FF4136;
+    font-weight: 700;
+}
+
+.form-error input {
+    border: 1px solid #FF4136;
+    color: red;
+}
+
+.form-error .form-error-text {
+    margin-top: 6px;
+    color: #FF4136;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.form-error.form-label-row .form-error-text {
+    margin-top: 12px;
+}
+
+/* form errors - end */
+
+/* segmented selector */
+
+.segmented-selector {
+    border: 1px solid transparent;
+    display: inline-flex;
+    width: 100%;
+    border-radius: 4px;
+
+    max-width: 300px;
+}
+
+.segmented-selector a {
+    display: inline;
+    flex-grow: 1;
+
+    padding: 5px;
+
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    color: #000;
+    transition: all 0.2s ease-in-out;
+}
+
+.segmented-selector a.active {
+    color: #fff;
+}
+
+.segmented-selector a.active:first-child {
+    border-radius: 2px 0px 0px 2px;
+}
+
+.segmented-selector a.active:last-child,
+.segmented-selector a.active:last-of-type {
+    border-radius: 0px 2px 2px 0px;
+}
+
+/* type themes - maintenance */
+
+.segmented-selector.type-maintenance {
+    border-color: #3D9970;
+}
+
+.segmented-selector.type-maintenance a.active {
+    background: #3D9970;
+}
+
+.segmented-selector.type-maintenance a.inactive {
+    color: #3D9970;
+}
+
+.segmented-selector.type-maintenance a.inactive + a.inactive {
+    border-left: 1px solid #3D9970;
+}
+
+.segmented-selector.type-maintenance a.inactive:hover {
+    background: hsla(153, 43%, 42%, 0.05);
+}
+
+/* type themes - maintenance - end */
+
+/* type themes - support */
+
+.segmented-selector.type-support {
+    border-color: #0074D9;
+}
+
+.segmented-selector.type-support a.active {
+    background: #0074D9;
+}
+
+.segmented-selector.type-support a.inactive {
+    color: #0074D9;
+}
+
+.segmented-selector.type-support a.inactive + a.inactive {
+    border-left: 1px solid #0074D9;
+}
+
+.segmented-selector.type-support a.inactive:hover {
+    background: hsla(208, 100%, 43%, 0.05);
+}
+
+/* type themes - support - end */
+
+/* type themes - correction */
+
+.segmented-selector.type-correction {
+    border-color: #888;
+}
+
+.segmented-selector.type-correction a:not(:first-child) {
+    border-left: 1px solid #888;
+}
+
+.segmented-selector.type-correction a.active {
+    background: #ddd;
+    color: #666;
+}
+
+.segmented-selector.type-correction a.inactive {
+    color: #888;
+}
+
+.segmented-selector.type-correction a.inactive:hover {
+    background: hsla(0, 0%, 87%, 0.25);
+}
+
+/* type themes - correction - end */
+
+/* segmented selector - end */
+
+/* buttons */
+.form-footer button {
+    display: inline-block;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+
+    border: 1px solid #d7d7d7;
+    border-bottom: 1px solid #bdbdbd;
+    padding: 10px 30px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.2), inset 0 1px 0px white;
+    -webkit-box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.6), inset 0 1px 0px white;
+    background: linear-gradient(#fcfcfc, #f0f0f0);
+    text-transform: uppercase;
+    font-size: 11px !important;
+    font-weight: 600;
+
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.form-footer button:enabled:hover {
+    background: linear-gradient(#ffffff, #f3f3f3);
+    color: #4d4d4d;
+    cursor: pointer;
+}
+
+.form-footer button:enabled:active {
+    background: linear-gradient(#f9f9f9, #ededed);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+    border-bottom-color: #d7d7d7;
+    border-top-color: #bdbdbd;
+    color: #1a1a1a;
+}
+
+/* buttons - end */
+
+/* default html widgets overrides */
+
+label {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+input, textarea, button, select {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+}
+
+input,
+textarea,
+select {
+    min-width: 200px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+textarea {
+    min-height: 65px;
+}
+
+/* default html widgets overrides - end */

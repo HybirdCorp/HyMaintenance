@@ -1,0 +1,44 @@
+.content {
+    padding-top: 20px;
+}
+
+.amount {
+    font-weight: 600;
+}
+
+.form-row-price {
+    margin-bottom: 25px;
+}
+
+.form-row-ht .hours-per-day {
+    font-weight: 600;
+}
+
+.form-row-details {
+    margin-top: 25px !important;
+    margin-bottom: 25px !important;
+}
+
+/* type specific colors */
+
+.form-row-ht.type-maintenance .hours-per-day {
+    color: #3D9970;
+}
+
+.form-row-ht.type-support .hours-per-day {
+    color: #0074D9;
+}
+
+/* type specific colors - end */
+
+/* payment types */
+
+.form-row.type-card .type-other {
+    display: none;
+}
+
+.form-row.type-other .type-card {
+    display: none;
+}
+
+/* payment types - end */
