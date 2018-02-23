@@ -1,4 +1,3 @@
-
 from django.test import Client, RequestFactory, TestCase
 from django.urls import reverse
 from django.utils.timezone import now
@@ -7,7 +6,7 @@ from customers.models import Company
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 from high_ui.views import CompanyDetailView
 from maintenance.models.contract import MaintenanceContract
-from maintenance.tests.factories import MaintenanceIssueFactory, MaintenanceTypeFactory
+from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory, MaintenanceTypeFactory
 
 
 class CreateCompanyViewTestCase(TestCase):
@@ -58,6 +57,23 @@ def create_mtype_maintenance_and_issue(visible, company):
         MaintenanceIssueFactory(company=company,
                                 maintenance_type=maintenance_type,
                                 number_minutes=12)
+
+
+class MonthDisplayInFrenchTestCase(TestCase):
+    def test_month_display_in_french(self):
+        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        company = CompanyFactory()
+        MaintenanceContractFactory(company=company)
+
+        client = Client()
+        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+        response = client.get(reverse('high_ui:company-details', args=[company.pk]))
+
+        month = now().date().month
+        frenchmonths = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "décembre"]
+
+        self.assertContains(response, frenchmonths[month - 1])
 
 
 class VisibleMaintenanceTypeContractTestCase(TestCase):
