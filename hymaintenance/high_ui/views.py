@@ -89,16 +89,14 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         # months = [now, last_month, two_month_ago]
         activities = []
         for month in months:
-            label_month = month.strftime("%B %Y")
             info_contract = []
             for contract in contracts:
                 info_contract.append((contract, contract.get_number_consumed_minutes_in_month(month),
                                       contract.get_number_credited_hours_in_month(month)))
-            activities.append((label_month, info_contract))
+            activities.append((month, info_contract))
 
         history = []
         for month in months:
-            label_month = month.strftime("%B %Y")
             info_contract = []
             # info_issues = []
             for contract in contracts:
@@ -107,7 +105,7 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
 
             issues = self.get_maintenance_issues(self.object, month)
             info_issues = list(issues)
-            history.append((label_month, info_contract, info_issues))
+            history.append((month, info_contract, info_issues))
 
         context["contracts"] = contracts
         context["activities"] = activities

@@ -54,7 +54,7 @@
                     </thead>
                         {% for month, infos in activities %}
                         <tr class="summary-item">
-                            <td class="summary-month">{{month}}</td>
+                            <td class="summary-month">{{month|date:"F Y"}}</td>
                             {% for contract, consumed, credited in infos %}
                                 {% if credited == 0 and consumed == 0 %}
                                 <td class="summary-type {{contract.maintenance_type.css_class}}">&mdash;</td>
@@ -83,7 +83,7 @@
                     <div class="dashboard">
                         <div class="dashboard-item">
                             <span class="dashboard-title">Mois</span>
-                            <span class="dashboard-value">{{month}}</span>
+                            <span class="dashboard-value">{{month|date:"F Y"}}</span>
                         </div>
 
                         <div class="dashboard-item history-month-issues">
