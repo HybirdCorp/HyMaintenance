@@ -1,15 +1,14 @@
 version: 2
 
 jobs:
-  lint:
-    docker:
-      - image: python:3.6
-    steps:
-      - checkout
-      - run: pip install tox
-      - run: tox -e "flake8"
-
-  test-py36:
+#  lint:
+#    docker:
+#      - image: python:3.6
+#    steps:
+#      - checkout
+#      - run: pip install tox
+#      - run: tox -e "flake8"
+  build:
     docker:
       - image: python:3.6
     environment:
@@ -18,14 +17,12 @@ jobs:
       - checkout
       - run: pip install tox
       - run: pip install coveralls
+      - run: tox -e "flake8"
       - run: tox -e "sqlite"
       - run: coveralls
-
-workflows:
-  version: 2
-  lint-then-test:
-    jobs:
-      - lint
-      - test-py36:
-          requires:
-            - lint
+#
+#workflows:
+#  version: 2
+#  lint-and-test:
+#    jobs:
+#      - lint-and-py36:
