@@ -1,6 +1,7 @@
 
 
 from django.test import Client, TestCase
+from django.urls import reverse
 
 from customers.tests.factories import CompanyFactory, MaintenanceSuperUserFactory
 
@@ -59,3 +60,17 @@ class AdminMaintenanceViewTestCase(TestCase):
             resp = client.get(page, follow=True)
             self.assertEqual(resp.status_code, 200)
             self.assertContains(resp, "<!DOCTYPE html")
+
+    def test_search_in_issue_list_view(self):
+        user = MaintenanceSuperUserFactory()
+        client = Client()
+        client.login(username=user.email, password='password')
+        resp = client.get(reverse("admin:maintenance_maintenanceissue_changelist"), {"q": "test"}, follow=True)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_search_in_contract_list_view(self):
+        user = MaintenanceSuperUserFactory()
+        client = Client()
+        client.login(username=user.email, password='password')
+        resp = client.get(reverse("admin:maintenance_maintenancecontract_changelist"), {"q": "test"}, follow=True)
+        self.assertEqual(resp.status_code, 200)
