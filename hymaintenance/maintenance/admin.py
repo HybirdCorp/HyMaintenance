@@ -8,7 +8,7 @@ class MaintenanceIssueAdmin(admin.ModelAdmin):
     list_display = ('subject', 'company', 'consumer_who_ask', 'date', 'maintenance_type')
 
     list_filter = ('consumer_who_ask', 'company', 'maintenance_type')
-    search_fields = ('subject', 'company')
+    search_fields = ('subject', 'company__name')
 
 
 class MaintenanceContractAdmin(admin.ModelAdmin):
@@ -18,7 +18,7 @@ class MaintenanceContractAdmin(admin.ModelAdmin):
                     'get_number_remaining_hours')
 
     list_filter = ('company', 'maintenance_type')
-    search_fields = ('subject', 'company')
+    search_fields = ('company__name', )
 
 
 admin.site.register(MaintenanceType)
