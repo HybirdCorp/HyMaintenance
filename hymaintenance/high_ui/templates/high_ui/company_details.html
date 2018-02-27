@@ -19,7 +19,7 @@
         {% for contract in contracts %}
         <div class="dashboard-item">
             <span class="dashboard-title">{{contract.maintenance_type.label_for_company_detailview}}</span>
-            <span class="dashboard-value">{% pretty_print_minutes contract.get_number_remaining_minutes %} / {{contract.get_number_contract_hours}}h</span>
+            <span class="dashboard-value">{% pretty_print_contract_counter contract %}</span>
         </div>
         {% endfor %}
 
