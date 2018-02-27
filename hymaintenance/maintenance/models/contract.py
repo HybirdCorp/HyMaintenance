@@ -11,7 +11,7 @@ from .other_models import MaintenanceType
 
 
 class MaintenanceContract(models.Model):
-    TYPE_CHOICES = ((0, _("Available total time")), (1, _("Remaining total time")))
+    TYPE_CHOICES = ((0, _("Available total time")), (1, _("Consummed total time")))
 
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
     maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT)
@@ -19,7 +19,7 @@ class MaintenanceContract(models.Model):
     start = models.DateField("Start Date", default=datetime.date.today)
     number_hours = models.PositiveIntegerField("Number of Hours by contract", default=0)
     total_type = models.IntegerField(_("Counter type"), choices=TYPE_CHOICES,
-                                     default=1)
+                                     default=0)
 
     def __str__(self):
         return '%s , %s' % (self.company, self.maintenance_type)
