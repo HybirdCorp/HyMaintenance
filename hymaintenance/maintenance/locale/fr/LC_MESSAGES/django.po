@@ -71,4 +71,4 @@ msgid "Maintenance's Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
 #~ msgid "Name of Model"
-#~ msgstr "Nom du Modéle" 
+#~ msgstr "Nom du Modéle"
