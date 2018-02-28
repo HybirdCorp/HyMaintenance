@@ -64,13 +64,12 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
     def get_maintenance_issues(self, company, month):
         user = self.request.user
         if user.company:
-            contracts = MaintenanceContract.objects.filter(company=company, visible=True)
-            for contract in contracts:
-                issues = MaintenanceIssue.objects.filter(company=company,
-                                                         maintenance_type_id=contract.maintenance_type_id,
-                                                         date__month=month.month,
-                                                         date__year=month.year
-                                                         ).order_by("-date")
+            maintenance_type_ids = MaintenanceContract.objects.values_list('maintenance_type').filter(visible=True, company_id=company)
+            issues = MaintenanceIssue.objects.filter(maintenance_type__in=maintenance_type_ids,
+                                                     company_id=company,
+                                                     date__month=month.month,
+                                                     date__year=month.year
+                                                     ).order_by("-date")
         else:
             issues = MaintenanceIssue.objects.filter(company=company,
                                                      date__month=month.month,
