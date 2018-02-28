@@ -53,6 +53,7 @@ def create_mtype_maintenance_and_issue(visible, company):
         MaintenanceContract.objects.create(company=company,
                                            start=now().date(),
                                            maintenance_type=maintenance_type,
+                                           visible=visible,
                                            number_hours=40)
         MaintenanceIssueFactory(company=company,
                                 maintenance_type=maintenance_type,
