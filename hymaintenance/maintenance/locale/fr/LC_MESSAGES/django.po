@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-01 12:02+0200\n"
+"POT-Creation-Date: 2018-02-28 11:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,56 +18,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: hymaintenance/maintenance/models/consumer.py:9
+#: models/consumer.py:9
 msgid "Consumer's Name"
 msgstr "Nom de l'utilisateur de maintenance"
 
-#: hymaintenance/maintenance/models/contract.py:13
-#: hymaintenance/maintenance/models/credit.py:10
-#: hymaintenance/maintenance/models/issue.py:11
-msgid "Compagny"
+#: models/contract.py:14 models/credit.py:10 models/issue.py:11
+#, fuzzy
+#| msgid "Compagny"
+msgid "Company"
 msgstr "Société"
 
-#: hymaintenance/maintenance/models/credit.py:11
+#: models/contract.py:16
+msgid "Visible to managers"
+msgstr "Visible pour les managers"
+
+#: models/credit.py:11
 msgid "Date of Action"
 msgstr "Date de l'action"
 
-#: hymaintenance/maintenance/models/issue.py:19
+#: models/issue.py:20
 msgid "Subject"
 msgstr "Sujet"
 
-#: hymaintenance/maintenance/models/issue.py:20
+#: models/issue.py:21
 msgid "Issue Date"
 msgstr "Date du problème"
 
-#: hymaintenance/maintenance/models/other_models.py:6
+#: models/other_models.py:6
 msgid "Name of Type"
 msgstr "Nom du Type"
 
-#: hymaintenance/maintenance/models/other_models.py:7
+#: models/other_models.py:7
 msgid "CSS class for HTML"
 msgstr "Class CSS pour le HTML"
 
-#: hymaintenance/maintenance/models/other_models.py:8
+#: models/other_models.py:8
 msgid "Label for HTML"
 msgstr "Label pour le HTML"
 
-#: hymaintenance/maintenance/models/other_models.py:11
+#: models/other_models.py:9
+msgid "Visible to simple user"
+msgstr ""
+
+#: models/other_models.py:12
 msgid "Maintenance's Type"
 msgstr "Type de la maintenance"
 
-#: hymaintenance/maintenance/models/other_models.py:12
+#: models/other_models.py:13
 msgid "Maintenance's Types"
 msgstr "Types des maintenances"
 
-#: hymaintenance/maintenance/models/other_models.py:19
+#: models/other_models.py:20
 #, fuzzy
 #| msgid "Maintenance's Incomming Channel"
 msgid "Name of Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
-#: hymaintenance/maintenance/models/other_models.py:22
-#: hymaintenance/maintenance/models/other_models.py:23
+#: models/other_models.py:23 models/other_models.py:24
 #, fuzzy
 #| msgid "Maintenance's Incomming Channel"
 msgid "Maintenance's Incoming Channel"
