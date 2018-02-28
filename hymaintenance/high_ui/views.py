@@ -56,7 +56,7 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
     def get_maintenance_contracts(self, company):
         user = self.request.user
         if user.company:
-            contracts = MaintenanceContract.objects.filter(company=company, maintenance_type__visible=True)
+            contracts = MaintenanceContract.objects.filter(company=company, visible=True)
         else:
             contracts = MaintenanceContract.objects.filter(company=company)
         return contracts
@@ -64,11 +64,13 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
     def get_maintenance_issues(self, company, month):
         user = self.request.user
         if user.company:
-            issues = MaintenanceIssue.objects.filter(company=company,
-                                                     maintenance_type__visible=True,
-                                                     date__month=month.month,
-                                                     date__year=month.year
-                                                     ).order_by("-date")
+            contracts = MaintenanceContract.objects.filter(company=company, visible=True)
+            for contract in contracts:
+                issues = MaintenanceIssue.objects.filter(company=company,
+                                                         maintenance_type_id=contract.maintenance_type_id,
+                                                         date__month=month.month,
+                                                         date__year=month.year
+                                                         ).order_by("-date")
         else:
             issues = MaintenanceIssue.objects.filter(company=company,
                                                      date__month=month.month,
