@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('maintenance', '0005_auto_20180228_1126'),
+        ('maintenance', '0006_auto_20180301_1341'),
     ]
 
     operations = [
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='maintenancetype',
-            name='visible',
+            name='default_visibility',
             field=models.BooleanField(default=True, verbose_name='Visible to customer user'),
         ),
     ]
