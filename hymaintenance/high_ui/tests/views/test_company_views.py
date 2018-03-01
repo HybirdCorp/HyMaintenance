@@ -49,7 +49,7 @@ class CompanyDetailViewTestCase(TestCase):
 
 
 def create_mtype_maintenance_and_issue(maintenance_type_visibility, contract_visibility, company):
-        maintenance_type = MaintenanceTypeFactory(visible=maintenance_type_visibility)
+        maintenance_type = MaintenanceTypeFactory(default_visibility=maintenance_type_visibility)
         MaintenanceContract.objects.create(company=company,
                                            start=now().date(),
                                            maintenance_type=maintenance_type,
