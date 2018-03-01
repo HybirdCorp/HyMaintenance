@@ -13,7 +13,7 @@ from .other_models import MaintenanceType
 class MaintenanceContract(models.Model):
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
     maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT)
-    visible = models.BooleanField(_("Visible to managers"), default=True)
+    visible = models.BooleanField(_("Visible to customer user"), default=True)
     start = models.DateField("Start Date")
     number_hours = models.PositiveIntegerField("Number of Hours by contract", default=0)
 

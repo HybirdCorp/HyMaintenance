@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-28 11:26+0100\n"
+"POT-Creation-Date: 2018-03-01 14:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,13 +23,11 @@ msgid "Consumer's Name"
 msgstr "Nom de l'utilisateur de maintenance"
 
 #: models/contract.py:14 models/credit.py:10 models/issue.py:11
-#, fuzzy
-#| msgid "Compagny"
 msgid "Company"
 msgstr "Société"
 
-#: models/contract.py:16
-msgid "Visible to managers"
+#: models/contract.py:16 models/other_models.py:9
+msgid "Visible to customer user"
 msgstr "Visible pour les managers"
 
 #: models/credit.py:11
@@ -56,10 +54,6 @@ msgstr "Class CSS pour le HTML"
 msgid "Label for HTML"
 msgstr "Label pour le HTML"
 
-#: models/other_models.py:9
-msgid "Visible to simple user"
-msgstr ""
-
 #: models/other_models.py:12
 msgid "Maintenance's Type"
 msgstr "Type de la maintenance"
@@ -69,14 +63,10 @@ msgid "Maintenance's Types"
 msgstr "Types des maintenances"
 
 #: models/other_models.py:20
-#, fuzzy
-#| msgid "Maintenance's Incomming Channel"
 msgid "Name of Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
 #: models/other_models.py:23 models/other_models.py:24
-#, fuzzy
-#| msgid "Maintenance's Incomming Channel"
 msgid "Maintenance's Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
