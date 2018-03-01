@@ -28,7 +28,7 @@ class CreateCompanyViewTestCase(TestCase):
 
 
 class CompanyDetailViewTestCase(TestCase):
-    def test_user_can_seen_this_company(self):
+    def test_customer_user_can_seen_this_company(self):
         first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         client = Client()
@@ -37,7 +37,7 @@ class CompanyDetailViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_user_cannot_seen_other_company(self):
+    def test_customer_user_cannot_seen_other_company(self):
         first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         black_mesa = CompanyFactory()
@@ -48,12 +48,12 @@ class CompanyDetailViewTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
-def create_mtype_maintenance_and_issue(visible, company):
-        maintenance_type = MaintenanceTypeFactory(visible=visible)
+def create_mtype_maintenance_and_issue(maintenance_type_visibility, contract_visibility, company):
+        maintenance_type = MaintenanceTypeFactory(visible=maintenance_type_visibility)
         MaintenanceContract.objects.create(company=company,
                                            start=now().date(),
                                            maintenance_type=maintenance_type,
-                                           visible=visible,
+                                           visible=contract_visibility,
                                            number_hours=40)
         MaintenanceIssueFactory(company=company,
                                 maintenance_type=maintenance_type,
@@ -77,7 +77,7 @@ class MonthDisplayInFrenchTestCase(TestCase):
         self.assertContains(response, frenchmonths[month - 1])
 
 
-class VisibleMaintenanceTypeContractTestCase(TestCase):
+class ContractVisibilityTestCase(TestCase):
     def setUp(self):
         self.company = CompanyFactory()
         self.factory = RequestFactory()
@@ -89,40 +89,72 @@ class VisibleMaintenanceTypeContractTestCase(TestCase):
         view.request = request
         return view
 
-    def test_user_cannot_see_invisible(self):
+    def test_customer_user_cannot_see_invisible(self):
         user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                       password="azerty",
                                       company=self.company)
-        create_mtype_maintenance_and_issue(False, self.company)
+        create_mtype_maintenance_and_issue(False, False, self.company)
         view = self.create_company_detail_view_with_request(user, self.company.pk)
         contracts = view.get_maintenance_contracts(self.company)
         self.assertEqual(0, contracts.count())
 
-    def test_manageruser_can_see_invisible(self):
-        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        create_mtype_maintenance_and_issue(False, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
-        contracts = view.get_maintenance_contracts(self.company)
-        self.assertEqual(1, contracts.count())
-
-    def test_user_can_see_visible(self):
+    def test_customer_user_can_see_visible(self):
         user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                       password="azerty",
                                       company=self.company)
-        create_mtype_maintenance_and_issue(True, self.company)
+        create_mtype_maintenance_and_issue(True, True, self.company)
         view = self.create_company_detail_view_with_request(user, self.company.pk)
         contracts = view.get_maintenance_contracts(self.company)
         self.assertEqual(1, contracts.count())
 
-    def test_manageruser_can_see_visible(self):
+    def test_customer_user_cannot_see_invisible_in_contract(self):
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
+                                      password="azerty",
+                                      company=self.company)
+        create_mtype_maintenance_and_issue(True, False, self.company)
+        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        contracts = view.get_maintenance_contracts(self.company)
+        self.assertEqual(0, contracts.count())
+
+    def test_customer_user_can_see_visible_in_contract(self):
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
+                                      password="azerty",
+                                      company=self.company)
+        create_mtype_maintenance_and_issue(False, True, self.company)
+        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        contracts = view.get_maintenance_contracts(self.company)
+        self.assertEqual(1, contracts.count())
+
+    def test_operator_can_see_invisible(self):
         user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        create_mtype_maintenance_and_issue(True, self.company)
+        create_mtype_maintenance_and_issue(False, False, self.company)
+        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        contracts = view.get_maintenance_contracts(self.company)
+        self.assertEqual(1, contracts.count())
+
+    def test_operator_can_see_visible(self):
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        create_mtype_maintenance_and_issue(True, True, self.company)
+        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        contracts = view.get_maintenance_contracts(self.company)
+        self.assertEqual(1, contracts.count())
+
+    def test_operator_can_see_invisible_in_contract(self):
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        create_mtype_maintenance_and_issue(True, False, self.company)
+        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        contracts = view.get_maintenance_contracts(self.company)
+        self.assertEqual(1, contracts.count())
+
+    def test_operator_can_see_visible_in_contract(self):
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        create_mtype_maintenance_and_issue(False, True, self.company)
         view = self.create_company_detail_view_with_request(user, self.company.pk)
         contracts = view.get_maintenance_contracts(self.company)
         self.assertEqual(1, contracts.count())
 
 
-class VisibleMaintenanceTypeIssueTestCase(TestCase):
+class IssueVisibilityTestCase(TestCase):
     def setUp(self):
         self.company = CompanyFactory()
         self.factory = RequestFactory()
@@ -134,34 +166,66 @@ class VisibleMaintenanceTypeIssueTestCase(TestCase):
         view.request = request
         return view
 
-    def test_user_cannot_see_invisible(self):
+    def test_customer_user_cannot_see_invisible(self):
         user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                       password="azerty",
                                       company=self.company)
-        create_mtype_maintenance_and_issue(False, self.company)
+        create_mtype_maintenance_and_issue(False, False, self.company)
         view = self.create_company_detail_view_with_request(user, self.company.pk)
         issues = view.get_maintenance_issues(self.company, now().date())
         self.assertEqual(0, issues.count())
 
-    def test_manageruser_can_see_invisible(self):
-        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        create_mtype_maintenance_and_issue(False, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
-        issues = view.get_maintenance_issues(self.company, now().date())
-        self.assertEqual(1, issues.count())
-
-    def test_user_can_see_visible(self):
+    def test_customer_user_can_see_visible(self):
         user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                       password="azerty",
                                       company=self.company)
-        create_mtype_maintenance_and_issue(True, self.company)
+        create_mtype_maintenance_and_issue(True, True, self.company)
         view = self.create_company_detail_view_with_request(user, self.company.pk)
         issues = view.get_maintenance_issues(self.company, now().date())
         self.assertEqual(1, issues.count())
 
-    def test_manageruser_can_see_visible(self):
+    def test_customer_user_cannot_see_invisible_in_contract(self):
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
+                                      password="azerty",
+                                      company=self.company)
+        create_mtype_maintenance_and_issue(True, False, self.company)
+        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        issues = view.get_maintenance_issues(self.company, now().date())
+        self.assertEqual(0, issues.count())
+
+    def test_customer_user_can_see_visible_in_contract(self):
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
+                                      password="azerty",
+                                      company=self.company)
+        create_mtype_maintenance_and_issue(False, True, self.company)
+        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        issues = view.get_maintenance_issues(self.company, now().date())
+        self.assertEqual(1, issues.count())
+
+    def test_operator_can_see_invisible(self):
         user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        create_mtype_maintenance_and_issue(True, self.company)
+        create_mtype_maintenance_and_issue(False, False, self.company)
+        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        issues = view.get_maintenance_issues(self.company, now().date())
+        self.assertEqual(1, issues.count())
+
+    def test_operator_can_see_visible(self):
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        create_mtype_maintenance_and_issue(True, True, self.company)
+        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        issues = view.get_maintenance_issues(self.company, now().date())
+        self.assertEqual(1, issues.count())
+
+    def test_operator_can_see_invisible_in_contract(self):
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        create_mtype_maintenance_and_issue(True, False, self.company)
+        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        issues = view.get_maintenance_issues(self.company, now().date())
+        self.assertEqual(1, issues.count())
+
+    def test_operator_can_see_visible_in_contract(self):
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        create_mtype_maintenance_and_issue(False, True, self.company)
         view = self.create_company_detail_view_with_request(user, self.company.pk)
         issues = view.get_maintenance_issues(self.company, now().date())
         self.assertEqual(1, issues.count())
