@@ -6,7 +6,6 @@ MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ALLOWED_HOSTS = '*'
 DEBUG = True
-INSTALLED_APPS.extend(['django_extensions', 'debug_toolbar'])
 
 RAVEN = 'raven.contrib.django.raven_compat'
 if RAVEN in INSTALLED_APPS:
