@@ -6,7 +6,7 @@ class MaintenanceType(models.Model):
     name = models.CharField(_("Name of Type"), max_length=255)
     css_class = models.CharField(_("CSS class for HTML"), max_length=50, null=True, blank=True)
     label_for_company_detailview = models.CharField(_("Label for HTML"), max_length=255)
-    default_visibility = models.BooleanField(_("Visible to simple user"), default=True)
+    default_visibility = models.BooleanField(_("Visible to customer user"), default=True)
 
     class Meta:
         verbose_name = _("Maintenance's Type")
