@@ -5,12 +5,12 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import CreateView, DetailView, TemplateView
+from django.views.generic import CreateView, DetailView, TemplateView, FormView
 
 from customers.forms import CompanyCreateForm, MaintenanceManagerCreateForm, MaintenanceUserCreateForm
 from customers.models import Company, MaintenanceUser
-from maintenance.forms import MaintenanceConsumerCreateForm, MaintenanceIssueCreateForm
-from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceIssue
+from maintenance.forms import MaintenanceConsumerCreateForm, MaintenanceIssueCreateForm, ProjectCreateForm
+from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceIssue, MaintenanceType
 
 
 class LoginRequiredMixin(object):
@@ -219,3 +219,28 @@ class CreateMaintainerView(LoginRequiredMixin, CreateViewWithCompany):
         context['form_label'] = "Nouvel intervenant"
         context['form_submit_label'] = "Ajouter cet intervenant"
         return context
+
+
+class CreateProjectView(FormView):
+    form_class = ProjectCreateForm
+    template_name = "high_ui/forms/add_project.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        company_name = form.cleaned_data['company_name']
+        print(company_name)
+        if(Company.objects.filter(name=company_name).exists()):
+            company = Company.objects.get(name=company_name)
+        else:
+            company = Company.objects.create(name=company_name)
+        contract1_maintenance_type = MaintenanceType.objects.get(id=1)
+        contract1_visible = form.cleaned_data['contract1_visible']
+        if(contract1_visible != -1):
+            contract1_number_hours = form.cleaned_data['contract1_number_hours']
+            contract1_total_type = form.cleaned_data['contract1_total_type']
+            MaintenanceContract.objects.create(company=company,
+                                               maintenance_type=contract1_maintenance_type, #TOCHANGE
+                                               visible=bool(contract1_visible),
+                                               number_hours=contract1_number_hours,
+                                               total_type=contract1_total_type)
+        return super().form_valid(form)
