@@ -3,6 +3,7 @@ from django import forms
 from customers.models import MaintenanceUser
 
 from .models import MaintenanceConsumer, MaintenanceIssue
+from customers.models import Company, MaintenanceUser
 
 
 # TODO: limit the "user_who_fix" choices to valid MaintenanceUsers
@@ -68,3 +69,16 @@ class MaintenanceConsumerCreateForm(forms.ModelForm):
     def save(self, commit=True):
         self.instance.company = self.company
         return super(MaintenanceConsumerCreateForm, self).save(commit)
+
+
+class ProjectCreateForm(forms.Form):
+    company_name           = forms.CharField(max_length=255, required=True)
+    contract1_visible      = forms.IntegerField(widget=forms.HiddenInput())
+    #contract2_visible      = forms.IntegerField(widget=forms.HiddenInput())
+    #contract3_visible      = forms.IntegerField(widget=forms.HiddenInput())
+    contract1_total_type   = forms.IntegerField(widget=forms.HiddenInput())
+    #contract2_total_type   = forms.IntegerField(widget=forms.HiddenInput())
+    #contract3_total_type   = forms.IntegerField(widget=forms.HiddenInput())
+    contract1_number_hours =  forms.IntegerField(min_value=0)
+    #contract2_number_hours =  forms.IntegerField(min_value=0)
+    #contract3_number_hours =  forms.IntegerField(min_value=0)

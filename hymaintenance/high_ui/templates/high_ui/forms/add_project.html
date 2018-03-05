@@ -1,0 +1,198 @@
+{% load static %}
+{% load i18n print_fields %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance Hybird &mdash; Nouveau projet</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/create-project.css" />
+<script src="/static/js/segmented-selector.js"></script>
+</head>
+<body>
+    <div class="dashboard type-maintenance">
+        <div class="dashboard-item dashboard-account">
+            <span class="dashboard-title">{% trans "Tableau de bord" %}</span>
+            <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">Hybird</a></span> {# TMP: names and urls are hardcoded until "maintenance providers" are added #}
+        </div>
+        <div class="dashboard-item" style='border-color: transparent; flex: 1'>
+            <span class="dashboard-title">Projets</span>
+            <span class="dashboard-value">{{companies_count}}</span>
+        </div>
+        <div class="dashboard-item dashboard-button">
+            <div class="dashboard-value">
+                <a href="{% url 'high_ui:add_company' %}">Ajouter un projet</a>
+            </div>
+        </div>
+        <div class="dashboard-item dashboard-contact"> {# TMP #}
+            <span class="dashboard-title">Hybird</span>
+            <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
+        </div>
+        <div class="dashboard-item dashboard-button">
+            <div class="dashboard-value">
+                <a href="/logout" title="Quitter l'application">Déconnexion</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content">
+                    <div class="form-group">
+                        <h1> ICI !!! {{ form.errors }}</h1>
+                        <div class="group-title-container">
+                            <div class="group-title">Nouveau projet</div>
+                        </div>
+                        <div class="form-row {% if form.company_name.errors %}form-error{% endif %}">
+                            {% if form.company_name.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.company_name.id_for_label}}">Compte</label>
+                            {{form.company_name}}
+
+                            {% if form.company_name.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.company_name.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="form-group activation-active counter-total">
+                        <div class="group-title-container">
+                            <div class="group-title">Compteur Maintenance</div>
+                        </div>
+
+                        <div class="form-row row-activation-type {% if form.contract1_visible.errors %}form-error{% endif %}">
+                            {% if form.contract1_visible.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+			    <label for="{{form.contract1_visible.id_for_label}}">Compteur</label>
+                            <section class="segmented-selector type-maintenance">
+                                <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">Visible à tous</a>
+                                <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">Invisible aux clients</a>
+                                <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">Inactif</a>
+				{{form.contract1_visible}}
+                            </section>
+
+                            {% if form.contract1_visible.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.contract1_visible.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="help help-activation">
+                            <span class='activation-active'>Ce compteur sera <span class="duration">visible par les managers</span> du projet, et <span class="duration">utilisable par les intervenants Hybird</span> dans les tableaux de bord et pour enregistrer des demandes.</span>
+                            <span class='activation-hidden'>Ce compteur sera <span class="duration">invisible aux managers</span>, mais <span class="duration">utilisable par les intervenants Hybird</span> dans les tableaux de bord et pour enregistrer des demandes.</span>
+                            <span class='activation-inactive'>Ce compteur sera <span class="duration">désactivé</span> pour ce projet.</span>
+                        </div>
+
+                        <div class="form-row row-counter-type {% if form.contract1_total_type.errors %}form-error{% endif %}">
+                            {% if form.contract1_total_type.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+			    <label for="{{form.contract1_total_type.id_for_label}}">Type de compteur</label>
+                            <section class="segmented-selector type-maintenance">
+                                <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">Total disponible</a>
+                                <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">Total du temps passé</a>
+				{{form.contract1_total_type}}
+                            </section>
+                            {% if form.contract1_total_type.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.contract1_total_type.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-row row-credit {% if form.contract1_number_hours.errors %}form-error{% endif %}">
+                            {% if form.contract1_number_hours.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+			    <label for="{{form.contract1_number_hours.id_for_label}}">Heures créditées *</label>
+			    {{form.contract1_number_hours}}
+
+                            {% if form.contract1_number_hours.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.contract1_number_hours.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="help help-credit">
+                            <span class="counter-total">Ce compteur affichera le <span class="duration">total du temps passé</span> sur les demandes enregistrées par les intervenants Hybird.</span>
+                            <span class="counter-credit">Ce compteur affichera le <span class="duration">temps restant disponible</span> sur les heures <span class="duration">de maintenance créditées</span>, et qui sera consommé par les intervenants Hybird en enregistrant des demandes.</span>
+                        </div>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                    <div>
+                        {% for error in form.non_field_errors %}
+                            <p><i>{{ error }}</i></p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-footer">
+                        <button type="submit">Créer le projet</button>
+                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas créer</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script>
+        var activationTypes = document.querySelectorAll(".form-row.row-activation-type");
+        for (var i = 0; i < activationTypes.length; ++i) {
+            var activationType = activationTypes[i];
+            new SegmentedSelector(activationType.querySelector(".segmented-selector"),
+                                  function(node, currentKey, selectedKey) {
+                var currentActivation = "activation-" + currentKey;
+                var selectedActivation = "activation-" + selectedKey;
+
+                var parent = node.parentElement;
+                parent.className = parent.className.replace(currentActivation, selectedActivation);
+
+                if (selectedActivation === "activation-inactive") {
+                    var creditInput = parent.querySelector(".row-credit input");
+                    creditInput.required = false;
+                }
+            }.bind(null, activationType));
+        }
+
+        var counterTypes = document.querySelectorAll(".form-row.row-counter-type");
+        for (var i = 0; i < counterTypes.length; ++i) {
+            var counterType = counterTypes[i];
+            new SegmentedSelector(counterType.querySelector(".segmented-selector"),
+                                  function (node, currentKey, selectedKey) {
+                var currentType = "counter-" + currentKey;
+                var selectedType = "counter-" + selectedKey;
+
+                var parent = node.parentElement;
+                parent.className = parent.className.replace(currentType, selectedType);
+
+                var creditInput = parent.querySelector(".row-credit input");
+                creditInput.required = selectedType === "counter-credit";
+            }.bind(null, counterType));
+        }
+    </script>
+</body>
+</html>
