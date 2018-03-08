@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DetailView, TemplateView, FormView
+from django.forms import formset_factory
 
 from customers.forms import CompanyCreateForm, MaintenanceManagerCreateForm, MaintenanceUserCreateForm
 from customers.models import Company, MaintenanceUser
@@ -226,21 +227,47 @@ class CreateProjectView(FormView):
     template_name = "high_ui/forms/add_project.html"
     success_url = "/"
 
+    def get_context_data(self, **kwargs):
+        context = super(CreateProjectView, self).get_context_data(**kwargs)
+        context["maintenance_types"] = MaintenanceType.objects.all()
+        return context
+
     def form_valid(self, form):
         company_name = form.cleaned_data['company_name']
-        print(company_name)
         if(Company.objects.filter(name=company_name).exists()):
             company = Company.objects.get(name=company_name)
         else:
             company = Company.objects.create(name=company_name)
-        contract1_maintenance_type = MaintenanceType.objects.get(id=1)
+        maintenance_types = MaintenanceType.objects.all()
+
         contract1_visible = form.cleaned_data['contract1_visible']
         if(contract1_visible != -1):
             contract1_number_hours = form.cleaned_data['contract1_number_hours']
             contract1_total_type = form.cleaned_data['contract1_total_type']
             MaintenanceContract.objects.create(company=company,
-                                               maintenance_type=contract1_maintenance_type, #TOCHANGE
+                                               maintenance_type=maintenance_types[0],
                                                visible=bool(contract1_visible),
                                                number_hours=contract1_number_hours,
                                                total_type=contract1_total_type)
+
+        contract2_visible = form.cleaned_data['contract2_visible']
+        if(contract2_visible != -1):
+            contract2_number_hours = form.cleaned_data['contract2_number_hours']
+            contract2_total_type = form.cleaned_data['contract2_total_type']
+            MaintenanceContract.objects.create(company=company,
+                                               maintenance_type=maintenance_types[1],
+                                               visible=bool(contract2_visible),
+                                               number_hours=contract2_number_hours,
+                                               total_type=contract2_total_type)
+
+        contract3_visible = form.cleaned_data['contract3_visible']
+        if(contract3_visible != -1):
+            contract3_number_hours = form.cleaned_data['contract3_number_hours']
+            contract3_total_type = form.cleaned_data['contract3_total_type']
+            MaintenanceContract.objects.create(company=company,
+                                               maintenance_type=maintenance_types[2],
+                                               visible=bool(contract3_visible),
+                                               number_hours=contract3_number_hours,
+                                               total_type=contract3_total_type)
+
         return super().form_valid(form)
