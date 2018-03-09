@@ -15,6 +15,7 @@ urlpatterns = [
     path(r'company/<int:pk>/', CompanyDetailView.as_view(),
          name='company-details'),
 
+    # DEPRECATED use CreateProject instead
     path(r'company/add/', CreateCompanyView.as_view(),
          name='add_company'),
 
