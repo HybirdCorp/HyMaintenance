@@ -233,38 +233,5 @@ class CreateProjectView(FormView):
         return context
 
     def form_valid(self, form):
-        company_name = form.cleaned_data['company_name']
-        company = Company.objects.create(name=company_name)
-        maintenance_types = MaintenanceType.objects.all()
-
-        contract1_visible = form.cleaned_data['contract1_visible']
-        if(contract1_visible != -1):
-            contract1_number_hours = form.cleaned_data['contract1_number_hours']
-            contract1_total_type = form.cleaned_data['contract1_total_type']
-            MaintenanceContract.objects.create(company=company,
-                                               maintenance_type=maintenance_types[0],
-                                               visible=bool(contract1_visible),
-                                               number_hours=contract1_number_hours,
-                                               total_type=contract1_total_type)
-
-        contract2_visible = form.cleaned_data['contract2_visible']
-        if(contract2_visible != -1):
-            contract2_number_hours = form.cleaned_data['contract2_number_hours']
-            contract2_total_type = form.cleaned_data['contract2_total_type']
-            MaintenanceContract.objects.create(company=company,
-                                               maintenance_type=maintenance_types[1],
-                                               visible=bool(contract2_visible),
-                                               number_hours=contract2_number_hours,
-                                               total_type=contract2_total_type)
-
-        contract3_visible = form.cleaned_data['contract3_visible']
-        if(contract3_visible != -1):
-            contract3_number_hours = form.cleaned_data['contract3_number_hours']
-            contract3_total_type = form.cleaned_data['contract3_total_type']
-            MaintenanceContract.objects.create(company=company,
-                                               maintenance_type=maintenance_types[2],
-                                               visible=bool(contract3_visible),
-                                               number_hours=contract3_number_hours,
-                                               total_type=contract3_total_type)
-
+        form.save_company_and_contracts()
         return super().form_valid(form)

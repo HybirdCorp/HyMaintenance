@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company, MaintenanceUser
 
-from .models import MaintenanceConsumer, MaintenanceIssue
+from .models import MaintenanceConsumer, MaintenanceContract, MaintenanceIssue, MaintenanceType
 
 
 # TODO: limit the "user_who_fix" choices to valid MaintenanceUsers
@@ -88,3 +88,38 @@ class ProjectCreateForm(forms.Form):
         if(Company.objects.filter(name=company_name).exists()):
             raise forms.ValidationError(_("This company already exists"))
         return company_name
+
+    def save_company_and_contracts(self):
+        company_name = self.cleaned_data['company_name']
+        company = Company.objects.create(name=company_name)
+        maintenance_types = MaintenanceType.objects.all()
+
+        contract1_visible = self.cleaned_data['contract1_visible']
+        if(contract1_visible != -1):
+            contract1_number_hours = self.cleaned_data['contract1_number_hours']
+            contract1_total_type = self.cleaned_data['contract1_total_type']
+            MaintenanceContract.objects.create(company=company,
+                                               maintenance_type=maintenance_types[0],
+                                               visible=bool(contract1_visible),
+                                               number_hours=contract1_number_hours,
+                                               total_type=contract1_total_type)
+
+        contract2_visible = self.cleaned_data['contract2_visible']
+        if(contract2_visible != -1):
+            contract2_number_hours = self.cleaned_data['contract2_number_hours']
+            contract2_total_type = self.cleaned_data['contract2_total_type']
+            MaintenanceContract.objects.create(company=company,
+                                               maintenance_type=maintenance_types[1],
+                                               visible=bool(contract2_visible),
+                                               number_hours=contract2_number_hours,
+                                               total_type=contract2_total_type)
+
+        contract3_visible = self.cleaned_data['contract3_visible']
+        if(contract3_visible != -1):
+            contract3_number_hours = self.cleaned_data['contract3_number_hours']
+            contract3_total_type = self.cleaned_data['contract3_total_type']
+            MaintenanceContract.objects.create(company=company,
+                                               maintenance_type=maintenance_types[2],
+                                               visible=bool(contract3_visible),
+                                               number_hours=contract3_number_hours,
+                                               total_type=contract3_total_type)
