@@ -3,7 +3,8 @@
 from django.urls import path
 
 from .views import (
-    CompanyDetailView, CreateCompanyView, CreateConsumerView, CreateMaintainerView, CreateManagerView, HomeView, IssueCreateView, IssueDetailView, CreateProjectView
+    CompanyDetailView, CreateCompanyView, CreateConsumerView, CreateMaintainerView, CreateManagerView, CreateProjectView, HomeView, IssueCreateView,
+    IssueDetailView
 )
 
 

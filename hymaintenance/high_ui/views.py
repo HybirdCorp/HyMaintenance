@@ -5,8 +5,7 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import CreateView, DetailView, TemplateView, FormView
-from django.forms import formset_factory
+from django.views.generic import CreateView, DetailView, FormView, TemplateView
 
 from customers.forms import CompanyCreateForm, MaintenanceManagerCreateForm, MaintenanceUserCreateForm
 from customers.models import Company, MaintenanceUser
@@ -234,10 +233,7 @@ class CreateProjectView(FormView):
 
     def form_valid(self, form):
         company_name = form.cleaned_data['company_name']
-        if(Company.objects.filter(name=company_name).exists()):
-            company = Company.objects.get(name=company_name)
-        else:
-            company = Company.objects.create(name=company_name)
+        company = Company.objects.create(name=company_name)
         maintenance_types = MaintenanceType.objects.all()
 
         contract1_visible = form.cleaned_data['contract1_visible']
