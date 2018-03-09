@@ -130,6 +130,7 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
         return MaintenanceIssue.objects.all()
 
 
+# DEPRECATED use CreateProject instead
 class CreateCompanyView(LoginRequiredMixin, CreateView):
     form_class = CompanyCreateForm
     template_name = "high_ui/forms/add_company.html"
