@@ -10,8 +10,12 @@ from .issue import MaintenanceIssue
 from .other_models import MaintenanceType
 
 
+AVAILABLE_TOTAL_TIME = 0
+CONSUMMED_TOTAL_TIME = 1
+
+
 class MaintenanceContract(models.Model):
-    TYPE_CHOICES = ((0, _("Available total time")), (1, _("Consummed total time")))
+    TYPE_CHOICES = ((AVAILABLE_TOTAL_TIME, _("Available total time")), (CONSUMMED_TOTAL_TIME, _("Consummed total time")))
 
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
     maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT)

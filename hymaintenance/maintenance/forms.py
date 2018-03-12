@@ -6,6 +6,9 @@ from customers.models import Company, MaintenanceUser
 from .models import MaintenanceConsumer, MaintenanceContract, MaintenanceIssue, MaintenanceType
 
 
+INACTIF_CONTRACT_INPUT = -1
+
+
 # TODO: limit the "user_who_fix" choices to valid MaintenanceUsers
 # TODO: similarly, limit the consumer_who_ask MaintenanceConsumer to the current company ones
 class MaintenanceIssueCreateForm(forms.ModelForm):
@@ -95,7 +98,7 @@ class ProjectCreateForm(forms.Form):
         maintenance_types = MaintenanceType.objects.all()
 
         contract1_visible = self.cleaned_data['contract1_visible']
-        if(contract1_visible != -1):
+        if(contract1_visible != INACTIF_CONTRACT_INPUT):
             contract1_number_hours = self.cleaned_data['contract1_number_hours']
             contract1_total_type = self.cleaned_data['contract1_total_type']
             MaintenanceContract.objects.create(company=company,
@@ -105,7 +108,7 @@ class ProjectCreateForm(forms.Form):
                                                total_type=contract1_total_type)
 
         contract2_visible = self.cleaned_data['contract2_visible']
-        if(contract2_visible != -1):
+        if(contract2_visible != INACTIF_CONTRACT_INPUT):
             contract2_number_hours = self.cleaned_data['contract2_number_hours']
             contract2_total_type = self.cleaned_data['contract2_total_type']
             MaintenanceContract.objects.create(company=company,
@@ -115,7 +118,7 @@ class ProjectCreateForm(forms.Form):
                                                total_type=contract2_total_type)
 
         contract3_visible = self.cleaned_data['contract3_visible']
-        if(contract3_visible != -1):
+        if(contract3_visible != INACTIF_CONTRACT_INPUT):
             contract3_number_hours = self.cleaned_data['contract3_number_hours']
             contract3_total_type = self.cleaned_data['contract3_total_type']
             MaintenanceContract.objects.create(company=company,
