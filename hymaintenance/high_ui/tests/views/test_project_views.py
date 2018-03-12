@@ -1,17 +1,20 @@
 
-from django.test import Client, TestCase
+from django.test import Client, RequestFactory, TestCase
 
 from customers.models import Company
+from high_ui.views import CreateProjectView
 from maintenance.forms import INACTIF_CONTRACT_INPUT
+from maintenance.models import MaintenanceContract
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
 from maintenance.tests.factories import MaintenanceTypeFactory, MaintenanceUserFactory
 
 
 class ProjectCreateViewTestCase(TestCase):
 
-    def test_i_can_post_and_form_to_create_a_project(self):
-        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                               password="azerty")
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
+                                          password="azerty")
         # TO CHANGE : Refs #51
         MaintenanceTypeFactory(name="support",
                                css_class="type-support",
@@ -23,6 +26,16 @@ class ProjectCreateViewTestCase(TestCase):
                                css_class="type-correction",
                                label_for_company_detailview="correction")
 
+    def test_i_can_get_the_form(self):
+        factory = RequestFactory()
+        request = factory.get("/high_ui/project/add/")
+        request.user = self.user
+        view = CreateProjectView()
+        view.request = request
+        context = view.get_context_data()
+        self.assertEqual(3, len(context["maintenance_types"]))
+
+    def test_i_can_post_and_form_to_create_a_project(self):
         company_name = "Black Mesa"
         # No support contract
         contract1_visible = INACTIF_CONTRACT_INPUT
@@ -53,7 +66,9 @@ class ProjectCreateViewTestCase(TestCase):
                                 "contract3_visible": contract3_visible,
                                 "contract3_total_type": contract3_total_type,
                                 "contract3_number_hours": contract3_number_hours}, follow=True)
+        company = Company.objects.get(name=company_name)
 
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, '/high_ui/')
         self.assertEqual(1, Company.objects.filter(name=company_name).count())
+        self.assertEqual(2, MaintenanceContract.objects.filter(company_id=company.id).count())
