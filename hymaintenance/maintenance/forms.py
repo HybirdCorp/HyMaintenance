@@ -9,6 +9,12 @@ from .models import MaintenanceConsumer, MaintenanceContract, MaintenanceIssue, 
 INACTIF_CONTRACT_INPUT = -1
 
 
+def duration_in_minutes(duration, duration_type):
+    if duration_type == "hours":
+        duration *= 60
+    return duration
+
+
 # TODO: limit the "user_who_fix" choices to valid MaintenanceUsers
 # TODO: similarly, limit the consumer_who_ask MaintenanceConsumer to the current company ones
 class MaintenanceIssueCreateForm(forms.ModelForm):
@@ -35,29 +41,37 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
         self.fields["consumer_who_ask"].queryset = self.company.maintenanceconsumer_set
         self.fields["user_who_fix"].choices = MaintenanceUser.objects.get_maintainers_choices()
 
-    def clean(self):
-        cleaned_data = super(MaintenanceIssueCreateForm, self).clean()
-
-        duration = cleaned_data.get("duration")
-        duration_type = cleaned_data.get("duration_type")
-
-        if duration_type not in ["minutes", "hours"]:
-            self.add_error("duration", "Invalid duration type: '%s'" % duration_type)
-
+    def clean_duration(self):
+        duration = self.cleaned_data['duration']
         if duration <= 0:
             self.add_error("duration", "Invalid duration: '%s'" % duration)
+        return duration
+
+    def clean_duration_type(self):
+        duration_type = self.cleaned_data['duration_type']
+        if duration_type not in ["minutes", "hours"]:
+            self.add_error("duration", "Invalid duration type: '%s'" % duration_type)
+        return duration_type
 
     def save(self, commit=True):
         form_data = self.cleaned_data
 
         self.instance.company = self.company
 
-        number_minutes = form_data['duration']
-        if form_data['duration_type'] == "hours":
-            number_minutes *= 60
-
+        number_minutes = duration_in_minutes(form_data['duration'], form_data['duration_type'])
         self.instance.number_minutes = number_minutes
         return super(MaintenanceIssueCreateForm, self).save(commit)
+
+
+class MaintenanceIssueUpdateForm(MaintenanceIssueCreateForm):
+    def __init__(self, *args, **kwargs):
+        super(MaintenanceIssueCreateForm, self).__init__(*args, **kwargs)
+        self.company = Company.objects.get(id=self.instance.company_id)
+
+        self.fields["consumer_who_ask"].queryset = self.company.maintenanceconsumer_set
+        self.fields["user_who_fix"].choices = MaintenanceUser.objects.get_maintainers_choices()
+        self.fields["duration_type"].initial = "minutes"
+        self.fields["duration"].initial = self.instance.number_minutes
 
 
 class MaintenanceConsumerCreateForm(forms.ModelForm):

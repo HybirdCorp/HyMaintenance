@@ -4,7 +4,7 @@ from django.urls import path
 
 from .views import (
     CompanyDetailView, CreateCompanyView, CreateConsumerView, CreateMaintainerView, CreateManagerView, CreateProjectView, HomeView, IssueCreateView,
-    IssueDetailView
+    IssueDetailView, UpdateIssueView
 )
 
 
@@ -24,6 +24,9 @@ urlpatterns = [
 
     path(r'issue/<int:pk>/', IssueDetailView.as_view(),
          name='issue-details'),
+
+    path(r'issue/<int:pk>/change/', UpdateIssueView.as_view(),
+         name='change_issue'),
 
     path(r'issue/add/<int:company_id>/', IssueCreateView.as_view(),
          name='company-add_issue'),
