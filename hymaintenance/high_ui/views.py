@@ -5,11 +5,11 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import CreateView, DetailView, FormView, TemplateView
+from django.views.generic import CreateView, DetailView, FormView, TemplateView, UpdateView
 
 from customers.forms import CompanyCreateForm, MaintenanceManagerCreateForm, MaintenanceUserCreateForm
 from customers.models import Company, MaintenanceUser
-from maintenance.forms import MaintenanceConsumerCreateForm, MaintenanceIssueCreateForm, ProjectCreateForm
+from maintenance.forms import MaintenanceConsumerCreateForm, MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm, ProjectCreateForm
 from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceIssue, MaintenanceType
 
 
@@ -183,6 +183,24 @@ class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):
         context['contracts'] = contracts
 
         return context
+
+
+class UpdateIssueView(LoginRequiredMixin, UpdateView):
+    form_class = MaintenanceIssueUpdateForm
+    template_name = "high_ui/forms/add_issue.html"
+    model = MaintenanceIssue
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateIssueView, self).get_context_data(**kwargs)
+        context['channels'] = IncomingChannel.objects.all()
+
+        contracts = MaintenanceContract.objects.filter(company=self.object.company_id)
+        context['contracts'] = contracts
+        return context
+
+    def get_success_url(self):
+        print(self.object)
+        return reverse('high_ui:issue-details', kwargs={'pk': self.object.id})
 
 
 class CreateConsumerView(LoginRequiredMixin, CreateViewWithCompany):
