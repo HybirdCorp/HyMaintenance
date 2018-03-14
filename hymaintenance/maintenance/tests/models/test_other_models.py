@@ -7,6 +7,7 @@ from ..factories import IncomingChannelFactory, MaintenanceTypeFactory
 class MaintenanceTypeTestCase(TestCase):
 
     def test_i_can_create_a_maintenance_type(self):
+        MaintenanceType.objects.all().delete()
         MaintenanceType.objects.create(name="Support",
                                        css_class="type-support",
                                        label_for_company_detailview="Support Label")
