@@ -6,7 +6,7 @@ from high_ui.views import CreateProjectView
 from maintenance.forms import INACTIF_CONTRACT_INPUT
 from maintenance.models import MaintenanceContract
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
-from maintenance.tests.factories import MaintenanceTypeFactory, MaintenanceUserFactory
+from maintenance.tests.factories import MaintenanceUserFactory
 
 
 class ProjectCreateViewTestCase(TestCase):
@@ -15,16 +15,6 @@ class ProjectCreateViewTestCase(TestCase):
     def setUpTestData(cls):
         cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                           password="azerty")
-        # TO CHANGE : Refs #51
-        MaintenanceTypeFactory(name="support",
-                               css_class="type-support",
-                               label_for_company_detailview="support")
-        MaintenanceTypeFactory(name="maintenance",
-                               css_class="type-maintenance",
-                               label_for_company_detailview="maintenance")
-        MaintenanceTypeFactory(name="correction",
-                               css_class="type-correction",
-                               label_for_company_detailview="correction")
 
     def test_i_can_get_the_form(self):
         factory = RequestFactory()
