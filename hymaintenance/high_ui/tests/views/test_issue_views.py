@@ -46,6 +46,76 @@ class IssueCreateViewTestCase(TestCase):
                                                             description=description).count())
 
 
+class IssueUpdateViewTestCase(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
+                                          password="azerty")
+        cls.company = CompanyFactory()
+        cls.maintenance_type = MaintenanceTypeFactory()
+        cls.channel = IncomingChannelFactory()
+        cls.consumer = MaintenanceConsumerFactory(company=cls.company)
+        cls.issue = MaintenanceIssueFactory(company=cls.company)
+        cls.url_post = reverse("high_ui:change_issue", args=[cls.issue.pk])
+
+    def test_i_can_post_and_form_to_modify_a_issue(self):
+        subject = "subject of the issue"
+        description = "Description of the Issue"
+
+        client = Client()
+        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+        response = client.post(self.url_post,
+                               {"consumer_who_ask": self.consumer.pk,
+                                "user_who_fix": self.user.pk,
+                                "incoming_channel": self.channel.pk,
+                                "subject": subject,
+                                "date": "2017-03-22",
+                                "maintenance_type": self.maintenance_type.pk,
+                                "description": description,
+                                "duration_type": "hours",
+                                "duration": 2}, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, expected_url=reverse('high_ui:issue-details', args=[self.issue.pk]))
+        self.assertEqual(1, MaintenanceIssue.objects.filter(company=self.company,
+                                                            consumer_who_ask=self.consumer,
+                                                            user_who_fix=self.user,
+                                                            incoming_channel=self.channel,
+                                                            subject=subject,
+                                                            maintenance_type=self.maintenance_type,
+                                                            number_minutes=120,
+                                                            description=description).count())
+
+    def test_i_cannot_post_and_form_to_modify_a_issue_unlog(self):
+        subject = "subject of the issue"
+        description = "Description of the Issue"
+
+        client = Client()
+
+        response = client.post(self.url_post,
+                               {"consumer_who_ask": self.consumer.pk,
+                                "user_who_fix": self.user.pk,
+                                "incoming_channel": self.channel.pk,
+                                "subject": subject,
+                                "date": "2017-03-22",
+                                "maintenance_type": self.maintenance_type.pk,
+                                "description": description,
+                                "duration_type": "hours",
+                                "duration": 2}, follow=True)
+        url_login = reverse("login")
+        self.assertRedirects(response, expected_url=f"{url_login}?next={self.url_post}")
+        self.assertEqual(0, MaintenanceIssue.objects.filter(company=self.company,
+                                                            consumer_who_ask=self.consumer,
+                                                            user_who_fix=self.user,
+                                                            incoming_channel=self.channel,
+                                                            subject=subject,
+                                                            maintenance_type=self.maintenance_type,
+                                                            number_minutes=120,
+                                                            description=description).count())
+
+
 class IssueDetailViewTestCase(TestCase):
     def test_user_can_seen_issues_of_this_company(self):
         first_company = CompanyFactory(name="First Company")
