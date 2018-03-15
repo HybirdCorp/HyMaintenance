@@ -199,7 +199,6 @@ class UpdateIssueView(LoginRequiredMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        print(self.object)
         return reverse('high_ui:issue-details', kwargs={'pk': self.object.id})
 
 
