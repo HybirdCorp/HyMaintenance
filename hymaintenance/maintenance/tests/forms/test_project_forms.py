@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
@@ -114,4 +115,4 @@ class ProjectCreateFormTestCase(TestCase):
 
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
-        self.assertEqual(form.errors['company_name'].as_text(), "* This company already exists")
+        self.assertEqual(form.errors['company_name'].as_text(), "* " + str(_("This company already exists")))
