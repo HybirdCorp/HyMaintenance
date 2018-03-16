@@ -117,7 +117,7 @@ class IssueUpdateFormTestCase(TestCase):
         self.assertEqual(1, len(form.errors))
         self.assertEqual(form.errors['duration'].as_text(), "* Invalid duration: '0'")
 
-    def test_when_the_forum_is_valid_if_creates_instance(self):
+    def test_form_is_valid_when_it_updates_instance(self):
         subject = "subject of the issue"
         description = "Description of the Issue"
         dict_for_post = self.__get_dict_for_post(subject, description)
