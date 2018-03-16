@@ -36,6 +36,7 @@
 
 .form-group {
     margin-top: 20px;
+    overflow-y: hidden;
 }
 
 .form-group + .form-group {
@@ -94,6 +95,38 @@
 }
 
 /* form rows - end */
+
+/* collapsable form rows container */
+
+.form-group .show-more {
+    margin-right: 5px;
+    
+    font-size: 12px;
+    font-weight: 400;
+    
+    text-transform: none;
+    text-decoration: underline;
+    
+    color: #666;
+}
+
+.form-group .show-more-container {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+
+    transition: max-height 0.2s ease-in-out,
+                margin-top 0.2s ease-in-out,
+                opacity 0.2s ease-in-out;
+}
+
+.form-group .show-more-container.is-showing {
+    max-height: 150px; /* eyeballed */
+    margin-top: 15px;
+    opacity: 1;
+}
+
+/* collapsable form rows container - end */
 
 /* form errors */
 
