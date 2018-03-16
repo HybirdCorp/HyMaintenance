@@ -63,6 +63,7 @@
                     <div class="form-group activation-active counter-total">
                         <div class="group-title-container">
                             <div class="group-title">Compteur Maintenance</div>
+                            <a href="#" class="show-more" title="Afficher plus de détails pour ce compteur">Afficher plus de détails</a>
                         </div>
 
                         <div class="form-row row-activation-type">
@@ -98,11 +99,26 @@
                             <span class="counter-total">Ce compteur affichera le <span class="duration">total du temps passé</span> sur les demandes enregistrées par les intervenants Hybird.</span>
                             <span class="counter-credit">Ce compteur affichera le <span class="duration">temps restant disponible</span> sur les heures <span class="duration">de maintenance créditées</span>, et qui sera consommé par les intervenants Hybird en enregistrant des demandes.</span>
                         </div>
+                        
+                        <div class="show-more-container">
+                            <div class="form-row">
+                                <label for="">Nom du compteur</label>
+                                <input type="text" name="" class="form-value" value="maintenance" />
+                            </div>
+                            <div class="help">Ce compteur peut être renommé pour remplacer son nom par défaut de <em>maintenance</em>.</div>
+
+                            <div class="form-row">
+                                <label for="">Date de début</label>
+                                <input type="date" name="" class="form-value" value="2018-03-18" />
+                            </div>
+                            <div class="help">La date à laquelle ce contrat de maintenance débute.</div>
+                        </div>
                     </div>
 
                     <div class="form-group activation-active counter-total">
                         <div class="group-title-container">
                             <div class="group-title">Compteur Support</div>
+                            <a href="#" class="show-more" title="Afficher plus de détails pour ce compteur">Afficher plus de détails</a>
                         </div>
 
                         <div class="form-row row-activation-type">
@@ -138,11 +154,26 @@
                             <span class="counter-total">Ce compteur affichera le <span class="duration">total du temps passé</span> sur les demandes enregistrées par les intervenants Hybird.</span>
                             <span class="counter-credit">Ce compteur affichera le <span class="duration">temps restant disponible</span> sur les heures <span class="duration">de support créditées</span>, et qui sera consommé par les intervenants Hybird en enregistrant des demandes.</span>
                         </div>
+                        
+                        <div class="show-more-container">
+                            <div class="form-row">
+                                <label for="">Nom du compteur</label>
+                                <input type="text" name="" class="form-value" value="support" />
+                            </div>
+                            <div class="help">Ce compteur peut être renommé pour remplacer son nom par défaut de <em>support</em>.</div>
+
+                            <div class="form-row">
+                                <label for="">Date de début</label>
+                                <input type="date" name="" class="form-value" value="2018-03-18" />
+                            </div>
+                            <div class="help">La date à laquelle ce contrat de maintenance débute.</div>
+                        </div>
                     </div>
 
                     <div class="form-group activation-active counter-total">
                         <div class="group-title-container">
                             <div class="group-title">Compteur Corrections</div>
+                            <a href="#" class="show-more" title="Afficher plus de détails pour ce compteur">Afficher plus de détails</a>
                         </div>
 
                         <div class="form-row row-activation-type">
@@ -177,6 +208,20 @@
                         <div class="help help-credit">
                             <span class="counter-total">Ce compteur affichera le <span class="duration">total du temps passé</span> sur les demandes enregistrées par les intervenants Hybird.</span>
                             <span class="counter-credit">Ce compteur affichera le <span class="duration">temps restant disponible</span> sur les heures <span class="duration">de corrections créditées</span>, et qui sera consommé par les intervenants Hybird en enregistrant des demandes.</span>
+                        </div>
+                        
+                        <div class="show-more-container">
+                            <div class="form-row">
+                                <label for="">Nom du compteur</label>
+                                <input type="text" name="" class="form-value" value="corrections" />
+                            </div>
+                            <div class="help">Ce compteur peut être renommé pour remplacer son nom par défaut de <em>corrections</em>.</div>
+
+                            <div class="form-row">
+                                <label for="">Date de début</label>
+                                <input type="date" name="" class="form-value" value="2018-03-18" />
+                            </div>
+                            <div class="help">La date à laquelle ce contrat de maintenance débute.</div>
                         </div>
                     </div>
 
@@ -300,6 +345,25 @@
                 var creditInput = parent.querySelector(".row-credit input");
                 creditInput.required = selectedType === "counter-credit";
             }.bind(null, counterType));
+        }
+        
+        var showMoreLinks = document.querySelectorAll(".form-group a.show-more");
+        for (var i = 0; i < showMoreLinks.length; ++i) {
+            var link = showMoreLinks[i];
+            
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                
+                var node = e.target;
+                var formGroup = node.parentElement.parentElement;
+                
+                var showMoreContainer = formGroup.querySelector(".show-more-container");
+                if (showMoreContainer.className.indexOf("is-showing") === -1) {
+                    showMoreContainer.className += " is-showing";
+                }
+                
+                node.parentElement.removeChild(node);
+            }, false);
         }
     </script>
 </body>
