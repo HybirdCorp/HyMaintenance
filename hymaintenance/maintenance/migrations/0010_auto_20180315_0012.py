@@ -11,13 +11,13 @@ def do_nothing(apps, schema_editor):
 def create_maintenance_type_if_needed(apps, schema_editor):
     MaintenanceType = apps.get_model("maintenance", "MaintenanceType")
 
-    MaintenanceType.objects.get_or_create(pk=1,
+    MaintenanceType.objects.get_or_create(pk=1, defaults={"name": _('Maintenance'),
+                                                          "css_class": "type-maintenance",
+                                                          "label_for_company_detailview": _('Maintenance')})
+    MaintenanceType.objects.get_or_create(pk=2,
                                           defaults={"name": _('Support'),
                                                     "css_class": "type-support",
                                                     "label_for_company_detailview": _('Support')})
-    MaintenanceType.objects.get_or_create(pk=2, defaults={"name": _('Maintenance'),
-                                                          "css_class": "type-maintenance",
-                                                          "label_for_company_detailview": _('Maintenance')})
     MaintenanceType.objects.get_or_create(pk=3, defaults={"name": _('Corrective'),
                                                           "css_class": "type-correction",
                                                           "label_for_company_detailview": _('Corrective')})
