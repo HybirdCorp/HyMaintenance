@@ -165,6 +165,8 @@ class CreateViewWithCompany(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateViewWithCompany, self).get_context_data(**kwargs)
         context['company'] = self.company
+        contracts = MaintenanceContract.objects.filter(company=self.company)
+        context['contracts'] = contracts
         return context
 
     def get_success_url(self):
@@ -178,10 +180,6 @@ class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):
     def get_context_data(self, **kwargs):
         context = super(IssueCreateView, self).get_context_data(**kwargs)
         context['channels'] = IncomingChannel.objects.all()
-
-        contracts = MaintenanceContract.objects.filter(company=self.company)
-        context['contracts'] = contracts
-
         return context
 
 
