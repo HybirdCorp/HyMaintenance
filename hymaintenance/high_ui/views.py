@@ -247,6 +247,7 @@ class CreateProjectView(FormView):
     def get_context_data(self, **kwargs):
         context = super(CreateProjectView, self).get_context_data(**kwargs)
         context["maintenance_types"] = MaintenanceType.objects.all()
+        context["companies_count"] = Company.objects.all().count()
         return context
 
     def form_valid(self, form):
