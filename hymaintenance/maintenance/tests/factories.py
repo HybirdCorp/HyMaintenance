@@ -13,7 +13,6 @@ class MaintenanceTypeFactory(factory.django.DjangoModelFactory):
         model = MaintenanceType
 
     name = "Support"
-    css_class = "type-support"
 
 
 class IncomingChannelFactory(factory.django.DjangoModelFactory):
