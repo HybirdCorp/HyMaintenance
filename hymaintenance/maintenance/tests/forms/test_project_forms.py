@@ -16,12 +16,9 @@ class ProjectCreateFormTestCase(TestCase):
         cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                           password="azerty")
         # TO CHANGE : Refs #51
-        MaintenanceTypeFactory(name="support",
-                               css_class="type-support")
-        MaintenanceTypeFactory(name="maintenance",
-                               css_class="type-maintenance")
-        MaintenanceTypeFactory(name="correction",
-                               css_class="type-correction")
+        MaintenanceTypeFactory(name="support")
+        MaintenanceTypeFactory(name="maintenance")
+        MaintenanceTypeFactory(name="correction")
 
     def __get_dict_for_post(self):
         return {"company_name": "Black Mesa",
