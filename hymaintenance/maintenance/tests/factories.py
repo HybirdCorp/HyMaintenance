@@ -14,7 +14,6 @@ class MaintenanceTypeFactory(factory.django.DjangoModelFactory):
 
     name = "Support"
     css_class = "type-support"
-    label_for_company_detailview = "Support Label"
 
 
 class IncomingChannelFactory(factory.django.DjangoModelFactory):

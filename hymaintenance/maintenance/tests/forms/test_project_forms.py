@@ -17,14 +17,11 @@ class ProjectCreateFormTestCase(TestCase):
                                           password="azerty")
         # TO CHANGE : Refs #51
         MaintenanceTypeFactory(name="support",
-                               css_class="type-support",
-                               label_for_company_detailview="support")
+                               css_class="type-support")
         MaintenanceTypeFactory(name="maintenance",
-                               css_class="type-maintenance",
-                               label_for_company_detailview="maintenance")
+                               css_class="type-maintenance")
         MaintenanceTypeFactory(name="correction",
-                               css_class="type-correction",
-                               label_for_company_detailview="correction")
+                               css_class="type-correction")
 
     def __get_dict_for_post(self):
         return {"company_name": "Black Mesa",
