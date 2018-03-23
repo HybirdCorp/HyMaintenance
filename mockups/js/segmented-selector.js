@@ -1,4 +1,9 @@
 function SegmentedSelector (element, listener) {
+    if (!element) {
+        console.error("Segmented selector created with invalid root element");
+        return;
+    }
+
     var input = element.querySelector("input");
 
     var onValueSelected = function (selected) {
@@ -6,8 +11,9 @@ function SegmentedSelector (element, listener) {
 
         var currentKey = active.getAttribute("data-selector-key");
         var selectedKey = selected.getAttribute("data-selector-key");
-
-        input.value = selectedKey;
+        
+        var selectedValue = selected.getAttribute("data-selector-value");
+        input.value = selectedValue;
 
         active.className = "inactive";
         selected.className = "active";
@@ -22,8 +28,16 @@ function SegmentedSelector (element, listener) {
     // TODO: check this is still useful when the app is implemented server-side. This will be unused if the page is rerendered
     //       by the server in such cases.
     if (input.value) {
-        var selected = element.querySelector("a[data-selector-key='" + input.value + "']");
+        var selected = element.querySelector("a[data-selector-value='" + input.value + "']");
         onValueSelected(selected);
+    } else {
+        var visuallyActive = element.querySelector("a.active");
+        if (visuallyActive) {
+            onValueSelected(visuallyActive);
+        } else {
+            // Shouldn't happen in the html, that'd mean the segmented selector has no possible values at all
+            console.error("No default value found for SegmentedSelector: no input value, and no active links");
+        }
     }
 
     var links = element.querySelectorAll("a");
