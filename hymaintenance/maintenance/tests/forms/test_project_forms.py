@@ -6,7 +6,6 @@ from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 from maintenance.forms import INACTIF_CONTRACT_INPUT, ProjectCreateForm
 from maintenance.models import MaintenanceContract
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
-from maintenance.tests.factories import MaintenanceTypeFactory
 
 
 class ProjectCreateFormTestCase(TestCase):
@@ -15,10 +14,6 @@ class ProjectCreateFormTestCase(TestCase):
     def setUpTestData(cls):
         cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                           password="azerty")
-        # TO CHANGE : Refs #51
-        MaintenanceTypeFactory(name="support")
-        MaintenanceTypeFactory(name="maintenance")
-        MaintenanceTypeFactory(name="correction")
 
     def __get_dict_for_post(self):
         return {"company_name": "Black Mesa",

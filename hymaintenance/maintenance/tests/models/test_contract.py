@@ -3,15 +3,15 @@ from django.utils.timezone import datetime, now
 
 from customers.tests.factories import CompanyFactory
 
-from ...models import MaintenanceContract
-from ..factories import IncomingChannelFactory, MaintenanceContractFactory, MaintenanceCreditFactory, MaintenanceIssueFactory, MaintenanceTypeFactory
+from ...models import MaintenanceContract, MaintenanceType
+from ..factories import IncomingChannelFactory, MaintenanceContractFactory, MaintenanceCreditFactory, MaintenanceIssueFactory
 
 
 class MaintenanceContractTestCase(TestCase):
 
     def test_i_can_create_a_maintenance_contract(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         MaintenanceContract.objects.create(company=company,
                                            start=now().date(),
                                            maintenance_type=maintenance_type,
@@ -20,15 +20,15 @@ class MaintenanceContractTestCase(TestCase):
 
     def test_str_is_good_for_contract(self):
         company = CompanyFactory(name="Reynholm Industries")
-        maintenance_type = MaintenanceTypeFactory(name="Support")
+        maintenance_type = MaintenanceType.objects.get(id=1)
         contract = MaintenanceContractFactory(company=company,
                                               maintenance_type=maintenance_type,
                                               number_hours=2)
-        self.assertEqual("Reynholm Industries , Support", str(contract))
+        self.assertEqual("Reynholm Industries , Maintenance", str(contract))
 
     def test_get_number_contract_hours(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         contract = MaintenanceContractFactory(company=company,
                                               maintenance_type=maintenance_type,
                                               number_hours=2)
@@ -43,7 +43,7 @@ class MaintenanceContractTestCase(TestCase):
 
     def test_get_number_contract_minutes(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         contract = MaintenanceContractFactory(company=company,
                                               maintenance_type=maintenance_type,
                                               number_hours=2)
@@ -58,7 +58,7 @@ class MaintenanceContractTestCase(TestCase):
 
     def test_get_number_consumed_minutes_in_month(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         today = now()
         channel = IncomingChannelFactory()
         contract = MaintenanceContractFactory(company=company,
@@ -85,7 +85,7 @@ class MaintenanceContractTestCase(TestCase):
 
     def test_get_number_consumed_hours_in_month(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         today = now()
         channel = IncomingChannelFactory()
         contract = MaintenanceContractFactory(company=company,
@@ -112,7 +112,7 @@ class MaintenanceContractTestCase(TestCase):
 
     def test_get_number_consumed_hours(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         today = now()
         channel = IncomingChannelFactory()
         contract = MaintenanceContractFactory(company=company,
@@ -139,7 +139,7 @@ class MaintenanceContractTestCase(TestCase):
 
     def test_get_number_consumed_minutes(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         today = now()
         channel = IncomingChannelFactory()
         contract = MaintenanceContractFactory(company=company,
@@ -166,7 +166,7 @@ class MaintenanceContractTestCase(TestCase):
 
     def test_get_number_remaining_minutes(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         contract = MaintenanceContractFactory(company=company,
                                               maintenance_type=maintenance_type,
                                               number_hours=1)
@@ -181,7 +181,7 @@ class MaintenanceContractTestCase(TestCase):
 
     def test_get_number_remaining_hours(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         contract = MaintenanceContractFactory(company=company,
                                               maintenance_type=maintenance_type,
                                               number_hours=2)
@@ -196,7 +196,7 @@ class MaintenanceContractTestCase(TestCase):
 
     def test_get_number_credited_hours_in_month_with_start_date_in_month(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         today = now()
         contract = MaintenanceContractFactory(company=company,
                                               maintenance_type=maintenance_type,
@@ -213,7 +213,7 @@ class MaintenanceContractTestCase(TestCase):
 
     def test_get_number_credited_hours_in_month_with_start_date_not_in_month(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         today = now()
         contract = MaintenanceContractFactory(company=company,
                                               maintenance_type=maintenance_type,

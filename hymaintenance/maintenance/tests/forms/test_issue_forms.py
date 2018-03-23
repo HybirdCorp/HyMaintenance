@@ -2,8 +2,8 @@ from django.test import TestCase
 from django.utils.timezone import now
 
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
-from maintenance.models import MaintenanceIssue
-from maintenance.tests.factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory, MaintenanceTypeFactory
+from maintenance.models import MaintenanceIssue, MaintenanceType
+from maintenance.tests.factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory
 
 from ...forms import MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm, duration_in_minutes
 
@@ -25,7 +25,7 @@ class IssueCreateFormTestCase(TestCase):
                                           password="azerty")
 
         cls.company = CompanyFactory()
-        cls.maintenance_type = MaintenanceTypeFactory()
+        cls.maintenance_type = MaintenanceType.objects.get(id=1)
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
 
@@ -77,7 +77,7 @@ class IssueUpdateFormTestCase(TestCase):
                                           password="azerty")
 
         cls.company = CompanyFactory()
-        cls.maintenance_type = MaintenanceTypeFactory()
+        cls.maintenance_type = MaintenanceType.objects.get(id=1)
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
         cls.issue = MaintenanceIssueFactory(company=cls.company)

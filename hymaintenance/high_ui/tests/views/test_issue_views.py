@@ -3,8 +3,8 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
-from maintenance.models import MaintenanceIssue
-from maintenance.tests.factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory, MaintenanceTypeFactory
+from maintenance.models import MaintenanceIssue, MaintenanceType
+from maintenance.tests.factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory
 
 
 class IssueCreateViewTestCase(TestCase):
@@ -13,7 +13,7 @@ class IssueCreateViewTestCase(TestCase):
         user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                       password="azerty")
         company = CompanyFactory()
-        maintenance_type = MaintenanceTypeFactory()
+        maintenance_type = MaintenanceType.objects.get(id=1)
         channel = IncomingChannelFactory()
         consumer = MaintenanceConsumerFactory(company=company)
 
@@ -53,7 +53,7 @@ class IssueUpdateViewTestCase(TestCase):
         cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                           password="azerty")
         cls.company = CompanyFactory()
-        cls.maintenance_type = MaintenanceTypeFactory()
+        cls.maintenance_type = MaintenanceType.objects.get(id=1)
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
         cls.issue = MaintenanceIssueFactory(company=cls.company)
