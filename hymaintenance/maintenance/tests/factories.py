@@ -8,13 +8,6 @@ from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 from ..models import IncomingChannel, MaintenanceConsumer, MaintenanceContract, MaintenanceCredit, MaintenanceIssue, MaintenanceType
 
 
-class MaintenanceTypeFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = MaintenanceType
-
-    name = "Support"
-
-
 class IncomingChannelFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = IncomingChannel
@@ -35,7 +28,7 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
         model = MaintenanceContract
 
     company = factory.SubFactory(CompanyFactory)
-    maintenance_type = factory.SubFactory(MaintenanceTypeFactory)
+    maintenance_type = MaintenanceType.objects.get(id=1)
     start = now()
     number_hours = 20
 
@@ -46,7 +39,7 @@ class MaintenanceCreditFactory(factory.django.DjangoModelFactory):
 
     company = factory.SubFactory(CompanyFactory)
     date = now()
-    maintenance_type = factory.SubFactory(MaintenanceTypeFactory)
+    maintenance_type = MaintenanceType.objects.get(id=1)
     hours_number = 10
 
 
@@ -55,7 +48,7 @@ class MaintenanceIssueFactory(factory.django.DjangoModelFactory):
         model = MaintenanceIssue
 
     company = factory.SubFactory(CompanyFactory)
-    maintenance_type = factory.SubFactory(MaintenanceTypeFactory)
+    maintenance_type = MaintenanceType.objects.get(id=1)
     incoming_channel = factory.SubFactory(IncomingChannelFactory)
     user_who_fix = factory.SubFactory(MaintenanceUserFactory)
     consumer_who_ask = factory.SubFactory(MaintenanceConsumerFactory)

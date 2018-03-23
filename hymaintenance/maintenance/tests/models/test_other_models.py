@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from ...models import IncomingChannel, MaintenanceType
-from ..factories import IncomingChannelFactory, MaintenanceTypeFactory
+from ..factories import IncomingChannelFactory
 
 
 class MaintenanceTypeTestCase(TestCase):
@@ -12,8 +12,7 @@ class MaintenanceTypeTestCase(TestCase):
         self.assertEqual(1, MaintenanceType.objects.count())
 
     def test_str_is_good_for_maintenance_typ(self):
-        MaintenanceTypeFactory(name="Support")
-        self.assertEqual("Support", str(MaintenanceType.objects.first()))
+        self.assertEqual("Maintenance", str(MaintenanceType.objects.first()))
 
 
 class IncomingChannelTestCase(TestCase):
