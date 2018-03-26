@@ -49,7 +49,7 @@
                 <div class="form-content">
                     <div class="form-group">
                         <div class="group-title-container">
-                            <div class="group-title">Nouvelle Demande</div>
+                            <div class="group-title">{{form_title}}</div>
                             <label>Compte client</label>
                             <span>{{company}}</span>
                         </div>
@@ -256,8 +256,8 @@
                     {% endif %}
 
                     <div class="form-footer">
-                        <button type="submit">Sauvegarder cette activité</button>
-                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas sauvegarder</a></span>
+                        <button type="submit">{{form_validation_button}}</button>
+                        <span class="cancel">ou <a href="#" onclick="window.history.back()">{{form_cancel_button}}</a></span>
                     </div>
                 </div>
             </form>

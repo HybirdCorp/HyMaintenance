@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-01 12:02+0200\n"
+"POT-Creation-Date: 2018-03-26 15:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,68 +18,93 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: hymaintenance/high_ui/templates/high_ui/company_details.html:15
-#: hymaintenance/high_ui/templates/high_ui/forms/add_consumer.html:21
-#: hymaintenance/high_ui/templates/high_ui/forms/add_issue.html:19
-#: hymaintenance/high_ui/templates/high_ui/forms/add_user.html:21
+#: templates/high_ui/company_details.html:15
+#: templates/high_ui/forms/add_consumer.html:21
+#: templates/high_ui/forms/add_issue.html:19
+#: templates/high_ui/forms/add_user.html:21
 msgid "Account"
 msgstr "Compte"
 
-#: hymaintenance/high_ui/templates/high_ui/company_details.html:27
-#: hymaintenance/high_ui/templates/high_ui/forms/add_consumer.html:33
-#: hymaintenance/high_ui/templates/high_ui/forms/add_issue.html:31
-#: hymaintenance/high_ui/templates/high_ui/forms/add_user.html:33
+#: templates/high_ui/company_details.html:27
+#: templates/high_ui/forms/add_consumer.html:33
+#: templates/high_ui/forms/add_issue.html:31
+#: templates/high_ui/forms/add_user.html:33
 msgid "Your Contact"
 msgstr "Votre Contact"
 
-#: hymaintenance/high_ui/templates/high_ui/company_details.html:36
-#: hymaintenance/high_ui/templates/high_ui/forms/add_consumer.html:42
-#: hymaintenance/high_ui/templates/high_ui/forms/add_issue.html:40
-#: hymaintenance/high_ui/templates/high_ui/forms/add_user.html:42
+#: templates/high_ui/company_details.html:36
+#: templates/high_ui/forms/add_consumer.html:42
+#: templates/high_ui/forms/add_issue.html:40
+#: templates/high_ui/forms/add_user.html:42
 msgid "Disconnect"
 msgstr "Déconnexion"
 
-#: hymaintenance/high_ui/templates/high_ui/company_details.html:47
+#: templates/high_ui/company_details.html:47
 msgid "Summary"
 msgstr "Résumé"
 
-#: hymaintenance/high_ui/templates/high_ui/company_details.html:64
+#: templates/high_ui/company_details.html:64
 msgid "consumed"
 msgstr "consommées"
 
-#: hymaintenance/high_ui/templates/high_ui/company_details.html:67
+#: templates/high_ui/company_details.html:67
 msgid "credited"
 msgstr "créditées"
 
-#: hymaintenance/high_ui/templates/high_ui/company_details.html:78
+#: templates/high_ui/company_details.html:78
 msgid "History"
 msgstr "Historique"
 
-#: hymaintenance/high_ui/templates/high_ui/forms/add_company.html:18
-#: hymaintenance/high_ui/templates/high_ui/home_for_users.html:15
+#: templates/high_ui/forms/add_company.html:18
+#: templates/high_ui/forms/add_project.html:19
+#: templates/high_ui/home_for_users.html:15
 msgid "Tableau de bord"
 msgstr ""
 
-#: hymaintenance/high_ui/templates/high_ui/login.html:5
+#: templates/high_ui/login.html:5
 msgid "Connection"
 msgstr "Connexion"
 
-#: hymaintenance/high_ui/templates/high_ui/login.html:403
+#: templates/high_ui/login.html:418
 msgid "Username"
 msgstr "Login"
 
-#: hymaintenance/high_ui/templates/high_ui/login.html:407
+#: templates/high_ui/login.html:422
 msgid "Password"
 msgstr "Mot de passe"
 
-#: hymaintenance/high_ui/templates/high_ui/login.html:412
+#: templates/high_ui/login.html:427
 msgid "Log in"
 msgstr "Loguez vous"
 
-#: hymaintenance/high_ui/views.py:125
+#: views.py:156
 #, python-format
 msgid "No %(verbose_name)s found matching the query"
 msgstr ""
+
+#: views.py:183
+msgid "Create issue"
+msgstr "Nouvelle demande"
+
+#: views.py:184
+msgid "Save issue"
+msgstr "Sauvegarder la demande"
+
+#: views.py:185
+msgid "Don't save"
+msgstr "Ne pas sauvegarder"
+
+#: views.py:201
+msgid "Issue {}"
+msgstr "Demande N° {}"
+
+#: views.py:202
+msgid "Update issue"
+msgstr "Modifier la demande"
+
+#: views.py:203
+msgid "Don't update"
+msgstr "Ne pas modifier"
 
 #~ msgid "Companies list"
 #~ msgstr "Liste des sociétés"
