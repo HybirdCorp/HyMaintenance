@@ -180,6 +180,9 @@ class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):
     def get_context_data(self, **kwargs):
         context = super(IssueCreateView, self).get_context_data(**kwargs)
         context['channels'] = IncomingChannel.objects.all()
+        context['form_title'] = _('Create issue')
+        context['form_validation_button'] = _('Save issue')
+        context['form_cancel_button'] = _("Don't save")
         return context
 
 
@@ -194,6 +197,10 @@ class UpdateIssueView(LoginRequiredMixin, UpdateView):
 
         contracts = MaintenanceContract.objects.filter(company=self.object.company_id)
         context['contracts'] = contracts
+
+        context['form_title'] = _('Issue {}').format(self.object.id)
+        context['form_validation_button'] = _('Update issue')
+        context['form_cancel_button'] = _("Don't update")
         return context
 
     def get_success_url(self):
