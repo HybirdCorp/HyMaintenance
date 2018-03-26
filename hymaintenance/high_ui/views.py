@@ -183,6 +183,7 @@ class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):
         context['form_title'] = _('Create issue')
         context['form_validation_button'] = _('Save issue')
         context['form_cancel_button'] = _("Don't save")
+        context['update_form'] = False
         return context
 
 
@@ -201,6 +202,7 @@ class UpdateIssueView(LoginRequiredMixin, UpdateView):
         context['form_title'] = _('Issue {}').format(self.object.id)
         context['form_validation_button'] = _('Update issue')
         context['form_cancel_button'] = _("Don't update")
+        context['update_form'] = True
         return context
 
     def get_success_url(self):
