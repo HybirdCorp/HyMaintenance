@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Maintenance Hybird &mdash; {% trans 'Connection' %}</title>
+    <title>Maintenance Hybird &mdash; {% trans 'Log in' %}</title>
     <style>
         @font-face {
           font-family: 'Open Sans';
@@ -23,6 +23,14 @@
           font-style: normal;
           font-weight: 700;
           src: url("/static/fonts/OpenSans-Bold-700.woff") format('woff'); /* Modern Browsers */
+        }
+
+        @font-face {
+            font-family: 'Zilla Slab';
+            font-style: italic;
+            font-weight: 600;
+            src: url("/static/fonts/ZillaSlab-SemiBoldItalic-logo-subset.woff") format('woff'),
+                 url("/static/fonts/ZillaSlab-SemiBoldItalic-logo-subset.woff2") format('woff2');
         }
 
         *, ::after, ::before {
@@ -84,7 +92,7 @@
             margin-bottom: 25px;
 
             border: 1px solid #000;
-            border-radius: 2px;
+            border-radius: 3px;
 
             padding-top: 20px;
             padding-bottom: 20px;
@@ -108,20 +116,24 @@
         }
 
         #branding {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             padding-bottom: 10px;
             padding-left: 20px;
             border-bottom: 1px solid #999;
             color: #444;
             text-align: center;
+            text-transform: uppercase;
         }
 
-        #branding .creme-label {
-            text-transform: uppercase;
-            font-size: 14px;
-            font-weight: 700;
+        #branding .main-label {
             color: #0875e2;
+
+            font-family: "Zilla Slab";
+            font-weight: 600;
+            font-style: italic;
+            font-size: 19px;
+            text-transform: none;
         }
 
         label {
@@ -445,7 +457,7 @@
             <p class="errornote">{% if error_message %}{{error_message}}{% endif %}</p>
             <div id="content-main">
                 <div id="branding">
-                    Se connecter à <span class="creme-label">HyMaintenance</span>
+                    Se connecter à <span class="main-label">hymaintenance</span>
                 </div>
                 <form {% comment %}action="{{app_path}}"{% endcomment %} method="post" id="login-form">
                     {% csrf_token %}
