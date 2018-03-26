@@ -29,12 +29,31 @@
 }
 
 /* apply a natural box layout model to all elements */
-* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+*, ::before, ::after { 
+    box-sizing: border-box;
+}
 
 html {
     font-family: 'Open Sans', sans-serif;
     background: hsl(0, 0%, 97%);
     font-size: 14px;
+}
+
+/**
+* 1. Avoid the IE 10-11 `min-height` bug.
+* 2. Set `flex-shrink` to `0` to prevent some browsers from
+*    letting these items shrink to smaller than their content's default
+*    minimum size. See http://bit.ly/1Mn35US for details.
+* 3. Use `%` instead of `vh` since `vh` is buggy in older mobile Safari.
+*/
+
+html, body {
+    height: 100%; /* 1, 3 */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }
 
 a {
@@ -55,6 +74,11 @@ table td {
 }
 
 /* containers */
+
+/* content container: sticky footer handling */
+.content-container {
+    flex: 1 0 auto; /* 2 */
+}
 
 .container {
     flex: 1;
@@ -344,6 +368,8 @@ svg.icon {
 .page-decoration {
     margin: 15px 15px 0 15px;
     color: #bbb;
+    
+    flex: none; /* 2 */    
 }
 
 .page-decoration > * {
@@ -380,6 +406,8 @@ svg.icon {
 
     background-color: #333;
     background-position: left -30px;
+
+    flex: none; /* 2 */
 }
 
 .footer .footer-baseline strong {
@@ -528,21 +556,3 @@ svg.icon {
 /* footer backgrounds - end */
 
 /* giant footer - end */
-
-/* footer placement */
-
-/*
-Could be done in js to make dynamic UI changes not require updating this computation.
-
-content min height = full height - header dashboard - page decoration - footer
-
-1) header dashboard = 45 + 20 padding top + 20 padding bottom = 85
-2) page-decoration = 23 + 15 margin top = 38
-3) footer = 197 + 15 padding top + 25 padding bottom + 15 margin top = 252
-
-=> 85 + 38 + 252 = 375 px of uncompressible height
-*/
-
-.content-container {
-    min-height: calc(100vh - 375px);
-}
