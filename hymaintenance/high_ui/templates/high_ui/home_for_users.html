@@ -73,57 +73,80 @@
                 </div>
 
                 <div class="project-details">
-                    <div class="dashboard">
-                        <div class="dashboard-item project-detail"> {# TMP #}
-                            <span class="dashboard-title">Intervenants</span>
-                            <span class="dashboard-value">{{maintainers.count}}</span>
-                            <div class="dashboard-users">
-                                {% for maintainer in maintainers %}
-                                <div>{{maintainer.get_full_name}}</div>
-                                {% endfor %}
+                    <div class="project-user-list">
+                        <div class="dashboard">
+                            <div class="dashboard-item project-detail">
+                                <span class="dashboard-title">Intervenants</span>
+                                <span class="dashboard-value">{{maintainers.count}}</span>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{% url 'high_ui:company-add_maintainer' company_id=company.id %}" title="Créer un nouvel intervenant et l'ajouter à ce projet">Nouveau</a>
+                                </div>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{# TODO #}" title="Modifier la liste des intervenants de ce projet">Modifier la liste</a>
+                                </div>
                             </div>
                         </div>
-                        <div class="dashboard-item dashboard-button">
-                            <div class="dashboard-value">
-                                <a href="{% url 'high_ui:company-add_maintainer' company_id=company.id %}">Modifier</a> {# TMP #}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dashboard">
-                        <div class="dashboard-item project-detail">
-                            <span class="dashboard-title">Managers</span>
-                            {% with company.maintenanceuser_set.all as managers %}
-                            <span class="dashboard-value">{{managers.count}}</span>
-                            <div class="dashboard-users">
-                                {% for manager in managers %}
-                                <div>{{manager.get_full_name}}</div>
-                                {% endfor %}
-                            </div>
-                            {% endwith %}
-                        </div>
-                        <div class="dashboard-item dashboard-button">
-                            <div class="dashboard-value">
-                                <a href="{% url 'high_ui:company-add_manager' company_id=company.id %}">Modifier</a> {# TMP #}
-                            </div>
+                        <div class="project-users">
+                            {% for maintainer in maintainers %}
+                            <div>{{maintainer.get_full_name}}</div>
+                            {% endfor %}
                         </div>
                     </div>
-                    <div class="dashboard">
-                        <div class="dashboard-item project-detail">
-                            <span class="dashboard-title">Salariés</span>
-                            {% with company.maintenanceconsumer_set.all as consumers %}
-                            <span class="dashboard-value">{{consumers.count}}</span>
-                            <div class="dashboard-users">
-                                {% for consumer in consumers %}
-                                <div>{{consumer}}</div>
-                                {% endfor %}
+
+                    <div class="project-user-list">
+                        {% with company.maintenanceuser_set.all as managers %}
+                        <div class="dashboard">
+                            <div class="dashboard-item project-detail">
+                                <span class="dashboard-title">Managers</span>
+                                <span class="dashboard-value">{{managers.count}}</span>
                             </div>
-                            {% endwith %}
-                        </div>
-                        <div class="dashboard-item dashboard-button">
-                            <div class="dashboard-value">
-                                <a href="{% url 'high_ui:company-add_consumer' company_id=company.id %}">Modifier</a> {# TMP #}
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{% url 'high_ui:company-add_manager' company_id=company.id %}" title="Créer un nouveau manager et l'ajouter à ce projet">Nouveau</a>
+                                </div>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{# TODO #}" title="Modifier la liste des managers de ce projet">Modifier la liste</a>
+                                </div>
                             </div>
                         </div>
+                        <div class="project-users">
+                            {% for manager in managers %}
+                            <div>{{manager.get_full_name}}</div>
+                            {% endfor %}
+                        </div>
+                        {% endwith %}
+                    </div>
+
+                    <div class="project-user-list">
+                        {% with company.maintenanceconsumer_set.all as consumers %}
+                        <div class="dashboard">
+                            <div class="dashboard-item project-detail">
+                                <span class="dashboard-title">Salariés</span>
+                                <span class="dashboard-value">{{consumers.count}}</span>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{% url 'high_ui:company-add_consumer' company_id=company.id %}" title="Créer un nouveau salarié et l'ajouter à ce projet">Nouveau</a>
+                                </div>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{# TODO #}" title="Modifier la liste des salariés de ce projet">Modifier la liste</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-users">
+                            {% for consumer in consumers %}
+                            <div>{{consumer}}</div>
+                            {% endfor %}
+                        </div>
+                        {% endwith %}
                     </div>
                 </div>
             </div>
