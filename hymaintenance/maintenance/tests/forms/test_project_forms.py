@@ -1,3 +1,5 @@
+import datetime
+
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
@@ -20,12 +22,18 @@ class ProjectCreateFormTestCase(TestCase):
                 "contract1_visible": INACTIF_CONTRACT_INPUT,
                 "contract1_total_type": 0,
                 "contract1_number_hours": 0,
+                "contract1_date": datetime.date.today(),
+                "contract1_counter_name": "Maintenance",
                 "contract2_visible": INACTIF_CONTRACT_INPUT,
                 "contract2_total_type": 0,
                 "contract2_number_hours": 0,
+                "contract2_date": datetime.date.today(),
+                "contract2_counter_name": "Support",
                 "contract3_visible": INACTIF_CONTRACT_INPUT,
                 "contract3_total_type": 0,
-                "contract3_number_hours": 0}
+                "contract3_number_hours": 0,
+                "contract3_date": datetime.date.today(),
+                "contract3_counter_name": "Corrective"}
 
     def test_valid_form_create_a_company(self):
         dict_for_post = self.__get_dict_for_post()
