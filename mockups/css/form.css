@@ -67,6 +67,11 @@
     font-weight: 700;
 }
 
+.form-group .typography.dash {
+    position: relative;
+    top: -1px;
+}
+
 /* form groups - ends */
 
 /* form rows */
@@ -346,7 +351,7 @@ input, textarea, button, select {
     font-size: 13px;
 }
 
-input,
+input[type="text"],
 textarea,
 select {
     min-width: 200px;
