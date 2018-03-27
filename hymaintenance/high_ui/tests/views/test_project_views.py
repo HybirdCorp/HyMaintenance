@@ -1,3 +1,4 @@
+import datetime
 
 from django.test import Client, RequestFactory, TestCase
 
@@ -50,15 +51,21 @@ class ProjectCreateViewTestCase(TestCase):
                                 "contract1_visible": contract1_visible,
                                 "contract1_total_type": contract1_total_type,
                                 "contract1_number_hours": contract1_number_hours,
+                                "contract1_counter_name": "Maintenance",
+                                "contract1_date": datetime.date.today(),
                                 "contract2_visible": contract2_visible,
                                 "contract2_total_type": contract2_total_type,
                                 "contract2_number_hours": contract2_number_hours,
+                                "contract2_counter_name": "Support",
+                                "contract2_date": datetime.date.today(),
                                 "contract3_visible": contract3_visible,
                                 "contract3_total_type": contract3_total_type,
-                                "contract3_number_hours": contract3_number_hours}, follow=True)
-        company = Company.objects.get(name=company_name)
+                                "contract3_number_hours": contract3_number_hours,
+                                "contract3_counter_name": "Corrective",
+                                "contract3_date": datetime.date.today()}, follow=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, '/high_ui/')
         self.assertEqual(1, Company.objects.filter(name=company_name).count())
+        company = Company.objects.get(name=company_name)
         self.assertEqual(2, MaintenanceContract.objects.filter(company_id=company.id).count())
