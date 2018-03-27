@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-26 15:54+0200\n"
+"POT-Creation-Date: 2018-03-27 16:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,66 +18,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: templates/high_ui/company_details.html:15
-#: templates/high_ui/forms/add_consumer.html:21
-#: templates/high_ui/forms/add_issue.html:19
-#: templates/high_ui/forms/add_user.html:21
+#: high_ui/templates/high_ui/company_details.html:15
+#: high_ui/templates/high_ui/forms/add_consumer.html:21
+#: high_ui/templates/high_ui/forms/add_issue.html:19
+#: high_ui/templates/high_ui/forms/add_user.html:21
 msgid "Account"
 msgstr "Compte"
 
-#: templates/high_ui/company_details.html:27
-#: templates/high_ui/forms/add_consumer.html:33
-#: templates/high_ui/forms/add_issue.html:31
-#: templates/high_ui/forms/add_user.html:33
+#: high_ui/templates/high_ui/company_details.html:27
+#: high_ui/templates/high_ui/forms/add_consumer.html:33
+#: high_ui/templates/high_ui/forms/add_issue.html:31
+#: high_ui/templates/high_ui/forms/add_user.html:33
 msgid "Your Contact"
 msgstr "Votre Contact"
 
-#: templates/high_ui/company_details.html:36
-#: templates/high_ui/forms/add_consumer.html:42
-#: templates/high_ui/forms/add_issue.html:40
-#: templates/high_ui/forms/add_user.html:42
+#: high_ui/templates/high_ui/company_details.html:36
+#: high_ui/templates/high_ui/forms/add_consumer.html:42
+#: high_ui/templates/high_ui/forms/add_issue.html:40
+#: high_ui/templates/high_ui/forms/add_user.html:42
 msgid "Disconnect"
 msgstr "Déconnexion"
 
-#: templates/high_ui/company_details.html:47
+#: high_ui/templates/high_ui/company_details.html:47
 msgid "Summary"
 msgstr "Résumé"
 
-#: templates/high_ui/company_details.html:64
+#: high_ui/templates/high_ui/company_details.html:64
 msgid "consumed"
 msgstr "consommées"
 
-#: templates/high_ui/company_details.html:67
+#: high_ui/templates/high_ui/company_details.html:67
 msgid "credited"
 msgstr "créditées"
 
-#: templates/high_ui/company_details.html:78
+#: high_ui/templates/high_ui/company_details.html:78
 msgid "History"
 msgstr "Historique"
 
-#: templates/high_ui/forms/add_company.html:18
-#: templates/high_ui/forms/add_project.html:19
-#: templates/high_ui/home_for_users.html:15
+#: high_ui/templates/high_ui/forms/add_company.html:18
+#: high_ui/templates/high_ui/forms/add_project.html:19
+#: high_ui/templates/high_ui/home_for_users.html:15
 msgid "Tableau de bord"
 msgstr ""
 
-#: templates/high_ui/login.html:5
-msgid "Connection"
-msgstr "Connexion"
-
-#: templates/high_ui/login.html:418
-msgid "Username"
-msgstr "Login"
-
-#: templates/high_ui/login.html:422
-msgid "Password"
-msgstr "Mot de passe"
-
-#: templates/high_ui/login.html:427
+#: high_ui/templates/high_ui/login.html:5
+#: high_ui/templates/high_ui/login.html:475
 msgid "Log in"
 msgstr "Loguez vous"
 
-#: views.py:156
+#: high_ui/templates/high_ui/login.html:466
+msgid "Username"
+msgstr "Login"
+
+#: high_ui/templates/high_ui/login.html:470
+msgid "Password"
+msgstr "Mot de passe"
+
+#: high_ui/views.py:156
 #, python-format
 msgid "No %(verbose_name)s found matching the query"
 msgstr ""
@@ -105,6 +102,9 @@ msgstr "Modifier la demande"
 #: views.py:203
 msgid "Don't update"
 msgstr "Ne pas modifier"
+
+#~ msgid "Connection"
+#~ msgstr "Connexion"
 
 #~ msgid "Companies list"
 #~ msgstr "Liste des sociétés"

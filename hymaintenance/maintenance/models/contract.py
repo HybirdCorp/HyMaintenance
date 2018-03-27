@@ -17,6 +17,7 @@ CONSUMMED_TOTAL_TIME = 1
 class MaintenanceContract(models.Model):
     TYPE_CHOICES = ((AVAILABLE_TOTAL_TIME, _("Available total time")), (CONSUMMED_TOTAL_TIME, _("Consummed total time")))
 
+    counter_name = models.CharField(_("Name of counter"), max_length=255, default="")
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
     maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT)
     visible = models.BooleanField(_("Visible to customer user"), default=True)
