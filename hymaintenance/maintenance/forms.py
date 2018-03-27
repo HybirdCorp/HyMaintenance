@@ -1,3 +1,5 @@
+import datetime
+
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -90,6 +92,12 @@ class MaintenanceConsumerCreateForm(forms.ModelForm):
 
 class ProjectCreateForm(forms.Form):
     company_name = forms.CharField(max_length=255, required=True)
+    contract1_counter_name = forms.CharField(max_length=255, required=True)
+    contract2_counter_name = forms.CharField(max_length=255, required=True)
+    contract3_counter_name = forms.CharField(max_length=255, required=True)
+    contract1_date = forms.DateField(initial=datetime.date.today, required=True)
+    contract2_date = forms.DateField(initial=datetime.date.today, required=True)
+    contract3_date = forms.DateField(initial=datetime.date.today, required=True)
     contract1_visible = forms.IntegerField(widget=forms.HiddenInput())
     contract2_visible = forms.IntegerField(widget=forms.HiddenInput())
     contract3_visible = forms.IntegerField(widget=forms.HiddenInput())
@@ -99,6 +107,15 @@ class ProjectCreateForm(forms.Form):
     contract1_number_hours = forms.IntegerField(min_value=0, initial=0)
     contract2_number_hours = forms.IntegerField(min_value=0, initial=0)
     contract3_number_hours = forms.IntegerField(min_value=0, initial=0)
+
+    def __init__(self, *args, **kwargs):
+        maintenance_types = MaintenanceType.objects.all()
+        if not kwargs.get('initial'):
+            kwargs['initial'] = {}
+        kwargs['initial'].update({'contract1_counter_name': maintenance_types[0].name,
+                                  'contract2_counter_name': maintenance_types[1].name,
+                                  'contract3_counter_name': maintenance_types[2].name})
+        super(ProjectCreateForm, self).__init__(*args, **kwargs)
 
     def clean_company_name(self):
         company_name = self.cleaned_data['company_name']
@@ -115,7 +132,13 @@ class ProjectCreateForm(forms.Form):
         if(contract1_visible != INACTIF_CONTRACT_INPUT):
             contract1_number_hours = self.cleaned_data['contract1_number_hours']
             contract1_total_type = self.cleaned_data['contract1_total_type']
-            MaintenanceContract.objects.create(company=company,
+            contract1_date = self.cleaned_data['contract1_date']
+            contract1_counter_name = self.cleaned_data['contract1_counter_name']
+            if contract1_counter_name == maintenance_types[0].name:
+                contract1_counter_name = ""
+            MaintenanceContract.objects.create(counter_name=contract1_counter_name,
+                                               start=contract1_date,
+                                               company=company,
                                                maintenance_type=maintenance_types[0],
                                                visible=bool(contract1_visible),
                                                number_hours=contract1_number_hours,
@@ -125,7 +148,13 @@ class ProjectCreateForm(forms.Form):
         if(contract2_visible != INACTIF_CONTRACT_INPUT):
             contract2_number_hours = self.cleaned_data['contract2_number_hours']
             contract2_total_type = self.cleaned_data['contract2_total_type']
-            MaintenanceContract.objects.create(company=company,
+            contract2_date = self.cleaned_data['contract2_date']
+            contract2_counter_name = self.cleaned_data['contract2_counter_name']
+            if contract2_counter_name == maintenance_types[1].name:
+                contract2_counter_name = ""
+            MaintenanceContract.objects.create(counter_name=contract2_counter_name,
+                                               start=contract2_date,
+                                               company=company,
                                                maintenance_type=maintenance_types[1],
                                                visible=bool(contract2_visible),
                                                number_hours=contract2_number_hours,
@@ -135,7 +164,13 @@ class ProjectCreateForm(forms.Form):
         if(contract3_visible != INACTIF_CONTRACT_INPUT):
             contract3_number_hours = self.cleaned_data['contract3_number_hours']
             contract3_total_type = self.cleaned_data['contract3_total_type']
-            MaintenanceContract.objects.create(company=company,
+            contract3_date = self.cleaned_data['contract3_date']
+            contract3_counter_name = self.cleaned_data['contract3_counter_name']
+            if contract3_counter_name == maintenance_types[2].name:
+                contract3_counter_name = ""
+            MaintenanceContract.objects.create(counter_name=contract3_counter_name,
+                                               start=contract3_date,
+                                               company=company,
                                                maintenance_type=maintenance_types[2],
                                                visible=bool(contract3_visible),
                                                number_hours=contract3_number_hours,

@@ -23,7 +23,8 @@
 
 .form-group.activation-inactive .row-counter-type,
 .form-group.activation-inactive .row-credit,
-.form-group.activation-inactive .help-credit {
+.form-group.activation-inactive .help-credit,
+.form-group.activation-inactive .show-more-container {
     display: none;
 }
 
