@@ -1,0 +1,64 @@
+/* general mockup styling thingies */
+
+.form-content {
+    min-height: 0;
+}
+
+/* general mockup styling thingies - end */
+
+/* checkbox lists */
+
+.checkbox-list {
+    list-style: none;
+    margin: 0;
+    margin-top: 12px;
+    padding: 5px 0;
+
+    overflow-y: auto;
+    max-height: 280px; /* eyeballed around 6 items max */
+}
+
+.checkbox-list label {
+    display: flex;
+    align-items: flex-start;
+}
+
+.checkbox-list .item-container {
+    flex: 1;
+    margin-left: 6px;
+}
+
+.checkbox-list .item-name {
+    font-weight: 700;
+    color: #666;
+}
+
+.checkbox-list .item-description {
+    text-transform: none;
+    font-weight: 400;
+    color: #666;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.checkbox-list .item-name,
+.checkbox-list .item-description {
+    transition: color ease-in-out 0.1s;
+}
+
+.checkbox-list li + li {
+    margin-top: 15px;
+}
+
+.checkbox-list input[type="checkbox"] {
+    flex: 0;
+    margin-top: 3px;
+    margin-right: 5px;
+}
+
+.checkbox-list :checked + .item-container .item-name,
+.checkbox-list :checked + .item-container .item-description {
+    color: #0074D9;
+}
+
+/* checkbox lists - end */
