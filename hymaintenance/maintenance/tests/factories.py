@@ -15,6 +15,10 @@ class IncomingChannelFactory(factory.django.DjangoModelFactory):
     name = "Phone"
 
 
+def get_default_maintenance_type():
+    return MaintenanceType.objects.get(id=1)
+
+
 class MaintenanceConsumerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = MaintenanceConsumer
@@ -28,7 +32,7 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
         model = MaintenanceContract
 
     company = factory.SubFactory(CompanyFactory)
-    maintenance_type = MaintenanceType.objects.get(id=1)
+    maintenance_type = factory.LazyFunction(get_default_maintenance_type)
     start = now()
     number_hours = 20
 
@@ -39,7 +43,7 @@ class MaintenanceCreditFactory(factory.django.DjangoModelFactory):
 
     company = factory.SubFactory(CompanyFactory)
     date = now()
-    maintenance_type = MaintenanceType.objects.get(id=1)
+    maintenance_type = factory.LazyFunction(get_default_maintenance_type)
     hours_number = 10
 
 
@@ -48,7 +52,7 @@ class MaintenanceIssueFactory(factory.django.DjangoModelFactory):
         model = MaintenanceIssue
 
     company = factory.SubFactory(CompanyFactory)
-    maintenance_type = MaintenanceType.objects.get(id=1)
+    maintenance_type = factory.LazyFunction(get_default_maintenance_type)
     incoming_channel = factory.SubFactory(IncomingChannelFactory)
     user_who_fix = factory.SubFactory(MaintenanceUserFactory)
     consumer_who_ask = factory.SubFactory(MaintenanceConsumerFactory)
