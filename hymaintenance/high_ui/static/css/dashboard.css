@@ -36,7 +36,7 @@
     margin: 0 auto;
     border: 1px solid #ccc;
     background: white;
-    min-width: 1080px;
+    min-width: 1100px;
 }
 
 .dashboard-container + .dashboard-container {
