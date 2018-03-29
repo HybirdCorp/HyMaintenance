@@ -1,0 +1,34 @@
+{% load i18n print_fields %}
+<div class="dashboard type-maintenance">
+    <div class="dashboard-item dashboard-account">
+        <span class="dashboard-title">{% trans "Tableau de bord" %}</span>
+        <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">Hybird</a></span> {# TMP: names and urls are hardcoded until "maintenance providers" are added #}
+    </div>
+    <div class="dashboard-item" style='border-color: transparent; flex: 1'>
+        <span class="dashboard-title">Projets</span>
+        <span class="dashboard-value">{{companies.count}}</span>
+    </div>
+    <div class="dashboard-item dashboard-button">
+        <div class="dashboard-value">
+            <a href="{% url 'high_ui:add_project' %}">Ajouter un projet</a>
+        </div>
+    </div>
+    <div class="dashboard-item" style="border-color: transparent; margin-left: 40px">
+        <span class="dashboard-title">Intervenants</span>
+        <span class="dashboard-value">{{maintainers.count}}</span>
+    </div>
+    <div class="dashboard-item dashboard-button">
+        <div class="dashboard-value">
+            <a href="/hymaintadmin/customers/maintenanceuser/">Modifier la liste d'intervenants</a> {# TMP #}
+        </div>
+    </div>
+    <div class="dashboard-item dashboard-contact"> {# TMP #}
+        <span class="dashboard-title">Hybird</span>
+        <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
+    </div>
+    <div class="dashboard-item dashboard-button">
+        <div class="dashboard-value">
+            <a href="/logout" title="Quitter l'application">Déconnexion</a>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,4 @@
 {% load i18n print_fields %}
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,47 +8,15 @@
 <link rel="stylesheet" href="/static/css/style.css" />
 <link rel="stylesheet" href="/static/css/form.css" />
 <link rel="stylesheet" href="/static/css/create.css" />
-<style>
-.form-content {
-    min-height: auto;
-}
-</style>
 </head>
 <body>
-    <div class="dashboard type-maintenance">
-        <div class="dashboard-item dashboard-account">
-            <span class="dashboard-title">{% trans "Account" %}</span>
-            <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">{{company.name}}</a></span>
-        </div>
-
-        {% for contract in contracts %}
-        <div class="dashboard-item">
-            <span class="dashboard-title">{{contract.maintenance_type.name}}</span>
-            <span class="dashboard-value">{% pretty_print_contract_counter contract %}</span>
-        </div>
-        {% endfor %}
-
-        <div class="dashboard-item dashboard-contact">
-            <span class="dashboard-title">{% trans "Your Contact" %}</span>
-            <span class="dashboard-value">{{company.maintenance_contact}}</span>
-        </div>
-        <div class="dashboard-item dashboard-user">
-            <span class="dashboard-title">{{company.name}}</span>
-            <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
-        </div>
-        <div class="dashboard-item dashboard-button">
-            <div class="dashboard-value">
-                <a href="/logout" title="Quitter l'application">{% trans "Disconnect" %}</a>
-            </div>
-        </div>
-    </div>
-
+    {% include "high_ui/company_details_header.html" %}
     <div class="content-container">
         <div class="content">
             <form action="" method="post">
                 {% csrf_token %}
 
-                <div class="form-content">
+                <div class="form-content auto-min-height">
                     <div class="form-group">
                         <div class="group-title-container">
                             <div class="group-title">{{form_label}}</div>
