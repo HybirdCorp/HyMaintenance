@@ -3,45 +3,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; {{object.company.name}}, Ticket de {{object.maintenance_type.name}} n° {{object.id}}</title>
+<title>Maintenance Hybird &mdash; {{object.company.name}}, demande de {{object.maintenance_type.name}} n° {{object.id}}</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
 <link rel="stylesheet" href="/static/css/detailview.css" />
 </head>
 <body>
-    <div class="dashboard {{object.maintenance_type.css_class}}">
-        <div class="dashboard-item dashboard-account">
-            <span class="dashboard-title">Compte</span>
-            <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">{{object.company.name}}</a></span>
-        </div>
-        <div class="dashboard-item">
-            <span class="dashboard-title">Demande n°</span>
-            <span class="dashboard-value">{{object.id}}</span>
-        </div>
-        <div class="dashboard-item item-activity">
-            <span class="dashboard-title">Activité</span>
-            <span class="dashboard-value">{{object.maintenance_type.name}}</span>
-        </div>
-        <div class="dashboard-item">
-            <span class="dashboard-title">Temps passé</span>
-            <span class="dashboard-value">{% pretty_print_minutes object.number_minutes use_long_minute_format=True %}</span>
-        </div>
-        <div class="dashboard-item dashboard-contact">
-            <span class="dashboard-title">Votre contact</span>
-            <span class="dashboard-value">{{object.company.maintenance_contact}}</span>
-        </div>
-        <div class="dashboard-item dashboard-user">
-            <span class="dashboard-title">{{object.company.name}}</span>
-            <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
-        </div>
-        <div class="dashboard-item dashboard-button">
-            <div class="dashboard-value">
-                <a href="/logout" title="Quitter l'application">Déconnexion</a>
-            </div>
-        </div>
-    </div>
-
+    {% include "high_ui/issue_details_header.html" %}
     <div class="content-container">
         <div class="home-link-header {{object.maintenance_type.css_class}}">
             <a href="/" title="Retour à l'accueil">Accueil</a> &nbsp;/&nbsp;

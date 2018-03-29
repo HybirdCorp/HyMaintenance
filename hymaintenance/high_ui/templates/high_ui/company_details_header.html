@@ -1,0 +1,28 @@
+{% load i18n print_fields %}
+<div class="dashboard {{contracts.0.maintenance_type.css_class}}">
+    <div class="dashboard-item dashboard-account">
+        <span class="dashboard-title">{% trans "Account" %}</span>
+        <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">{{company.name}}</a></span>
+    </div>
+
+    {% for contract in contracts %}
+    <div class="dashboard-item">
+        <span class="dashboard-title">{{contract.maintenance_type.name}}</span>
+        <span class="dashboard-value">{% pretty_print_contract_counter contract %}</span>
+    </div>
+    {% endfor %}
+
+    <div class="dashboard-item dashboard-contact">
+        <span class="dashboard-title">{% trans "Your Contact" %}</span>
+        <span class="dashboard-value">{{company.maintenance_contact}}</span>
+    </div>
+    <div class="dashboard-item dashboard-user">
+        <span class="dashboard-title">{{company.name}}</span>
+        <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
+    </div>
+    <div class="dashboard-item dashboard-button">
+        <div class="dashboard-value">
+            <a href="/logout" title="Quitter l'application">{% trans "Disconnect" %}</a>
+        </div>
+    </div>
+</div>
