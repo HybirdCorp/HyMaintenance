@@ -139,6 +139,8 @@ class CreateCompanyView(LoginRequiredMixin, CreateView):
         context = super(CreateCompanyView, self).get_context_data(**kwargs)
         # TMP: companies should be linked to the current "maintenance provider"
         context['companies_count'] = Company.objects.all().count()
+        context["companies"] = Company.objects.all().prefetch_related("maintenanceuser_set")
+        context["maintainers"] = MaintenanceUser.objects.get_maintainers_queryset()
         return context
 
 
@@ -254,7 +256,8 @@ class CreateProjectView(FormView):
     def get_context_data(self, **kwargs):
         context = super(CreateProjectView, self).get_context_data(**kwargs)
         context["maintenance_types"] = MaintenanceType.objects.all()
-        context["companies_count"] = Company.objects.all().count()
+        context["companies"] = Company.objects.all().prefetch_related("maintenanceuser_set")
+        context["maintainers"] = MaintenanceUser.objects.get_maintainers_queryset()
         return context
 
     def form_valid(self, form):
