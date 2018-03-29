@@ -182,16 +182,12 @@ class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):
     def get_context_data(self, **kwargs):
         context = super(IssueCreateView, self).get_context_data(**kwargs)
         context['channels'] = IncomingChannel.objects.all()
-        context['form_title'] = _('Create issue')
-        context['form_validation_button'] = _('Save issue')
-        context['form_cancel_button'] = _("Don't save")
-        context['update_form'] = False
         return context
 
 
 class UpdateIssueView(LoginRequiredMixin, UpdateView):
     form_class = MaintenanceIssueUpdateForm
-    template_name = "high_ui/forms/add_issue.html"
+    template_name = "high_ui/forms/update_issue.html"
     model = MaintenanceIssue
 
     def get_context_data(self, **kwargs):
@@ -200,11 +196,6 @@ class UpdateIssueView(LoginRequiredMixin, UpdateView):
 
         contracts = MaintenanceContract.objects.filter(company=self.object.company_id)
         context['contracts'] = contracts
-
-        context['form_title'] = _('Issue {}').format(self.object.id)
-        context['form_validation_button'] = _('Update issue')
-        context['form_cancel_button'] = _("Don't update")
-        context['update_form'] = True
         return context
 
     def get_success_url(self):
