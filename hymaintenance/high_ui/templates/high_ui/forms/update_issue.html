@@ -1,0 +1,18 @@
+{% extends 'high_ui/forms/base_issue.html' %}
+
+{% block page_title %}
+<title>Maintenance Hybird &mdash; {{object.company.name}}, modifier la demande de {{object.maintenance_type.name}} n° {{object.id}}</title> {# TMP #}
+{% endblock %}
+
+{% block header %}
+{% include "high_ui/issue_details_header.html" %}
+{% endblock %}
+
+{% block form_title %}
+<div class="group-title">Demande N°{{object.id}}</div>
+{% endblock %}
+
+{% block form_footer %}
+<button type="submit">Modifier la demande</button>
+<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+{% endblock %}
