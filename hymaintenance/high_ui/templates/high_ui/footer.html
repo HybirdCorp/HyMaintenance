@@ -42,7 +42,7 @@
                 <span class='footer-column-title'>Prestations {% if company %}{{company.name}}{% endif %}</span>
                 <ul>
                     <li>
-                    {% for contract in company.maintenancecontract_set.all %}
+                    {% for contract in company.contracts.all %}
                         {{contract.maintenance_type}}{% if not forloop.last %}, {% endif %}
                     {% empty %}
                         &mdash;
