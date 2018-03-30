@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 from maintenance.models import MaintenanceIssue, MaintenanceType
-from maintenance.tests.factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory
+from maintenance.tests.factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceContractFactory, MaintenanceIssueFactory
 
 
 class IssueCreateViewTestCase(TestCase):
@@ -56,7 +56,8 @@ class IssueUpdateViewTestCase(TestCase):
         cls.maintenance_type = MaintenanceType.objects.get(id=1)
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
-        cls.issue = MaintenanceIssueFactory(company=cls.company)
+        cls.contract = MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)
+        cls.issue = MaintenanceIssueFactory(company=cls.company, maintenance_type=cls.maintenance_type)
         cls.url_post = reverse("high_ui:change_issue", args=[cls.issue.pk])
 
     def test_i_can_post_and_form_to_modify_a_issue(self):
@@ -120,7 +121,9 @@ class IssueDetailViewTestCase(TestCase):
     def test_user_can_seen_issues_of_this_company(self):
         first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
-        issue = MaintenanceIssueFactory(company=first_company)
+        maintenance_type = MaintenanceType.objects.get(id=1)
+        MaintenanceContractFactory(company=first_company, maintenance_type=maintenance_type)
+        issue = MaintenanceIssueFactory(company=first_company, maintenance_type=maintenance_type)
         client = Client()
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = client.get(reverse('high_ui:issue-details', args=[issue.pk]))
@@ -131,7 +134,9 @@ class IssueDetailViewTestCase(TestCase):
         first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         black_mesa = CompanyFactory()
-        issue = MaintenanceIssueFactory(company=black_mesa)
+        maintenance_type = MaintenanceType.objects.get(id=1)
+        MaintenanceContractFactory(company=black_mesa, maintenance_type=maintenance_type)
+        issue = MaintenanceIssueFactory(company=black_mesa, maintenance_type=maintenance_type)
         client = Client()
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = client.get(reverse('high_ui:issue-details', args=[issue.pk]))

@@ -37,8 +37,7 @@ class MaintenanceIssue(models.Model):
                                                                 self.company, self.maintenance_type)
 
     def get_counter_name(self):
-        queryset = self.company.contracts.filter(maintenance_type=self.maintenance_type)
-        counter_name = queryset[0].counter_name
+        counter_name = self.company.contracts.filter(maintenance_type=self.maintenance_type).first().counter_name
         return counter_name if counter_name != "" else self.maintenance_type.name
 
     def get_hours(self):
