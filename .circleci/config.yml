@@ -12,11 +12,11 @@ jobs:
     docker:
       - image: python:3.6
     environment:
-       COVERALLS_REPO_TOKEN=rVivfLB1a620q6D2kpgCgS71IZurNllL5
+       COVERALLS_REPO_TOKEN: rVivfLB1a620q6D2kpgCgS71IZurNllL5
+       HYMAINTENANCE_SECRET_KEY: NotThatSecret
     steps:
       - checkout
-      - run: pip install tox
-      - run: pip install coveralls
+      - run: pip install tox coveralls
       - run: tox -e "flake8"
       - run: tox -e "sqlite"
       - run: coveralls
