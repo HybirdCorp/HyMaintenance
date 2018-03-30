@@ -19,7 +19,7 @@
                         <tr>
                             <th class="summary-month container-title">{% trans "Summary" %}</th>
                             {% for contract in contracts %}
-                            <th class="summary-type {{contract.maintenance_type.css_class}}">{{contract.maintenance_type.name}}</th>
+                            <th class="summary-type {{contract.maintenance_type.css_class}}">{{contract.get_counter_name}}</th>
                             <!--<th class="summary-type type-maintenance">Maintenance</th>-->
                             <!--<th class="summary-type type-support">Support</th>-->
                             {% endfor %}
@@ -69,7 +69,7 @@
 
                         {% for contract, consumed, credited in infos %}
                         <div class="dashboard-item {{contract.maintenance_type.css_class}}">
-                            <span class="dashboard-title">{{contract.maintenance_type.name}}</span>
+                            <span class="dashboard-title">{{contract.get_counter_name}}</span>
                             <span class="dashboard-value">
                                 {% if consumed == 0 %} &mdash; {% else %} {% pretty_print_minutes consumed use_long_minute_format=True %} {% endif %}
                             </span>
@@ -83,7 +83,7 @@
                         <tr class="history-item {{issue.maintenance_type.css_class}}">
                             <td class="history-item-date">{{issue.date|date:"d/m"}}</td>
                             <td class="history-item-duration duration">{% pretty_print_minutes issue.number_minutes %}</td>
-                            <td class="history-item-type"><div class="type-tag">{{issue.maintenance_type.name}}</div></td>
+                            <td class="history-item-type"><div class="type-tag">{{issue.get_counter_name}}</div></td>
                             <td class="history-item-summary"><a href="{% url 'high_ui:issue-details' pk=issue.id %}">{{issue.subject}}</a></td>
                         </tr>
                         {% endfor %}

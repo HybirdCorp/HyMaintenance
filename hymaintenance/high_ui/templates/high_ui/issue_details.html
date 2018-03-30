@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; {{object.company.name}}, demande de {{object.maintenance_type.name}} n° {{object.id}}</title>
+<title>Maintenance Hybird &mdash; {{object.company.name}}, demande de {{object.get_counter_name}} n° {{object.id}}</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -50,7 +50,7 @@
                 </div>
                 <div class="property-container">
                     <span class="property-key">Activité</span>
-                    <span class="property-value type-tag">{{object.maintenance_type.name}}</span>
+                    <span class="property-value type-tag">{{object.get_counter_name}}</span>
                 </div>
                 <div class="property-container">
                     <span class="property-key">Temps passé</span>

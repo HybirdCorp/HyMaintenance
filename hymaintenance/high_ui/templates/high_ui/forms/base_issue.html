@@ -136,7 +136,7 @@
                                 <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
                                    data-selector-key="{{contract.maintenance_type.css_class}}"
                                    data-selector-value="{{contract.maintenance_type.pk}}"
-                                   title="Activité de type '{{contract.maintenance_type.name}}'">{{contract.maintenance_type.name}}</a>
+                                   title="Activité de type '{{contract.get_counter_name}}'">{{contract.get_counter_name}}</a>
                                 {% endfor %}
                                 {{form.maintenance_type}}
                             </section>
