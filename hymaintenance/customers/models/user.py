@@ -73,12 +73,9 @@ class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
     PASSWORD_MIN_LENGTH = 5
     REQUIRED_FIELDS = []
 
-    @staticmethod
-    def autocomplete_search_fields():
-        return ("email__icontains", "last_name__icontains", "id__icontains")
-
     def get_full_name(self):
-        return get_full_name(first_name=self.first_name, last_name=self.last_name)
+        return get_full_name(first_name=self.first_name,
+                             last_name=self.last_name)
 
     def get_short_name(self):
         "Returns the short name for the user."
