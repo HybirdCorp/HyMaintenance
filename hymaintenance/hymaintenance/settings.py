@@ -38,8 +38,6 @@ AUTH_USER_MODEL = 'customers.MaintenanceUser'
 INSTALLED_APPS = [
     'django_extensions',
     'debug_toolbar',
-    # 'grappelli.dashboard',
-    # 'grappelli',
 
     'django.contrib.admin',
     'django.contrib.auth',

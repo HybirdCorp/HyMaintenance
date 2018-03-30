@@ -26,7 +26,9 @@ class MaintenanceUserCreateForm(forms.ModelForm):
         return user
 
     def fill_user(self, user):
-        """Extending classes can modify the user here before it is saved. This default implementation does nothing, no need to call super"""
+        """Extending classes can modify the user here before it is saved.
+        This default implementation does nothing, no need to call super
+        """
         pass
 
 
