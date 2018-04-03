@@ -8,7 +8,9 @@
 <link rel="stylesheet" href="/static/css/style.css" />
 <link rel="stylesheet" href="/static/css/form.css" />
 <link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/date-picker.css" />
 <script src="/static/js/segmented-selector.js"></script>
+<script src="/static/js/date-picker.js"></script>
 </head>
 <body>
 {% block header %}{% endblock %}
@@ -251,6 +253,13 @@
                 typeDependentElements[j].className = typeDependentElements[j].className.replace(currentType, selectedType);
             }
         });
+
+        // setup date pickers
+        var dateFields = ["{{form.date.id_for_label}}", "{{form.resolution_date.id_for_label}}", "{{form.shipping_date.id_for_label}}"];
+        for (var i = 0; i < dateFields.length; ++i) {
+            var fieldId = dateFields[i];
+            new DatePicker(document.getElementById(fieldId));
+        }
     </script>
 </body>
 </html>
