@@ -111,6 +111,7 @@ table td {
 /* dashboard */
 
 .dashboard {
+    flex: none;
     display: flex;
     padding: 20px;
     transition: all 0.2s ease-in-out;
