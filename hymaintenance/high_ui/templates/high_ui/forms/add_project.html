@@ -10,7 +10,9 @@
 <link rel="stylesheet" href="/static/css/form.css" />
 <link rel="stylesheet" href="/static/css/create.css" />
 <link rel="stylesheet" href="/static/css/create-project.css" />
+<link rel="stylesheet" href="/static/css/date-picker.css" />
 <script src="/static/js/segmented-selector.js"></script>
+<script src="/static/js/date-picker.js"></script>
 </head>
 <body>
     {% include "high_ui/dashboard_header.html" %}
@@ -442,6 +444,13 @@
                 
                 node.parentElement.removeChild(node);
             }, false);
+        }
+
+        // setup date pickers
+        var dateFields = ["{{form.contract1_date.id_for_label}}", "{{form.contract2_date.id_for_label}}", "{{form.contract3_date.id_for_label}}"];
+        for (var i = 0; i < dateFields.length; ++i) {
+            var fieldId = dateFields[i];
+            new DatePicker(document.getElementById(fieldId));
         }
     </script>
 </body>
