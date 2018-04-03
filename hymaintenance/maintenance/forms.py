@@ -20,7 +20,7 @@ def duration_in_minutes(duration, duration_type):
 # TODO: limit the "user_who_fix" choices to valid MaintenanceUsers
 # TODO: similarly, limit the consumer_who_ask MaintenanceConsumer to the current company ones
 class MaintenanceIssueCreateForm(forms.ModelForm):
-    duration = forms.IntegerField(min_value=0, required=True)
+    duration = forms.IntegerField(min_value=1, required=True, widget=forms.TextInput())
     duration_type = forms.CharField(widget=forms.HiddenInput(), required=True)
 
     class Meta:
@@ -42,12 +42,6 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
 
         self.fields["consumer_who_ask"].queryset = self.company.maintenanceconsumer_set
         self.fields["user_who_fix"].choices = MaintenanceUser.objects.get_maintainers_choices()
-
-    def clean_duration(self):
-        duration = self.cleaned_data['duration']
-        if duration <= 0:
-            self.add_error("duration", "Invalid duration: '%s'" % duration)
-        return duration
 
     def clean_duration_type(self):
         duration_type = self.cleaned_data['duration_type']
