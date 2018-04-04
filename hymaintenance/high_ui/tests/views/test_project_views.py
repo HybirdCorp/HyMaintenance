@@ -68,4 +68,4 @@ class ProjectCreateViewTestCase(TestCase):
         self.assertRedirects(response, '/high_ui/')
         self.assertEqual(1, Company.objects.filter(name=company_name).count())
         company = Company.objects.get(name=company_name)
-        self.assertEqual(2, MaintenanceContract.objects.filter(company_id=company.id).count())
+        self.assertEqual(2, MaintenanceContract.objects.filter(company_id=company.id, disable=False).count())
