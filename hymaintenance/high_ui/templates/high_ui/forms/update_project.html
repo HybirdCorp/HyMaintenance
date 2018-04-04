@@ -1,0 +1,30 @@
+{% extends 'high_ui/forms/base_project.html' %}
+
+{% block page_title %}
+<title>Maintenance Hybird &mdash; Modifier le projet {{object.company.name}}</title> {# TMP #}
+{% endblock %}
+
+{% block header %}
+{% include "high_ui/company_details_header.html" %}
+{% endblock %}
+
+{% block form_title %}
+<div class="group-title">Projet de la société {{company.name}}</div>
+{% endblock %}
+
+{% block form_counter_name_1 %}
+{{contracts.0.get_counter_name}}
+{% endblock %}
+
+{% block form_counter_name_2 %}
+{{contracts.1.get_counter_name}}
+{% endblock %}
+
+{% block form_counter_name_3 %}
+{{contracts.2.get_counter_name}}
+{% endblock %}
+
+{% block form_footer %}
+<button type="submit">Modifier le projet</button>
+<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+{% endblock %}

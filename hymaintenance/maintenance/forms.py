@@ -84,7 +84,7 @@ class MaintenanceConsumerCreateForm(forms.ModelForm):
         return super(MaintenanceConsumerCreateForm, self).save(commit)
 
 
-class ProjectCreateForm(forms.Form):
+class ProjectForm(forms.Form):
     company_name = forms.CharField(max_length=255, required=True)
     contract1_counter_name = forms.CharField(max_length=255, required=True)
     contract2_counter_name = forms.CharField(max_length=255, required=True)
@@ -102,6 +102,8 @@ class ProjectCreateForm(forms.Form):
     contract2_number_hours = forms.IntegerField(min_value=0, initial=0, widget=forms.TextInput())
     contract3_number_hours = forms.IntegerField(min_value=0, initial=0, widget=forms.TextInput())
 
+
+class ProjectCreateForm(ProjectForm):
     def __init__(self, *args, **kwargs):
         maintenance_types = MaintenanceType.objects.all()
         if not kwargs.get('initial'):
@@ -113,11 +115,11 @@ class ProjectCreateForm(forms.Form):
 
     def clean_company_name(self):
         company_name = self.cleaned_data['company_name']
-        if(Company.objects.filter(name=company_name).exists()):
+        if Company.objects.filter(name=company_name).exists():
             raise forms.ValidationError(_("This company already exists"))
         return company_name
 
-    def save_company_and_contracts(self):
+    def create_company_and_contracts(self):
         company_name = self.cleaned_data['company_name']
         company = Company.objects.create(name=company_name)
         maintenance_types = MaintenanceType.objects.order_by("id")
@@ -177,8 +179,77 @@ class ProjectCreateForm(forms.Form):
                                            total_type=contract3_total_type)
 
 
-class ProjectUpdateForm(ProjectCreateForm):
+class ProjectUpdateForm(ProjectForm):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop('company')
+        self.contracts = list(self.company.contracts.order_by('maintenance_type_id'))
         super().__init__(*args, **kwargs)
         self.fields['company_name'].initial = self.company.name
+        self.fields['contract1_counter_name'].initial = self.contracts[0].get_counter_name()
+        self.fields['contract2_counter_name'].initial = self.contracts[1].get_counter_name()
+        self.fields['contract3_counter_name'].initial = self.contracts[2].get_counter_name()
+        self.fields['contract1_date'].initial = self.contracts[0].start
+        self.fields['contract2_date'].initial = self.contracts[1].start
+        self.fields['contract3_date'].initial = self.contracts[2].start
+        self.fields['contract1_visible'].initial = -1 if self.contracts[0].disabled else int(self.contracts[0].visible)
+        self.fields['contract2_visible'].initial = -1 if self.contracts[1].disabled else int(self.contracts[1].visible)
+        self.fields['contract3_visible'].initial = -1 if self.contracts[2].disabled else int(self.contracts[2].visible)
+        self.fields['contract1_total_type'].initial = self.contracts[0].total_type
+        self.fields['contract2_total_type'].initial = self.contracts[1].total_type
+        self.fields['contract3_total_type'].initial = self.contracts[2].total_type
+        self.fields['contract1_number_hours'].initial = self.contracts[0].number_hours
+        self.fields['contract2_number_hours'].initial = self.contracts[1].number_hours
+        self.fields['contract3_number_hours'].initial = self.contracts[2].number_hours
+
+    def clean_company_name(self):
+        company_name = self.cleaned_data['company_name']
+        if Company.objects.filter(name=company_name).exclude(id=self.company.id).exists():
+            raise forms.ValidationError(_("This company already exists"))
+        return company_name
+
+    def update_contract(self, index, contract):
+        contract_is_modified = False
+        contract_counter_name = self.cleaned_data[f'contract{index}_counter_name']
+        if contract_counter_name == contract.maintenance_type.name:
+            contract_counter_name = ""
+        if contract.counter_name != contract_counter_name:
+            contract_is_modified = True
+            contract.counter_name = contract_counter_name
+
+        contract_date = self.cleaned_data[f'contract{index}_date']
+        if contract.start != contract_date:
+            contract_is_modified = True
+            contract.start = contract_date
+
+        contract_disabled = self.cleaned_data[f'contract{index}_visible'] == -1
+        if contract.disabled != contract_disabled:
+            contract_is_modified = True
+            contract.disabled = contract_disabled
+
+        contract_visible = self.cleaned_data[f'contract{index}_visible'] == 1
+        if contract.visible != contract_visible:
+            contract_is_modified = True
+            contract.visible = contract_visible
+
+        contract_total_type = self.cleaned_data[f'contract{index}_total_type']
+        if contract.total_type != contract_total_type:
+            contract_is_modified = True
+            contract.total_type = contract_total_type
+
+        contract_number_hours = self.cleaned_data[f'contract{index}_number_hours']
+        if contract.number_hours != contract_number_hours:
+            contract_is_modified = True
+            contract.number_hours = contract_number_hours
+
+        if contract_is_modified:
+            contract.save()
+
+    def update_company_and_contracts(self):
+        company_name = self.cleaned_data['company_name']
+        if self.company.name != company_name:
+            self.company.name = company_name
+            self.company.save()
+
+        self.update_contract(1, self.contracts[0])
+        self.update_contract(2, self.contracts[1])
+        self.update_contract(3, self.contracts[2])
