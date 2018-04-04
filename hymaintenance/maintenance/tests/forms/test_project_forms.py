@@ -60,7 +60,7 @@ class ProjectCreateFormTestCase(TestCase):
         dict_for_post = self.__get_dict_for_post()
         form = ProjectCreateForm(data=dict_for_post)
         is_valid = form.is_valid()
-        form.save_company_and_contracts()
+        form.create_company_and_contracts()
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
@@ -73,7 +73,7 @@ class ProjectCreateFormTestCase(TestCase):
         dict_for_post["contract1_total_type"] = CONSUMMED_TOTAL_TIME
 
         is_valid = form.is_valid()
-        form.save_company_and_contracts()
+        form.create_company_and_contracts()
         company = Company.objects.get(name="Black Mesa")
 
         self.assertTrue(is_valid)
@@ -88,7 +88,7 @@ class ProjectCreateFormTestCase(TestCase):
         dict_for_post["contract2_total_type"] = CONSUMMED_TOTAL_TIME
 
         is_valid = form.is_valid()
-        form.save_company_and_contracts()
+        form.create_company_and_contracts()
         company = Company.objects.get(name="Black Mesa")
 
         self.assertTrue(is_valid)
@@ -103,7 +103,7 @@ class ProjectCreateFormTestCase(TestCase):
         dict_for_post["contract3_total_type"] = CONSUMMED_TOTAL_TIME
 
         is_valid = form.is_valid()
-        form.save_company_and_contracts()
+        form.create_company_and_contracts()
         company = Company.objects.get(name="Black Mesa")
 
         self.assertTrue(is_valid)
@@ -119,7 +119,7 @@ class ProjectCreateFormTestCase(TestCase):
         dict_for_post["contract1_number_hours"] = 80
 
         is_valid = form.is_valid()
-        form.save_company_and_contracts()
+        form.create_company_and_contracts()
         company = Company.objects.get(name="Black Mesa")
 
         self.assertTrue(is_valid)
