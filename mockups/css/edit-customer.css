@@ -1,0 +1,115 @@
+.form-content {
+    min-height: auto;
+}
+
+.help {
+    margin-top: 30px;
+    padding: 0 32px;
+}
+
+.help div + div {
+    margin-top: 10px;
+}
+
+.help em {
+    font-style: normal;
+    font-weight: 600;
+}
+
+/* contracts */
+
+.contracts {
+    margin-top: 20px;
+    counter-reset: contracts;
+}
+
+.contract {
+    padding-left: 35px;
+    padding-right: 30px;
+    position: relative;
+    flex: 1;
+}
+
+.contract em {
+    font-style: normal;
+    font-weight: 600;
+}
+
+.contract::before {
+    counter-increment: contracts;
+    content: counter(contracts);
+    
+    position: absolute;
+    top: -4px;
+    left: 0;
+    
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 600;
+    font-size: 25px;
+    
+    margin-left: 5px;
+}
+
+.form-row + .form-row {
+    margin-top: 43px;
+}
+
+.contract .contract-header {
+    display: flex;
+    align-items: center;
+}
+
+.contract .contract-title {
+    flex: 1;
+    font-size: 14px;
+    margin-right: 20px;
+}
+
+.contract .contract-details {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.contract .contract-name {
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 13px;
+    width: 200px;
+
+    flex: 1;
+/*    margin-right: 50px;*/
+}
+
+.contract .rename {
+    color: hsl(0, 0%, 69%);
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.contract .contract-rename-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.contract .contract-rename-container label {
+/*    display: inline-block;*/
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 13px;
+    min-width: 165px;
+    flex: 1;
+}
+
+.contract input {
+/*    display: inline-block;*/
+    font-size: 14px;
+    padding: 0 5px;
+    margin: 0;
+    width: 300px;
+}
