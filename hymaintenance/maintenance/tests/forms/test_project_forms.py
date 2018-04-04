@@ -78,7 +78,7 @@ class ProjectCreateFormTestCase(TestCase):
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
-        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=1, disable=False).count())
+        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=1, disabled=False).count())
 
     def test_valid_form_create_a_maintenance_contract(self):
         dict_for_post = self.__get_dict_for_post()
@@ -93,7 +93,7 @@ class ProjectCreateFormTestCase(TestCase):
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
-        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=2, disable=False).count())
+        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=2, disabled=False).count())
 
     def test_valid_form_create_a_correction_contract(self):
         dict_for_post = self.__get_dict_for_post()
@@ -108,7 +108,7 @@ class ProjectCreateFormTestCase(TestCase):
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
-        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=3, disable=False).count())
+        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=3, disabled=False).count())
 
     def test_valid_form_create_a_company_and_invisible_available_time_contract(self):
         dict_for_post = self.__get_dict_for_post()
@@ -124,7 +124,7 @@ class ProjectCreateFormTestCase(TestCase):
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
-        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=1, visible=False, total_type=AVAILABLE_TOTAL_TIME, number_hours=80, disable=False).count())
+        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=1, visible=False, total_type=AVAILABLE_TOTAL_TIME, number_hours=80, disabled=False).count())
 
     def test_invalid_form_create_already_existing_company(self):
         CompanyFactory.create(name="Black Mesa")

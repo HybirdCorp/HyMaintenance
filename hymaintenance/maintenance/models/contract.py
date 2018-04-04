@@ -16,7 +16,7 @@ CONSUMMED_TOTAL_TIME = 1
 
 class MaintenanceContractQuerySet(models.QuerySet):
     def filter_enabled(self):
-        return self.filter(disable=False)
+        return self.filter(disabled=False)
 
 
 class MaintenanceContract(models.Model):
@@ -26,11 +26,11 @@ class MaintenanceContract(models.Model):
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT, related_name='contracts')
     maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT, related_name='contracts')
     visible = models.BooleanField(_("Visible to customer user"), default=True)
-    disable = models.BooleanField(_("Disable the contract"), default=False)
+    disabled = models.BooleanField(_("Disable the contract"), default=False)
     start = models.DateField(_("Start Date"), default=datetime.date.today)
     number_hours = models.PositiveIntegerField("Number of Hours by contract", default=0)
     total_type = models.IntegerField(_("Counter type"), choices=TYPE_CHOICES,
-                                     default=0)
+                                     default=AVAILABLE_TOTAL_TIME)
 
     objects = MaintenanceContractQuerySet.as_manager()
 

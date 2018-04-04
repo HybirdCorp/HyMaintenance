@@ -109,7 +109,7 @@ class ProjectCreateForm(forms.Form):
         kwargs['initial'].update({'contract1_counter_name': maintenance_types[0].name,
                                   'contract2_counter_name': maintenance_types[1].name,
                                   'contract3_counter_name': maintenance_types[2].name})
-        super(ProjectCreateForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_company_name(self):
         company_name = self.cleaned_data['company_name']
@@ -120,52 +120,65 @@ class ProjectCreateForm(forms.Form):
     def save_company_and_contracts(self):
         company_name = self.cleaned_data['company_name']
         company = Company.objects.create(name=company_name)
-        maintenance_types = MaintenanceType.objects.all()
+        maintenance_types = MaintenanceType.objects.order_by("id")
 
-        contract1_visible = self.cleaned_data['contract1_visible']
-        if(contract1_visible != INACTIF_CONTRACT_INPUT):
-            contract1_number_hours = self.cleaned_data['contract1_number_hours']
-            contract1_total_type = self.cleaned_data['contract1_total_type']
-            contract1_date = self.cleaned_data['contract1_date']
-            contract1_counter_name = self.cleaned_data['contract1_counter_name']
-            if contract1_counter_name == maintenance_types[0].name:
-                contract1_counter_name = ""
-            MaintenanceContract.objects.create(counter_name=contract1_counter_name,
-                                               start=contract1_date,
-                                               company=company,
-                                               maintenance_type=maintenance_types[0],
-                                               visible=bool(contract1_visible),
-                                               number_hours=contract1_number_hours,
-                                               total_type=contract1_total_type)
+        form_contract1_visible = self.cleaned_data['contract1_visible']
+        contract1_disabled = True if form_contract1_visible == -1 else False
+        contract1_visible = bool(form_contract1_visible) if form_contract1_visible != -1 else False
+        contract1_number_hours = self.cleaned_data['contract1_number_hours']
+        contract1_total_type = self.cleaned_data['contract1_total_type']
+        contract1_date = self.cleaned_data['contract1_date']
+        contract1_counter_name = self.cleaned_data['contract1_counter_name']
+        if contract1_counter_name == maintenance_types[0].name:
+            contract1_counter_name = ""
+        MaintenanceContract.objects.create(counter_name=contract1_counter_name,
+                                           start=contract1_date,
+                                           company=company,
+                                           maintenance_type=maintenance_types[0],
+                                           visible=contract1_visible,
+                                           disabled=contract1_disabled,
+                                           number_hours=contract1_number_hours,
+                                           total_type=contract1_total_type)
 
-        contract2_visible = self.cleaned_data['contract2_visible']
-        if(contract2_visible != INACTIF_CONTRACT_INPUT):
-            contract2_number_hours = self.cleaned_data['contract2_number_hours']
-            contract2_total_type = self.cleaned_data['contract2_total_type']
-            contract2_date = self.cleaned_data['contract2_date']
-            contract2_counter_name = self.cleaned_data['contract2_counter_name']
-            if contract2_counter_name == maintenance_types[1].name:
-                contract2_counter_name = ""
-            MaintenanceContract.objects.create(counter_name=contract2_counter_name,
-                                               start=contract2_date,
-                                               company=company,
-                                               maintenance_type=maintenance_types[1],
-                                               visible=bool(contract2_visible),
-                                               number_hours=contract2_number_hours,
-                                               total_type=contract2_total_type)
+        form_contract2_visible = self.cleaned_data['contract2_visible']
+        contract2_disabled = True if form_contract2_visible == -1 else False
+        contract2_visible = bool(form_contract2_visible) if form_contract2_visible != -1 else False
+        contract2_number_hours = self.cleaned_data['contract2_number_hours']
+        contract2_total_type = self.cleaned_data['contract2_total_type']
+        contract2_date = self.cleaned_data['contract2_date']
+        contract2_counter_name = self.cleaned_data['contract2_counter_name']
+        if contract2_counter_name == maintenance_types[1].name:
+            contract2_counter_name = ""
+        MaintenanceContract.objects.create(counter_name=contract2_counter_name,
+                                           start=contract2_date,
+                                           company=company,
+                                           maintenance_type=maintenance_types[1],
+                                           visible=contract2_visible,
+                                           disabled=contract2_disabled,
+                                           number_hours=contract2_number_hours,
+                                           total_type=contract2_total_type)
 
-        contract3_visible = self.cleaned_data['contract3_visible']
-        if(contract3_visible != INACTIF_CONTRACT_INPUT):
-            contract3_number_hours = self.cleaned_data['contract3_number_hours']
-            contract3_total_type = self.cleaned_data['contract3_total_type']
-            contract3_date = self.cleaned_data['contract3_date']
-            contract3_counter_name = self.cleaned_data['contract3_counter_name']
-            if contract3_counter_name == maintenance_types[2].name:
-                contract3_counter_name = ""
-            MaintenanceContract.objects.create(counter_name=contract3_counter_name,
-                                               start=contract3_date,
-                                               company=company,
-                                               maintenance_type=maintenance_types[2],
-                                               visible=bool(contract3_visible),
-                                               number_hours=contract3_number_hours,
-                                               total_type=contract3_total_type)
+        form_contract3_visible = self.cleaned_data['contract3_visible']
+        contract3_disabled = True if form_contract3_visible == -1 else False
+        contract3_visible = bool(form_contract3_visible) if form_contract3_visible != -1 else False
+        contract3_number_hours = self.cleaned_data['contract3_number_hours']
+        contract3_total_type = self.cleaned_data['contract3_total_type']
+        contract3_date = self.cleaned_data['contract3_date']
+        contract3_counter_name = self.cleaned_data['contract3_counter_name']
+        if contract3_counter_name == maintenance_types[2].name:
+            contract3_counter_name = ""
+        MaintenanceContract.objects.create(counter_name=contract3_counter_name,
+                                           start=contract3_date,
+                                           company=company,
+                                           maintenance_type=maintenance_types[2],
+                                           visible=contract3_visible,
+                                           disabled=contract3_disabled,
+                                           number_hours=contract3_number_hours,
+                                           total_type=contract3_total_type)
+
+
+class ProjectUpdateForm(ProjectCreateForm):
+    def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop('company')
+        super().__init__(*args, **kwargs)
+        self.fields['company_name'].initial = self.company.name
