@@ -2,14 +2,16 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth import decorators
 from django.http import Http404
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DetailView, FormView, TemplateView, UpdateView
 
 from customers.forms import CompanyCreateForm, MaintenanceManagerCreateForm, MaintenanceUserCreateForm
 from customers.models import Company, MaintenanceUser
-from maintenance.forms import MaintenanceConsumerCreateForm, MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm, ProjectCreateForm
+from maintenance.forms import (
+    MaintenanceConsumerCreateForm, MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm, ProjectCreateForm, ProjectUpdateForm
+)
 from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceIssue, MaintenanceType
 
 
@@ -245,12 +247,41 @@ class CreateProjectView(FormView):
     success_url = "/"
 
     def get_context_data(self, **kwargs):
-        context = super(CreateProjectView, self).get_context_data(**kwargs)
-        context["maintenance_types"] = MaintenanceType.objects.all()
-        context["companies"] = Company.objects.all().prefetch_related("maintenanceuser_set")
+        context = super().get_context_data(**kwargs)
+        context["maintenance_types"] = MaintenanceType.objects.order_by("id")
+        context["companies"] = Company.objects.all()
         context["maintainers"] = MaintenanceUser.objects.get_maintainers_queryset()
         return context
 
     def form_valid(self, form):
-        form.save_company_and_contracts()
+        form.create_company_and_contracts()
+        return super().form_valid(form)
+
+
+class UpdateProjectView(LoginRequiredMixin, FormView):
+    form_class = ProjectUpdateForm
+    template_name = "high_ui/forms/update_project.html"
+    success_url = "/"
+    pk_url_kwarg = "company_id"
+
+    def get_company(self):
+        return get_object_or_404(Company, pk=self.kwargs.get(self.pk_url_kwarg))
+
+    def get_form_kwargs(self):
+        self.company = self.get_company()
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["maintenance_types"] = MaintenanceType.objects.order_by("id")
+        context['channels'] = IncomingChannel.objects.all()
+        contracts = MaintenanceContract.objects.filter(company=self.kwargs.get(self.pk_url_kwarg))
+        context['contracts'] = contracts
+        context['company'] = Company.objects.get(id=self.kwargs.get(self.pk_url_kwarg))
+        return context
+
+    def form_valid(self, form):
+        form.update_company_and_contracts()
         return super().form_valid(form)
