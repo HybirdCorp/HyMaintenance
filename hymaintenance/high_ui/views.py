@@ -56,15 +56,15 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
     def get_maintenance_contracts(self, company):
         user = self.request.user
         if user.company:
-            contracts = MaintenanceContract.objects.filter(company=company, visible=True)
+            contracts = MaintenanceContract.objects.filter(company=company, visible=True, disable=False)
         else:
-            contracts = MaintenanceContract.objects.filter(company=company)
+            contracts = MaintenanceContract.objects.filter(company=company, disable=False)
         return contracts
 
     def get_maintenance_issues(self, company, month):
         user = self.request.user
         if user.company:
-            maintenance_type_ids = MaintenanceContract.objects.values_list('maintenance_type').filter(visible=True, company_id=company)
+            maintenance_type_ids = MaintenanceContract.objects.values_list('maintenance_type').filter(visible=True, company_id=company, disable=False)
             issues = MaintenanceIssue.objects.filter(maintenance_type__in=maintenance_type_ids,
                                                      company_id=company,
                                                      date__month=month.month,
@@ -167,7 +167,7 @@ class CreateViewWithCompany(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateViewWithCompany, self).get_context_data(**kwargs)
         context['company'] = self.company
-        contracts = MaintenanceContract.objects.filter(company=self.company)
+        contracts = MaintenanceContract.objects.filter(company=self.company, disable=False)
         context['contracts'] = contracts
         return context
 
@@ -194,7 +194,7 @@ class UpdateIssueView(LoginRequiredMixin, UpdateView):
         context = super(UpdateIssueView, self).get_context_data(**kwargs)
         context['channels'] = IncomingChannel.objects.all()
 
-        contracts = MaintenanceContract.objects.filter(company=self.object.company_id)
+        contracts = MaintenanceContract.objects.filter(company=self.object.company_id, disable=False)
         context['contracts'] = contracts
         return context
 

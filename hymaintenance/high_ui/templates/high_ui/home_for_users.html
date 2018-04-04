@@ -22,11 +22,11 @@
                     </div>
                     <div class="dashboard-item dashboard-button">
                         <div class="dashboard-value">
-                            <a href="/hymaintadmin/customers/company/{{company.pk}}/change/">Modifier</a> {# TMP #}
+                            <a href="{% url 'high_ui:change_project' company_id=company.id %}">Modifier</a> {# TMP #}
                         </div>
                     </div>
                     <div style="flex: 1"></div>
-                    {% for contract in company.contracts.all %}
+                    {% for contract in company.contracts.filter_enabled %}
                     <div class="dashboard-item">
                         <span class="dashboard-title">{{contract.get_counter_name}}</span>
                         <span class="dashboard-value">{% pretty_print_contract_counter contract %}</span>
