@@ -71,9 +71,24 @@
     color: #3D9970;
 }
 
+.home-link-header.type-maintenance .dashboard-button a:hover {
+    background-color: #f9f9f9;
+    color: #3D9970;
+}
+
 .home-link-header.type-support span,
 .resolution-container.type-support .duration {
     color: #0074D9;
+}
+
+.home-link-header.type-support .dashboard-button a:hover {
+    background-color: #f9f9f9;
+    color: #0074D9;
+}
+
+.home-link-header.type-correction .dashboard-button a:hover {
+    background-color: #f9f9f9;
+    color: #444;
 }
 
 /* type specific colors - end */
