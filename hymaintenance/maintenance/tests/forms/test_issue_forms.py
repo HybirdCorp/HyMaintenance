@@ -44,12 +44,12 @@ class IssueCreateFormTestCase(TestCase):
     def test_all_required_fields_by_sending_a_empty_create_form(self):
         form = MaintenanceIssueCreateForm(company=self.company, data={})
         self.assertFalse(form.is_valid())
-        self.assertEqual(5, len(form.errors))
-        self.assertEqual(form.errors['subject'][0], form.fields['subject'].error_messages['required'])
-        self.assertEqual(form.errors['date'][0], form.fields['date'].error_messages['required'])
-        self.assertEqual(form.errors['maintenance_type'][0], form.fields['maintenance_type'].error_messages['required'])
-        self.assertEqual(form.errors['duration'][0], form.fields['duration'].error_messages['required'])
-        self.assertEqual(form.errors['duration_type'][0], form.fields['duration_type'].error_messages['required'])
+        expected = _("This field is required.")
+        self.assertDictEqual(form.errors, {'subject': [expected],
+                                           'date': [expected],
+                                           'maintenance_type': [expected],
+                                           'duration': [expected],
+                                           'duration_type': [expected]})
 
     def test_when_i_bound_a_create_form_with_invalid_duration_type_i_have_an_error(self):
 
@@ -64,7 +64,7 @@ class IssueCreateFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
         expected = _("Invalid duration type: '%s'") % dict_for_post["duration_type"]
-        self.assertEqual(form.errors['duration'].as_text(), "* %s" % expected)
+        self.assertEqual(form.errors['duration'], [expected])
 
     def test_when_i_bound_a_create_form_with_under_min_duration_i_have_an_error(self):
         subject = "subject of the issue"
@@ -78,7 +78,7 @@ class IssueCreateFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
         expected = _('Ensure this value is greater than or equal to %(limit_value)s.') % {'limit_value': 1}
-        self.assertEqual(form.errors['duration'].as_text(), "* %s" % expected)
+        self.assertEqual(form.errors['duration'], [expected])
 
     def test_when_i_bound_a_create_form_with_string_as_duration_i_have_an_error(self):
         subject = "subject of the issue"
@@ -90,7 +90,8 @@ class IssueCreateFormTestCase(TestCase):
         form = MaintenanceIssueCreateForm(company=self.company, data=dict_for_post)
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
-        self.assertEqual(form.errors['duration'][0], form.fields['duration'].error_messages['invalid'])
+        expected = _("Enter a whole number.")
+        self.assertEqual(form.errors['duration'], [expected])
 
 
 class IssueUpdateFormTestCase(TestCase):
@@ -120,12 +121,12 @@ class IssueUpdateFormTestCase(TestCase):
     def test_all_required_fields_by_sending_a_empty_update_form(self):
         form = MaintenanceIssueUpdateForm(instance=self.issue, data={})
         self.assertFalse(form.is_valid())
-        self.assertEqual(5, len(form.errors))
-        self.assertEqual(form.errors['subject'][0], form.fields['subject'].error_messages['required'])
-        self.assertEqual(form.errors['date'][0], form.fields['date'].error_messages['required'])
-        self.assertEqual(form.errors['maintenance_type'][0], form.fields['maintenance_type'].error_messages['required'])
-        self.assertEqual(form.errors['duration'][0], form.fields['duration'].error_messages['required'])
-        self.assertEqual(form.errors['duration_type'][0], form.fields['duration_type'].error_messages['required'])
+        expected = _("This field is required.")
+        self.assertDictEqual(form.errors, {'subject': [expected],
+                                           'date': [expected],
+                                           'maintenance_type': [expected],
+                                           'duration': [expected],
+                                           'duration_type': [expected]})
 
     def test_when_i_bound_a_update_form_with_invalid_duration_type_i_have_an_error(self):
         subject = "subject of the issue"
@@ -138,7 +139,7 @@ class IssueUpdateFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
         expected = _("Invalid duration type: '%s'") % dict_for_post["duration_type"]
-        self.assertEqual(form.errors['duration'].as_text(), "* %s" % expected)
+        self.assertEqual(form.errors['duration'], [expected])
 
     def test_when_i_bound_a_update_form_with_under_min_duration_i_have_an_error(self):
         subject = "subject of the issue"
@@ -163,7 +164,8 @@ class IssueUpdateFormTestCase(TestCase):
         form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post)
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
-        self.assertEqual(form.errors['duration'][0], form.fields['duration'].error_messages['invalid'])
+        expected = _("Enter a whole number.")
+        self.assertEqual(form.errors['duration'], [expected])
 
     def test_form_is_valid_when_it_updates_instance(self):
         subject = "subject of the issue"
