@@ -98,9 +98,9 @@ class ProjectCreateForm(forms.Form):
     contract1_total_type = forms.IntegerField(widget=forms.HiddenInput())
     contract2_total_type = forms.IntegerField(widget=forms.HiddenInput())
     contract3_total_type = forms.IntegerField(widget=forms.HiddenInput())
-    contract1_number_hours = forms.IntegerField(min_value=0, initial=0)
-    contract2_number_hours = forms.IntegerField(min_value=0, initial=0)
-    contract3_number_hours = forms.IntegerField(min_value=0, initial=0)
+    contract1_number_hours = forms.IntegerField(min_value=0, initial=0, widget=forms.TextInput())
+    contract2_number_hours = forms.IntegerField(min_value=0, initial=0, widget=forms.TextInput())
+    contract3_number_hours = forms.IntegerField(min_value=0, initial=0, widget=forms.TextInput())
 
     def __init__(self, *args, **kwargs):
         maintenance_types = MaintenanceType.objects.all()
