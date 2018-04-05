@@ -25,7 +25,6 @@
                         <div class="group-title-container">
                             {% block form_title %}{% endblock %}
                         </div>
-                        <h1>{{form.errors}}</h1>
                         <div class="form-row {% if form.company_name.errors %}form-error{% endif %}">
                             {% if form.company_name.errors %}
                             <div class="form-row-wrapper">
