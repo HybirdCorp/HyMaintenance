@@ -61,3 +61,11 @@ class MaintenanceIssueFactory(factory.django.DjangoModelFactory):
     maintenance_type = maintenance_type
     number_minutes = 12
     answer = "Have you tried turning it off and on again?"
+
+
+def create_project():
+    company = CompanyFactory()
+    contract1 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=1))
+    contract2 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=2))
+    contract3 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=3))
+    return {company, contract1, contract2, contract3}
