@@ -14,6 +14,10 @@
    color: #fff;
 }
 
+.type-support ~ .pika-single .is-today .pika-button {
+    color: #0074D9;
+}
+
 .type-support ~ .pika-single .is-selected .pika-button,
 .type-support ~ .pika-single .has-event .pika-button,
 .type-support ~ .pika-single .pika-button:hover {
@@ -22,8 +26,8 @@
    color: #fff;
 }
 
-.type-support ~ .pika-single .is-today .pika-button {
-    color: #0074D9;
+.type-correction ~ .pika-single .is-today .pika-button {
+    color: #666;
 }
 
 .type-correction ~ .pika-single .is-selected .pika-button,
@@ -32,10 +36,6 @@
    background: #666;
    box-shadow: none;
    color: #fff;
-}
-
-.type-correction ~ .pika-single .is-today .pika-button {
-    color: #666;
 }
 
 /* the following is the Pikaday library */
