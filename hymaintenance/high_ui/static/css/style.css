@@ -155,6 +155,10 @@ table td {
     text-align: left;
 }
 
+.dashboard-item.item-activity .dashboard-value {
+    text-transform: lowercase;
+}
+
 .dashboard-item.dashboard-contact {
     flex: 1;
     border-left: 0;

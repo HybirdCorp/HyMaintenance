@@ -27,10 +27,6 @@
     font-weight: 700;
 }
 
-.dashboard-item.item-activity .dashboard-value {
-    text-transform: lowercase;
-}
-
 /* properties */
 
 .property-container {
