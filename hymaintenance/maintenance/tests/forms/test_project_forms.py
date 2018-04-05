@@ -35,6 +35,27 @@ class ProjectCreateFormTestCase(TestCase):
                 "contract3_date": datetime.date.today(),
                 "contract3_counter_name": "Corrective"}
 
+    def test_all_required_fields_by_sending_a_empty_create_form(self):
+        form = ProjectCreateForm(data={})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(16, len(form.errors))
+        self.assertEqual(form.errors['company_name'][0], form.fields['company_name'].error_messages['required'])
+        self.assertEqual(form.errors['contract1_counter_name'][0], form.fields['contract1_counter_name'].error_messages['required'])
+        self.assertEqual(form.errors['contract2_counter_name'][0], form.fields['contract2_counter_name'].error_messages['required'])
+        self.assertEqual(form.errors['contract3_counter_name'][0], form.fields['contract3_counter_name'].error_messages['required'])
+        self.assertEqual(form.errors['contract1_date'][0], form.fields['contract1_date'].error_messages['required'])
+        self.assertEqual(form.errors['contract2_date'][0], form.fields['contract2_date'].error_messages['required'])
+        self.assertEqual(form.errors['contract3_date'][0], form.fields['contract3_date'].error_messages['required'])
+        self.assertEqual(form.errors['contract1_visible'][0], form.fields['contract1_visible'].error_messages['required'])
+        self.assertEqual(form.errors['contract2_visible'][0], form.fields['contract2_visible'].error_messages['required'])
+        self.assertEqual(form.errors['contract3_visible'][0], form.fields['contract3_visible'].error_messages['required'])
+        self.assertEqual(form.errors['contract1_total_type'][0], form.fields['contract1_total_type'].error_messages['required'])
+        self.assertEqual(form.errors['contract2_total_type'][0], form.fields['contract2_total_type'].error_messages['required'])
+        self.assertEqual(form.errors['contract3_total_type'][0], form.fields['contract3_total_type'].error_messages['required'])
+        self.assertEqual(form.errors['contract1_number_hours'][0], form.fields['contract1_number_hours'].error_messages['required'])
+        self.assertEqual(form.errors['contract2_number_hours'][0], form.fields['contract2_number_hours'].error_messages['required'])
+        self.assertEqual(form.errors['contract3_number_hours'][0], form.fields['contract3_number_hours'].error_messages['required'])
+
     def test_valid_form_create_a_company(self):
         dict_for_post = self.__get_dict_for_post()
         form = ProjectCreateForm(data=dict_for_post)
@@ -113,3 +134,22 @@ class ProjectCreateFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
         self.assertEqual(form.errors['company_name'].as_text(), "* " + str(_("This company already exists")))
+
+    def test_when_i_bound_a_create_form_with_under_min_number_hours_i_have_an_error(self):
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contract1_number_hours"] = -10
+        form = ProjectCreateForm(data=dict_for_post)
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(1, len(form.errors))
+        expected = _('Ensure this value is greater than or equal to %(limit_value)s.') % {'limit_value': 0}
+        self.assertEqual(form.errors['contract1_number_hours'].as_text(), "* %s" % expected)
+
+    def test_when_i_bound_a_create_form_with_string_as_number_hours_i_have_an_error(self):
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contract1_number_hours"] = "I'm a duration"
+        form = ProjectCreateForm(data=dict_for_post)
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(1, len(form.errors))
+        self.assertEqual(form.errors['contract1_number_hours'][0], form.fields['contract1_number_hours'].error_messages['invalid'])
