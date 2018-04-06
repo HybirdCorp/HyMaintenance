@@ -53,3 +53,9 @@ class MaintenanceIssue(models.Model):
         if self.consumer_who_ask:
             return self.consumer_who_ask.name
         return ""
+
+    def save(self, *args, **kwargs):
+        self.company.issues_counter += 1
+        self.company_issue_number = self.company.issues_counter
+        self.company.save()
+        super().save(*args, **kwargs)
