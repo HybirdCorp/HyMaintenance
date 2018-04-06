@@ -277,9 +277,9 @@ class UpdateProjectView(LoginRequiredMixin, FormView):
         context = super().get_context_data(**kwargs)
         context["maintenance_types"] = MaintenanceType.objects.order_by("id")
         context['channels'] = IncomingChannel.objects.all()
-        contracts = MaintenanceContract.objects.filter(company=self.kwargs.get(self.pk_url_kwarg))
+        contracts = MaintenanceContract.objects.filter(company=self.company)
         context['contracts'] = contracts
-        context['company'] = Company.objects.get(id=self.kwargs.get(self.pk_url_kwarg))
+        context['company'] = self.company
         return context
 
     def form_valid(self, form):
