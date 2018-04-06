@@ -8,6 +8,7 @@ from .other_models import IncomingChannel, MaintenanceType
 
 
 class MaintenanceIssue(models.Model):
+    company_issue_number = models.PositiveIntegerField(verbose_name=_("Issue number"))
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
     consumer_who_ask = models.ForeignKey(MaintenanceConsumer, verbose_name="Who ask the question ?", null=True, blank=True,
                                          related_name="consumers_who_asked", on_delete=models.PROTECT)
@@ -30,6 +31,11 @@ class MaintenanceIssue(models.Model):
     fields_for_form = ('consumer_who_ask', 'user_who_fix', 'incoming_channel',
                        'subject', 'date', 'maintenance_type', 'description',
                        'resolution_date', 'shipping_date', 'answer')
+
+    class Meta:
+        verbose_name = "Issue"
+        verbose_name_plural = "Issues"
+        unique_together = [["company_issue_number", "company"]]
 
     def __str__(self):
         return "Date : %s, Subject :%s For : %s , Type :%s " % (self.date.strftime("%d/%m/%Y at %H:%M"),
