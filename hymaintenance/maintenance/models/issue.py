@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company, MaintenanceUser
@@ -54,8 +54,8 @@ class MaintenanceIssue(models.Model):
             return self.consumer_who_ask.name
         return ""
 
+    @transaction.atomic
     def save(self, *args, **kwargs):
-        self.company.issues_counter += 1
-        self.company_issue_number = self.company.issues_counter
-        self.company.save()
+        Company.objects.filter(id=self.company_id).update(issues_counter=models.F('issues_counter') + 1)
+        self.company_issue_number = Company.objects.filter(id=self.company_id).values_list('issues_counter', flat=True).first()
         super().save(*args, **kwargs)

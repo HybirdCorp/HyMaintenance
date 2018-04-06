@@ -1,7 +1,7 @@
 {% extends 'high_ui/forms/base_issue.html' %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; {{object.company.name}}, modifier la demande de {{object.maintenance_type.name}} n° {{object.id}}</title> {# TMP #}
+<title>Maintenance Hybird &mdash; {{object.company.name}}, modifier la demande de {{object.maintenance_type.name}} n° {{object.company_issue_number}}</title> {# TMP #}
 {% endblock %}
 
 {% block header %}
@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block form_title %}
-<div class="group-title">Demande N°{{object.id}}</div>
+<div class="group-title">Demande N°{{object.company_issue_number}}</div>
 <label>Compte client</label>
 <span>{{object.company.name}}</span>
 {% endblock %}

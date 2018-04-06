@@ -14,14 +14,14 @@
     <div class="content-container">
         <div class="home-link-header {{object.maintenance_type.css_class}}">
             <a href="/" title="Retour à l'accueil">Accueil</a> &nbsp;/&nbsp;
-            <span>Demande n°{{object.id}}</span> &nbsp;
+            <span>Demande n°{{object.company_issue_number}}</span> &nbsp;
             <div class="dashboard-item dashboard-button">
                 <a href="{% url 'high_ui:change_issue' pk=object.id %}">Modifier</a>
             </div>
          </div>
         <div class="content">
             <div class="container details-container">
-                <div class="container-title">Demande n° {{object.id}} &mdash; {{object.subject}}</div>
+                <div class="container-title">Demande n° {{object.company_issue_number}} &mdash; {{object.subject}}</div>
                 <div class="property-container">
                     <span class="property-key">Auteur</span>
                     <span class="property-value">{{object.who_ask}}</span>
