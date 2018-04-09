@@ -4,7 +4,7 @@ from django.utils.timezone import now
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 
 from ...models import MaintenanceIssue
-from ..factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory, get_default_maintenance_type
+from ..factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory, get_default_maintenance_type, create_project
 
 
 class MaintenanceIssueTestCase(TestCase):
@@ -35,3 +35,21 @@ class MaintenanceIssueTestCase(TestCase):
         consumer = MaintenanceConsumerFactory(name="Mrs. Reynholm")
         issue = MaintenanceIssueFactory(consumer_who_ask=consumer)
         self.assertEqual("Mrs. Reynholm", issue.who_ask())
+
+    def test_issue_number_with_one_company(self):
+        company, contract1, _contract2, _contract3 = create_project()
+        issue = MaintenanceIssueFactory(company=company,
+                                        maintenance_type=contract1.maintenance_type)
+        self.assertEqual(1, issue.company_issue_number)
+        issue = MaintenanceIssueFactory(company=company,
+                                        maintenance_type=contract1.maintenance_type)
+        self.assertEqual(2, issue.company_issue_number)
+
+    def test_issue_number_when_one_company_already_exists(self):
+        company, contract1, _contract2, _contract3 = create_project()
+        MaintenanceIssueFactory(company=company,
+                                maintenance_type=contract1.maintenance_type)
+        company2, contract4, _contract5, _contract6 = create_project()
+        issue = MaintenanceIssueFactory(company=company2,
+                                        maintenance_type=contract4.maintenance_type)
+        self.assertEqual(1, issue.company_issue_number)
