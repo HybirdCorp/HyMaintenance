@@ -4,10 +4,18 @@ from django.utils.timezone import datetime, now
 from customers.tests.factories import CompanyFactory
 
 from ...models import MaintenanceContract, MaintenanceType
-from ..factories import IncomingChannelFactory, MaintenanceContractFactory, MaintenanceCreditFactory, MaintenanceIssueFactory
+from ..factories import IncomingChannelFactory, MaintenanceContractFactory, MaintenanceCreditFactory, MaintenanceIssueFactory, create_project
 
 
 class MaintenanceContractTestCase(TestCase):
+
+    def test_get_all_maintenance_contract(self):
+        company, contract1, contract2, contract3 = create_project()
+        self.assertEqual(3, MaintenanceContract.objects.all().count())
+
+    def test_get_active_maintenance_contract_only(self):
+        company, contract1, contract2, contract3 = create_project(contract1={"disabled": True})
+        self.assertEqual(2, MaintenanceContract.objects.filter_enabled().count())
 
     def test_i_can_create_a_maintenance_contract(self):
         company = CompanyFactory()
