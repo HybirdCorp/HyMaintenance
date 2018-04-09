@@ -63,9 +63,21 @@ class MaintenanceIssueFactory(factory.django.DjangoModelFactory):
     answer = "Have you tried turning it off and on again?"
 
 
-def create_project():
-    company = CompanyFactory()
-    contract1 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=1))
-    contract2 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=2))
-    contract3 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=3))
+def create_project(**kwargs):
+    if "company" in kwargs:
+        company = CompanyFactory(**kwargs['company'])
+    else:
+        company = CompanyFactory()
+    if "contract1" in kwargs:
+        contract1 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=1), **kwargs['contract1'])
+    else:
+        contract1 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=1))
+    if "contract2" in kwargs:
+        contract2 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=2), **kwargs['contract2'])
+    else:
+        contract2 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=2))
+    if "contract3" in kwargs:
+        contract3 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=3), **kwargs['contract3'])
+    else:
+        contract3 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=3))
     return {company, contract1, contract2, contract3}
