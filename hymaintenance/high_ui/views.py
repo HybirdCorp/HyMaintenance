@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth import decorators
+from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -126,13 +127,13 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         company = Company.objects.filter(slug_name=self.kwargs.get('company_name')).first()
-        return MaintenanceIssue.objects.filter(company_issue_number=self.kwargs.get('company_issue_number'), company=company).first()
-
-    def get_queryset(self):
+        issue = MaintenanceIssue.objects.filter(company_issue_number=self.kwargs.get('company_issue_number'), company=company).first()
+        # TODO is it better to return 404? with 403 the user can kown that the asked company issue exists
+        # if 403 stays, maybe we have to design a custom forbidden access page ?
         user = self.request.user
-        if user.company:
-            return MaintenanceIssue.objects.filter(company_id=user.company.pk)
-        return MaintenanceIssue.objects.all()
+        if user.company == company or user.company is None:
+            return issue
+        raise PermissionDenied
 
 
 # DEPRECATED use CreateProject instead
