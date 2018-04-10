@@ -1,5 +1,6 @@
 
 from django.test import Client, TestCase
+from django.urls import reverse
 
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 from maintenance.models import MaintenanceConsumer
@@ -20,5 +21,5 @@ class CreateConsumerViewTestCase(TestCase):
         response = client.post('/high_ui/consumer/add/%s/' % company.pk, {"name": name}, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, company.get_absolute_url())
+        self.assertRedirects(response, reverse('high_ui:home'))
         self.assertEqual(1, MaintenanceConsumer.objects.filter(company=company, name=name).count())
