@@ -56,6 +56,7 @@ class MaintenanceIssue(models.Model):
 
     @transaction.atomic
     def save(self, *args, **kwargs):
-        Company.objects.filter(id=self.company_id).update(issues_counter=models.F('issues_counter') + 1)
-        self.company_issue_number = Company.objects.filter(id=self.company_id).values_list('issues_counter', flat=True).first()
+        if self.id is None:
+            Company.objects.filter(id=self.company_id).update(issues_counter=models.F('issues_counter') + 1)
+            self.company_issue_number = Company.objects.filter(id=self.company_id).values_list('issues_counter', flat=True).first()
         super().save(*args, **kwargs)
