@@ -4,7 +4,7 @@ from django.urls import reverse
 
 class Company(models.Model):
     name = models.CharField("name", max_length=255)
-    slug_name = models.SlugField(editable=False)
+    slug_name = models.SlugField(editable=False, unique=True)
     maintenance_contact = models.CharField("name of internal contact",
                                            max_length=500)
     issues_counter = models.PositiveIntegerField(default=0)
