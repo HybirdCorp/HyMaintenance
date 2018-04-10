@@ -34,7 +34,7 @@
                     {% endfor %}
                     <div class="dashboard-item dashboard-button">
                         <div class="dashboard-value">
-                            <a href="{% url 'high_ui:company-add_issue' company_id=company.id %}">Enregistrer une demande</a>
+                            <a href="{% url 'high_ui:company-add_issue' company_name=company.slug_name %}">Enregistrer une demande</a>
                         </div>
                     </div>
                 </div>
