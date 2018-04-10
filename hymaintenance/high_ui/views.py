@@ -208,10 +208,16 @@ class CreateConsumerView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = MaintenanceConsumerCreateForm
     template_name = "high_ui/forms/add_consumer.html"
 
+    def get_success_url(self):
+        return reverse('high_ui:home')
+
 
 class CreateManagerView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = MaintenanceManagerCreateForm
     template_name = "high_ui/forms/add_user.html"
+
+    def get_success_url(self):
+        return reverse('high_ui:home')
 
     def get_context_data(self, **kwargs):
         context = super(CreateManagerView, self).get_context_data(**kwargs)

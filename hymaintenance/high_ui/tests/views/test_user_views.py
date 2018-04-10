@@ -1,5 +1,6 @@
 
 from django.test import Client, TestCase
+from django.urls import reverse
 
 from customers.models import MaintenanceUser
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
@@ -25,6 +26,7 @@ class CreateUsersTestCase(TestCase):
                                 }, follow=True)
 
         self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('high_ui:home'))
         self.assertEqual(1, MaintenanceUser.objects.filter(email=email, first_name=first_name, last_name=last_name, company=company).count())
 
     def test_create_maintainer_with_form(self):
@@ -46,4 +48,5 @@ class CreateUsersTestCase(TestCase):
                                 }, follow=True)
 
         self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('high_ui:home'))
         self.assertEqual(1, MaintenanceUser.objects.filter(email=email, first_name=first_name, last_name=last_name, company__isnull=True).count())
