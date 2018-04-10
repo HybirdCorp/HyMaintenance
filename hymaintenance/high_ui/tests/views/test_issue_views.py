@@ -25,7 +25,7 @@ class IssueCreateViewTestCase(TestCase):
         client = Client()
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = client.post('/high_ui/issue/add/%s/' % company.pk,
+        response = client.post('/high_ui/issue/%s/add/' % company.slug_name,
                                {"consumer_who_ask": consumer.pk,
                                 "user_who_fix": user.pk,
                                 "incoming_channel": channel.pk,
@@ -60,7 +60,8 @@ class IssueUpdateViewTestCase(TestCase):
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
         cls.contract = MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)
         cls.issue = MaintenanceIssueFactory(company=cls.company, maintenance_type=cls.maintenance_type)
-        cls.url_post = reverse("high_ui:change_issue", args=[cls.issue.pk])
+        cls.url_post = reverse('high_ui:change_issue', kwargs={'company_name': cls.issue.company.slug_name,
+                                                               'company_issue_number': cls.issue.company_issue_number})
 
     def test_i_can_post_and_form_to_modify_a_issue(self):
         subject = "subject of the issue"
@@ -81,7 +82,8 @@ class IssueUpdateViewTestCase(TestCase):
                                 "duration": 2}, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, expected_url=reverse('high_ui:issue-details', args=[self.issue.pk]))
+        self.assertRedirects(response, expected_url=reverse('high_ui:issue-details', kwargs={'company_name': self.issue.company.slug_name,
+                                                            'company_issue_number': self.issue.company_issue_number}))
         self.assertEqual(1, MaintenanceIssue.objects.filter(company=self.company,
                                                             consumer_who_ask=self.consumer,
                                                             user_who_fix=self.user,
@@ -128,7 +130,8 @@ class IssueDetailViewTestCase(TestCase):
         issue = MaintenanceIssueFactory(company=first_company, maintenance_type=maintenance_type)
         client = Client()
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = client.get(reverse('high_ui:issue-details', args=[issue.pk]))
+        response = client.get(reverse('high_ui:issue-details', kwargs={'company_name': issue.company.slug_name,
+                                                                       'company_issue_number': issue.company_issue_number}))
 
         self.assertEqual(response.status_code, 200)
 
@@ -141,6 +144,6 @@ class IssueDetailViewTestCase(TestCase):
         issue = MaintenanceIssueFactory(company=black_mesa, maintenance_type=maintenance_type)
         client = Client()
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = client.get(reverse('high_ui:issue-details', args=[issue.pk]))
-
-        self.assertEqual(response.status_code, 404)
+        response = client.get(reverse('high_ui:issue-details', kwargs={'company_name': issue.company.slug_name,
+                                                                       'company_issue_number': issue.company_issue_number}))
+        self.assertEqual(response.status_code, 403)
