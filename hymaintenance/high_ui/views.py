@@ -123,7 +123,10 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
 class IssueDetailView(LoginRequiredMixin, DetailView):
     template_name = 'high_ui/issue_details.html'
     model = MaintenanceIssue
-    pk_url_kwarg = "pk"
+
+    def get_object(self):
+        company = Company.objects.filter(slug_name=self.kwargs.get('company_name')).first()
+        return MaintenanceIssue.objects.filter(company_issue_number=self.kwargs.get('company_issue_number'), company=company).first()
 
     def get_queryset(self):
         user = self.request.user
@@ -192,6 +195,10 @@ class UpdateIssueView(LoginRequiredMixin, UpdateView):
     template_name = "high_ui/forms/update_issue.html"
     model = MaintenanceIssue
 
+    def get_object(self):
+        company = Company.objects.filter(slug_name=self.kwargs.get('company_name')).first()
+        return MaintenanceIssue.objects.filter(company_issue_number=self.kwargs.get('company_issue_number'), company=company).first()
+
     def get_context_data(self, **kwargs):
         context = super(UpdateIssueView, self).get_context_data(**kwargs)
         context['channels'] = IncomingChannel.objects.all()
@@ -201,7 +208,8 @@ class UpdateIssueView(LoginRequiredMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('high_ui:issue-details', kwargs={'pk': self.object.id})
+        return reverse('high_ui:issue-details', kwargs={'company_name': self.object.company.slug_name,
+                                                        'company_issue_number': self.object.company_issue_number})
 
 
 class CreateConsumerView(LoginRequiredMixin, CreateViewWithCompany):

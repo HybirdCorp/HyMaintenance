@@ -25,14 +25,14 @@ urlpatterns = [
     path(r'project/<int:company_id>/change/', UpdateProjectView.as_view(),
          name='change_project'),
 
-    path(r'issue/<int:pk>/', IssueDetailView.as_view(),
-         name='issue-details'),
-
-    path(r'issue/<int:pk>/change/', UpdateIssueView.as_view(),
-         name='change_issue'),
-
     path(r'issue/add/<int:company_id>/', IssueCreateView.as_view(),
          name='company-add_issue'),
+
+    path(r'issue/<slug:company_name>/<int:company_issue_number>/', IssueDetailView.as_view(),
+         name='issue-details'),
+
+    path(r'issue/<slug:company_name>/<int:company_issue_number>/change/', UpdateIssueView.as_view(),
+         name='change_issue'),
 
     path(r'consumer/add/<int:company_id>/', CreateConsumerView.as_view(),
          name='company-add_consumer'),

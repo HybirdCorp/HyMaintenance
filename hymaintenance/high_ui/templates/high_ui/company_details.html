@@ -84,7 +84,7 @@
                             <td class="history-item-date">{{issue.date|date:"d/m"}}</td>
                             <td class="history-item-duration duration">{% pretty_print_minutes issue.number_minutes %}</td>
                             <td class="history-item-type"><div class="type-tag">{{issue.get_counter_name}}</div></td>
-                            <td class="history-item-summary"><a href="{% url 'high_ui:issue-details' pk=issue.id %}">{{issue.subject}}</a></td>
+                            <td class="history-item-summary"><a href="{% url 'high_ui:issue-details' company_issue_number=issue.company_issue_number company_name=issue.company.slug_name %}">{{issue.subject}}</a></td>
                         </tr>
                         {% endfor %}
                     </table>
