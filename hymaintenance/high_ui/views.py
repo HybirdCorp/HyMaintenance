@@ -180,12 +180,19 @@ class CreateViewWithCompany(CreateView):
         return self.company.get_absolute_url()
 
 
-class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):
+class CreateViewWithSlugCompanyName(CreateViewWithCompany):
+    pk_url_kwarg = "company_name"
+
+    def get_company(self):
+        return get_object_or_404(Company, slug_name=self.kwargs.get(self.pk_url_kwarg))
+
+
+class IssueCreateView(LoginRequiredMixin, CreateViewWithSlugCompanyName):
     form_class = MaintenanceIssueCreateForm
     template_name = "high_ui/forms/add_issue.html"
 
     def get_context_data(self, **kwargs):
-        context = super(IssueCreateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['channels'] = IncomingChannel.objects.all()
         return context
 
