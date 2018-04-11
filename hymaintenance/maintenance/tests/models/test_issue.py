@@ -4,7 +4,7 @@ from django.utils.timezone import now
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 
 from ...models import MaintenanceIssue
-from ..factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory, get_default_maintenance_type, create_project
+from ..factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory, create_project, get_default_maintenance_type
 
 
 class MaintenanceIssueTestCase(TestCase):
