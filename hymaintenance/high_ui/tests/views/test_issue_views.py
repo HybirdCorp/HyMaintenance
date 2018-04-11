@@ -3,8 +3,10 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
-from maintenance.models import MaintenanceIssue, MaintenanceType
-from maintenance.tests.factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceContractFactory, MaintenanceIssueFactory
+from maintenance.models import MaintenanceIssue
+from maintenance.tests.factories import (
+    IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceContractFactory, MaintenanceIssueFactory, get_default_maintenance_type
+)
 
 
 class IssueCreateViewTestCase(TestCase):
@@ -13,7 +15,7 @@ class IssueCreateViewTestCase(TestCase):
         user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                       password="azerty")
         company = CompanyFactory()
-        maintenance_type = MaintenanceType.objects.get(id=1)
+        maintenance_type = get_default_maintenance_type()
         channel = IncomingChannelFactory()
         consumer = MaintenanceConsumerFactory(company=company)
 
@@ -53,7 +55,7 @@ class IssueUpdateViewTestCase(TestCase):
         cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                           password="azerty")
         cls.company = CompanyFactory()
-        cls.maintenance_type = MaintenanceType.objects.get(id=1)
+        cls.maintenance_type = get_default_maintenance_type()
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
         cls.contract = MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)
@@ -121,7 +123,7 @@ class IssueDetailViewTestCase(TestCase):
     def test_user_can_seen_issues_of_this_company(self):
         first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
-        maintenance_type = MaintenanceType.objects.get(id=1)
+        maintenance_type = get_default_maintenance_type()
         MaintenanceContractFactory(company=first_company, maintenance_type=maintenance_type)
         issue = MaintenanceIssueFactory(company=first_company, maintenance_type=maintenance_type)
         client = Client()
@@ -134,7 +136,7 @@ class IssueDetailViewTestCase(TestCase):
         first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         black_mesa = CompanyFactory()
-        maintenance_type = MaintenanceType.objects.get(id=1)
+        maintenance_type = get_default_maintenance_type()
         MaintenanceContractFactory(company=black_mesa, maintenance_type=maintenance_type)
         issue = MaintenanceIssueFactory(company=black_mesa, maintenance_type=maintenance_type)
         client = Client()

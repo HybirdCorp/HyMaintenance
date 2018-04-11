@@ -3,15 +3,15 @@ from django.utils.timezone import now
 
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 
-from ...models import MaintenanceIssue, MaintenanceType
-from ..factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory
+from ...models import MaintenanceIssue
+from ..factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory, get_default_maintenance_type
 
 
 class MaintenanceIssueTestCase(TestCase):
 
     def test_i_can_create_a_maintenance_issue(self):
         company = CompanyFactory()
-        maintenance_type = MaintenanceType.objects.get(id=1)
+        maintenance_type = get_default_maintenance_type()
         channel = IncomingChannelFactory()
         user = MaintenanceUserFactory()
         consumer = MaintenanceConsumerFactory()
