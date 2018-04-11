@@ -10,21 +10,30 @@ class Company(models.Model):
                                            max_length=500)
     issues_counter = models.PositiveIntegerField(default=0)
 
+    __original_name = None
+
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse('high_ui:company-details', args=[self.pk])
 
+    # NOT SAFE if two namesake companies are created in the same time, it could raise IntegrityError on slug_name
+    def slugify_company_name(self):
+        slugified_name = slugify(self.name)
+        counter = 1
+        while(Company.objects.filter(slug_name=slugified_name)):
+            counter += 1
+            slugified_name = slugify(self.name) + str(counter)
+        return slugified_name
+
     def save(self, *args, **kwargs):
         if self.id is not None:
+            if self.__original_name != self.name:
+                self.slug_name = self.slugify_company_name()
+                super().save(update_fields=['name', 'maintenance_contact', 'slug_name'])
             super().save(update_fields=['name', 'maintenance_contact'])
         else:
-            # NOT SAFE if two namesake companies are created in the same time, it could raise IntegrityError on slug_name
-            slugified_name = slugify(self.name)
-            counter = 1
-            while(Company.objects.filter(slug_name=slugified_name)):
-                counter += 1
-                slugified_name = slugify(self.name) + str(counter)
-            self.slug_name = slugified_name
+            self.slug_name = self.slugify_company_name()
             super().save(*args, **kwargs)
+        self.__original_name = self.name
