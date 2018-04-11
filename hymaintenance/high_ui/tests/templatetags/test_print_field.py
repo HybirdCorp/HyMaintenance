@@ -1,8 +1,7 @@
 from django.test import SimpleTestCase, TestCase
 
 from customers.tests.factories import CompanyFactory
-from maintenance.models import MaintenanceType
-from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory
+from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory, get_default_maintenance_type
 
 from ...templatetags.print_fields import pretty_print_contract_counter, pretty_print_minutes
 
@@ -42,7 +41,7 @@ class PrettyPrintMinutesTestCase(SimpleTestCase):
 class PrettyPrintContractCounterTestCase(TestCase):
     def create_company_mtype_contract_and_issue(self, total_type):
         company = CompanyFactory()
-        maintenance_type = MaintenanceType.objects.get(id=1)
+        maintenance_type = get_default_maintenance_type()
         contract = MaintenanceContractFactory(company=company,
                                               maintenance_type=maintenance_type,
                                               number_hours=1,

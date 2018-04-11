@@ -5,9 +5,9 @@ from django.urls import reverse
 
 from customers.tests.factories import CompanyFactory, MaintenanceSuperUserFactory
 
-from ...models import MaintenanceType
 from ..factories import (
-    IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceContractFactory, MaintenanceCreditFactory, MaintenanceIssueFactory
+    IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceContractFactory, MaintenanceCreditFactory, MaintenanceIssueFactory,
+    get_default_maintenance_type
 )
 
 
@@ -37,7 +37,7 @@ class AdminMaintenanceViewTestCase(TestCase):
         client.login(username=user.email, password='password')
 
         company = CompanyFactory()
-        maintenance_type = MaintenanceType.objects.get(id=1)
+        maintenance_type = get_default_maintenance_type()
         contract = MaintenanceContractFactory(company=company,
                                               maintenance_type=maintenance_type,
                                               number_hours=2)

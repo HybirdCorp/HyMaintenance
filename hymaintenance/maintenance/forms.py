@@ -105,7 +105,7 @@ class ProjectForm(forms.Form):
 
 class ProjectCreateForm(ProjectForm):
     def __init__(self, *args, **kwargs):
-        maintenance_types = MaintenanceType.objects.all()
+        maintenance_types = MaintenanceType.objects.order_by("id")
         if not kwargs.get('initial'):
             kwargs['initial'] = {}
         kwargs['initial'].update({'contract1_counter_name': maintenance_types[0].name,

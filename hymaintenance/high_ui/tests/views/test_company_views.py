@@ -5,8 +5,8 @@ from django.utils.timezone import now
 from customers.models import Company
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 from high_ui.views import CompanyDetailView
-from maintenance.models import MaintenanceContract, MaintenanceType
-from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory
+from maintenance.models import MaintenanceContract
+from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory, get_default_maintenance_type
 
 
 class CreateCompanyViewTestCase(TestCase):
@@ -49,7 +49,7 @@ class CompanyDetailViewTestCase(TestCase):
 
 
 def create_mtype_maintenance_and_issue(maintenance_type_visibility, contract_visibility, company):
-        maintenance_type = MaintenanceType.objects.get(id=1)
+        maintenance_type = get_default_maintenance_type()
         maintenance_type.visibility = maintenance_type_visibility
         MaintenanceContract.objects.create(company=company,
                                            start=now().date(),

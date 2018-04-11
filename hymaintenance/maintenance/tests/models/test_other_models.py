@@ -12,7 +12,7 @@ class MaintenanceTypeTestCase(TestCase):
         self.assertEqual(1, MaintenanceType.objects.count())
 
     def test_str_is_good_for_maintenance_typ(self):
-        self.assertEqual("Maintenance", str(MaintenanceType.objects.first()))
+        self.assertEqual("Maintenance", str(MaintenanceType.objects.order_by("id").first()))
 
 
 class IncomingChannelTestCase(TestCase):
