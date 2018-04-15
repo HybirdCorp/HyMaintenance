@@ -32,6 +32,7 @@ class IssueCreateViewTestCase(TestCase):
                                           password="azerty")
         cls.tmp_directory = TemporaryDirectory(prefix="create-issue-view-", dir=os.path.join(settings.MEDIA_ROOT, 'upload/'))
         cls.company, contract1, _contract2, _contract3 = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
+        cls.user.operator_for.add(cls.company)
         cls.maintenance_type = contract1.maintenance_type
         MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)
         cls.channel = IncomingChannelFactory()
@@ -95,6 +96,20 @@ class IssueCreateViewTestCase(TestCase):
             self.assertEqual(test_file_content, open(issue.resolution_description_file.path, "rb").read())
             self.assertRedirects(response, self.company.get_absolute_url())
 
+    def test_operator_cannot_create_a_new_issue_for_a_company_he_doesnt_manage(self):
+        company = CompanyFactory()
+
+        subject = "subject of the issue"
+        description = "Description of the Issue"
+        dict_for_post = self.__get_dict_for_post(subject, description)
+
+        client = self.client
+        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+        response = client.post('/high_ui/issue/add/%s/' % company.pk, dict_for_post, follow=True)
+
+        self.assertEqual(response.status_code, 405)
+
 
 class IssueUpdateViewTestCase(TestCase):
 
@@ -125,6 +140,7 @@ class IssueUpdateViewTestCase(TestCase):
     def test_i_can_post_and_form_to_modify_a_issue(self):
         subject = "subject of the issue"
         description = "Description of the Issue"
+        self.user.operator_for.add(self.company)
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
@@ -150,6 +166,26 @@ class IssueUpdateViewTestCase(TestCase):
                                                             maintenance_type=self.maintenance_type,
                                                             number_minutes=120,
                                                             description=description).count())
+
+    def test_operator_cannot_modify_a_issue_of_company__he_doesnt_manage(self):
+        subject = "subject of the issue"
+        description = "Description of the Issue"
+
+        client = self.client
+        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+        response = client.post(self.url_post,
+                               {"consumer_who_ask": self.consumer.pk,
+                                "user_who_fix": self.user.pk,
+                                "incoming_channel": self.channel.pk,
+                                "subject": subject,
+                                "date": "2017-03-22",
+                                "maintenance_type": self.maintenance_type.pk,
+                                "description": description,
+                                "duration_type": "hours",
+                                "duration": 2}, follow=True)
+
+        self.assertEqual(response.status_code, 403)
 
     def test_i_cannot_post_and_form_to_modify_a_issue_unlog(self):
         subject = "subject of the issue"
@@ -185,6 +221,7 @@ class IssueDetailViewTestCase(TestCase):
         cls.company, contract1, _contract2, _contract3 = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
         cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                           password="azerty", company=cls.company)
+        cls.user.operator_for.add(cls.company)
         cls.maintenance_type = contract1.maintenance_type
         MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)
 
@@ -210,6 +247,17 @@ class IssueDetailViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(reverse('high_ui:issue-details', kwargs={'company_name': issue.company.slug_name,
                                                                             'company_issue_number': issue.company_issue_number}))
+        self.assertEqual(response.status_code, 403)
+
+    def test_operator_cannot_seen_issues_of_other_company(self):
+        black_mesa = CompanyFactory()
+        maintenance_type = get_default_maintenance_type()
+        MaintenanceContractFactory(company=black_mesa, maintenance_type=maintenance_type)
+        issue = MaintenanceIssueFactory(company=black_mesa, maintenance_type=maintenance_type)
+        client = self.client
+        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = client.get(reverse('high_ui:issue-details', kwargs={'company_name': issue.company.slug_name,
+                                                                       'company_issue_number': issue.company_issue_number}))
         self.assertEqual(response.status_code, 403)
 
     def test_user_can_seen_issue_context_attachment_of_this_company(self):

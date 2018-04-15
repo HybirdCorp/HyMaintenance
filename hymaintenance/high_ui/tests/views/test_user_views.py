@@ -8,9 +8,9 @@ from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 
 class CreateUsersTestCase(TestCase):
     def test_create_maintenance_manager_with_form(self):
-        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         company = CompanyFactory()
-
+        user.operator_for.add(company)
         client = Client()
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
@@ -30,9 +30,9 @@ class CreateUsersTestCase(TestCase):
         self.assertEqual(1, MaintenanceUser.objects.filter(email=email, first_name=first_name, last_name=last_name, company=company).count())
 
     def test_create_maintainer_with_form(self):
-        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         company = CompanyFactory()
-
+        user.operator_for.add(company)
         client = Client()
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 

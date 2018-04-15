@@ -10,6 +10,7 @@ from django.views.generic import CreateView, DetailView, FormView, TemplateView,
 
 from customers.forms import MaintenanceManagerCreateForm, MaintenanceUserCreateForm
 from customers.models import Company, MaintenanceUser
+from customers.models.user import get_companies_of_operator
 from maintenance.forms import (
     MaintenanceConsumerCreateForm, MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm, ProjectCreateForm, ProjectUpdateForm
 )
@@ -30,7 +31,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
         user = request.user
         if user.company is None:
             context = self.get_context_data(**kwargs)
-            context["companies"] = Company.objects.all().prefetch_related("maintenanceuser_set")
+            context["companies"] = get_companies_of_operator(user)
 
             # TODO prefetch the Company relations in one query for all companies:
             # 1) Company to its MaintenanceConsumers
@@ -54,7 +55,7 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         user = self.request.user
         if user.company:
             return Company.objects.filter(pk=user.company.pk)
-        return Company.objects.all()
+        return user.operator_for.order_by('id')
 
     def get_maintenance_contracts(self, company):
         user = self.request.user
@@ -131,7 +132,10 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
         # TODO is it better to return 404? with 403 the user can kown that the asked company issue exists
         # if 403 stays, maybe we have to design a custom forbidden access page ?
         user = self.request.user
-        if user.company == company or user.company is None:
+
+        if user.company == company:
+            return issue
+        if user.company is None and company in user.operator_for.all():
             return issue
         raise PermissionDenied
 
@@ -144,11 +148,16 @@ class CreateViewWithCompany(CreateView):
         return super(CreateViewWithCompany, self).dispatch(request, *args, **kwargs)
 
     def get_company(self):
+        user = self.request.user
         try:
             company = Company.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
         except Company.DoesNotExist:
             raise Http404(_("No %(verbose_name)s found matching the query") %
                           {'verbose_name': Company._meta.verbose_name})
+        if company not in user.operator_for.all():
+            raise Http404(_("No %(verbose_name)s found matching the query") %
+                          {'verbose_name': Company._meta.verbose_name})
+
         return company
 
     def get_form_kwargs(self):
@@ -192,6 +201,10 @@ class UpdateIssueView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         company = Company.objects.filter(slug_name=self.kwargs.get('company_name')).first()
         return MaintenanceIssue.objects.filter(company_issue_number=self.kwargs.get('company_issue_number'), company=company).first()
+
+    def get_queryset(self):
+        user = self.request.user
+        return MaintenanceIssue.objects.filter(company__in=user.operator_for.all())
 
     def get_context_data(self, **kwargs):
         context = super(UpdateIssueView, self).get_context_data(**kwargs)
@@ -262,7 +275,7 @@ class CreateProjectView(FormView):
         return context
 
     def form_valid(self, form):
-        form.create_company_and_contracts()
+        form.create_company_and_contracts(self.request.user)
         return super().form_valid(form)
 
 
