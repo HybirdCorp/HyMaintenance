@@ -24,3 +24,7 @@ class MaintenanceSuperUserFactory(MaintenanceUserFactory):
     is_staff = True
     is_superuser = True
     is_active = True
+
+
+class OperatorUserFactory(MaintenanceUserFactory):
+    is_staff = True

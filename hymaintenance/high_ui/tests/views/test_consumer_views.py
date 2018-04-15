@@ -9,8 +9,9 @@ from maintenance.models import MaintenanceConsumer
 class CreateConsumerViewTestCase(TestCase):
 
     def test_create_maintenance_consumer_with_form(self):
-        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         company = CompanyFactory()
+        user.operator_for.add(company)
 
         name = "New consumer name for company %s" % company.pk
         assert len(name) < 255

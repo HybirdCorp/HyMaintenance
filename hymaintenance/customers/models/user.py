@@ -67,6 +67,9 @@ class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
 
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.PROTECT)
 
+    operator_for = models.ManyToManyField(Company, blank=True, verbose_name=_("Managed Companies"),
+                                          related_name="managed_by")
+
     objects = MaintenanceUserManager()
 
     USERNAME_FIELD = 'email'
@@ -85,3 +88,7 @@ class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
 def get_full_name(*, first_name: str, last_name: str) -> str:
     full_name = '%s %s' % (first_name, last_name)
     return full_name.strip()
+
+
+def get_companies_of_operator(operator):
+    return operator.operator_for.order_by('id').prefetch_related("maintenanceuser_set")

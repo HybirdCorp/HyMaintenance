@@ -1,4 +1,4 @@
-from django.test import Client, RequestFactory, TestCase
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from django.utils.timezone import now
 
@@ -12,7 +12,7 @@ class CompanyDetailViewTestCase(TestCase):
     def test_customer_user_can_seen_this_company(self):
         first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
-        client = Client()
+        client = self.client
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = client.get(reverse('high_ui:company-details', args=[first_company.pk]))
 
@@ -22,7 +22,16 @@ class CompanyDetailViewTestCase(TestCase):
         first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         black_mesa = CompanyFactory()
-        client = Client()
+        client = self.client
+        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = client.get(reverse('high_ui:company-details', args=[black_mesa.pk]))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_operator_user_cannot_seen_other_company(self):
+        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        black_mesa = CompanyFactory()
+        client = self.client
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = client.get(reverse('high_ui:company-details', args=[black_mesa.pk]))
 
@@ -44,11 +53,12 @@ def create_mtype_maintenance_and_issue(maintenance_type_visibility, contract_vis
 
 class MonthDisplayInFrenchTestCase(TestCase):
     def test_month_display_in_french(self):
-        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         company = CompanyFactory()
+        user.operator_for.add(company)
         MaintenanceContractFactory(company=company)
 
-        client = Client()
+        client = self.client
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
         response = client.get(reverse('high_ui:company-details', args=[company.pk]))

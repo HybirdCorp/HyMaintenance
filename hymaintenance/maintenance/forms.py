@@ -131,9 +131,14 @@ class ProjectCreateForm(ProjectForm):
             raise forms.ValidationError(_("This company already exists"))
         return company_name
 
-    def create_company_and_contracts(self):
+    def create_company_and_contracts(self, operator=None):
         company_name = self.cleaned_data['company_name']
         company = Company.objects.create(name=company_name)
+        if operator:
+            operator.operator_for.add(company)
+        else:
+            for operator in company.managed_by.all():
+                operator.operator_for.add(company)
         maintenance_types = MaintenanceType.objects.order_by("id")
 
         form_contract1_visible = self.cleaned_data['contract1_visible']
