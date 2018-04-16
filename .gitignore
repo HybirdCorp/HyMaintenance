@@ -91,3 +91,7 @@ ENV/
 
 # pycharm ide
 .idea/
+
+# issues attachments folder
+hymaintenance/uploads/*
+!hymaintenance/uploads/.placeholder
