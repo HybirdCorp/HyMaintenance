@@ -42,6 +42,8 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
 
         self.fields["consumer_who_ask"].queryset = self.company.maintenanceconsumer_set
         self.fields["user_who_fix"].choices = MaintenanceUser.objects.get_maintainers_choices()
+        self.fields["context_description_file"].required = False
+        self.fields["resolution_description_file"].required = False
 
     def clean_duration_type(self):
         duration_type = self.cleaned_data['duration_type']
