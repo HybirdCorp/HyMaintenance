@@ -143,4 +143,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = 'maintenance/media'
+MEDIA_URL = '/media/'
+
 INTERNAL_IPS = ['127.0.0.1']

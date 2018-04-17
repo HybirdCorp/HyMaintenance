@@ -1,4 +1,4 @@
-{% load i18n print_fields %}
+{% load i18n print_fields print_files %}
 
 <!DOCTYPE html>
 <html>
@@ -40,6 +40,12 @@
                     <span class="property-key">Détails</span>
                     <span class="property-value">{{object.description|linebreaksbr}}</span>
                 </div>
+                {% if object.context_description_file %}
+                <div class="property-container">
+                    <span class="property-key">Pièce jointe</span>
+                    <a class="property-value" href="{{object.context_description_file.url}}" target="_blank">{{object.context_description_file|file_name}}</a>
+                </div>
+                {% endif %}
             </div>
 
             <div class="container resolution-container {{object.maintenance_type.css_class}}">
@@ -72,6 +78,12 @@
                     <span class="property-key">Commentaire</span>
                     <span class="property-value">{{object.answer|linebreaksbr}}</span>
                 </div>
+                {% if object.resolution_description_file %}
+                <div class="property-container">
+                    <span class="property-key">Pièce jointe</span>
+                    <a class="property-value" href="{{object.resolution_description_file.url}}" target="_blank">{{object.resolution_description_file|file_name}}</a>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
