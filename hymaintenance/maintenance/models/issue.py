@@ -1,3 +1,6 @@
+import os
+
+from django.conf import settings
 from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _
 
@@ -8,7 +11,11 @@ from .other_models import IncomingChannel, MaintenanceType
 
 
 def _get_file_path(instance, filename):
-    return '/'.join(['uploads', instance.company.slug_name, "issue-" + str(instance.company_issue_number), filename])
+    file_path = os.path.join(*['upload', instance.company.slug_name, "issue-" + str(instance.company_issue_number), filename])
+    print(os.path.join(settings.MEDIA_ROOT, file_path))
+    if os.path.exists(os.path.join(*[settings.MEDIA_ROOT, file_path])):
+        file_path = os.path.join(*['upload', instance.company.slug_name, "issue-" + str(instance.company_issue_number), "2-" + filename])
+    return file_path
 
 
 class MaintenanceIssue(models.Model):

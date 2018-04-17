@@ -1,6 +1,7 @@
 import datetime
 
 from django import forms
+from django.forms.widgets import ClearableFileInput
 from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company, MaintenanceUser
@@ -15,6 +16,10 @@ def duration_in_minutes(duration, duration_type):
     if duration_type == "hours":
         duration *= 60
     return duration
+
+
+class AttachmentInput(ClearableFileInput):
+    template_name = 'maintenance/forms/widgets/attachment.html'
 
 
 # TODO: limit the "user_who_fix" choices to valid MaintenanceUsers
@@ -34,6 +39,8 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
             'answer': forms.Textarea(attrs={'rows': 4}),
             'incoming_channel': forms.HiddenInput(),
             'maintenance_type': forms.HiddenInput(),
+            'context_description_file': AttachmentInput,
+            'resolution_description_file': AttachmentInput,
         }
 
     def __init__(self, *args, **kwargs):
@@ -58,6 +65,11 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
 
         number_minutes = duration_in_minutes(form_data['duration'], form_data['duration_type'])
         self.instance.number_minutes = number_minutes
+
+        if form_data['context_description_file']:
+            self.instance.context_orginal_file_name = form_data['context_description_file'].name
+        if form_data['resolution_description_file']:
+            self.instance.resolution_original_file_name = form_data['resolution_description_file'].name
         return super(MaintenanceIssueCreateForm, self).save(commit)
 
 

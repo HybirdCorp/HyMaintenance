@@ -93,5 +93,5 @@ ENV/
 .idea/
 
 # issues attachments folder
-hymaintenance/uploads/*
-!hymaintenance/uploads/.placeholder
+hymaintenance/maintenance/media/*
+!hymaintenance/maintenance/media/upload/.placeholder
