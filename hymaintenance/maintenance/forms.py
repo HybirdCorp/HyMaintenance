@@ -70,6 +70,8 @@ class MaintenanceIssueUpdateForm(MaintenanceIssueCreateForm):
         self.fields["user_who_fix"].choices = MaintenanceUser.objects.get_maintainers_choices()
         self.fields["duration_type"].initial = "minutes"
         self.fields["duration"].initial = self.instance.number_minutes
+        self.fields["context_description_file"].required = False
+        self.fields["resolution_description_file"].required = False
 
 
 class MaintenanceConsumerCreateForm(forms.ModelForm):

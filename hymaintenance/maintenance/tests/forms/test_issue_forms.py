@@ -105,7 +105,7 @@ class IssueUpdateFormTestCase(TestCase):
         cls.maintenance_type = get_default_maintenance_type()
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
-        cls.issue = MaintenanceIssueFactory(company=cls.company)
+        cls.issue = MaintenanceIssueFactory(company=cls.company, maintenance_type=cls.maintenance_type)
 
     def __get_dict_for_post(self, subject, description):
         return {"consumer_who_ask": self.consumer.pk,
