@@ -12,7 +12,6 @@ from .other_models import IncomingChannel, MaintenanceType
 
 def _get_file_path(instance, filename):
     file_path = os.path.join(*['upload', instance.company.slug_name, "issue-" + str(instance.company_issue_number), filename])
-    print(os.path.join(settings.MEDIA_ROOT, file_path))
     if os.path.exists(os.path.join(*[settings.MEDIA_ROOT, file_path])):
         file_path = os.path.join(*['upload', instance.company.slug_name, "issue-" + str(instance.company_issue_number), "2-" + filename])
     return file_path
