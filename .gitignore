@@ -94,4 +94,8 @@ ENV/
 
 # issues attachments folder
 hymaintenance/maintenance/media/*
-!hymaintenance/maintenance/media/upload/.placeholder
+!hymaintenance/maintenance/media/upload
+hymaintenance/maintenance/media/upload/*
+
+# don't ignore git keep file
+!.keep
