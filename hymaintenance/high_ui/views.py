@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DetailView, FormView, TemplateView, UpdateView
 
-from customers.forms import CompanyCreateForm, MaintenanceManagerCreateForm, MaintenanceUserCreateForm
+from customers.forms import MaintenanceManagerCreateForm, MaintenanceUserCreateForm
 from customers.models import Company, MaintenanceUser
 from maintenance.forms import (
     MaintenanceConsumerCreateForm, MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm, ProjectCreateForm, ProjectUpdateForm
@@ -134,20 +134,6 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
         if user.company == company or user.company is None:
             return issue
         raise PermissionDenied
-
-
-# DEPRECATED use CreateProject instead
-class CreateCompanyView(LoginRequiredMixin, CreateView):
-    form_class = CompanyCreateForm
-    template_name = "high_ui/forms/add_company.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(CreateCompanyView, self).get_context_data(**kwargs)
-        # TMP: companies should be linked to the current "maintenance provider"
-        context['companies_count'] = Company.objects.all().count()
-        context["companies"] = Company.objects.all().prefetch_related("maintenanceuser_set")
-        context["maintainers"] = MaintenanceUser.objects.get_maintainers_queryset()
-        return context
 
 
 class CreateViewWithCompany(CreateView):
