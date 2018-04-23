@@ -3,8 +3,8 @@
 from django.urls import path
 
 from .views import (
-    CompanyDetailView, CreateCompanyView, CreateConsumerView, CreateMaintainerView, CreateManagerView, CreateProjectView, HomeView, IssueCreateView,
-    IssueDetailView, UpdateIssueView, UpdateProjectView
+    CompanyDetailView, CreateConsumerView, CreateMaintainerView, CreateManagerView, CreateProjectView, HomeView, IssueCreateView, IssueDetailView,
+    UpdateIssueView, UpdateProjectView
 )
 
 
@@ -14,10 +14,6 @@ urlpatterns = [
     path(r'', HomeView.as_view(), name='home'),
     path(r'company/<int:pk>/', CompanyDetailView.as_view(),
          name='company-details'),
-
-    # DEPRECATED use CreateProject instead
-    path(r'company/add/', CreateCompanyView.as_view(),
-         name='add_company'),
 
     path(r'project/add/', CreateProjectView.as_view(),
          name='add_project'),
