@@ -16,6 +16,13 @@ from maintenance.tests.factories import (
 from ...forms import MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm, duration_in_minutes
 
 
+def create_temporary_file(content):
+    context_file = NamedTemporaryFile(delete=True)
+    context_file.write(content)
+    context_file.flush()
+    return open(context_file.name, "rb")
+
+
 class DurationFunctionTestCase(TestCase):
 
     def test_when_i_pass_hours_duration_time(self):
@@ -48,12 +55,6 @@ class IssueCreateFormTestCase(TestCase):
                 "description": description,
                 "duration_type": "hours",
                 "duration": 2}
-
-    def __create_temporary_file(self, content):
-        context_file = NamedTemporaryFile()
-        context_file.write(content)
-        context_file.flush()
-        return open(context_file.name, "rb")
 
     def test_all_required_fields_by_sending_a_empty_create_form(self):
         form = MaintenanceIssueCreateForm(company=self.company, data={})
@@ -107,7 +108,7 @@ class IssueCreateFormTestCase(TestCase):
         expected = _("Enter a whole number.")
         self.assertEqual(form.errors['duration'], [expected])
 
-    def test_when_i_send_all_required_field_if_create_form_works(self):
+    def test_if_create_form_works_when_i_send_all_required_field(self):
         subject = "subject of the issue"
         description = None
         dict_for_post = self.__get_dict_for_post(subject, description)
@@ -125,12 +126,12 @@ class IssueCreateFormTestCase(TestCase):
         self.assertEqual(self.maintenance_type, issues.first().maintenance_type)
         self.assertEqual(120, issues.first().number_minutes)
 
-    def test_when_i_send_a_attachment_if_create_form_works(self):
+    def test_if_create_form_works_when_i_send_a_attachment(self):
         subject = "subject of the issue"
         description = "Description of the Issue"
         dict_for_post = self.__get_dict_for_post(subject, description)
 
-        dict_for_post['context_description_file'] = self.__create_temporary_file(b"I'm not empty")
+        dict_for_post['context_description_file'] = create_temporary_file(b"I'm not empty")
 
         form = MaintenanceIssueCreateForm(company=self.company, data=dict_for_post, files={
             'context_description_file': SimpleUploadedFile('context_file_name', dict_for_post['context_description_file'].read())})
@@ -143,14 +144,15 @@ class IssueCreateFormTestCase(TestCase):
         issue = issues.first()
         self.assertTrue(os.path.exists(issue.context_description_file.path))
         self.assertEqual(b"I'm not empty", open(issue.context_description_file.path, "rb").read())
+        os.remove(issue.context_description_file.path)
 
-    def test_when_i_send_two_attachment_if_create_form_works(self):
+    def test_if_create_form_works_when_i_send_two_attachments(self):
         subject = "subject of the issue"
         description = "Description of the Issue"
         dict_for_post = self.__get_dict_for_post(subject, description)
 
-        dict_for_post['context_description_file'] = self.__create_temporary_file(b"I'm not empty")
-        dict_for_post['resolution_description_file'] = self.__create_temporary_file(b"I'm not empty")
+        dict_for_post['context_description_file'] = create_temporary_file(b"I'm not empty")
+        dict_for_post['resolution_description_file'] = create_temporary_file(b"I'm not empty")
 
         form = MaintenanceIssueCreateForm(company=self.company, data=dict_for_post, files={
             'context_description_file': SimpleUploadedFile('context_file_name', dict_for_post['context_description_file'].read()),
@@ -166,14 +168,16 @@ class IssueCreateFormTestCase(TestCase):
         self.assertEqual(b"I'm not empty", open(issue.context_description_file.path, "rb").read())
         self.assertTrue(os.path.exists(issue.resolution_description_file.path))
         self.assertEqual(b"I'm not empty", open(issue.resolution_description_file.path, "rb").read())
+        os.remove(issue.context_description_file.path)
+        os.remove(issue.resolution_description_file.path)
 
-    def test_when_i_send_two_attachment_with_same_name_if_create_form_works(self):
+    def test_if_create_form_works_when_i_send_two_attachments_with_same_name(self):
         subject = "subject of the issue"
         description = "Description of the Issue"
         dict_for_post = self.__get_dict_for_post(subject, description)
 
-        dict_for_post['context_description_file'] = self.__create_temporary_file(b"I'm not empty")
-        dict_for_post['resolution_description_file'] = self.__create_temporary_file(b"I'm not empty")
+        dict_for_post['context_description_file'] = create_temporary_file(b"I'm not empty")
+        dict_for_post['resolution_description_file'] = create_temporary_file(b"I'm not empty")
 
         form = MaintenanceIssueCreateForm(company=self.company, data=dict_for_post, files={
             'context_description_file': SimpleUploadedFile('same_file_name', dict_for_post['context_description_file'].read()),
@@ -191,6 +195,8 @@ class IssueCreateFormTestCase(TestCase):
         self.assertTrue(os.path.exists(issue.resolution_description_file.path))
         self.assertEqual(b"I'm not empty", open(issue.resolution_description_file.path, "rb").read())
         self.assertEqual("2-same_file_name", os.path.basename(issue.resolution_description_file.path))
+        os.remove(issue.context_description_file.path)
+        os.remove(issue.resolution_description_file.path)
 
 
 class IssueUpdateFormTestCase(TestCase):
@@ -199,9 +205,10 @@ class IssueUpdateFormTestCase(TestCase):
     def setUpTestData(cls):
         cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
                                           password="azerty")
-
-        cls.company = CompanyFactory()
+        cls.temp_directory = TemporaryDirectory(prefix="update-issue-form-", dir=os.path.join(*[settings.MEDIA_ROOT, 'upload/']))
+        cls.company = CompanyFactory(name=os.path.basename(cls.temp_directory.name))
         cls.maintenance_type = get_default_maintenance_type()
+        MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
         cls.issue = MaintenanceIssueFactory(company=cls.company, maintenance_type=cls.maintenance_type)
@@ -284,3 +291,112 @@ class IssueUpdateFormTestCase(TestCase):
                                                             maintenance_type=self.maintenance_type,
                                                             number_minutes=120,
                                                             description=description).count())
+
+    def test_if_update_form_works_when_i_send_a_attachment(self):
+        subject = "subject of the issue"
+        description = "Description of the Issue"
+        dict_for_post = self.__get_dict_for_post(subject, description)
+
+        dict_for_post['context_description_file'] = create_temporary_file(b"I'm not empty")
+
+        form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post, files={
+            'context_description_file': SimpleUploadedFile('context_file_name', dict_for_post['context_description_file'].read())})
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        issues = MaintenanceIssue.objects.filter(company=self.company,
+                                                 subject=subject,
+                                                 description=description)
+        self.assertEqual(1, issues.count())
+        issue = issues.first()
+        self.assertTrue(os.path.exists(issue.context_description_file.path))
+        self.assertEqual(b"I'm not empty", open(issue.context_description_file.path, "rb").read())
+        os.remove(issue.context_description_file.path)
+
+    def test_if_update_form_works_when_i_send_two_attachments(self):
+        subject = "subject of the issue"
+        description = "Description of the Issue"
+        dict_for_post = self.__get_dict_for_post(subject, description)
+
+        dict_for_post['context_description_file'] = create_temporary_file(b"I'm not empty")
+        dict_for_post['resolution_description_file'] = create_temporary_file(b"I'm not empty")
+
+        form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post, files={
+            'context_description_file': SimpleUploadedFile('context_file_name', dict_for_post['context_description_file'].read()),
+            'resolution_description_file': SimpleUploadedFile('resolution_file_name', dict_for_post['resolution_description_file'].read())})
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        issues = MaintenanceIssue.objects.filter(company=self.company,
+                                                 subject=subject,
+                                                 description=description)
+        self.assertEqual(1, issues.count())
+        issue = issues.first()
+        self.assertTrue(os.path.exists(issue.context_description_file.path))
+        self.assertEqual(b"I'm not empty", open(issue.context_description_file.path, "rb").read())
+        self.assertTrue(os.path.exists(issue.resolution_description_file.path))
+        self.assertEqual(b"I'm not empty", open(issue.resolution_description_file.path, "rb").read())
+        os.remove(issue.context_description_file.path)
+        os.remove(issue.resolution_description_file.path)
+
+    def test_if_update_form_works_when_i_send_two_attachment_with_same_name(self):
+        subject = "subject of the issue"
+        description = "Description of the Issue"
+        dict_for_post = self.__get_dict_for_post(subject, description)
+
+        dict_for_post['context_description_file'] = create_temporary_file(b"I'm not empty")
+        dict_for_post['resolution_description_file'] = create_temporary_file(b"I'm not empty")
+
+        form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post, files={
+            'context_description_file': SimpleUploadedFile('same_file_name', dict_for_post['context_description_file'].read()),
+            'resolution_description_file': SimpleUploadedFile('same_file_name', dict_for_post['resolution_description_file'].read())})
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        issues = MaintenanceIssue.objects.filter(company=self.company,
+                                                 subject=subject,
+                                                 description=description)
+        self.assertEqual(1, issues.count())
+        issue = issues.first()
+        self.assertTrue(os.path.exists(issue.context_description_file.path))
+        self.assertEqual(b"I'm not empty", open(issue.context_description_file.path, "rb").read())
+        self.assertEqual("same_file_name", os.path.basename(issue.context_description_file.path))
+        self.assertTrue(os.path.exists(issue.resolution_description_file.path))
+        self.assertEqual(b"I'm not empty", open(issue.resolution_description_file.path, "rb").read())
+        self.assertEqual("2-same_file_name", os.path.basename(issue.resolution_description_file.path))
+        os.remove(issue.context_description_file.path)
+        os.remove(issue.resolution_description_file.path)
+
+    def test_if_update_form_works_when_i_modify_all_attachments(self):
+        subject = "subject of the issue"
+        description = "Description of the Issue"
+        dict_for_post = self.__get_dict_for_post(subject, description)
+
+        dict_for_post['context_description_file'] = create_temporary_file(b"I'm not empty")
+        dict_for_post['resolution_description_file'] = create_temporary_file(b"I'm not empty")
+
+        form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post, files={
+            'context_description_file': SimpleUploadedFile('same_file_name', dict_for_post['context_description_file'].read()),
+            'resolution_description_file': SimpleUploadedFile('same_file_name', dict_for_post['resolution_description_file'].read())})
+        form.is_valid()
+        form.save()
+
+        dict_for_post['context_description_file'] = create_temporary_file(b"I'm not empty")
+        dict_for_post['resolution_description_file'] = create_temporary_file(b"I'm not empty")
+
+        form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post, files={
+            'context_description_file': SimpleUploadedFile('same_file_name', dict_for_post['context_description_file'].read()),
+            'resolution_description_file': SimpleUploadedFile('same_file_name', dict_for_post['resolution_description_file'].read())})
+
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        issues = MaintenanceIssue.objects.filter(company=self.company,
+                                                 subject=subject,
+                                                 description=description)
+        self.assertEqual(1, issues.count())
+        issue = issues.first()
+        self.assertTrue(os.path.exists(issue.context_description_file.path))
+        self.assertEqual(b"I'm not empty", open(issue.context_description_file.path, "rb").read())
+        self.assertEqual("same_file_name", os.path.basename(issue.context_description_file.path))
+        self.assertTrue(os.path.exists(issue.resolution_description_file.path))
+        self.assertEqual(b"I'm not empty", open(issue.resolution_description_file.path, "rb").read())
+        self.assertEqual("2-same_file_name", os.path.basename(issue.resolution_description_file.path))
+        os.remove(issue.context_description_file.path)
+        os.remove(issue.resolution_description_file.path)
