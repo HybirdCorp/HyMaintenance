@@ -66,11 +66,7 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
         number_minutes = duration_in_minutes(form_data['duration'], form_data['duration_type'])
         self.instance.number_minutes = number_minutes
 
-        if form_data['context_description_file']:
-            self.instance.context_orginal_file_name = form_data['context_description_file'].name
-        if form_data['resolution_description_file']:
-            self.instance.resolution_original_file_name = form_data['resolution_description_file'].name
-        return super(MaintenanceIssueCreateForm, self).save(commit)
+        return super().save(commit)
 
 
 class MaintenanceIssueUpdateForm(MaintenanceIssueCreateForm):
