@@ -17,10 +17,10 @@ from ...forms import MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm, dur
 
 
 def create_temporary_file(content):
-    context_file = NamedTemporaryFile(delete=True)
-    context_file.write(content)
-    context_file.flush()
-    return open(context_file.name, "rb")
+    tmp_file = NamedTemporaryFile(delete=True)
+    tmp_file.write(content)
+    tmp_file.flush()
+    return open(tmp_file.name, "rb")
 
 
 class DurationFunctionTestCase(TestCase):
