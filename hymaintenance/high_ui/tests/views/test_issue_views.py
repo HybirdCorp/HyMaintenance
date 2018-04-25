@@ -1,6 +1,6 @@
-
 import os
 from tempfile import NamedTemporaryFile, TemporaryDirectory
+from urllib.parse import urljoin
 
 from django.conf import settings
 from django.test import Client, TestCase
@@ -12,6 +12,13 @@ from maintenance.models import MaintenanceIssue
 from maintenance.tests.factories import (
     IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceContractFactory, MaintenanceIssueFactory, get_default_maintenance_type
 )
+
+
+def create_temporary_file(content, directory=None):
+    tmp_file = NamedTemporaryFile(dir=directory, delete=True)
+    tmp_file.write(content)
+    tmp_file.flush()
+    return open(tmp_file.name, "rb")
 
 
 class IssueCreateViewTestCase(TestCase):
@@ -64,14 +71,10 @@ class IssueCreateViewTestCase(TestCase):
         description = "Description of the Issue"
 
         dict_for_post = self.__get_dict_for_post(subject, description)
-        context_file = NamedTemporaryFile()
-        context_file.write(b"I'm not empty")
-        context_file.flush()
-        resolution_file = NamedTemporaryFile()
-        resolution_file.write(b"I'm not empty")
-        resolution_file.flush()
-        dict_for_post['context_description_file'] = open(context_file.name, "rb")
-        dict_for_post['resolution_description_file'] = open(resolution_file.name, "rb")
+        context_file = create_temporary_file(b"I'm not empty")
+        resolution_file = create_temporary_file(b"I'm not empty")
+        dict_for_post['context_description_file'] = context_file
+        dict_for_post['resolution_description_file'] = resolution_file
 
         response = self.client.post('/high_ui/issue/%s/add/' % self.company.slug_name,
                                     dict_for_post, follow=True)
@@ -89,8 +92,8 @@ class IssueCreateViewTestCase(TestCase):
         issue = issues.first()
         self.assertTrue(os.path.exists(issue.context_description_file.path))
         self.assertTrue(os.path.exists(issue.resolution_description_file.path))
-        self.assertEqual(open(context_file.name, "rb").read(), open(issue.context_description_file.path, "rb").read())
-        self.assertEqual(open(resolution_file.name, "rb").read(), open(issue.resolution_description_file.path, "rb").read())
+        self.assertEqual(b"I'm not empty", open(issue.context_description_file.path, "rb").read())
+        self.assertEqual(b"I'm not empty", open(issue.resolution_description_file.path, "rb").read())
 
 
 class IssueUpdateViewTestCase(TestCase):
@@ -192,3 +195,41 @@ class IssueDetailViewTestCase(TestCase):
         response = client.get(reverse('high_ui:issue-details', kwargs={'company_name': issue.company.slug_name,
                                                                        'company_issue_number': issue.company_issue_number}))
         self.assertEqual(response.status_code, 403)
+
+    def test_user_can_seen_issue_context_attachment_of_this_company(self):
+        temp_directory = TemporaryDirectory(prefix="details-issue-view-", dir=os.path.join(*[settings.MEDIA_ROOT, 'upload/']))
+        context_file = create_temporary_file(b"I'm not empty", temp_directory.name)
+        context_file_path = os.path.join(*['upload/', os.path.basename(temp_directory.name), os.path.basename(context_file.name)])
+
+        company = CompanyFactory(name=os.path.basename(temp_directory.name))
+        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=company)
+        maintenance_type = get_default_maintenance_type()
+        MaintenanceContractFactory(company=company, maintenance_type=maintenance_type)
+        issue = MaintenanceIssueFactory(company=company, maintenance_type=maintenance_type,
+                                        context_description_file=context_file_path)
+        client = Client()
+        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = client.get(reverse('high_ui:issue-details', kwargs={'company_name': issue.company.slug_name,
+                                                                       'company_issue_number': issue.company_issue_number}))
+
+        self.assertContains(response, os.path.basename(issue.context_description_file.name))
+        self.assertContains(response, urljoin(settings.MEDIA_URL, issue.context_description_file.name))
+
+    def test_user_can_seen_issue_resolution_attachment_of_this_company(self):
+        temp_directory = TemporaryDirectory(prefix="details-issue-view-", dir=os.path.join(*[settings.MEDIA_ROOT, 'upload/']))
+        resolution_file = create_temporary_file(b"I'm not empty", temp_directory.name)
+        resolution_file_path = os.path.join(*['upload/', os.path.basename(temp_directory.name), os.path.basename(resolution_file.name)])
+
+        company = CompanyFactory(name=os.path.basename(temp_directory.name))
+        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=company)
+        maintenance_type = get_default_maintenance_type()
+        MaintenanceContractFactory(company=company, maintenance_type=maintenance_type)
+        issue = MaintenanceIssueFactory(company=company, maintenance_type=maintenance_type,
+                                        resolution_description_file=resolution_file_path)
+        client = Client()
+        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = client.get(reverse('high_ui:issue-details', kwargs={'company_name': issue.company.slug_name,
+                                                                       'company_issue_number': issue.company_issue_number}))
+
+        self.assertContains(response, os.path.basename(issue.resolution_description_file.name))
+        self.assertContains(response, urljoin(settings.MEDIA_URL, issue.resolution_description_file.name))
