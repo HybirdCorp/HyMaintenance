@@ -37,8 +37,8 @@ class MaintenanceIssue(models.Model):
     resolution_date = models.DateTimeField(null=True, blank=True)
     shipping_date = models.DateTimeField(null=True, blank=True)
     answer = models.TextField(null=True, blank=True)
-    context_description_file = models.FileField(null=True, upload_to=_get_file_path)
-    resolution_description_file = models.FileField(null=True, upload_to=_get_file_path)
+    context_description_file = models.FileField(null=True, max_length=200, upload_to=_get_file_path)
+    resolution_description_file = models.FileField(null=True, max_length=200, upload_to=_get_file_path)
 
     fields_for_form = ('consumer_who_ask', 'user_who_fix', 'incoming_channel',
                        'subject', 'date', 'maintenance_type', 'description',
