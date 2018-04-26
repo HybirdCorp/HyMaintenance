@@ -1,3 +1,8 @@
+import os
+from tempfile import TemporaryDirectory, TemporaryFile
+
+from django.conf import settings
+from django.core.files import File
 from django.test import TestCase
 from django.utils.timezone import now
 
@@ -53,3 +58,27 @@ class MaintenanceIssueTestCase(TestCase):
         issue = MaintenanceIssueFactory(company=company2,
                                         maintenance_type=contract4.maintenance_type)
         self.assertEqual(1, issue.company_issue_number)
+
+    def test_upload_to_function(self):
+        company, contract1, _contract2, _contract3 = create_project()
+        issue = MaintenanceIssueFactory(company=company,
+                                        maintenance_type=contract1.maintenance_type)
+        self.assertEqual(
+            os.path.join("upload", company.slug_name, "issue-" + str(issue.company_issue_number), "my_file"),
+            issue._meta.get_field('context_description_file').generate_filename(issue, "my_file"))
+
+    def test_upload_to_function_when_a_same_named_file_already_exists(self):
+        tmp_directory = TemporaryDirectory(prefix="test-issue-", dir=os.path.join(*[settings.MEDIA_ROOT, 'upload/']))
+        company, contract1, _contract2, _contract3 = create_project(company={"name": os.path.basename(tmp_directory.name)})
+
+        issue = MaintenanceIssueFactory(company=company,
+                                        maintenance_type=contract1.maintenance_type)
+        with TemporaryFile() as fp:
+            issue.context_description_file.save('my_file', File(fp), save=True)
+            issue.resolution_description_file.save('my_file', File(fp), save=True)
+            self.assertEqual(
+                os.path.join("upload", company.slug_name, "issue-" + str(issue.company_issue_number), "my_file"),
+                issue.context_description_file.name)
+            self.assertEqual(
+                os.path.join("upload", company.slug_name, "issue-" + str(issue.company_issue_number), "2-" + "my_file"),
+                issue.resolution_description_file.name)
