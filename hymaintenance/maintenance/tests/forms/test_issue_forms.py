@@ -204,7 +204,7 @@ class IssueCreateFormTestCase(TestCase):
             self.assertEqual("same_file_name", os.path.basename(issue.context_description_file.path))
             self.assertTrue(os.path.exists(issue.resolution_description_file.path))
             self.assertEqual(test_file_content, open(issue.resolution_description_file.path, "rb").read())
-            self.assertEqual("2-same_file_name", os.path.basename(issue.resolution_description_file.path))
+            self.assertEqual("same_file_name", os.path.basename(issue.resolution_description_file.path))
             os.remove(issue.context_description_file.path)
             os.remove(issue.resolution_description_file.path)
 
@@ -383,7 +383,7 @@ class IssueUpdateFormTestCase(TestCase):
             self.assertEqual("same_file_name", os.path.basename(issue.context_description_file.path))
             self.assertTrue(os.path.exists(issue.resolution_description_file.path))
             self.assertEqual(b"I'm not empty", open(issue.resolution_description_file.path, "rb").read())
-            self.assertEqual("2-same_file_name", os.path.basename(issue.resolution_description_file.path))
+            self.assertEqual("same_file_name", os.path.basename(issue.resolution_description_file.path))
 
     def test_if_update_form_works_when_i_modify_all_attachments(self):
         test_file_content = b"I'm not empty"
@@ -421,4 +421,4 @@ class IssueUpdateFormTestCase(TestCase):
                 self.assertEqual("same_file_name", os.path.basename(issue.context_description_file.path))
                 self.assertTrue(os.path.exists(issue.resolution_description_file.path))
                 self.assertEqual(test_file_content, open(issue.resolution_description_file.path, "rb").read())
-                self.assertEqual("2-same_file_name", os.path.basename(issue.resolution_description_file.path))
+                self.assertEqual("same_file_name", os.path.basename(issue.resolution_description_file.path))
