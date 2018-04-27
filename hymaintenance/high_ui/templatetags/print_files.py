@@ -9,4 +9,4 @@ register = Library()
 
 @register.filter
 def file_name(value):
-    return os.path.split(value.name)[-1]
+    return os.path.basename(value.name)
