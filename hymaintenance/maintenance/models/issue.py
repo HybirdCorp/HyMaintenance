@@ -1,6 +1,6 @@
 import os
 
-from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _
 
@@ -10,11 +10,31 @@ from .consumer import MaintenanceConsumer
 from .other_models import IncomingChannel, MaintenanceType
 
 
-def _get_file_path(instance, filename):
-    file_path = os.path.join('upload', instance.company.slug_name, "issue-" + str(instance.company_issue_number), filename)
-    if os.path.exists(os.path.join(settings.MEDIA_ROOT, file_path)):
-        file_path = os.path.join('upload', instance.company.slug_name, "issue-" + str(instance.company_issue_number), "2-" + filename)
-    return file_path
+class MaintenanceIssueAttachmentStorage(FileSystemStorage):
+
+    def _save(self, name, content):
+        if self.exists(name):
+            self.delete(name)
+        return super()._save(name, content)
+
+    def get_available_name(self, name, max_length=None):
+        return name
+
+
+def _get_context_file_path(instance, filename):
+    return os.path.join('upload',
+                        instance.company.slug_name,
+                        "issue-" + str(instance.company_issue_number),
+                        "context",
+                        filename)
+
+
+def _get_resolution_file_path(instance, filename):
+    return os.path.join('upload',
+                        instance.company.slug_name,
+                        "issue-" + str(instance.company_issue_number),
+                        "resolution",
+                        filename)
 
 
 class MaintenanceIssue(models.Model):
@@ -37,8 +57,8 @@ class MaintenanceIssue(models.Model):
     resolution_date = models.DateTimeField(null=True, blank=True)
     shipping_date = models.DateTimeField(null=True, blank=True)
     answer = models.TextField(null=True, blank=True)
-    context_description_file = models.FileField(null=True, max_length=200, upload_to=_get_file_path)
-    resolution_description_file = models.FileField(null=True, max_length=200, upload_to=_get_file_path)
+    context_description_file = models.FileField(null=True, max_length=200, storage=MaintenanceIssueAttachmentStorage(), upload_to=_get_context_file_path)
+    resolution_description_file = models.FileField(null=True, max_length=200, storage=MaintenanceIssueAttachmentStorage(), upload_to=_get_resolution_file_path)
 
     fields_for_form = ('consumer_who_ask', 'user_who_fix', 'incoming_channel',
                        'subject', 'date', 'maintenance_type', 'description',
@@ -72,10 +92,4 @@ class MaintenanceIssue(models.Model):
         if self.id is None:
             Company.objects.filter(id=self.company_id).update(issues_counter=models.F('issues_counter') + 1)
             self.company_issue_number = Company.objects.filter(id=self.company_id).values_list('issues_counter', flat=True).first()
-        else:
-            this = MaintenanceIssue.objects.get(id=self.id)
-            if this.context_description_file is not None and this.context_description_file != self.context_description_file:
-                this.context_description_file.delete(save=False)
-            if this.resolution_description_file is not None and this.resolution_description_file != self.resolution_description_file:
-                this.resolution_description_file.delete(save=False)
         super().save(*args, **kwargs)

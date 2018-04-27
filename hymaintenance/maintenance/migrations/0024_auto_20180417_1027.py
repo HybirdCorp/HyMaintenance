@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='maintenanceissue',
             name='context_description_file',
-            field=models.FileField(null=True, upload_to=maintenance.models.issue._get_file_path),
+            field=models.FileField(null=True, upload_to=maintenance.models.issue._get_context_file_path),
         ),
         migrations.AlterField(
             model_name='maintenanceissue',
             name='resolution_description_file',
-            field=models.FileField(null=True, upload_to=maintenance.models.issue._get_file_path),
+            field=models.FileField(null=True, upload_to=maintenance.models.issue._get_resolution_file_path),
         ),
     ]
