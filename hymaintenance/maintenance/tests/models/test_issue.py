@@ -64,8 +64,11 @@ class MaintenanceIssueTestCase(TestCase):
         issue = MaintenanceIssueFactory(company=company,
                                         maintenance_type=contract1.maintenance_type)
         self.assertEqual(
-            os.path.join("upload", company.slug_name, "issue-" + str(issue.company_issue_number), "my_file"),
+            os.path.join("upload", company.slug_name, "issue-" + str(issue.company_issue_number), "context", "my_file"),
             issue._meta.get_field('context_description_file').generate_filename(issue, "my_file"))
+        self.assertEqual(
+            os.path.join("upload", company.slug_name, "issue-" + str(issue.company_issue_number), "resolution", "my_file"),
+            issue._meta.get_field('resolution_description_file').generate_filename(issue, "my_file"))
 
     def test_upload_to_function_when_a_same_named_file_already_exists(self):
         tmp_directory = TemporaryDirectory(prefix="test-issue-", dir=os.path.join(settings.MEDIA_ROOT, 'upload/'))
@@ -77,8 +80,8 @@ class MaintenanceIssueTestCase(TestCase):
             issue.context_description_file.save('my_file', File(tmp_file), save=True)
             issue.resolution_description_file.save('my_file', File(tmp_file), save=True)
             self.assertEqual(
-                os.path.join("upload", company.slug_name, "issue-" + str(issue.company_issue_number), "my_file"),
+                os.path.join("upload", company.slug_name, "issue-" + str(issue.company_issue_number), "context", "my_file"),
                 issue.context_description_file.name)
             self.assertEqual(
-                os.path.join("upload", company.slug_name, "issue-" + str(issue.company_issue_number), "2-" + "my_file"),
+                os.path.join("upload", company.slug_name, "issue-" + str(issue.company_issue_number), "resolution", "my_file"),
                 issue.resolution_description_file.name)
