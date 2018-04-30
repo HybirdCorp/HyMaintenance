@@ -17,11 +17,11 @@ run-lint:
 
 run-tests-and-coverage:
 	coverage run --branch --source=hymaintenance hymaintenance/manage.py test hymaintenance --settings hymaintenance.tests_settings
-	coverage report -m --omit=**/migrations/*,**/admin.py,hymaintenance/hymaintenance/* --skip-covered
+	coverage report -m --omit=hymaintenance/manage.py,**/migrations/*,**/admin.py,hymaintenance/hymaintenance/* --skip-covered
 
 run-sqlite-tests-and-coverage:
 	coverage run --branch --source=hymaintenance hymaintenance/manage.py test hymaintenance --settings hymaintenance.sqlite_tests_settings
-	coverage report -m --omit=**/migrations/*,**/admin.py,hymaintenance/hymaintenance/* --skip-covered
+	coverage report -m --omit=hymaintenance/manage.py,**/migrations/*,**/admin.py,hymaintenance/hymaintenance/* --skip-covered
 
 run-sqlite-only-tests:
 	python hymaintenance/manage.py test hymaintenance --parallel=4 --settings=hymaintenance.sqlite_tests_settings --noinput
