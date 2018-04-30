@@ -9,12 +9,19 @@ from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceI
 
 
 class CompanyDetailViewTestCase(TestCase):
+
+    def test_when_the_company_does_not_exist(self):
+        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(reverse('high_ui:company-details', args=[1]))
+
+        self.assertEqual(response.status_code, 404)
+
     def test_customer_user_can_seen_this_company(self):
         first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
-        client = self.client
-        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = client.get(reverse('high_ui:company-details', args=[first_company.pk]))
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(reverse('high_ui:company-details', args=[first_company.pk]))
 
         self.assertEqual(response.status_code, 200)
 
@@ -22,18 +29,16 @@ class CompanyDetailViewTestCase(TestCase):
         first_company = CompanyFactory(name="First Company")
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         black_mesa = CompanyFactory()
-        client = self.client
-        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = client.get(reverse('high_ui:company-details', args=[black_mesa.pk]))
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(reverse('high_ui:company-details', args=[black_mesa.pk]))
 
         self.assertEqual(response.status_code, 404)
 
     def test_operator_user_cannot_seen_other_company(self):
         MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         black_mesa = CompanyFactory()
-        client = self.client
-        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = client.get(reverse('high_ui:company-details', args=[black_mesa.pk]))
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(reverse('high_ui:company-details', args=[black_mesa.pk]))
 
         self.assertEqual(response.status_code, 404)
 
@@ -58,10 +63,9 @@ class MonthDisplayInFrenchTestCase(TestCase):
         user.operator_for.add(company)
         MaintenanceContractFactory(company=company)
 
-        client = self.client
-        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = client.get(reverse('high_ui:company-details', args=[company.pk]))
+        response = self.client.get(reverse('high_ui:company-details', args=[company.pk]))
 
         month = now().date().month
         frenchmonths = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "décembre"]

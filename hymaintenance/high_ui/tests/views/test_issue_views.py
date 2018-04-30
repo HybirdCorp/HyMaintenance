@@ -54,12 +54,20 @@ class IssueCreateViewTestCase(TestCase):
                 "duration_type": "hours",
                 "duration": 2}
 
+    def test_i_can_get_a_form_to_create_a_new_issue(self):
+        self.client.login(username=self.user.email, password="azerty")
+        response = self.client.get(reverse('high_ui:company-add_issue',
+                                           kwargs={'company_name': self.company.slug_name}),
+                                   follow=True)
+        self.assertEqual(response.status_code, 200)
+
     def test_i_can_post_a_form_to_create_a_new_issue(self):
         subject = "Subject of the issue"
         description = "Description of the Issue"
 
         self.client.login(username=self.user.email, password="azerty")
-        response = self.client.post('/high_ui/issue/%s/add/' % self.company.slug_name,
+        response = self.client.post(reverse('high_ui:company-add_issue',
+                                            kwargs={'company_name': self.company.slug_name}),
                                     self.__get_dict_for_post(subject, description), follow=True)
 
         self.assertEqual(response.status_code, 200)
@@ -84,7 +92,8 @@ class IssueCreateViewTestCase(TestCase):
             dict_for_post['resolution_description_file'] = resolution_file
 
             self.client.login(username=self.user.email, password="azerty")
-            response = self.client.post('/high_ui/issue/%s/add/' % self.company.slug_name,
+            response = self.client.post(reverse('high_ui:company-add_issue',
+                                                kwargs={'company_name': self.company.slug_name}),
                                         dict_for_post, follow=True)
 
             issues = MaintenanceIssue.objects.filter(company=self.company)
@@ -124,8 +133,6 @@ class IssueUpdateViewTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                          password="azerty")
         cls.tmp_directory = TemporaryDirectory(prefix="create-issue-view-", dir=os.path.join(settings.MEDIA_ROOT, 'upload/'))
         cls.company = CompanyFactory(name=os.path.basename(cls.tmp_directory.name))
         cls.maintenance_type = get_default_maintenance_type()
@@ -134,6 +141,8 @@ class IssueUpdateViewTestCase(TestCase):
         cls.contract = MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)
 
     def setUp(self):
+        self.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
+                                           password="azerty")
         self.issue = MaintenanceIssueFactory(company=self.company, maintenance_type=self.maintenance_type)
         self.url_post = reverse('high_ui:change_issue', kwargs={'company_name': self.issue.company.slug_name,
                                                                 'company_issue_number': self.issue.company_issue_number})
@@ -145,6 +154,13 @@ class IssueUpdateViewTestCase(TestCase):
     def tearDownClass(cls):
         cls.tmp_directory.cleanup()
         super().tearDownClass()
+
+    def test_i_can_get_a_form_to_update_a_issue(self):
+        self.user.operator_for.add(self.company)
+        self.client.login(username=self.user.email, password="azerty")
+        response = self.client.get(self.url_post, follow=True)
+        response.render()
+        self.assertEqual(response.status_code, 200)
 
     def test_i_can_post_and_form_to_modify_a_issue(self):
         subject = "subject of the issue"
@@ -176,25 +192,24 @@ class IssueUpdateViewTestCase(TestCase):
                                                             number_minutes=120,
                                                             description=description).count())
 
-    def test_operator_cannot_modify_a_issue_of_company__he_doesnt_manage(self):
+    def test_operator_cannot_modify_a_issue_of_company_he_doesnt_manage(self):
         subject = "subject of the issue"
         description = "Description of the Issue"
 
-        client = self.client
-        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = client.post(self.url_post,
-                               {"consumer_who_ask": self.consumer.pk,
-                                "user_who_fix": self.user.pk,
-                                "incoming_channel": self.channel.pk,
-                                "subject": subject,
-                                "date": "2017-03-22",
-                                "maintenance_type": self.maintenance_type.pk,
-                                "description": description,
-                                "duration_type": "hours",
-                                "duration": 2}, follow=True)
+        response = self.client.post(self.url_post,
+                                    {"consumer_who_ask": self.consumer.pk,
+                                     "user_who_fix": self.user.pk,
+                                     "incoming_channel": self.channel.pk,
+                                     "subject": subject,
+                                     "date": "2017-03-22",
+                                     "maintenance_type": self.maintenance_type.pk,
+                                     "description": description,
+                                     "duration_type": "hours",
+                                     "duration": 2}, follow=True)
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
 
     def test_i_cannot_post_and_form_to_modify_a_issue_unlog(self):
         subject = "subject of the issue"
