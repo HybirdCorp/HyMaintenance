@@ -1,52 +1,81 @@
 
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.urls import reverse
 
-from customers.models import MaintenanceUser
+from customers.models import Company, MaintenanceUser
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 
 
 class CreateUsersTestCase(TestCase):
-    def test_create_maintenance_manager_with_form(self):
-        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        company = CompanyFactory()
-        user.operator_for.add(company)
-        client = Client()
-        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
+                                          password="azerty")
+        cls.company = CompanyFactory()
+        cls.user.operator_for.add(cls.company)
+
+    def setUp(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+    def test_get_form_when_company_does_not_exist(self):
+        not_used_id = Company.objects.all().count() + 1
+        response = self.client.get(reverse('high_ui:company-add_manager',
+                                           kwargs={'company_id': not_used_id}),
+                                   follow=True)
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_create_manager_form(self):
+        response = self.client.get(reverse('high_ui:company-add_manager',
+                                           kwargs={'company_id': self.company.id}),
+                                   follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_maintenance_manager_with_form(self):
         first_name = "Barney"
         last_name = "Calhoun"
         email = "barney.calhoun@blackmesa.com"
 
-        response = client.post('/high_ui/manager/add/%s/' % company.pk,
-                               {"first_name": first_name,
-                                "last_name": last_name,
-                                "email": email,
-                                "password": "letmein"
-                                }, follow=True)
+        response = self.client.post(reverse("high_ui:company-add_manager",
+                                            kwargs={'company_id': self.company.id}),
+                                    {"first_name": first_name,
+                                     "last_name": last_name,
+                                     "email": email,
+                                     "password": "letmein"
+                                     }, follow=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse('high_ui:home'))
-        self.assertEqual(1, MaintenanceUser.objects.filter(email=email, first_name=first_name, last_name=last_name, company=company).count())
+        self.assertEqual(1, MaintenanceUser.objects.filter(email=email,
+                                                           first_name=first_name,
+                                                           last_name=last_name,
+                                                           company=self.company).count())
+
+    def test_get_create_maintainer_form(self):
+        response = self.client.get(reverse('high_ui:company-add_maintainer',
+                                           kwargs={'company_id': self.company.id}),
+                                   follow=True)
+
+        self.assertEqual(response.status_code, 200)
 
     def test_create_maintainer_with_form(self):
-        user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        company = CompanyFactory()
-        user.operator_for.add(company)
-        client = Client()
-        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-
         first_name = "Barney"
         last_name = "Calhoun"
         email = "barney.calhoun@blackmesa.com"
 
-        response = client.post('/high_ui/maintainer/add/%s/' % company.pk,
-                               {"first_name": first_name,
-                                "last_name": last_name,
-                                "email": email,
-                                "password": "letmein"
-                                }, follow=True)
+        response = self.client.post(reverse("high_ui:company-add_maintainer",
+                                            kwargs={'company_id': self.company.id}),
+                                    {"first_name": first_name,
+                                     "last_name": last_name,
+                                     "email": email,
+                                     "password": "letmein"
+                                     }, follow=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse('high_ui:home'))
-        self.assertEqual(1, MaintenanceUser.objects.filter(email=email, first_name=first_name, last_name=last_name, company__isnull=True).count())
+        self.assertEqual(1, MaintenanceUser.objects.filter(email=email,
+                                                           first_name=first_name,
+                                                           last_name=last_name,
+                                                           company__isnull=True).count())

@@ -201,12 +201,15 @@ class UpdateIssueView(LoginRequiredMixin, UpdateView):
     model = MaintenanceIssue
 
     def get_object(self):
-        company = Company.objects.filter(slug_name=self.kwargs.get('company_name')).first()
-        return MaintenanceIssue.objects.filter(company_issue_number=self.kwargs.get('company_issue_number'), company=company).first()
+        return self.get_queryset().filter(company_issue_number=self.kwargs.get('company_issue_number')).first()
 
     def get_queryset(self):
         user = self.request.user
-        return MaintenanceIssue.objects.filter(company__in=user.operator_for.all())
+        company = Company.objects.filter(slug_name=self.kwargs.get('company_name')).first()
+        if company not in user.operator_for.all():
+            raise Http404(_("No %(verbose_name)s found matching the query") %
+                          {'verbose_name': Company._meta.verbose_name})
+        return MaintenanceIssue.objects.filter(company=company)
 
     def get_context_data(self, **kwargs):
         context = super(UpdateIssueView, self).get_context_data(**kwargs)
