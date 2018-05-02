@@ -271,7 +271,7 @@ class CreateProjectView(FormView):
         return context
 
     def form_valid(self, form):
-        form.create_company_and_contracts(self.request.user)
+        form.create_company_and_contracts()
         return super().form_valid(form)
 
 
