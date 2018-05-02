@@ -44,7 +44,7 @@
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
                                 <span class="dashboard-title">Intervenants</span>
-                                <span class="dashboard-value">{{maintainers.count}}</span>
+                                <span class="dashboard-value">{{company.managed_by.count}}</span>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <div class="project-users">
-                            {% for maintainer in maintainers %}
+                            {% for maintainer in company.managed_by.all %}
                             <div>{{maintainer.get_full_name}}</div>
                             {% endfor %}
                         </div>

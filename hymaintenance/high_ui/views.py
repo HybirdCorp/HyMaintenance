@@ -36,10 +36,6 @@ class HomeView(LoginRequiredMixin, TemplateView):
             # TODO prefetch the Company relations in one query for all companies:
             # 1) Company to its MaintenanceConsumers
             # 2) Company to its MaintenanceUsers
-            # 3) in the future, Company to its "maintenance providers" (right now MaintenanceUsers where company = null)
-
-            # TODO: this should be the maintainers of the current "maintenance provider" company
-            context["maintainers"] = MaintenanceUser.objects.get_maintainers_queryset()
 
             return self.render_to_response(context)
 
