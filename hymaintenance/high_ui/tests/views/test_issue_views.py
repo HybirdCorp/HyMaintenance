@@ -110,6 +110,15 @@ class IssueCreateViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 405)
 
+    def test_i_cannot_get_a_form_to_create_a_new_issue_where_i_am_not_operator(self):
+        user = MaintenanceUserFactory(email="chell@aperture-science.com",
+                                      password="azerty")
+        self.client.login(username=user.email, password="azerty")
+        response = self.client.get(reverse('high_ui:company-add_issue',
+                                           kwargs={'company_name': self.company.slug_name}),
+                                   follow=True)
+        self.assertEqual(response.status_code, 404)
+
 
 class IssueUpdateViewTestCase(TestCase):
 
