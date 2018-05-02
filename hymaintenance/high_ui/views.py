@@ -176,7 +176,13 @@ class CreateViewWithSlugCompanyName(CreateViewWithCompany):
     pk_url_kwarg = "company_name"
 
     def get_company(self):
-        return get_object_or_404(Company, slug_name=self.kwargs.get(self.pk_url_kwarg))
+        user = self.request.user
+        company = get_object_or_404(Company, slug_name=self.kwargs.get(self.pk_url_kwarg))
+        if company not in user.operator_for.all():
+            raise Http404(_("No %(verbose_name)s found matching the query") %
+                          {'verbose_name': Company._meta.verbose_name})
+
+        return company
 
 
 class IssueCreateView(LoginRequiredMixin, CreateViewWithSlugCompanyName):
