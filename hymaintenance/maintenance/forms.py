@@ -137,7 +137,7 @@ class ProjectCreateForm(ProjectForm):
         if operator:
             operator.operator_for.add(company)
         else:
-            for operator in company.managed_by.all():
+            for operator in MaintenanceUser.objects.get_maintainers_queryset():
                 operator.operator_for.add(company)
         maintenance_types = MaintenanceType.objects.order_by("id")
 

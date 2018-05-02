@@ -97,6 +97,28 @@ class ProjectCreateFormTestCase(TestCase):
         self.assertEqual(1, Company.objects.all().count())
         self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=2, disabled=False).count())
 
+    def test_valid_form_add_all_operators_to_company(self):
+        MaintenanceUserFactory(email="gordon.freeman2@blackmesa.com",
+                               password="azerty")
+        dict_for_post = self.__get_dict_for_post()
+        form = ProjectCreateForm(data=dict_for_post)
+
+        form.is_valid()
+        form.create_company_and_contracts()
+        company = Company.objects.get(name="Black Mesa")
+        self.assertEqual(2, company.managed_by.all().count())
+
+    def test_create_company_and_contracts_with_operator_args_add_only_one_operator(self):
+        user2 = MaintenanceUserFactory(email="gordon.freeman2@blackmesa.com",
+                                       password="azerty")
+        dict_for_post = self.__get_dict_for_post()
+        form = ProjectCreateForm(data=dict_for_post)
+
+        form.is_valid()
+        form.create_company_and_contracts(operator=user2)
+        company = Company.objects.get(name="Black Mesa")
+        self.assertEqual([user2], list(company.managed_by.all()))
+
     def test_valid_form_create_a_correction_contract(self):
         dict_for_post = self.__get_dict_for_post()
         form = ProjectCreateForm(data=dict_for_post)
