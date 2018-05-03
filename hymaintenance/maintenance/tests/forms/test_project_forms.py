@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from customers.models import Company
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 from maintenance.forms import INACTIF_CONTRACT_INPUT, ProjectCreateForm, ProjectUpdateForm
-from maintenance.models import MaintenanceContract
+from maintenance.models import MaintenanceContract, MaintenanceType
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
 
 from ..factories import create_project
@@ -20,22 +20,36 @@ class ProjectCreateFormTestCase(TestCase):
                                           password="azerty")
 
     def __get_dict_for_post(self):
+        maintenance_types = MaintenanceType.objects.order_by("id")
         return {"company_name": "Black Mesa",
                 "contract1_visible": INACTIF_CONTRACT_INPUT,
                 "contract1_total_type": 0,
                 "contract1_number_hours": 0,
                 "contract1_date": datetime.date.today(),
-                "contract1_counter_name": "Maintenance",
+                "contract1_counter_name": maintenance_types[0].name,
                 "contract2_visible": INACTIF_CONTRACT_INPUT,
                 "contract2_total_type": 0,
                 "contract2_number_hours": 0,
                 "contract2_date": datetime.date.today(),
-                "contract2_counter_name": "Support",
+                "contract2_counter_name": maintenance_types[1].name,
                 "contract3_visible": INACTIF_CONTRACT_INPUT,
                 "contract3_total_type": 0,
                 "contract3_number_hours": 0,
                 "contract3_date": datetime.date.today(),
-                "contract3_counter_name": "Corrective"}
+                "contract3_counter_name": maintenance_types[2].name}
+
+    def test_create_form_maintenance_type_initial_values(self):
+        form = ProjectCreateForm(initial={"test": "initial not empty"})
+        maintenance_types = MaintenanceType.objects.order_by("id")
+        self.assertEqual(maintenance_types[0].name,
+                         form.get_initial_for_field(form.fields["contract1_counter_name"],
+                                                    "contract1_counter_name"))
+        self.assertEqual(maintenance_types[1].name,
+                         form.get_initial_for_field(form.fields["contract2_counter_name"],
+                                                    "contract2_counter_name"))
+        self.assertEqual(maintenance_types[2].name,
+                         form.get_initial_for_field(form.fields["contract3_counter_name"],
+                                                    "contract3_counter_name"))
 
     def test_all_required_fields_by_sending_a_empty_create_form(self):
         form = ProjectCreateForm(data={})
@@ -69,10 +83,9 @@ class ProjectCreateFormTestCase(TestCase):
 
     def test_valid_form_create_a_support_contract(self):
         dict_for_post = self.__get_dict_for_post()
-        form = ProjectCreateForm(data=dict_for_post)
-
         dict_for_post["contract1_visible"] = 1
         dict_for_post["contract1_total_type"] = CONSUMMED_TOTAL_TIME
+        form = ProjectCreateForm(data=dict_for_post)
 
         is_valid = form.is_valid()
         form.create_company_and_contracts()
@@ -84,10 +97,9 @@ class ProjectCreateFormTestCase(TestCase):
 
     def test_valid_form_create_a_maintenance_contract(self):
         dict_for_post = self.__get_dict_for_post()
-        form = ProjectCreateForm(data=dict_for_post)
-
         dict_for_post["contract2_visible"] = 1
         dict_for_post["contract2_total_type"] = CONSUMMED_TOTAL_TIME
+        form = ProjectCreateForm(data=dict_for_post)
 
         is_valid = form.is_valid()
         form.create_company_and_contracts()
@@ -96,6 +108,23 @@ class ProjectCreateFormTestCase(TestCase):
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
         self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=2, disabled=False).count())
+
+    def test_valid_form_create_contracts_counter_name(self):
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contract1_counter_name"] = "Reduice"
+        dict_for_post["contract2_counter_name"] = "Reuse"
+        dict_for_post["contract3_counter_name"] = "Recycle"
+        form = ProjectCreateForm(data=dict_for_post)
+
+        is_valid = form.is_valid()
+        form.create_company_and_contracts()
+        company = Company.objects.get(name="Black Mesa")
+
+        self.assertTrue(is_valid)
+        self.assertEqual(1, Company.objects.all().count())
+        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, counter_name="Reduice").count())
+        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, counter_name="Reuse").count())
+        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, counter_name="Recycle").count())
 
     def test_valid_form_add_all_operators_to_company(self):
         MaintenanceUserFactory(email="gordon.freeman2@blackmesa.com",
@@ -121,10 +150,9 @@ class ProjectCreateFormTestCase(TestCase):
 
     def test_valid_form_create_a_correction_contract(self):
         dict_for_post = self.__get_dict_for_post()
-        form = ProjectCreateForm(data=dict_for_post)
-
         dict_for_post["contract3_visible"] = 1
         dict_for_post["contract3_total_type"] = CONSUMMED_TOTAL_TIME
+        form = ProjectCreateForm(data=dict_for_post)
 
         is_valid = form.is_valid()
         form.create_company_and_contracts()
@@ -136,11 +164,10 @@ class ProjectCreateFormTestCase(TestCase):
 
     def test_valid_form_create_a_company_and_invisible_available_time_contract(self):
         dict_for_post = self.__get_dict_for_post()
-        form = ProjectCreateForm(data=dict_for_post)
-
         dict_for_post["contract1_visible"] = 0
         dict_for_post["contract1_total_type"] = AVAILABLE_TOTAL_TIME
         dict_for_post["contract1_number_hours"] = 80
+        form = ProjectCreateForm(data=dict_for_post)
 
         is_valid = form.is_valid()
         form.create_company_and_contracts()
@@ -189,7 +216,7 @@ class ProjectUpdateFormTestCase(TestCase):
         cls.company, cls.contract1, cls.contract2, cls.contract3 = create_project()
 
     def __get_dict_for_post(self):
-        return {"company_name": "Black Mesa",
+        return {"company_name": "Aperture Science",
                 "contract1_visible": INACTIF_CONTRACT_INPUT,
                 "contract1_total_type": 0,
                 "contract1_number_hours": 0,
@@ -236,12 +263,11 @@ class ProjectUpdateFormTestCase(TestCase):
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
 
-    def test_valid_form_update_a_support_contract(self):
+    def test_valid_form_update_a_contract(self):
         dict_for_post = self.__get_dict_for_post()
-        form = ProjectUpdateForm(company=self.company, data=dict_for_post)
-
         dict_for_post["contract1_visible"] = 1
         dict_for_post["contract1_total_type"] = CONSUMMED_TOTAL_TIME
+        form = ProjectUpdateForm(company=self.company, data=dict_for_post)
 
         is_valid = form.is_valid()
         form.update_company_and_contracts()
@@ -251,12 +277,10 @@ class ProjectUpdateFormTestCase(TestCase):
         self.assertEqual(1, Company.objects.all().count())
         self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=1, disabled=False).count())
 
-    def test_valid_form_update_a_maintenance_contract(self):
+    def test_valid_form_update_contract_counter_name(self):
         dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contract1_counter_name"] = "Experiment"
         form = ProjectUpdateForm(company=self.company, data=dict_for_post)
-
-        dict_for_post["contract2_visible"] = 1
-        dict_for_post["contract2_total_type"] = CONSUMMED_TOTAL_TIME
 
         is_valid = form.is_valid()
         form.update_company_and_contracts()
@@ -264,14 +288,12 @@ class ProjectUpdateFormTestCase(TestCase):
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
-        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=2, disabled=False).count())
+        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, counter_name="Experiment").count())
 
-    def test_valid_form_update_a_correction_contract(self):
+    def test_valid_form_update_contract_start_date(self):
         dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contract1_date"] = datetime.date(2012, 12, 21)
         form = ProjectUpdateForm(company=self.company, data=dict_for_post)
-
-        dict_for_post["contract3_visible"] = 1
-        dict_for_post["contract3_total_type"] = CONSUMMED_TOTAL_TIME
 
         is_valid = form.is_valid()
         form.update_company_and_contracts()
@@ -279,15 +301,29 @@ class ProjectUpdateFormTestCase(TestCase):
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
-        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=3, disabled=False).count())
+        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, start=datetime.date(2012, 12, 21)).count())
+
+    def test_valid_form_update_contract_total_type(self):
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contract1_visible"] = 1
+        dict_for_post["contract1_total_type"] = AVAILABLE_TOTAL_TIME
+        dict_for_post["contract1_number_hours"] = self.contract1.number_hours
+        form = ProjectUpdateForm(company=self.company, data=dict_for_post)
+
+        is_valid = form.is_valid()
+        form.update_company_and_contracts()
+        company = Company.objects.get(name="Black Mesa")
+
+        self.assertTrue(is_valid)
+        self.assertEqual(1, Company.objects.all().count())
+        self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=1, disabled=False).count())
 
     def test_valid_form_update_a_company_and_invisible_available_time_contract(self):
         dict_for_post = self.__get_dict_for_post()
-        form = ProjectUpdateForm(company=self.company, data=dict_for_post)
-
         dict_for_post["contract1_visible"] = 0
         dict_for_post["contract1_total_type"] = AVAILABLE_TOTAL_TIME
         dict_for_post["contract1_number_hours"] = 80
+        form = ProjectUpdateForm(company=self.company, data=dict_for_post)
 
         is_valid = form.is_valid()
         form.update_company_and_contracts()
@@ -298,7 +334,7 @@ class ProjectUpdateFormTestCase(TestCase):
         self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=1, visible=False, total_type=AVAILABLE_TOTAL_TIME, number_hours=80, disabled=False).count())
 
     def test_invalid_form_update_already_existing_company(self):
-        CompanyFactory.create(name="Black Mesa")
+        CompanyFactory.create(name="Aperture Science")
         dict_for_post = self.__get_dict_for_post()
         form = ProjectUpdateForm(company=self.company, data=dict_for_post)
 
