@@ -41,6 +41,10 @@ class MaintenanceIssueTestCase(TestCase):
         issue = MaintenanceIssueFactory(consumer_who_ask=consumer)
         self.assertEqual("Mrs. Reynholm", issue.who_ask())
 
+    def test_who_ask_when_not_resigned(self):
+        issue = MaintenanceIssueFactory(consumer_who_ask=None)
+        self.assertEqual("", issue.who_ask())
+
     def test_issue_number_with_one_company(self):
         company, contract1, _contract2, _contract3 = create_project()
         issue = MaintenanceIssueFactory(company=company,
