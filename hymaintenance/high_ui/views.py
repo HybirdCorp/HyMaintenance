@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DetailView, FormView, TemplateView, UpdateView
 
-from customers.forms import MaintenanceManagerCreateForm, MaintenanceUserCreateForm
+from customers.forms import ManagerUserCreateForm, OperatorUserCreateForm
 from customers.models import Company, MaintenanceUser
 from customers.models.user import get_companies_of_operator
 from maintenance.forms import (
@@ -232,22 +232,22 @@ class CreateConsumerView(LoginRequiredMixin, CreateViewWithCompany):
         return reverse('high_ui:home')
 
 
-class CreateManagerView(LoginRequiredMixin, CreateViewWithCompany):
-    form_class = MaintenanceManagerCreateForm
+class CreateManagerUserView(LoginRequiredMixin, CreateViewWithCompany):
+    form_class = ManagerUserCreateForm
     template_name = "high_ui/forms/add_user.html"
 
     def get_success_url(self):
         return reverse('high_ui:home')
 
     def get_context_data(self, **kwargs):
-        context = super(CreateManagerView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['form_label'] = "Nouveau manager"
         context['form_submit_label'] = "Ajouter ce manager"
         return context
 
 
-class CreateMaintainerView(LoginRequiredMixin, CreateViewWithCompany):
-    form_class = MaintenanceUserCreateForm
+class CreateOperatorUserView(LoginRequiredMixin, CreateViewWithCompany):
+    form_class = OperatorUserCreateForm
     template_name = "high_ui/forms/add_user.html"
 
     # TMP: Technically, only the template needs the Company right now, so don't send it to the form init.
@@ -261,7 +261,7 @@ class CreateMaintainerView(LoginRequiredMixin, CreateViewWithCompany):
         return reverse('high_ui:home')
 
     def get_context_data(self, **kwargs):
-        context = super(CreateMaintainerView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['form_label'] = "Nouvel intervenant"
         context['form_submit_label'] = "Ajouter cet intervenant"
         return context
@@ -276,7 +276,7 @@ class CreateProjectView(FormView):
         context = super().get_context_data(**kwargs)
         context["maintenance_types"] = MaintenanceType.objects.order_by("id")
         context["companies"] = Company.objects.all()
-        context["maintainers"] = MaintenanceUser.objects.get_maintainers_queryset()
+        context["maintainers"] = MaintenanceUser.objects.get_operator_users_queryset()
         return context
 
     def form_valid(self, form):

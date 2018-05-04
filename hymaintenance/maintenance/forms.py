@@ -48,7 +48,7 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
         super(MaintenanceIssueCreateForm, self).__init__(*args, **kwargs)
 
         self.fields["consumer_who_ask"].queryset = self.company.maintenanceconsumer_set
-        self.fields["user_who_fix"].choices = MaintenanceUser.objects.get_maintainers_choices()
+        self.fields["user_who_fix"].choices = MaintenanceUser.objects.get_operator_users_choices()
         self.fields["context_description_file"].required = False
         self.fields["resolution_description_file"].required = False
 
@@ -75,7 +75,7 @@ class MaintenanceIssueUpdateForm(MaintenanceIssueCreateForm):
         self.company = Company.objects.get(id=self.instance.company_id)
 
         self.fields["consumer_who_ask"].queryset = self.company.maintenanceconsumer_set
-        self.fields["user_who_fix"].choices = MaintenanceUser.objects.get_maintainers_choices()
+        self.fields["user_who_fix"].choices = MaintenanceUser.objects.get_operator_users_choices()
         self.fields["duration_type"].initial = "minutes"
         self.fields["duration"].initial = self.instance.number_minutes
         self.fields["context_description_file"].required = False
@@ -137,7 +137,7 @@ class ProjectCreateForm(ProjectForm):
         if operator:
             operator.operator_for.add(company)
         else:
-            for operator in MaintenanceUser.objects.get_maintainers_queryset():
+            for operator in MaintenanceUser.objects.get_operator_users_queryset():
                 operator.operator_for.add(company)
         maintenance_types = MaintenanceType.objects.order_by("id")
 
