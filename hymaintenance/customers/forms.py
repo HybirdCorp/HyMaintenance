@@ -32,10 +32,15 @@ class MaintenanceUserCreateForm(forms.ModelForm):
         pass
 
 
-class MaintenanceManagerCreateForm(MaintenanceUserCreateForm):
+class ManagerUserCreateForm(MaintenanceUserCreateForm):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop('company')
-        super(MaintenanceManagerCreateForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def fill_user(self, user):
         user.company = self.company
+
+
+class OperatorUserCreateForm(MaintenanceUserCreateForm):
+    def fill_user(self, user):
+        user.is_staff = True
