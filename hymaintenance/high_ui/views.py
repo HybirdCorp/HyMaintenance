@@ -6,7 +6,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import CreateView, DetailView, FormView, TemplateView, UpdateView
+from django.views.generic import CreateView, DetailView, FormView, TemplateView, UpdateView, View
 
 from customers.forms import ManagerUserCreateForm, OperatorUserCreateForm
 from customers.models import Company, MaintenanceUser
@@ -136,44 +136,12 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
         raise PermissionDenied
 
 
-class CreateViewWithCompany(CreateView):
-    pk_url_kwarg = "company_id"
+class ViewWithCompany(View):
+    pk_url_kwarg = "company_name"
 
     def dispatch(self, request, *args, **kwargs):
         self.company = self.get_company()
-        return super(CreateViewWithCompany, self).dispatch(request, *args, **kwargs)
-
-    def get_company(self):
-        user = self.request.user
-        try:
-            company = Company.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
-        except Company.DoesNotExist:
-            raise Http404(_("No %(verbose_name)s found matching the query") %
-                          {'verbose_name': Company._meta.verbose_name})
-        if company not in user.operator_for.all():
-            raise Http404(_("No %(verbose_name)s found matching the query") %
-                          {'verbose_name': Company._meta.verbose_name})
-
-        return company
-
-    def get_form_kwargs(self):
-        kwargs = super(CreateViewWithCompany, self).get_form_kwargs()
-        kwargs['company'] = self.company
-        return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super(CreateViewWithCompany, self).get_context_data(**kwargs)
-        context['company'] = self.company
-        contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
-        context['contracts'] = contracts
-        return context
-
-    def get_success_url(self):
-        return self.company.get_absolute_url()
-
-
-class CreateViewWithSlugCompanyName(CreateViewWithCompany):
-    pk_url_kwarg = "company_name"
+        return super().dispatch(request, *args, **kwargs)
 
     def get_company(self):
         user = self.request.user
@@ -181,11 +149,28 @@ class CreateViewWithSlugCompanyName(CreateViewWithCompany):
         if company not in user.operator_for.all():
             raise Http404(_("No %(verbose_name)s found matching the query") %
                           {'verbose_name': Company._meta.verbose_name})
-
         return company
 
 
-class IssueCreateView(LoginRequiredMixin, CreateViewWithSlugCompanyName):
+class CreateViewWithCompany(ViewWithCompany, CreateView):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['company'] = self.company
+        contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
+        context['contracts'] = contracts
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('high_ui:home')
+
+
+class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = MaintenanceIssueCreateForm
     template_name = "high_ui/forms/add_issue.html"
 
@@ -194,8 +179,11 @@ class IssueCreateView(LoginRequiredMixin, CreateViewWithSlugCompanyName):
         context['channels'] = IncomingChannel.objects.all()
         return context
 
+    def get_success_url(self):
+        return self.company.get_absolute_url()
 
-class UpdateIssueView(LoginRequiredMixin, UpdateView):
+
+class UpdateIssueView(LoginRequiredMixin, ViewWithCompany, UpdateView):
     form_class = MaintenanceIssueUpdateForm
     template_name = "high_ui/forms/update_issue.html"
     model = MaintenanceIssue
@@ -204,12 +192,7 @@ class UpdateIssueView(LoginRequiredMixin, UpdateView):
         return self.get_queryset().filter(company_issue_number=self.kwargs.get('company_issue_number')).first()
 
     def get_queryset(self):
-        user = self.request.user
-        company = Company.objects.filter(slug_name=self.kwargs.get('company_name')).first()
-        if company not in user.operator_for.all():
-            raise Http404(_("No %(verbose_name)s found matching the query") %
-                          {'verbose_name': Company._meta.verbose_name})
-        return MaintenanceIssue.objects.filter(company=company)
+        return MaintenanceIssue.objects.filter(company=self.company)
 
     def get_context_data(self, **kwargs):
         context = super(UpdateIssueView, self).get_context_data(**kwargs)
@@ -228,16 +211,10 @@ class CreateConsumerView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = MaintenanceConsumerCreateForm
     template_name = "high_ui/forms/add_consumer.html"
 
-    def get_success_url(self):
-        return reverse('high_ui:home')
-
 
 class CreateManagerUserView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = ManagerUserCreateForm
     template_name = "high_ui/forms/add_user.html"
-
-    def get_success_url(self):
-        return reverse('high_ui:home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -256,9 +233,6 @@ class CreateOperatorUserView(LoginRequiredMixin, CreateViewWithCompany):
     # Until then, the view/form have the company but the MaintenanceUser created will not use it
     def get_form_kwargs(self):
         return super(CreateView, self).get_form_kwargs()
-
-    def get_success_url(self):
-        return reverse('high_ui:home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -284,20 +258,10 @@ class CreateProjectView(FormView):
         return super().form_valid(form)
 
 
-class UpdateProjectView(LoginRequiredMixin, FormView):
+class UpdateProjectView(LoginRequiredMixin, ViewWithCompany, FormView):
     form_class = ProjectUpdateForm
     template_name = "high_ui/forms/update_project.html"
     success_url = "/"
-    pk_url_kwarg = "company_id"
-
-    def get_company(self):
-        return get_object_or_404(Company, pk=self.kwargs.get(self.pk_url_kwarg))
-
-    def get_form_kwargs(self):
-        self.company = self.get_company()
-        kwargs = super().get_form_kwargs()
-        kwargs['company'] = self.company
-        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -307,6 +271,11 @@ class UpdateProjectView(LoginRequiredMixin, FormView):
         context['contracts'] = contracts
         context['company'] = self.company
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
 
     def form_valid(self, form):
         form.update_company_and_contracts()
