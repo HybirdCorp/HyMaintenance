@@ -18,7 +18,7 @@ urlpatterns = [
     path(r'project/add/', CreateProjectView.as_view(),
          name='add_project'),
 
-    path(r'project/<int:company_id>/change/', UpdateProjectView.as_view(),
+    path(r'project/<slug:company_name>/change/', UpdateProjectView.as_view(),
          name='change_project'),
 
     path(r'issue/<slug:company_name>/add/', IssueCreateView.as_view(),
@@ -30,13 +30,13 @@ urlpatterns = [
     path(r'issue/<slug:company_name>/<int:company_issue_number>/change/', UpdateIssueView.as_view(),
          name='change_issue'),
 
-    path(r'consumer/add/<int:company_id>/', CreateConsumerView.as_view(),
+    path(r'consumer/add/<slug:company_name>/', CreateConsumerView.as_view(),
          name='company-add_consumer'),
 
-    path(r'manager/add/<int:company_id>/', CreateManagerUserView.as_view(),
+    path(r'manager/add/<slug:company_name>/', CreateManagerUserView.as_view(),
          name='company-add_manager'),
 
-    path(r'maintainer/add/<int:company_id>/', CreateOperatorUserView.as_view(),
-         name='company-add_maintainer'),
+    path(r'maintainer/add/<slug:company_name>/', CreateOperatorUserView.as_view(),
+         name='company-add_operator'),
 
 ]
