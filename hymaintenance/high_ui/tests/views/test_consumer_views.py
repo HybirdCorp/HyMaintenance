@@ -45,7 +45,7 @@ class CreateConsumerViewTestCase(TestCase):
         name = "Wheatley"
 
         response = self.client.post(reverse("high_ui:company-add_consumer",
-                                            kwargs={'company_id': self.company.pk}),
+                                            kwargs={'company_name': self.company.slug_name}),
                                     {"name": name},
                                     follow=True)
 

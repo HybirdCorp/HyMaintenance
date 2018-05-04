@@ -33,13 +33,13 @@ class CreateUsersTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_create_maintenance_manager_with_form(self):
+    def test_create_manager_with_form(self):
         first_name = "Barney"
         last_name = "Calhoun"
         email = "barney.calhoun@blackmesa.com"
 
         response = self.client.post(reverse("high_ui:company-add_manager",
-                                            kwargs={'company_id': self.company.id}),
+                                            kwargs={'company_name': self.company.slug_name}),
                                     {"first_name": first_name,
                                      "last_name": last_name,
                                      "email": email,
@@ -53,20 +53,20 @@ class CreateUsersTestCase(TestCase):
                                                            last_name=last_name,
                                                            company=self.company).count())
 
-    def test_get_create_maintainer_form(self):
+    def test_get_create_operator_form(self):
         response = self.client.get(reverse('high_ui:company-add_maintainer',
                                            kwargs={'company_id': self.company.id}),
                                    follow=True)
 
         self.assertEqual(response.status_code, 200)
 
-    def test_create_maintainer_with_form(self):
+    def test_create_operator_with_form(self):
         first_name = "Barney"
         last_name = "Calhoun"
         email = "barney.calhoun@blackmesa.com"
 
-        response = self.client.post(reverse("high_ui:company-add_maintainer",
-                                            kwargs={'company_id': self.company.id}),
+        response = self.client.post(reverse("high_ui:company-add_operator",
+                                            kwargs={'company_name': self.company.slug_name}),
                                     {"first_name": first_name,
                                      "last_name": last_name,
                                      "email": email,
