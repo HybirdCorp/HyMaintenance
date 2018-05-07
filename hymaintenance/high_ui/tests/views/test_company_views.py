@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.timezone import now
 
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
-from high_ui.views import CompanyDetailView
+from high_ui.views.company import CompanyDetailView
 from maintenance.models import MaintenanceContract
 from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory, get_default_maintenance_type
 
