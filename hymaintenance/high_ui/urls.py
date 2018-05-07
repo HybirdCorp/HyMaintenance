@@ -2,10 +2,11 @@
 
 from django.urls import path
 
-from .views import (
-    CompanyDetailView, ConsumerCreateView, HomeView, IssueCreateView, IssueDetailView, IssueUpdateView, ManagerUserCreateView, OperatorUserCreateView,
-    ProjectCreateView, ProjectUpdateView
-)
+from .views.company import CompanyDetailView
+from .views.dashboard import HomeView
+from .views.issue import IssueCreateView, IssueDetailView, IssueUpdateView
+from .views.project import ProjectCreateView, ProjectUpdateView
+from .views.users import ConsumerCreateView, ManagerUserCreateView, OperatorUserCreateView
 
 
 app_name = 'high_ui'
