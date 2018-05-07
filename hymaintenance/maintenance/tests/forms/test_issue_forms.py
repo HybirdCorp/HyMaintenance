@@ -15,7 +15,7 @@ from maintenance.tests.factories import (
     get_default_maintenance_type
 )
 
-from ...forms import MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm, duration_in_minutes
+from ...forms.issue import MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm, duration_in_minutes
 
 
 def create_temporary_file(content=b"I am not empty", directory=None):

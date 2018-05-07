@@ -3,7 +3,7 @@ import datetime
 from django.test import Client, TestCase
 
 from customers.models import Company
-from maintenance.forms import INACTIF_CONTRACT_INPUT
+from maintenance.forms.project import INACTIF_CONTRACT_INPUT
 from maintenance.models import MaintenanceContract
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
 from maintenance.tests.factories import MaintenanceUserFactory, create_project

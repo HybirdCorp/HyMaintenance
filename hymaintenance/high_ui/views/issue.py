@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.views.generic import DetailView, UpdateView
 
 from customers.models import Company
-from maintenance.forms import MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm
+from maintenance.forms.issue import MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm
 from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceIssue
 
 from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
