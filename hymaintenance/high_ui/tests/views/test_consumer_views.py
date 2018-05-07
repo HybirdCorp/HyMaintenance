@@ -6,7 +6,7 @@ from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 from maintenance.models import MaintenanceConsumer
 
 
-class CreateConsumerViewTestCase(TestCase):
+class ConsumerCreateViewTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
