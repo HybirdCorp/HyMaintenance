@@ -2,7 +2,6 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from customers.models import Company
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 from maintenance.models import MaintenanceConsumer
 
@@ -21,14 +20,14 @@ class CreateConsumerViewTestCase(TestCase):
 
     def test_get_form(self):
         response = self.client.get(reverse("high_ui:company-add_consumer",
-                                           kwargs={'company_id': self.company.pk}),
+                                           kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
         self.assertEqual(response.status_code, 200)
 
     def test_get_form_when_company_does_not_exist(self):
-        not_used_id = Company.objects.all().count() + 1
+        not_used_name = "not_used_company_slug_name"
         response = self.client.get(reverse("high_ui:company-add_consumer",
-                                           kwargs={'company_id': not_used_id}),
+                                           kwargs={'company_name': not_used_name}),
                                    follow=True)
 
         self.assertEqual(response.status_code, 404)
@@ -36,7 +35,7 @@ class CreateConsumerViewTestCase(TestCase):
     def test_get_form_when_user_doesnt_operate_the_company(self):
         other_company = CompanyFactory()
         response = self.client.get(reverse("high_ui:company-add_consumer",
-                                           kwargs={'company_id': other_company.pk}),
+                                           kwargs={'company_name': other_company.slug_name}),
                                    follow=True)
 
         self.assertEqual(response.status_code, 404)

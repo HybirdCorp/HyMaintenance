@@ -2,7 +2,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from customers.models import Company, MaintenanceUser
+from customers.models import MaintenanceUser
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
 
 
@@ -19,16 +19,16 @@ class CreateUsersTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
     def test_get_form_when_company_does_not_exist(self):
-        not_used_id = Company.objects.all().count() + 1
+        not_used_name = "note_existing_company_slug_name"
         response = self.client.get(reverse('high_ui:company-add_manager',
-                                           kwargs={'company_id': not_used_id}),
+                                           kwargs={'company_name': not_used_name}),
                                    follow=True)
 
         self.assertEqual(response.status_code, 404)
 
     def test_get_create_manager_form(self):
         response = self.client.get(reverse('high_ui:company-add_manager',
-                                           kwargs={'company_id': self.company.id}),
+                                           kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
 
         self.assertEqual(response.status_code, 200)
@@ -54,8 +54,8 @@ class CreateUsersTestCase(TestCase):
                                                            company=self.company).count())
 
     def test_get_create_operator_form(self):
-        response = self.client.get(reverse('high_ui:company-add_maintainer',
-                                           kwargs={'company_id': self.company.id}),
+        response = self.client.get(reverse('high_ui:company-add_operator',
+                                           kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
 
         self.assertEqual(response.status_code, 200)
