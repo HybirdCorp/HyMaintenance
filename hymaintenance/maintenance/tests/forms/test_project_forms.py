@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
 from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
-from maintenance.forms import INACTIF_CONTRACT_INPUT, ProjectCreateForm, ProjectUpdateForm
+from maintenance.forms.project import INACTIF_CONTRACT_INPUT, ProjectCreateForm, ProjectUpdateForm
 from maintenance.models import MaintenanceContract, MaintenanceType
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
 

@@ -1,7 +1,7 @@
 from django.views.generic import CreateView
 
 from customers.forms import ManagerUserCreateForm, OperatorUserCreateForm
-from maintenance.forms import MaintenanceConsumerCreateForm
+from maintenance.forms.consumer import MaintenanceConsumerCreateForm
 
 from .base import CreateViewWithCompany, LoginRequiredMixin
 

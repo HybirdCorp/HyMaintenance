@@ -1,7 +1,7 @@
 from django.views.generic import FormView
 
 from customers.models import Company, MaintenanceUser
-from maintenance.forms import ProjectCreateForm, ProjectUpdateForm
+from maintenance.forms.project import ProjectCreateForm, ProjectUpdateForm
 from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceType
 
 from .base import LoginRequiredMixin, ViewWithCompany
