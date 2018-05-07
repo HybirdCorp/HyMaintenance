@@ -183,7 +183,7 @@ class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):
         return self.company.get_absolute_url()
 
 
-class UpdateIssueView(LoginRequiredMixin, ViewWithCompany, UpdateView):
+class IssueUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
     form_class = MaintenanceIssueUpdateForm
     template_name = "high_ui/forms/update_issue.html"
     model = MaintenanceIssue
@@ -195,7 +195,7 @@ class UpdateIssueView(LoginRequiredMixin, ViewWithCompany, UpdateView):
         return MaintenanceIssue.objects.filter(company=self.company)
 
     def get_context_data(self, **kwargs):
-        context = super(UpdateIssueView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['channels'] = IncomingChannel.objects.all()
 
         contracts = MaintenanceContract.objects.filter(company=self.object.company_id, disabled=False)
@@ -207,12 +207,12 @@ class UpdateIssueView(LoginRequiredMixin, ViewWithCompany, UpdateView):
                                                         'company_issue_number': self.object.company_issue_number})
 
 
-class CreateConsumerView(LoginRequiredMixin, CreateViewWithCompany):
+class ConsumerCreateView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = MaintenanceConsumerCreateForm
     template_name = "high_ui/forms/add_consumer.html"
 
 
-class CreateManagerUserView(LoginRequiredMixin, CreateViewWithCompany):
+class ManagerUserCreateView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = ManagerUserCreateForm
     template_name = "high_ui/forms/add_user.html"
 
@@ -223,7 +223,7 @@ class CreateManagerUserView(LoginRequiredMixin, CreateViewWithCompany):
         return context
 
 
-class CreateOperatorUserView(LoginRequiredMixin, CreateViewWithCompany):
+class OperatorUserCreateView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = OperatorUserCreateForm
     template_name = "high_ui/forms/add_user.html"
 
@@ -241,7 +241,7 @@ class CreateOperatorUserView(LoginRequiredMixin, CreateViewWithCompany):
         return context
 
 
-class CreateProjectView(FormView):
+class ProjectCreateView(FormView):
     form_class = ProjectCreateForm
     template_name = "high_ui/forms/add_project.html"
     success_url = "/"
@@ -258,7 +258,7 @@ class CreateProjectView(FormView):
         return super().form_valid(form)
 
 
-class UpdateProjectView(LoginRequiredMixin, ViewWithCompany, FormView):
+class ProjectUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
     form_class = ProjectUpdateForm
     template_name = "high_ui/forms/update_project.html"
     success_url = "/"
