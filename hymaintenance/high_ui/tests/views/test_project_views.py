@@ -3,18 +3,19 @@ import datetime
 from django.test import Client, TestCase
 
 from customers.models import Company
+from customers.tests.factories import OperatorUserFactory
 from maintenance.forms.project import INACTIF_CONTRACT_INPUT
 from maintenance.models import MaintenanceContract
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
-from maintenance.tests.factories import MaintenanceUserFactory, create_project
+from maintenance.tests.factories import create_project
 
 
 class ProjectCreateViewTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                          password="azerty")
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                       password="azerty")
 
     def test_i_can_get_create_form(self):
         client = Client()
@@ -72,8 +73,8 @@ class ProjectUpdateViewTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                          password="azerty")
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                       password="azerty")
         cls.company, contract1, contract2, contract3 = create_project()
         cls.user.operator_for.add(cls.company)
 

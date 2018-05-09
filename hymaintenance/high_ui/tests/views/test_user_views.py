@@ -3,15 +3,15 @@ from django.test import TestCase
 from django.urls import reverse
 
 from customers.models import MaintenanceUser
-from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
+from customers.tests.factories import CompanyFactory, OperatorUserFactory
 
 
 class CreateUsersTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                          password="azerty")
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                       password="azerty")
         cls.company = CompanyFactory()
         cls.user.operator_for.add(cls.company)
 

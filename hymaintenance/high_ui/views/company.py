@@ -15,29 +15,29 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.company:
-            return Company.objects.filter(pk=user.company.pk)
-        return user.operator_for.order_by('id')
+        if user.is_staff:
+            return user.operator_for.order_by('id')
+        return Company.objects.filter(pk=user.company.pk)
 
     def get_maintenance_contracts(self, company):
         user = self.request.user
-        if user.company:
-            contracts = MaintenanceContract.objects.filter(company=company, visible=True, disabled=False)
-        else:
+        if user.is_staff:
             contracts = MaintenanceContract.objects.filter(company=company, disabled=False)
+        else:
+            contracts = MaintenanceContract.objects.filter(company=company, visible=True, disabled=False)
         return contracts
 
     def get_maintenance_issues(self, company, month):
         user = self.request.user
-        if user.company:
-            maintenance_type_ids = MaintenanceContract.objects.values_list('maintenance_type').filter(visible=True, company_id=company, disabled=False)
-            issues = MaintenanceIssue.objects.filter(maintenance_type__in=maintenance_type_ids,
-                                                     company_id=company,
+        if user.is_staff:
+            issues = MaintenanceIssue.objects.filter(company=company,
                                                      date__month=month.month,
                                                      date__year=month.year
                                                      ).order_by("-date")
         else:
-            issues = MaintenanceIssue.objects.filter(company=company,
+            maintenance_type_ids = MaintenanceContract.objects.values_list('maintenance_type').filter(visible=True, company_id=company, disabled=False)
+            issues = MaintenanceIssue.objects.filter(maintenance_type__in=maintenance_type_ids,
+                                                     company_id=company,
                                                      date__month=month.month,
                                                      date__year=month.year
                                                      ).order_by("-date")

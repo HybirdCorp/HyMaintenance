@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
-from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
+from customers.tests.factories import CompanyFactory, OperatorUserFactory
 from maintenance.forms.project import INACTIF_CONTRACT_INPUT, ProjectCreateForm, ProjectUpdateForm
 from maintenance.models import MaintenanceContract, MaintenanceType
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
@@ -16,8 +16,8 @@ class ProjectCreateFormTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                          password="azerty")
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                       password="azerty")
 
     def __get_dict_for_post(self):
         maintenance_types = MaintenanceType.objects.order_by("id")
@@ -127,8 +127,8 @@ class ProjectCreateFormTestCase(TestCase):
         self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, counter_name="Recycle").count())
 
     def test_valid_form_add_all_operators_to_company(self):
-        MaintenanceUserFactory(email="gordon.freeman2@blackmesa.com",
-                               password="azerty")
+        OperatorUserFactory(email="gordon.freeman2@blackmesa.com",
+                            password="azerty")
         dict_for_post = self.__get_dict_for_post()
         form = ProjectCreateForm(data=dict_for_post)
 
@@ -138,8 +138,8 @@ class ProjectCreateFormTestCase(TestCase):
         self.assertEqual(2, company.managed_by.all().count())
 
     def test_create_company_and_contracts_with_operator_args_add_only_one_operator(self):
-        user2 = MaintenanceUserFactory(email="gordon.freeman2@blackmesa.com",
-                                       password="azerty")
+        user2 = OperatorUserFactory(email="gordon.freeman2@blackmesa.com",
+                                    password="azerty")
         dict_for_post = self.__get_dict_for_post()
         form = ProjectCreateForm(data=dict_for_post)
 
@@ -211,8 +211,8 @@ class ProjectUpdateFormTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                          password="azerty")
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                       password="azerty")
         cls.company, cls.contract1, cls.contract2, cls.contract3 = create_project()
 
     def __get_dict_for_post(self):

@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
 
-from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
+from customers.tests.factories import CompanyFactory, OperatorUserFactory
 from maintenance.models import MaintenanceIssue
 from maintenance.tests.factories import (
     IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceContractFactory, MaintenanceIssueFactory, create_project,
@@ -38,8 +38,8 @@ class IssueCreateFormTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                          password="azerty")
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                       password="azerty")
         cls.tmp_directory = TemporaryDirectory(prefix="create-issue-view-", dir=os.path.join(settings.MEDIA_ROOT, 'upload/'))
         cls.company, contract1, _contract2, _contract3 = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
         cls.maintenance_type = contract1.maintenance_type
@@ -213,8 +213,8 @@ class IssueUpdateFormTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                          password="azerty")
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                       password="azerty")
         cls.tmp_directory = TemporaryDirectory(prefix="create-issue-view-", dir=os.path.join(settings.MEDIA_ROOT, 'upload/'))
         cls.company = CompanyFactory(name=os.path.basename(cls.tmp_directory.name))
         cls.maintenance_type = get_default_maintenance_type()

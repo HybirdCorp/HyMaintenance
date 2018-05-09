@@ -2,7 +2,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
+from customers.tests.factories import CompanyFactory, OperatorUserFactory
 from maintenance.models import MaintenanceConsumer
 
 
@@ -10,8 +10,8 @@ class ConsumerCreateViewTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                          password="azerty")
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                       password="azerty")
         cls.company = CompanyFactory()
         cls.user.operator_for.add(cls.company)
 

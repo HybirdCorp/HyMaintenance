@@ -2,8 +2,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from customers.tests.factories import CompanyFactory, OperatorUserFactory
-from maintenance.tests.factories import MaintenanceUserFactory
+from customers.tests.factories import CompanyFactory, ManagerUserFactory, OperatorUserFactory
 
 
 class DashboardTestCase(TestCase):
@@ -12,14 +11,15 @@ class DashboardTestCase(TestCase):
         self.company = CompanyFactory()
 
     def test_operator_can_seen_the_dashboard(self):
-        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user.operator_for.add(self.company)
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(reverse('high_ui:home'))
 
         self.assertEqual(response.status_code, 200)
 
     def test_manager_cannot_seen_the_dashboard(self):
-        MaintenanceUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
+        ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(reverse('high_ui:home'))
 

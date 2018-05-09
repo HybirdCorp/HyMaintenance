@@ -26,7 +26,7 @@ class ViewWithCompany(View):
     def get_company(self):
         user = self.request.user
         company = get_object_or_404(Company, slug_name=self.kwargs.get(self.pk_url_kwarg))
-        if company not in user.operator_for.all():
+        if not user.is_staff or company not in user.operator_for.all():
             raise Http404(_("No %(verbose_name)s found matching the query") %
                           {'verbose_name': Company._meta.verbose_name})
         return company
