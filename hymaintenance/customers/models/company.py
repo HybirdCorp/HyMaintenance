@@ -16,7 +16,7 @@ class Company(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('high_ui:company-details', args=[self.pk])
+        return reverse('high_ui:company-details', args=[self.slug_name])
 
     # NOT SAFE if two namesake companies are created in the same time, it could raise IntegrityError on slug_name
     def slugify_company_name(self):

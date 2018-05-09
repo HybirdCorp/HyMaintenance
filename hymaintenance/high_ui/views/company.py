@@ -11,7 +11,8 @@ from .base import LoginRequiredMixin
 class CompanyDetailView(LoginRequiredMixin, DetailView):
     template_name = 'high_ui/company_details.html'
     model = Company
-    pk_url_kwarg = "pk"
+    slug_url_kwarg = "company_name"
+    slug_field = "slug_name"
 
     def get_queryset(self):
         user = self.request.user

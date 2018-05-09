@@ -13,7 +13,7 @@ app_name = 'high_ui'
 
 urlpatterns = [
     path(r'', HomeView.as_view(), name='home'),
-    path(r'company/<int:pk>/', CompanyDetailView.as_view(),
+    path(r'company/<slug:company_name>/', CompanyDetailView.as_view(),
          name='company-details'),
 
     path(r'project/add/', ProjectCreateView.as_view(),

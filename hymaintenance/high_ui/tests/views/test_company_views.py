@@ -21,7 +21,7 @@ class CompanyDetailViewTestCase(TestCase):
         first_company = CompanyFactory(name="First Company")
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse('high_ui:company-details', args=[first_company.pk]))
+        response = self.client.get(reverse('high_ui:company-details', args=[first_company.slug_name]))
 
         self.assertEqual(response.status_code, 200)
 
@@ -30,7 +30,7 @@ class CompanyDetailViewTestCase(TestCase):
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         black_mesa = CompanyFactory()
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse('high_ui:company-details', args=[black_mesa.pk]))
+        response = self.client.get(reverse('high_ui:company-details', args=[black_mesa.slug_name]))
 
         self.assertEqual(response.status_code, 404)
 
@@ -38,7 +38,7 @@ class CompanyDetailViewTestCase(TestCase):
         OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         black_mesa = CompanyFactory()
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse('high_ui:company-details', args=[black_mesa.pk]))
+        response = self.client.get(reverse('high_ui:company-details', args=[black_mesa.slug_name]))
 
         self.assertEqual(response.status_code, 404)
 
@@ -65,7 +65,7 @@ class MonthDisplayInFrenchTestCase(TestCase):
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.get(reverse('high_ui:company-details', args=[company.pk]))
+        response = self.client.get(reverse('high_ui:company-details', args=[company.slug_name]))
 
         month = now().date().month
         frenchmonths = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "décembre"]
@@ -78,8 +78,8 @@ class ContractVisibilityTestCase(TestCase):
         self.company = CompanyFactory()
         self.factory = RequestFactory()
 
-    def create_company_detail_view_with_request(self, user, companypk):
-        request = self.factory.get(reverse('high_ui:company-details', args=[companypk]))
+    def create_company_detail_view_with_request(self, user, company_slug_name):
+        request = self.factory.get(reverse('high_ui:company-details', args=[company_slug_name]))
         request.user = user
         view = CompanyDetailView()
         view.request = request
@@ -90,7 +90,7 @@ class ContractVisibilityTestCase(TestCase):
                                   password="azerty",
                                   company=self.company)
         create_mtype_maintenance_and_issue(False, False, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         contracts = view.get_maintenance_contracts(self.company)
         self.assertEqual(0, contracts.count())
 
@@ -99,7 +99,7 @@ class ContractVisibilityTestCase(TestCase):
                                   password="azerty",
                                   company=self.company)
         create_mtype_maintenance_and_issue(True, True, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         contracts = view.get_maintenance_contracts(self.company)
         self.assertEqual(1, contracts.count())
 
@@ -108,7 +108,7 @@ class ContractVisibilityTestCase(TestCase):
                                   password="azerty",
                                   company=self.company)
         create_mtype_maintenance_and_issue(True, False, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         contracts = view.get_maintenance_contracts(self.company)
         self.assertEqual(0, contracts.count())
 
@@ -117,7 +117,7 @@ class ContractVisibilityTestCase(TestCase):
                                   password="azerty",
                                   company=self.company)
         create_mtype_maintenance_and_issue(False, True, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         contracts = view.get_maintenance_contracts(self.company)
         self.assertEqual(1, contracts.count())
 
@@ -125,7 +125,7 @@ class ContractVisibilityTestCase(TestCase):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         user.operator_for.add(self.company)
         create_mtype_maintenance_and_issue(False, False, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         contracts = view.get_maintenance_contracts(self.company)
         self.assertEqual(1, contracts.count())
 
@@ -133,7 +133,7 @@ class ContractVisibilityTestCase(TestCase):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         user.operator_for.add(self.company)
         create_mtype_maintenance_and_issue(True, True, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         contracts = view.get_maintenance_contracts(self.company)
         self.assertEqual(1, contracts.count())
 
@@ -141,7 +141,7 @@ class ContractVisibilityTestCase(TestCase):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         user.operator_for.add(self.company)
         create_mtype_maintenance_and_issue(True, False, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         contracts = view.get_maintenance_contracts(self.company)
         self.assertEqual(1, contracts.count())
 
@@ -149,7 +149,7 @@ class ContractVisibilityTestCase(TestCase):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         user.operator_for.add(self.company)
         create_mtype_maintenance_and_issue(False, True, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         contracts = view.get_maintenance_contracts(self.company)
         self.assertEqual(1, contracts.count())
 
@@ -159,8 +159,8 @@ class IssueVisibilityTestCase(TestCase):
         self.company = CompanyFactory()
         self.factory = RequestFactory()
 
-    def create_company_detail_view_with_request(self, user, companypk):
-        request = self.factory.get(reverse('high_ui:company-details', args=[companypk]))
+    def create_company_detail_view_with_request(self, user, company_slug_name):
+        request = self.factory.get(reverse('high_ui:company-details', args=[company_slug_name]))
         request.user = user
         view = CompanyDetailView()
         view.request = request
@@ -171,7 +171,7 @@ class IssueVisibilityTestCase(TestCase):
                                   password="azerty",
                                   company=self.company)
         create_mtype_maintenance_and_issue(False, False, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         issues = view.get_maintenance_issues(self.company, now().date())
         self.assertEqual(0, issues.count())
 
@@ -180,7 +180,7 @@ class IssueVisibilityTestCase(TestCase):
                                   password="azerty",
                                   company=self.company)
         create_mtype_maintenance_and_issue(True, True, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         issues = view.get_maintenance_issues(self.company, now().date())
         self.assertEqual(1, issues.count())
 
@@ -189,7 +189,7 @@ class IssueVisibilityTestCase(TestCase):
                                   password="azerty",
                                   company=self.company)
         create_mtype_maintenance_and_issue(True, False, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         issues = view.get_maintenance_issues(self.company, now().date())
         self.assertEqual(0, issues.count())
 
@@ -198,7 +198,7 @@ class IssueVisibilityTestCase(TestCase):
                                   password="azerty",
                                   company=self.company)
         create_mtype_maintenance_and_issue(False, True, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         issues = view.get_maintenance_issues(self.company, now().date())
         self.assertEqual(1, issues.count())
 
@@ -206,7 +206,7 @@ class IssueVisibilityTestCase(TestCase):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         user.operator_for.add(self.company)
         create_mtype_maintenance_and_issue(False, False, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         issues = view.get_maintenance_issues(self.company, now().date())
         self.assertEqual(1, issues.count())
 
@@ -214,7 +214,7 @@ class IssueVisibilityTestCase(TestCase):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         user.operator_for.add(self.company)
         create_mtype_maintenance_and_issue(True, True, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         issues = view.get_maintenance_issues(self.company, now().date())
         self.assertEqual(1, issues.count())
 
@@ -222,7 +222,7 @@ class IssueVisibilityTestCase(TestCase):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         user.operator_for.add(self.company)
         create_mtype_maintenance_and_issue(True, False, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         issues = view.get_maintenance_issues(self.company, now().date())
         self.assertEqual(1, issues.count())
 
@@ -230,6 +230,6 @@ class IssueVisibilityTestCase(TestCase):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         user.operator_for.add(self.company)
         create_mtype_maintenance_and_issue(False, True, self.company)
-        view = self.create_company_detail_view_with_request(user, self.company.pk)
+        view = self.create_company_detail_view_with_request(user, self.company.slug_name)
         issues = view.get_maintenance_issues(self.company, now().date())
         self.assertEqual(1, issues.count())
