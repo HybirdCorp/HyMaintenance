@@ -16,7 +16,7 @@ class MaintenanceUserCreateForm(forms.ModelForm):
         widgets = {'password': forms.PasswordInput()}
 
     def save(self, commit=True):
-        user = super(MaintenanceUserCreateForm, self).save(commit=False)
+        user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
 
         self.fill_user(user)
@@ -42,5 +42,15 @@ class ManagerUserCreateForm(MaintenanceUserCreateForm):
 
 
 class OperatorUserCreateForm(MaintenanceUserCreateForm):
+    def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop('company')
+        super().__init__(*args, **kwargs)
+
     def fill_user(self, user):
         user.is_staff = True
+
+    def save(self, commit=True):
+        user = super().save(commit=commit)
+        if commit:
+            user.operator_for.add(self.company)
+        return user
