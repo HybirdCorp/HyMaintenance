@@ -11,7 +11,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        if user.company is None:
+        if user.is_staff:
             context = self.get_context_data(**kwargs)
             context["companies"] = get_companies_of_operator(user)
 

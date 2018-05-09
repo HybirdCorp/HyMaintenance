@@ -3,7 +3,7 @@ import factory
 
 from django.utils.timezone import now
 
-from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
+from customers.tests.factories import CompanyFactory, OperatorUserFactory
 
 from ..models import IncomingChannel, MaintenanceConsumer, MaintenanceContract, MaintenanceCredit, MaintenanceIssue, MaintenanceType
 
@@ -54,7 +54,7 @@ class MaintenanceIssueFactory(factory.django.DjangoModelFactory):
     company = factory.SubFactory(CompanyFactory)
     maintenance_type = factory.LazyFunction(get_default_maintenance_type)
     incoming_channel = factory.SubFactory(IncomingChannelFactory)
-    user_who_fix = factory.SubFactory(MaintenanceUserFactory)
+    user_who_fix = factory.SubFactory(OperatorUserFactory)
     consumer_who_ask = factory.SubFactory(MaintenanceConsumerFactory)
     subject = "It's not working"
     date = now().date()

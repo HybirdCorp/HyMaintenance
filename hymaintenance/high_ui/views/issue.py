@@ -57,8 +57,8 @@ class IssueDetailView(LoginRequiredMixin, DetailView):
         # if 403 stays, maybe we have to design a custom forbidden access page ?
         user = self.request.user
 
-        if user.company == company:
+        if not user.is_staff and user.company == company:
             return issue
-        if user.company is None and company in user.operator_for.all():
+        if user.is_staff and company in user.operator_for.all():
             return issue
         raise PermissionDenied

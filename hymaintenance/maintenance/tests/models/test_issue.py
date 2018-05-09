@@ -6,7 +6,7 @@ from django.core.files import File
 from django.test import TestCase
 from django.utils.timezone import now
 
-from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
+from customers.tests.factories import CompanyFactory, OperatorUserFactory
 
 from ...models import MaintenanceIssue
 from ..factories import IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceIssueFactory, create_project, get_default_maintenance_type
@@ -18,7 +18,7 @@ class MaintenanceIssueTestCase(TestCase):
         company = CompanyFactory()
         maintenance_type = get_default_maintenance_type()
         channel = IncomingChannelFactory()
-        user = MaintenanceUserFactory()
+        user = OperatorUserFactory()
         consumer = MaintenanceConsumerFactory()
 
         MaintenanceIssue.objects.create(company=company,

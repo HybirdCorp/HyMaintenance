@@ -9,7 +9,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils.timezone import now
 
-from customers.tests.factories import CompanyFactory, MaintenanceUserFactory
+from customers.tests.factories import CompanyFactory, OperatorUserFactory
 from maintenance.models import MaintenanceIssue
 from maintenance.tests.factories import (
     IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceContractFactory, MaintenanceIssueFactory, create_project,
@@ -28,8 +28,8 @@ class IssueCreateViewTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                          password="azerty")
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                       password="azerty")
         cls.tmp_directory = TemporaryDirectory(prefix="create-issue-view-", dir=os.path.join(settings.MEDIA_ROOT, 'upload/'))
         cls.company, contract1, _contract2, _contract3 = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
         cls.user.operator_for.add(cls.company)
@@ -120,8 +120,8 @@ class IssueCreateViewTestCase(TestCase):
         self.assertEqual(response.status_code, 405)
 
     def test_i_cannot_get_a_form_to_create_a_new_issue_where_i_am_not_operator(self):
-        user = MaintenanceUserFactory(email="chell@aperture-science.com",
-                                      password="azerty")
+        user = OperatorUserFactory(email="chell@aperture-science.com",
+                                   password="azerty")
         self.client.login(username=user.email, password="azerty")
         response = self.client.get(reverse('high_ui:company-add_issue',
                                            kwargs={'company_name': self.company.slug_name}),
@@ -141,8 +141,8 @@ class IssueUpdateViewTestCase(TestCase):
         cls.contract = MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)
 
     def setUp(self):
-        self.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                           password="azerty")
+        self.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                        password="azerty")
         self.issue = MaintenanceIssueFactory(company=self.company, maintenance_type=self.maintenance_type)
         self.url_post = reverse('high_ui:change_issue', kwargs={'company_name': self.issue.company.slug_name,
                                                                 'company_issue_number': self.issue.company_issue_number})
@@ -243,8 +243,8 @@ class IssueDetailViewTestCase(TestCase):
     def setUpTestData(cls):
         cls.tmp_directory = TemporaryDirectory(prefix="issue-details-view-", dir=os.path.join(settings.MEDIA_ROOT, 'upload/'))
         cls.company, contract1, _contract2, _contract3 = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
-        cls.user = MaintenanceUserFactory(email="gordon.freeman@blackmesa.com",
-                                          password="azerty", company=cls.company)
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                       password="azerty", company=cls.company)
         cls.user.operator_for.add(cls.company)
         cls.maintenance_type = contract1.maintenance_type
         MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)

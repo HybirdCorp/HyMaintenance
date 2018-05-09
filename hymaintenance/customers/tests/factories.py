@@ -20,7 +20,7 @@ class MaintenanceUserFactory(factory.django.DjangoModelFactory):
     email = factory.Sequence(lambda n: 'robot{0}@example.com'.format(n))
 
 
-class MaintenanceSuperUserFactory(MaintenanceUserFactory):
+class SuperUserFactory(MaintenanceUserFactory):
     is_staff = True
     is_superuser = True
     is_active = True
@@ -28,3 +28,7 @@ class MaintenanceSuperUserFactory(MaintenanceUserFactory):
 
 class OperatorUserFactory(MaintenanceUserFactory):
     is_staff = True
+
+
+class ManagerUserFactory(MaintenanceUserFactory):
+    is_staff = False
