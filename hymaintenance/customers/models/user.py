@@ -47,9 +47,10 @@ class MaintenanceUserManager(BaseUserManager):
     def get_operator_users_queryset(self):
         return self.get_queryset().filter(company__isnull=True).order_by("first_name")
 
-    def get_operator_users_choices(self):
-        maintainers = self.get_operator_users_queryset().values_list('pk', 'first_name', 'last_name')
-        return [(pk, get_full_name(first_name=first_name, last_name=last_name)) for pk, first_name, last_name in maintainers]
+    def get_operator_users_choices(self, company):
+        operators = self.get_operator_users_queryset()
+        return [(operator.pk, get_full_name(first_name=operator.first_name, last_name=operator.last_name))
+                for operator in operators if company in get_companies_of_operator(operator)]
 
 
 class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
