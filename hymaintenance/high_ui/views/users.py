@@ -1,5 +1,3 @@
-from django.views.generic import CreateView
-
 from customers.forms import ManagerUserCreateForm, OperatorUserCreateForm
 from maintenance.forms.consumer import MaintenanceConsumerCreateForm
 
@@ -30,8 +28,6 @@ class OperatorUserCreateView(LoginRequiredMixin, CreateViewWithCompany):
     # This is done until we have the concept of "maintenance providers" or "projects" which this view/form
     # will need to link the MaintenanceUser to this Company as the "maintainer"
     # Until then, the view/form have the company but the MaintenanceUser created will not use it
-    def get_form_kwargs(self):
-        return super(CreateView, self).get_form_kwargs()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
