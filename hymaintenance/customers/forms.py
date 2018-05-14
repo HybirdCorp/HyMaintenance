@@ -54,3 +54,29 @@ class OperatorUserCreateForm(MaintenanceUserCreateForm):
         if commit:
             user.operator_for.add(self.company)
         return user
+
+
+class OperatorUserArchiveForm(forms.Form):
+    operators_choices = forms.ModelMultipleChoiceField(
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        queryset=MaintenanceUser.objects.get_operator_users_queryset().filter(is_active=True)
+    )
+
+    def save(self):
+        for operator in self.cleaned_data['operators_choices']:
+            operator.is_active = False
+            operator.save()
+
+
+class OperatorUserUnarchiveForm(forms.Form):
+    operators_choices = forms.ModelMultipleChoiceField(
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        queryset=MaintenanceUser.objects.get_operator_users_queryset().filter(is_active=False)
+    )
+
+    def save(self):
+        for operator in self.cleaned_data['operators_choices']:
+            operator.is_active = True
+            operator.save()
