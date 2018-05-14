@@ -1,9 +1,9 @@
 import datetime
 
-from django.test import Client, TestCase
+from django.test import TestCase
 
 from customers.models import Company
-from customers.tests.factories import OperatorUserFactory
+from customers.tests.factories import ManagerUserFactory, OperatorUserFactory
 from maintenance.forms.project import INACTIF_CONTRACT_INPUT
 from maintenance.models import MaintenanceContract
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
@@ -18,11 +18,20 @@ class ProjectCreateViewTestCase(TestCase):
                                        password="azerty")
 
     def test_i_can_get_create_form(self):
-        client = Client()
-        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        self.client.login(username="gordon.freeman@blackmesa.com",
+                          password="azerty")
 
-        response = client.get(f"/high_ui/project/add/")
+        response = self.client.get(f"/high_ui/project/add/")
         self.assertEqual(response.status_code, 200)
+
+    def test_manager_cannot_get_create_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com",
+                           password="azerty")
+        self.client.login(username="chell@aperture-science.com",
+                          password="azerty")
+
+        response = self.client.get(f"/high_ui/project/add/")
+        self.assertEqual(response.status_code, 404)
 
     def test_i_can_post_and_form_to_create_a_project(self):
         company_name = "Black Mesa"
@@ -41,26 +50,25 @@ class ProjectCreateViewTestCase(TestCase):
         contract3_total_type = CONSUMMED_TOTAL_TIME
         contract3_number_hours = 0
 
-        client = Client()
-        client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = client.post('/high_ui/project/add/',
-                               {"company_name": company_name,
-                                "contract1_visible": contract1_visible,
-                                "contract1_total_type": contract1_total_type,
-                                "contract1_number_hours": contract1_number_hours,
-                                "contract1_counter_name": "Maintenance",
-                                "contract1_date": datetime.date.today(),
-                                "contract2_visible": contract2_visible,
-                                "contract2_total_type": contract2_total_type,
-                                "contract2_number_hours": contract2_number_hours,
-                                "contract2_counter_name": "Support",
-                                "contract2_date": datetime.date.today(),
-                                "contract3_visible": contract3_visible,
-                                "contract3_total_type": contract3_total_type,
-                                "contract3_number_hours": contract3_number_hours,
-                                "contract3_counter_name": "Corrective",
-                                "contract3_date": datetime.date.today()}, follow=True)
+        response = self.client.post('/high_ui/project/add/',
+                                    {"company_name": company_name,
+                                     "contract1_visible": contract1_visible,
+                                     "contract1_total_type": contract1_total_type,
+                                     "contract1_number_hours": contract1_number_hours,
+                                     "contract1_counter_name": "Maintenance",
+                                     "contract1_date": datetime.date.today(),
+                                     "contract2_visible": contract2_visible,
+                                     "contract2_total_type": contract2_total_type,
+                                     "contract2_number_hours": contract2_number_hours,
+                                     "contract2_counter_name": "Support",
+                                     "contract2_date": datetime.date.today(),
+                                     "contract3_visible": contract3_visible,
+                                     "contract3_total_type": contract3_total_type,
+                                     "contract3_number_hours": contract3_number_hours,
+                                     "contract3_counter_name": "Corrective",
+                                     "contract3_date": datetime.date.today()}, follow=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, '/high_ui/')
