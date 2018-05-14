@@ -9,7 +9,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils.timezone import now
 
-from customers.tests.factories import CompanyFactory, OperatorUserFactory
+from customers.tests.factories import CompanyFactory, ManagerUserFactory, OperatorUserFactory
 from maintenance.models import MaintenanceIssue
 from maintenance.tests.factories import (
     IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceContractFactory, MaintenanceIssueFactory, create_project,
@@ -258,7 +258,9 @@ class IssueDetailViewTestCase(TestCase):
         super().tearDownClass()
 
     def test_user_can_seen_issues_of_this_company(self):
-        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        ManagerUserFactory(email="chell@aperture-science.com",
+                           password="azerty", company=self.company)
+        self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(reverse('high_ui:issue-details', kwargs={'company_name': self.company.slug_name,
                                                                             'company_issue_number': self.issue.company_issue_number}))
         self.assertEqual(response.status_code, 200)
@@ -268,7 +270,9 @@ class IssueDetailViewTestCase(TestCase):
         MaintenanceContractFactory(company=other_company, maintenance_type=self.maintenance_type)
         issue = MaintenanceIssueFactory(company=other_company, maintenance_type=self.maintenance_type)
 
-        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        ManagerUserFactory(email="chell@aperture-science.com",
+                           password="azerty", company=self.company)
+        self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(reverse('high_ui:issue-details', kwargs={'company_name': issue.company.slug_name,
                                                                             'company_issue_number': issue.company_issue_number}))
         self.assertEqual(response.status_code, 403)
