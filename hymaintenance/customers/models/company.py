@@ -37,3 +37,7 @@ class Company(models.Model):
             self.slug_name = self.slugify_company_name()
             super().save(*args, **kwargs)
         self.__original_name = self.name
+
+    def get_operators_choices(self):
+        return [(operator.pk, operator.get_full_name())
+                for operator in self.managed_by.all()]
