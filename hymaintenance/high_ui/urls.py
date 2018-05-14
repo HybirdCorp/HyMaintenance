@@ -37,7 +37,7 @@ urlpatterns = [
     path(r'manager/add/<slug:company_name>/', ManagerUserCreateView.as_view(),
          name='company-add_manager'),
 
-    path(r'maintainer/add/<slug:company_name>/', OperatorUserCreateView.as_view(),
+    path(r'operator/add/<slug:company_name>/', OperatorUserCreateView.as_view(),
          name='company-add_operator'),
 
 ]
