@@ -45,7 +45,7 @@ class MaintenanceUserManager(BaseUserManager):
         return self._create_user(email, password, True, True, **extra_fields)
 
     def get_operator_users_queryset(self):
-        return self.get_queryset().filter(company__isnull=True).order_by("first_name")
+        return self.get_queryset().filter(is_staff=True).order_by("first_name")
 
 
 class MaintenanceUser(AbstractBaseUser, PermissionsMixin):

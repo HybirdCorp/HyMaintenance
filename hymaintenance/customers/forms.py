@@ -57,26 +57,26 @@ class OperatorUserCreateForm(MaintenanceUserCreateForm):
 
 
 class OperatorUserArchiveForm(forms.Form):
-    operators_choices = forms.ModelMultipleChoiceField(
+    active_operators = forms.ModelMultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple,
         queryset=MaintenanceUser.objects.get_operator_users_queryset().filter(is_active=True)
     )
 
     def save(self):
-        for operator in self.cleaned_data['operators_choices']:
+        for operator in self.cleaned_data['active_operators']:
             operator.is_active = False
             operator.save()
 
 
 class OperatorUserUnarchiveForm(forms.Form):
-    operators_choices = forms.ModelMultipleChoiceField(
+    inactive_operators = forms.ModelMultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple,
         queryset=MaintenanceUser.objects.get_operator_users_queryset().filter(is_active=False)
     )
 
     def save(self):
-        for operator in self.cleaned_data['operators_choices']:
+        for operator in self.cleaned_data['inactive_operators']:
             operator.is_active = True
             operator.save()

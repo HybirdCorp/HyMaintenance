@@ -1,6 +1,10 @@
 
 from django.template import Library
 from django.utils.html import mark_safe
+from django.utils.translation import ugettext as _
+from django.utils.translation import ungettext as _p
+
+from customers.models.user import MaintenanceUser, get_companies_of_operator
 
 
 register = Library()
@@ -36,3 +40,13 @@ def pretty_print_contract_counter(contract):
     elif contract.total_type == 1:
         counter = pretty_print_minutes(contract.get_number_consumed_minutes())
     return mark_safe(counter)
+
+
+@register.filter
+def print_operator_projects(operator_id):
+    operator = MaintenanceUser.objects.get(id=operator_id)
+    projects = get_companies_of_operator(operator)
+    if projects:
+        projects_names = [project.name for project in projects]
+        return _p('project: ', 'projects: ', len(projects_names)) + ", ".join(projects_names)
+    return _('project: ') + _('none')
