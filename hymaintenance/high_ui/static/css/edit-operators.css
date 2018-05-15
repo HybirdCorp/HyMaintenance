@@ -1,0 +1,94 @@
+.checkbox-list .item-name {
+    text-transform: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: #525252;
+}
+
+.checkbox-list .item-description {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 11px;
+    color: #7c7c7c;
+}
+
+.list-intro {
+    line-height: 140%;
+}
+
+.form-group .group-title-container {
+    border: none;
+    margin-bottom: 0;
+}
+
+.form-group .group-title {
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.form-group-collapsable {
+    position: relative;
+}
+
+.form-group-collapsable .group-title {
+    padding-left: 20px;
+}
+
+.form-group-collapsable .group-title::before {
+    content: "";
+    top: 4px;
+    left: 2px;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top-width: 8px;
+    border-top-style: solid;
+    border-top-color: #666;
+    transition: transform ease-in-out 0.1s, border-top-color ease-in-out 0.3s;
+}
+
+.form-group-collapsable .form-group-collapsable-content {
+    max-height: 350px;
+    transition: max-height 0.3s ease-in-out;
+}
+
+form + form {
+    margin-top: 15px;
+    border-top: 1px solid #ccc;
+    padding-top: 15px;
+}
+
+.form-intro {
+    padding-top: 15px;
+}
+
+.form-footer {
+    max-height: 70px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out,
+                visibility 0.3s ease-in-out,
+                margin-top 0.3s ease-in-out,
+                padding-top 0.3s ease-in-out;
+}
+
+.form-group-collapsable.form-group-collapsed + .form-footer {
+    max-height: 0;
+    margin-top: 0;
+    padding-top: 0;
+    visibility: hidden;
+}
+
+.form-group-collapsable.form-group-collapsed .form-group-collapsable-content {
+    max-height: 0;
+}
+
+.form-group-collapsable.form-group-collapsed .group-title::before {
+    transform: rotate(-90deg);
+    border-top-color: #aaa;
+}
+
+.form-group.reactivate-form {
+    margin-top: 10px;
+}

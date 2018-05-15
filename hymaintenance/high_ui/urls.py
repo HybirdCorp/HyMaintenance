@@ -6,7 +6,9 @@ from .views.company import CompanyDetailView
 from .views.dashboard import HomeView
 from .views.issue import IssueCreateView, IssueDetailView, IssueUpdateView
 from .views.project import ProjectCreateView, ProjectUpdateView
-from .views.users import ConsumerCreateView, ManagerUserCreateView, OperatorUserCreateView
+from .views.users import (
+    ConsumerCreateView, ManagerUserCreateView, OperatorUserCreateView, OperatorUsersArchiveView, OperatorUsersUnarchiveView, OperatorUsersUpdateView
+)
 
 
 app_name = 'high_ui'
@@ -39,5 +41,14 @@ urlpatterns = [
 
     path(r'operator/add/<slug:company_name>/', OperatorUserCreateView.as_view(),
          name='company-add_operator'),
+
+    path(r'operators/change/', OperatorUsersUpdateView.as_view(),
+         name='change_operators'),
+
+    path(r'operators/archive/', OperatorUsersArchiveView.as_view(),
+         name='archive_operators'),
+
+    path(r'operators/unarchive/', OperatorUsersUnarchiveView.as_view(),
+         name='unarchive_operators'),
 
 ]

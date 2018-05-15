@@ -38,15 +38,15 @@ class ProjectUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["maintenance_types"] = MaintenanceType.objects.order_by("id")
-        context['channels'] = IncomingChannel.objects.all()
+        context["channels"] = IncomingChannel.objects.all()
         contracts = MaintenanceContract.objects.filter(company=self.company)
-        context['contracts'] = contracts
-        context['company'] = self.company
+        context["contracts"] = contracts
+        context["company"] = self.company
         return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['company'] = self.company
+        kwargs["company"] = self.company
         return kwargs
 
     def form_valid(self, form):

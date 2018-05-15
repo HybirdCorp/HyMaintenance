@@ -73,28 +73,28 @@ class OperatorUserArchiveFormTestCase(TestCase):
                                        last_name="Freeman")
 
     def test_archive_form_update_new_status(self):
-        form = OperatorUserArchiveForm(data={"operators_choices": [self.op2]})
+        form = OperatorUserArchiveForm(data={"active_operators": [self.op2]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertFalse(MaintenanceUser.objects.get(email="chell@aperture-science.com").is_active)
         self.assertFalse(MaintenanceUser.objects.get(email="gordon.freeman@blackmesa.com").is_active)
 
     def test_archive_form_dont_update_when_no_new_status(self):
-        form = OperatorUserArchiveForm(data={"operators_choices": []})
+        form = OperatorUserArchiveForm(data={"active_operators": []})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertFalse(MaintenanceUser.objects.get(email="chell@aperture-science.com").is_active)
         self.assertTrue(MaintenanceUser.objects.get(email="gordon.freeman@blackmesa.com").is_active)
 
     def test_unarchive_form_update_new_status(self):
-        form = OperatorUserUnarchiveForm(data={"operators_choices": [self.op1]})
+        form = OperatorUserUnarchiveForm(data={"inactive_operators": [self.op1]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertTrue(MaintenanceUser.objects.get(email="chell@aperture-science.com").is_active)
         self.assertTrue(MaintenanceUser.objects.get(email="gordon.freeman@blackmesa.com").is_active)
 
     def test_unarchive_form_dont_update_when_no_new_status(self):
-        form = OperatorUserUnarchiveForm(data={"operators_choices": []})
+        form = OperatorUserUnarchiveForm(data={"inactive_operators": []})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertFalse(MaintenanceUser.objects.get(email="chell@aperture-science.com").is_active)
