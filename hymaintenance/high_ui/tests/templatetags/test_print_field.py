@@ -1,9 +1,9 @@
 from django.test import SimpleTestCase, TestCase
 
-from customers.tests.factories import CompanyFactory
+from customers.tests.factories import CompanyFactory, OperatorUserFactory
 from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory, get_default_maintenance_type
 
-from ...templatetags.print_fields import pretty_print_contract_counter, pretty_print_minutes
+from ...templatetags.print_fields import pretty_print_contract_counter, pretty_print_minutes, print_operator_projects
 
 
 class PrettyPrintMinutesTestCase(SimpleTestCase):
@@ -63,3 +63,27 @@ class PrettyPrintContractCounterTestCase(TestCase):
         contract = self.create_company_mtype_contract_and_issue(1)
         contract.total_type = 42
         self.assertEqual("", pretty_print_contract_counter(contract))
+
+
+class PrintOperatorProjectsTestCase(TestCase):
+    def setUp(self):
+        self.op_id = 1
+        self.user = OperatorUserFactory(id=self.op_id)
+
+    def test_print_when_operator_has_no_project(self):
+        self.assertEqual("project: none", print_operator_projects(self.op_id))
+
+    def test_print_when_operator_has_one_project(self):
+        company = CompanyFactory()
+        self.user.operator_for.add(company)
+        self.assertEqual("project: {}".format(company.name), print_operator_projects(self.op_id))
+
+    def test_print_when_operator_has_projects(self):
+        company1 = CompanyFactory()
+        self.user.operator_for.add(company1)
+        company2 = CompanyFactory()
+        self.user.operator_for.add(company2)
+        company3 = CompanyFactory()
+        self.user.operator_for.add(company3)
+        self.assertEqual("projects: {}, {}, {}".format(company1.name, company2.name, company3.name),
+                         print_operator_projects(self.op_id))

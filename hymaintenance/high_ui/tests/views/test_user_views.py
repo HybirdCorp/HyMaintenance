@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from customers.models import MaintenanceUser
-from customers.tests.factories import CompanyFactory, OperatorUserFactory
+from customers.tests.factories import CompanyFactory, ManagerUserFactory, OperatorUserFactory
 
 
 class CreateUsersTestCase(TestCase):
@@ -79,3 +79,64 @@ class CreateUsersTestCase(TestCase):
                                                            first_name=first_name,
                                                            last_name=last_name,
                                                            company__isnull=True).count())
+
+
+class UpdateOperatorUsersTestCase(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                            password="azerty",
+                            id=1)
+
+    def setUp(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+    def test_get_update_operators_form(self):
+        response = self.client.get(reverse('high_ui:change_operators'),
+                                   follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_manager_cannot_get_update_operators_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com",
+                           password="azerty")
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(reverse('high_ui:change_operators'),
+                                   follow=True)
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_archive_operators_form(self):
+        op_id = 2
+        op_email = "chell@aperture-science.com"
+        OperatorUserFactory(email=op_email,
+                            password="azerty",
+                            is_active=True,
+                            id=op_id)
+
+        response = self.client.post(reverse("high_ui:archive_operators"),
+                                    {"active_operators": op_id,
+                                     }, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertEqual(1, MaintenanceUser.objects.filter(email=op_email,
+                                                           is_active=False).count())
+
+    def test_post_unarchive_operators_form(self):
+        op_id = 2
+        op_email = "chell@aperture-science.com"
+        OperatorUserFactory(email=op_email,
+                            password="azerty",
+                            is_active=False,
+                            id=op_id)
+
+        response = self.client.post(reverse("high_ui:unarchive_operators"),
+                                    {"inactive_operators": op_id,
+                                     }, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertEqual(1, MaintenanceUser.objects.filter(email=op_email,
+                                                           is_active=True).count())
