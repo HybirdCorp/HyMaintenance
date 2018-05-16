@@ -8,6 +8,7 @@ from customers.models import Company
 class MaintenanceConsumer(models.Model):
     name = models.CharField(_("Consumer's Name"), max_length=255)
     company = models.ForeignKey(Company, on_delete=models.PROTECT)
+    is_used = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

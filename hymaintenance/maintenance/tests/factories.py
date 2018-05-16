@@ -25,6 +25,7 @@ class MaintenanceConsumerFactory(factory.django.DjangoModelFactory):
 
     company = factory.SubFactory(CompanyFactory)
     name = "Isaac Kleiner"
+    is_used = True
 
 
 class MaintenanceContractFactory(factory.django.DjangoModelFactory):
