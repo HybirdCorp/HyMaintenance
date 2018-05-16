@@ -5,14 +5,39 @@ from django.views.generic import FormView, TemplateView
 from customers.forms import ManagerUserCreateForm, OperatorUserArchiveForm, OperatorUserCreateForm, OperatorUserUnarchiveForm
 from customers.models import Company
 from customers.models.user import MaintenanceUser, get_companies_of_operator
-from maintenance.forms.consumer import MaintenanceConsumerCreateForm
+from maintenance.forms.consumer import MaintenanceConsumerCreateForm, MaintenanceConsumersUpdateForm
+from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceType
 
-from .base import CreateViewWithCompany, LoginRequiredMixin
+from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
 
 
 class ConsumerCreateView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = MaintenanceConsumerCreateForm
     template_name = "high_ui/forms/add_consumer.html"
+
+
+class ConsumersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
+    form_class = MaintenanceConsumersUpdateForm
+    template_name = "high_ui/forms/update_consumers.html"
+    success_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["maintenance_types"] = MaintenanceType.objects.order_by("id")
+        context['channels'] = IncomingChannel.objects.all()
+        contracts = MaintenanceContract.objects.filter(company=self.company)
+        context['contracts'] = contracts
+        context['company'] = self.company
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 
 class ManagerUserCreateView(LoginRequiredMixin, CreateViewWithCompany):
