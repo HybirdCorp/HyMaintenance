@@ -1,4 +1,5 @@
 from django.test import SimpleTestCase, TestCase
+from django.utils.translation import ugettext as _
 
 from customers.tests.factories import CompanyFactory, OperatorUserFactory
 from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory, get_default_maintenance_type
@@ -71,12 +72,12 @@ class PrintOperatorProjectsTestCase(TestCase):
         self.user = OperatorUserFactory(id=self.op_id)
 
     def test_print_when_operator_has_no_project(self):
-        self.assertEqual("project: none", print_operator_projects(self.op_id))
+        self.assertEqual(_("project:") + _("none"), print_operator_projects(self.op_id))
 
     def test_print_when_operator_has_one_project(self):
         company = CompanyFactory()
         self.user.operator_for.add(company)
-        self.assertEqual("project: {}".format(company.name), print_operator_projects(self.op_id))
+        self.assertEqual(_("project:") + "{}".format(company.name), print_operator_projects(self.op_id))
 
     def test_print_when_operator_has_projects(self):
         company1 = CompanyFactory()
@@ -85,5 +86,5 @@ class PrintOperatorProjectsTestCase(TestCase):
         self.user.operator_for.add(company2)
         company3 = CompanyFactory()
         self.user.operator_for.add(company3)
-        self.assertEqual("projects: {}, {}, {}".format(company1.name, company2.name, company3.name),
+        self.assertEqual(_("projects:") + "{}, {}, {}".format(company1.name, company2.name, company3.name),
                          print_operator_projects(self.op_id))

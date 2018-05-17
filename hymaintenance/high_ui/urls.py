@@ -7,8 +7,8 @@ from .views.dashboard import HomeView
 from .views.issue import IssueCreateView, IssueDetailView, IssueUpdateView
 from .views.project import ProjectCreateView, ProjectUpdateView
 from .views.users import (
-    ConsumerCreateView, ConsumersUpdateView, ManagerUserCreateView, OperatorUserCreateView,
-    OperatorUsersArchiveView, OperatorUsersUnarchiveView, OperatorUsersUpdateView
+    ConsumerCreateView, ConsumersUpdateView, ManagerUserCreateView, OperatorUserCreateView, OperatorUsersArchiveView, OperatorUsersUnarchiveView,
+    OperatorUsersUpdateView
 )
 
 

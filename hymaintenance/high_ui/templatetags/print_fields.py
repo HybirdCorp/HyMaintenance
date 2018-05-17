@@ -48,5 +48,5 @@ def print_operator_projects(operator_id):
     projects = get_companies_of_operator(operator)
     if projects:
         projects_names = [project.name for project in projects]
-        return _p('project: ', 'projects: ', len(projects_names)) + ", ".join(projects_names)
-    return _('project: ') + _('none')
+        return _p('project:', 'projects:', len(projects_names)) + ", ".join(projects_names)
+    return _('project:') + _('none')
