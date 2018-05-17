@@ -91,7 +91,7 @@
                     </div>
 
                     <div class="project-user-list">
-                        {% with company.maintenanceconsumer_set.all as consumers %}
+                        {% with company.maintenanceconsumer_set.get_used_consumers as consumers %}
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
                                 <span class="dashboard-title">Salariés</span>
