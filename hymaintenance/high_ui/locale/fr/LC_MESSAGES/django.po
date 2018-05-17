@@ -63,7 +63,7 @@ msgid "Password"
 msgstr "Mot de passe"
 
 #: templatetags/print_fields.py:52
-msgid "project: "
+msgid "project:"
 msgstr "projet&nbsp;:"
 
 #: templatetags/print_fields.py:52
