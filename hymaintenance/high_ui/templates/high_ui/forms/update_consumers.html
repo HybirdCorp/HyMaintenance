@@ -26,7 +26,7 @@
                         </div>
 
                         <div>
-                            Sélectionner les salariés pour ce projet, parmi les COUNT_XXXX existants:
+                            Sélectionner les salariés pour ce projet, parmi les {{ company.maintenanceconsumer_set.all.count }} existants:
                             <ul class="checkbox-list">
                             {% for consumer in form.consumers %}
                                 <li>
@@ -43,8 +43,8 @@
                         </div>
                     </div>
                     <div class="form-footer">
-                        <button type="submit">Archiver ces intervenants</button>
-                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne rien changer</a></span>
+                        <button type="submit">Modifier la liste des salariés</button>
+                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
                     </div>
                 </div>
             </form>
