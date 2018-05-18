@@ -41,6 +41,32 @@ class ManagerUserCreateForm(MaintenanceUserCreateForm):
         user.company = self.company
 
 
+class ManagerUsersUpdateForm(forms.Form):
+    managers = forms.ModelMultipleChoiceField(
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        queryset=None
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop('company')
+        super().__init__(*args, **kwargs)
+        self.fields['managers'].queryset = MaintenanceUser.objects.filter(
+            company=self.company, is_staff=False)
+        self.fields['managers'].initial = MaintenanceUser.objects.filter(
+            company=self.company, is_staff=False, is_active=True)
+
+    def save(self):
+        for manager in self.cleaned_data['managers'].filter(is_active=False):
+            manager.is_active = True
+            manager.save()
+        managers_set = set(self.cleaned_data['managers'])
+        for manager in self.fields['managers'].queryset.filter(is_active=True):
+            if manager not in managers_set:
+                manager.is_active = False
+                manager.save()
+
+
 class OperatorUserCreateForm(MaintenanceUserCreateForm):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop('company')
