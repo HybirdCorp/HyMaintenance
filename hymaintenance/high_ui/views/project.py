@@ -4,7 +4,7 @@ from django.views.generic import FormView
 
 from customers.models import Company, MaintenanceUser
 from maintenance.forms.project import ProjectCreateForm, ProjectUpdateForm
-from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceType
+from maintenance.models import MaintenanceType
 
 from .base import LoginRequiredMixin, ViewWithCompany
 
@@ -34,15 +34,6 @@ class ProjectUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
     form_class = ProjectUpdateForm
     template_name = "high_ui/forms/update_project.html"
     success_url = "/"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["maintenance_types"] = MaintenanceType.objects.order_by("id")
-        context["channels"] = IncomingChannel.objects.all()
-        contracts = MaintenanceContract.objects.filter(company=self.company)
-        context["contracts"] = contracts
-        context["company"] = self.company
-        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

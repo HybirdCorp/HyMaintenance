@@ -7,8 +7,8 @@ from .views.dashboard import HomeView
 from .views.issue import IssueCreateView, IssueDetailView, IssueUpdateView
 from .views.project import ProjectCreateView, ProjectUpdateView
 from .views.users import (
-    ConsumerCreateView, ConsumersUpdateView, ManagerUserCreateView, OperatorUserCreateView, OperatorUsersArchiveView, OperatorUsersUnarchiveView,
-    OperatorUsersUpdateView
+    ConsumerCreateView, ConsumersUpdateView, ManagerUserCreateView, ManagerUsersUpdateView, OperatorUserCreateView, OperatorUsersArchiveView,
+    OperatorUsersUnarchiveView, OperatorUsersUpdateView
 )
 
 
@@ -42,6 +42,9 @@ urlpatterns = [
 
     path(r'manager/add/<slug:company_name>/', ManagerUserCreateView.as_view(),
          name='company-add_manager'),
+
+    path(r'managers/<slug:company_name>/change', ManagerUsersUpdateView.as_view(),
+         name='company-change_managers'),
 
     path(r'operator/add/<slug:company_name>/', OperatorUserCreateView.as_view(),
          name='company-add_operator'),

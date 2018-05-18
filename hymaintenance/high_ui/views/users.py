@@ -2,11 +2,10 @@ from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import FormView, TemplateView
 
-from customers.forms import ManagerUserCreateForm, OperatorUserArchiveForm, OperatorUserCreateForm, OperatorUserUnarchiveForm
+from customers.forms import ManagerUserCreateForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserCreateForm, OperatorUserUnarchiveForm
 from customers.models import Company
 from customers.models.user import MaintenanceUser, get_companies_of_operator
 from maintenance.forms.consumer import MaintenanceConsumerCreateForm, MaintenanceConsumersUpdateForm
-from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceType
 
 from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
 
@@ -20,15 +19,6 @@ class ConsumersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
     form_class = MaintenanceConsumersUpdateForm
     template_name = "high_ui/forms/update_consumers.html"
     success_url = "/"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["maintenance_types"] = MaintenanceType.objects.order_by("id")
-        context['channels'] = IncomingChannel.objects.all()
-        contracts = MaintenanceContract.objects.filter(company=self.company)
-        context['contracts'] = contracts
-        context['company'] = self.company
-        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -49,6 +39,21 @@ class ManagerUserCreateView(LoginRequiredMixin, CreateViewWithCompany):
         context['form_label'] = "Nouveau manager"
         context['form_submit_label'] = "Ajouter ce manager"
         return context
+
+
+class ManagerUsersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
+    form_class = ManagerUsersUpdateForm
+    template_name = "high_ui/forms/update_managers.html"
+    success_url = "/"
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 
 class OperatorUserCreateView(LoginRequiredMixin, CreateViewWithCompany):

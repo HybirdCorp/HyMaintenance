@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, View
 
 from customers.models import Company
-from maintenance.models import MaintenanceContract
+from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceType
 
 
 class LoginRequiredMixin(object):
@@ -30,6 +30,15 @@ class ViewWithCompany(View):
             raise Http404(_("No %(verbose_name)s found matching the query") %
                           {'verbose_name': Company._meta.verbose_name})
         return company
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["maintenance_types"] = MaintenanceType.objects.order_by("id")
+        context['channels'] = IncomingChannel.objects.all()
+        contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
+        context['contracts'] = contracts
+        context['company'] = self.company
+        return context
 
 
 class CreateViewWithCompany(ViewWithCompany, CreateView):

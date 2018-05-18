@@ -1,0 +1,55 @@
+{% load static %}
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance Hybird &mdash; Modifier la liste des managers de {{company.name}}</title> {# TMP #}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/edit-list.css" />
+</head>
+<body>
+    {% include "high_ui/company_details_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="{% url 'high_ui:company-change_managers' company_name=company.slug_name %}" method="post">
+                {% csrf_token %}
+                <div class="form-content">
+                    <div class="form-group">
+                        <div class="group-title-container">
+                            <div class="group-title">Modifier la liste des managers</div>
+                            <label>Compte client</label>
+                            <span>{{company.name}}</span>
+                        </div>
+
+                        <div>
+                            Sélectionner les managers pour ce projet, parmi les COUNT_XXXX existants:
+                            <ul class="checkbox-list">
+                            {% for manager in form.managers %}
+                                <li>
+                                    <label>
+                                        <input value="{{manager.data.value}}" name="managers" {% if manager.data.selected %} checked='' {% endif %} type="checkbox"> 
+                                        <div class="item-container">
+                                            <div class="item-name">{{manager.data.label}}</div>
+                                            <div class="item-description"></div>
+                                        </div>
+                                    </label>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <button type="submit">Modifier la liste des managers</button>
+                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+</body>
+</html>

@@ -78,7 +78,7 @@
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{# TODO #}" title="Modifier la liste des managers de ce projet">Modifier la liste</a>
+                                    <a href="{% url 'high_ui:company-change_managers' company_name=company.slug_name %}" title="Modifier la liste des managers de ce projet">Modifier la liste</a>
                                 </div>
                             </div>
                         </div>
