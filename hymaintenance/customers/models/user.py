@@ -47,6 +47,9 @@ class MaintenanceUserManager(BaseUserManager):
     def get_operator_users_queryset(self):
         return self.get_queryset().filter(is_staff=True).order_by("first_name")
 
+    def get_active_manager_users_queryset(self):
+        return self.get_queryset().filter(is_staff=False, is_active=True).order_by("first_name")
+
 
 class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
     created = models.DateTimeField(_("Creation date"), auto_now_add=True)

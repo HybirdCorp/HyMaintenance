@@ -65,7 +65,7 @@
                     </div>
 
                     <div class="project-user-list">
-                        {% with company.maintenanceuser_set.all as managers %}
+                        {% with company.maintenanceuser_set.get_active_manager_users_queryset as managers %}
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
                                 <span class="dashboard-title">Managers</span>
