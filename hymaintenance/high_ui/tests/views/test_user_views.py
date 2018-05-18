@@ -140,3 +140,47 @@ class UpdateOperatorUsersTestCase(TestCase):
         self.assertRedirects(response, reverse('high_ui:home'))
         self.assertEqual(1, MaintenanceUser.objects.filter(email=op_email,
                                                            is_active=True).count())
+
+
+class UpdateManagerUsersTestCase(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                   password="azerty")
+        cls.company = CompanyFactory()
+        user.operator_for.add(cls.company)
+
+    def setUp(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+    def test_get_update_company_consumers_form(self):
+        response = self.client.get(reverse('high_ui:company-change_managers',
+                                           kwargs={'company_name': self.company.slug_name}),
+                                   follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_manager_cannot_get_update_company_consumers_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com",
+                           password="azerty")
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(reverse('high_ui:company-change_managers',
+                                           kwargs={'company_name': self.company.slug_name}),
+                                   follow=True)
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_archive_company_consumers_form(self):
+        manager1 = ManagerUserFactory(is_active=True, company=self.company)
+        manager2 = ManagerUserFactory(is_active=False, company=self.company)
+
+        response = self.client.post(reverse("high_ui:company-change_managers",
+                                            kwargs={'company_name': self.company.slug_name}),
+                                    {"managers": manager2.id,
+                                     }, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertFalse(MaintenanceUser.objects.get(id=manager1.id).is_active)
+        self.assertTrue(MaintenanceUser.objects.get(id=manager2.id).is_active)

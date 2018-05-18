@@ -54,7 +54,7 @@ class ConsumerCreateViewTestCase(TestCase):
         self.assertEqual(1, MaintenanceConsumer.objects.filter(company=self.company, name=name).count())
 
 
-class UpdateOperatorUsersTestCase(TestCase):
+class UpdateMaintenanceConsumersTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
