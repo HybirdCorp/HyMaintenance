@@ -26,7 +26,7 @@
                         </div>
 
                         <div>
-                            Sélectionner les managers pour ce projet, parmi les COUNT_XXXX existants:
+                            Sélectionner les managers pour ce projet, parmi les {{company.maintenanceuser_set.get_manager_users_queryset.count}} existants:
                             <ul class="checkbox-list">
                             {% for manager in form.managers %}
                                 <li>
@@ -34,7 +34,6 @@
                                         <input value="{{manager.data.value}}" name="managers" {% if manager.data.selected %} checked='' {% endif %} type="checkbox"> 
                                         <div class="item-container">
                                             <div class="item-name">{{manager.data.label}}</div>
-                                            <div class="item-description"></div>
                                         </div>
                                     </label>
                                 </li>
