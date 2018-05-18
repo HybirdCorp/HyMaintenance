@@ -2,9 +2,12 @@
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
-from ...forms import MaintenanceUserCreateForm, ManagerUserCreateForm, OperatorUserArchiveForm, OperatorUserCreateForm, OperatorUserUnarchiveForm
+from ...forms import (
+    MaintenanceUserCreateForm, ManagerUserCreateForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserCreateForm,
+    OperatorUserUnarchiveForm
+)
 from ...models import MaintenanceUser
-from ..factories import CompanyFactory, OperatorUserFactory
+from ..factories import CompanyFactory, ManagerUserFactory, OperatorUserFactory
 
 
 class UserCreateFormTestCase(TestCase):
@@ -99,3 +102,27 @@ class OperatorUserArchiveFormTestCase(TestCase):
         form.save()
         self.assertFalse(MaintenanceUser.objects.get(email="chell@aperture-science.com").is_active)
         self.assertTrue(MaintenanceUser.objects.get(email="gordon.freeman@blackmesa.com").is_active)
+
+
+class ManagerUserUpdateFormTestCase(TestCase):
+
+    def setUp(self):
+        self.company = CompanyFactory()
+        self.m2 = ManagerUserFactory(is_active=False, company=self.company)
+        self.m1 = ManagerUserFactory(company=self.company)
+        self.m3 = ManagerUserFactory(company=self.company)
+        self.m4 = ManagerUserFactory(is_active=False, company=self.company)
+
+    def test_update_form_initial_values(self):
+        form = ManagerUsersUpdateForm(company=self.company)
+        self.assertEqual(list(form.fields['managers'].initial), [self.m1, self.m3])
+
+    def test_update_form(self):
+        form = ManagerUsersUpdateForm(company=self.company,
+                                      data={"managers": [self.m1, self.m2]})
+        self.assertTrue(form.is_valid(), form.errors)
+        form.save()
+        self.assertTrue(MaintenanceUser.objects.get(id=self.m2.id).is_active)
+        self.assertTrue(MaintenanceUser.objects.get(id=self.m1.id).is_active)
+        self.assertFalse(MaintenanceUser.objects.get(id=self.m3.id).is_active)
+        self.assertFalse(MaintenanceUser.objects.get(id=self.m4.id).is_active)
