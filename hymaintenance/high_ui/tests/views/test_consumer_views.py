@@ -89,7 +89,7 @@ class UpdateMaintenanceConsumersTestCase(TestCase):
 
         response = self.client.post(reverse("high_ui:company-change_consumers",
                                             kwargs={'company_name': self.company.slug_name}),
-                                    {"consumers": consumer2.id,
+                                    {"users": consumer2.id,
                                      }, follow=True)
 
         self.assertEqual(response.status_code, 200)

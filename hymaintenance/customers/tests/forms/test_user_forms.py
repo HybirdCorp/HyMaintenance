@@ -115,11 +115,11 @@ class ManagerUserUpdateFormTestCase(TestCase):
 
     def test_update_form_initial_values(self):
         form = ManagerUsersUpdateForm(company=self.company)
-        self.assertEqual(list(form.fields['managers'].initial), [self.m1, self.m3])
+        self.assertEqual(list(form.fields['users'].initial), [self.m1, self.m3])
 
     def test_update_form(self):
         form = ManagerUsersUpdateForm(company=self.company,
-                                      data={"managers": [self.m1, self.m2]})
+                                      data={"users": [self.m1, self.m2]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertTrue(MaintenanceUser.objects.get(id=self.m2.id).is_active)
@@ -143,12 +143,12 @@ class OperatorUserUpdateFormTestCase(TestCase):
 
     def test_update_form_initial_values(self):
         form = OperatorUsersUpdateForm(company=self.company)
-        self.assertEqual(list(form.fields['operators'].initial), [self.op1, self.op2])
+        self.assertEqual(list(form.fields['users'].initial), [self.op1, self.op2])
 
     def test_update_form(self):
         self.assertEqual(list(self.company.managed_by.all()), [self.op1, self.op2])
         form = OperatorUsersUpdateForm(company=self.company,
-                                       data={"operators": [self.op1, self.op3]})
+                                       data={"users": [self.op1, self.op3]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertEqual(list(self.company.managed_by.all()), [self.op1, self.op3])
