@@ -1,0 +1,18 @@
+{% extends 'high_ui/forms/update_list_base.html' %}
+
+{% block page_title %}
+<title>Maintenance Hybird &mdash; Modifier la liste des intervenants de {{company.name}}</title> {# TMP #}
+{% endblock %}
+
+{% block form_title %}
+<div class="group-title">Modifier la liste des intervenants</div>
+{% endblock %}
+
+{% block form_details %}
+Sélectionner les intervenants pour ce projet, parmi les {{operators.count}} existants:
+{% endblock %}
+
+{% block form_footer %}
+<button type="submit">Modifier la liste des intervenants</button>
+<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+{% endblock %}

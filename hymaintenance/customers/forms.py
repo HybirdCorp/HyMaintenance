@@ -42,7 +42,7 @@ class ManagerUserCreateForm(MaintenanceUserCreateForm):
 
 
 class ManagerUsersUpdateForm(forms.Form):
-    managers = forms.ModelMultipleChoiceField(
+    users = forms.ModelMultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple,
         queryset=None
@@ -51,17 +51,17 @@ class ManagerUsersUpdateForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop('company')
         super().__init__(*args, **kwargs)
-        self.fields['managers'].queryset = MaintenanceUser.objects.filter(
+        self.fields['users'].queryset = MaintenanceUser.objects.filter(
             company=self.company, is_staff=False)
-        self.fields['managers'].initial = MaintenanceUser.objects.filter(
+        self.fields['users'].initial = MaintenanceUser.objects.filter(
             company=self.company, is_staff=False, is_active=True)
 
     def save(self):
-        for manager in self.cleaned_data['managers'].filter(is_active=False):
+        for manager in self.cleaned_data['users'].filter(is_active=False):
             manager.is_active = True
             manager.save()
-        managers_set = set(self.cleaned_data['managers'])
-        for manager in self.fields['managers'].queryset.filter(is_active=True):
+        managers_set = set(self.cleaned_data['users'])
+        for manager in self.fields['users'].queryset.filter(is_active=True):
             if manager not in managers_set:
                 manager.is_active = False
                 manager.save()
@@ -83,7 +83,7 @@ class OperatorUserCreateForm(MaintenanceUserCreateForm):
 
 
 class OperatorUsersUpdateForm(forms.Form):
-    operators = forms.ModelMultipleChoiceField(
+    users = forms.ModelMultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple,
         queryset=None
@@ -92,17 +92,17 @@ class OperatorUsersUpdateForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop('company')
         super().__init__(*args, **kwargs)
-        self.fields['operators'].queryset = MaintenanceUser.objects.get_active_operator_users_queryset()
-        self.fields['operators'].initial = self.company.managed_by.all()
+        self.fields['users'].queryset = MaintenanceUser.objects.get_active_operator_users_queryset()
+        self.fields['users'].initial = self.company.managed_by.all()
 
     def save(self):
-        for operator in self.cleaned_data['operators']:
-            if operator not in self.fields['operators'].initial:
+        for operator in self.cleaned_data['users']:
+            if operator not in self.fields['users'].initial:
                 operator.operator_for.add(self.company)
                 operator.save()
-        operators_set = set(self.cleaned_data['operators'])
-        for operator in self.fields['operators'].queryset:
-            if operator not in operators_set and operator in self.fields['operators'].initial:
+        operators_set = set(self.cleaned_data['users'])
+        for operator in self.fields['users'].queryset:
+            if operator not in operators_set and operator in self.fields['users'].initial:
                 operator.operator_for.remove(self.company)
                 operator.save()
 

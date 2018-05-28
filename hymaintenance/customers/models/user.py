@@ -48,13 +48,13 @@ class MaintenanceUserManager(BaseUserManager):
         return self.get_queryset().filter(is_staff=True).order_by("first_name")
 
     def get_active_operator_users_queryset(self):
-        return self.get_queryset().filter(is_staff=True, is_active=True).order_by("first_name")
+        return self.get_queryset().filter(is_staff=True).filter(is_active=True).order_by("first_name")
 
     def get_manager_users_queryset(self):
         return self.get_queryset().filter(is_staff=False).order_by("first_name")
 
     def get_active_manager_users_queryset(self):
-        return self.get_queryset().filter(is_staff=False, is_active=True).order_by("first_name")
+        return self.get_queryset().filter(is_staff=False).filter(is_active=True).order_by("first_name")
 
 
 class MaintenanceUser(AbstractBaseUser, PermissionsMixin):

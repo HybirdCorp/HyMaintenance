@@ -1,55 +1,18 @@
-{% load static %}
-{% load i18n print_fields %}
-<!DOCTYPE html>
-<html>
-<head>
-<title>Maintenance Hybird &mdash; Modifier la liste des salariés de {{company.name}}</title> {# TMP #}
-<meta charset="utf-8" />
-<link rel="stylesheet" href="/static/css/normalize.css" />
-<link rel="stylesheet" href="/static/css/style.css" />
-<link rel="stylesheet" href="/static/css/form.css" />
-<link rel="stylesheet" href="/static/css/create.css" />
-<link rel="stylesheet" href="/static/css/edit-list.css" />
-</head>
-<body>
-    {% include "high_ui/company_details_header.html" %}
-    <div class="content-container">
-        <div class="content">
-            <form action="{% url 'high_ui:company-change_consumers' company_name=company.slug_name %}" method="post">
-                {% csrf_token %}
-                <div class="form-content">
-                    <div class="form-group">
-                        <div class="group-title-container">
-                            <div class="group-title">Modifier la liste des salariés</div>
-                            <label>Compte client</label>
-                            <span>{{company.name}}</span>
-                        </div>
+{% extends 'high_ui/forms/update_list_base.html' %}
 
-                        <div>
-                            Sélectionner les salariés pour ce projet, parmi les {{ company.maintenanceconsumer_set.all.count }} existants:
-                            <ul class="checkbox-list">
-                            {% for consumer in form.consumers %}
-                                <li>
-                                    <label>
-                                        <input value="{{consumer.data.value}}" name="consumers" {% if consumer.data.selected %} checked='' {% endif %} type="checkbox"> 
-                                        <div class="item-container">
-                                            <div class="item-name">{{consumer.data.label}}</div>
-                                            <div class="item-description"></div>
-                                        </div>
-                                    </label>
-                                </li>
-                            {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="form-footer">
-                        <button type="submit">Modifier la liste des salariés</button>
-                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    {% include "high_ui/footer.html" with show_menu_client=True %}
-</body>
-</html>
+{% block page_title %}
+<title>Maintenance Hybird &mdash; Modifier la liste des salariés de {{company.name}}</title> {# TMP #}
+{% endblock %}
+
+{% block form_title %}
+<div class="group-title">Modifier la liste des salariés</div>
+{% endblock %}
+
+{% block form_details %}
+Sélectionner les salariés pour ce projet, parmi les {{ company.maintenanceconsumer_set.all.count }} existants:
+{% endblock %}
+
+{% block form_footer %}
+<button type="submit">Modifier la liste des salariés</button>
+<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+{% endblock %}
