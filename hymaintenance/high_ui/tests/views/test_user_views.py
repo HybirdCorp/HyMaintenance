@@ -142,6 +142,49 @@ class UpdateOperatorUsersTestCase(TestCase):
                                                            is_active=True).count())
 
 
+class UpdateManagerUsersWithCompanyTestCase(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                   password="azerty")
+        cls.company = CompanyFactory()
+        user.operator_for.add(cls.company)
+
+    def setUp(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+    def test_get_update_company_operators_form(self):
+        response = self.client.get(reverse('high_ui:company-change_operators',
+                                           kwargs={'company_name': self.company.slug_name}),
+                                   follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_manager_cannot_get_update_company_operators_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com",
+                           password="azerty")
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(reverse('high_ui:company-change_operators',
+                                           kwargs={'company_name': self.company.slug_name}),
+                                   follow=True)
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_update_company_operators_form(self):
+        operator = OperatorUserFactory(is_active=True, company=self.company)
+        OperatorUserFactory(is_active=True, company=self.company)
+
+        response = self.client.post(reverse("high_ui:company-change_operators",
+                                            kwargs={'company_name': self.company.slug_name}),
+                                    {"users": operator.id,
+                                     }, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertEqual(list(self.company.managed_by.all()), [operator])
+
+
 class UpdateManagerUsersTestCase(TestCase):
 
     @classmethod
@@ -154,14 +197,14 @@ class UpdateManagerUsersTestCase(TestCase):
     def setUp(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-    def test_get_update_company_consumers_form(self):
+    def test_get_update_company_managers_form(self):
         response = self.client.get(reverse('high_ui:company-change_managers',
                                            kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
 
         self.assertEqual(response.status_code, 200)
 
-    def test_manager_cannot_get_update_company_consumers_form(self):
+    def test_manager_cannot_get_update_company_managers_form(self):
         ManagerUserFactory(email="chell@aperture-science.com",
                            password="azerty")
         self.client.login(username="chell@aperture-science.com", password="azerty")
@@ -171,7 +214,7 @@ class UpdateManagerUsersTestCase(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    def test_post_archive_company_consumers_form(self):
+    def test_post_archive_company_managers_form(self):
         manager1 = ManagerUserFactory(is_active=True, company=self.company)
         manager2 = ManagerUserFactory(is_active=False, company=self.company)
 
