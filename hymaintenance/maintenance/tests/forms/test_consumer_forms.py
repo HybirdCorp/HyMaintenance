@@ -22,11 +22,11 @@ class MaintenanceConsumersUpdateFormTestCase(TestCase):
 
     def test_update_form_initial_values(self):
         form = MaintenanceConsumersUpdateForm(company=self.company)
-        self.assertEqual(list(form.fields['consumers'].initial), [self.c1, self.c3])
+        self.assertEqual(list(form.fields['users'].initial), [self.c1, self.c3])
 
     def test_update_form(self):
         form = MaintenanceConsumersUpdateForm(company=self.company,
-                                              data={"consumers": [self.c1, self.c2]})
+                                              data={"users": [self.c1, self.c2]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertTrue(MaintenanceConsumer.objects.get(name="Chell").is_used)
