@@ -1,0 +1,54 @@
+{% load static %}
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+{% block page_title %}{% endblock %}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/edit-list.css" />
+</head>
+<body>
+    {% include "high_ui/company_details_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-content">
+                    <div class="form-group">
+                        <div class="group-title-container">
+                            {% block form_title %}{% endblock %}
+                            <label>Compte client</label>
+                            <span>{{company.name}}</span>
+                        </div>
+
+                        <div>
+                            <label>Compte client</label>
+                            {% block form_details %}{% endblock %}
+                            <ul class="checkbox-list">
+                            {% for user in form.users %}
+                                <li>
+                                    <label>
+                                        <input value="{{user.data.value}}" name="users" {% if user.data.selected %} checked='' {% endif %} type="checkbox"> 
+                                        <div class="item-container">
+                                            <div class="item-name">{{user.data.label}}</div>
+                                        </div>
+                                    </label>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        {% block form_footer %}{% endblock %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+</body>
+</html>

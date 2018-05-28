@@ -11,7 +11,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["maintainers"] = MaintenanceUser.objects.get_operator_users_queryset()
+        context["maintainers"] = MaintenanceUser.objects.get_active_operator_users_queryset()
         return context
 
     def get(self, request, *args, **kwargs):

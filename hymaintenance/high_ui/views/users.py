@@ -2,7 +2,10 @@ from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import FormView, TemplateView
 
-from customers.forms import ManagerUserCreateForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserCreateForm, OperatorUserUnarchiveForm
+from customers.forms import (
+    ManagerUserCreateForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserCreateForm, OperatorUsersUpdateForm,
+    OperatorUserUnarchiveForm
+)
 from customers.models import Company
 from customers.models.user import MaintenanceUser, get_companies_of_operator
 from maintenance.forms.consumer import MaintenanceConsumerCreateForm, MaintenanceConsumersUpdateForm
@@ -70,6 +73,26 @@ class OperatorUserCreateView(LoginRequiredMixin, CreateViewWithCompany):
         context['form_label'] = "Nouvel intervenant"
         context['form_submit_label'] = "Ajouter cet intervenant"
         return context
+
+
+class OperatorUsersUpdateViewWithCompany(LoginRequiredMixin, ViewWithCompany, FormView):
+    form_class = OperatorUsersUpdateForm
+    template_name = "high_ui/forms/update_company_operators.html"
+    success_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["operators"] = MaintenanceUser.objects.get_active_operator_users_queryset()
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 
 class OperatorUsersUpdateView(LoginRequiredMixin, TemplateView):
