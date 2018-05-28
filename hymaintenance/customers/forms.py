@@ -82,6 +82,31 @@ class OperatorUserCreateForm(MaintenanceUserCreateForm):
         return user
 
 
+class OperatorUsersUpdateForm(forms.Form):
+    operators = forms.ModelMultipleChoiceField(
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        queryset=None
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop('company')
+        super().__init__(*args, **kwargs)
+        self.fields['operators'].queryset = MaintenanceUser.objects.get_active_operator_users_queryset()
+        self.fields['operators'].initial = self.company.managed_by.all()
+
+    def save(self):
+        for operator in self.cleaned_data['operators']:
+            if operator not in self.fields['operators'].initial:
+                operator.operator_for.add(self.company)
+                operator.save()
+        operators_set = set(self.cleaned_data['operators'])
+        for operator in self.fields['operators'].queryset:
+            if operator not in operators_set and operator in self.fields['operators'].initial:
+                operator.operator_for.remove(self.company)
+                operator.save()
+
+
 class OperatorUserArchiveForm(forms.Form):
     active_operators = forms.ModelMultipleChoiceField(
         required=False,

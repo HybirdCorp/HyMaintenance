@@ -47,6 +47,9 @@ class MaintenanceUserManager(BaseUserManager):
     def get_operator_users_queryset(self):
         return self.get_queryset().filter(is_staff=True).order_by("first_name")
 
+    def get_active_operator_users_queryset(self):
+        return self.get_queryset().filter(is_staff=True, is_active=True).order_by("first_name")
+
     def get_manager_users_queryset(self):
         return self.get_queryset().filter(is_staff=False).order_by("first_name")
 
