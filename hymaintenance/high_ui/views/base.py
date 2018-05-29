@@ -55,4 +55,4 @@ class CreateViewWithCompany(ViewWithCompany, CreateView):
         return kwargs
 
     def get_success_url(self):
-        return reverse('high_ui:home')
+        return reverse('high_ui:dashboard')

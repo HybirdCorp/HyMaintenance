@@ -3,7 +3,7 @@
 from django.urls import path
 
 from .views.company import CompanyDetailView
-from .views.dashboard import HomeView
+from .views.dashboard import DashboardView
 from .views.issue import IssueCreateView, IssueDetailView, IssueUpdateView
 from .views.project import ProjectCreateView, ProjectUpdateView
 from .views.users import (
@@ -15,19 +15,19 @@ from .views.users import (
 app_name = 'high_ui'
 
 urlpatterns = [
-    path(r'', HomeView.as_view(), name='home'),
+    path(r'', DashboardView.as_view(), name='dashboard'),
 
     path(r'projects/<slug:company_name>/', CompanyDetailView.as_view(),
          name='project_details'),
 
-    path(r'projects/add/', ProjectCreateView.as_view(),
-         name='add_project'),
+    path(r'projects/create/', ProjectCreateView.as_view(),
+         name='create_project'),
 
     path(r'projects/<slug:company_name>/update/', ProjectUpdateView.as_view(),
          name='update_project'),
 
-    path(r'projects/<slug:company_name>/issues/add/', IssueCreateView.as_view(),
-         name='project-add_issue'),
+    path(r'projects/<slug:company_name>/issues/create/', IssueCreateView.as_view(),
+         name='project-create_issue'),
 
     path(r'projects/<slug:company_name>/issues/<int:company_issue_number>/', IssueDetailView.as_view(),
          name='project-issue_details'),
@@ -35,20 +35,20 @@ urlpatterns = [
     path(r'projects/<slug:company_name>/issues/<int:company_issue_number>/update/', IssueUpdateView.as_view(),
          name='project-update_issue'),
 
-    path(r'projects/<slug:company_name>/consumers/add/', ConsumerCreateView.as_view(),
-         name='project-add_consumer'),
+    path(r'projects/<slug:company_name>/consumers/create/', ConsumerCreateView.as_view(),
+         name='project-create_consumer'),
 
     path(r'projects/<slug:company_name>/consumers/update/', ConsumersUpdateView.as_view(),
          name='project-update_consumers'),
 
-    path(r'projects/<slug:company_name>/managers/add/', ManagerUserCreateView.as_view(),
-         name='project-add_manager'),
+    path(r'projects/<slug:company_name>/managers/create/', ManagerUserCreateView.as_view(),
+         name='project-create_manager'),
 
     path(r'projects/<slug:company_name>/managers/update/', ManagerUsersUpdateView.as_view(),
          name='project-update_managers'),
 
-    path(r'projects/<slug:company_name>/operators/add/', OperatorUserCreateView.as_view(),
-         name='project-add_operator'),
+    path(r'projects/<slug:company_name>/operators/create/', OperatorUserCreateView.as_view(),
+         name='project-create_operator'),
 
     path(r'projects/<slug:company_name>/operators/update/', OperatorUsersUpdateViewWithCompany.as_view(),
          name='project-update_operators'),

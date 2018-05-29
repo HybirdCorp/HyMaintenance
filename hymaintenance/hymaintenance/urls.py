@@ -27,7 +27,7 @@ urlpatterns = [
     path('login', auth_views.login, {'template_name': 'high_ui/login.html'}, name="login"),
     path('logout', auth_views.logout_then_login, name="logout"),
 
-    path('', RedirectView.as_view(url=reverse_lazy('high_ui:home'), permanent=False)),
+    path('', RedirectView.as_view(url=reverse_lazy('high_ui:dashboard'), permanent=False)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

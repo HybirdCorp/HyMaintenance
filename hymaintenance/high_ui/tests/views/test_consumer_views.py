@@ -50,7 +50,7 @@ class ConsumerCreateViewTestCase(TestCase):
                                     follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertRedirects(response, reverse('high_ui:dashboard'))
         self.assertEqual(1, MaintenanceConsumer.objects.filter(company=self.company, name=name).count())
 
 
@@ -93,6 +93,6 @@ class UpdateMaintenanceConsumersTestCase(TestCase):
                                      }, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertRedirects(response, reverse('high_ui:dashboard'))
         self.assertFalse(MaintenanceConsumer.objects.get(id=consumer1.id).is_used)
         self.assertTrue(MaintenanceConsumer.objects.get(id=consumer2.id).is_used)

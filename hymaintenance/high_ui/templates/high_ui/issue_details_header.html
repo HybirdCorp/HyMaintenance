@@ -2,7 +2,7 @@
 <div class="dashboard {{object.maintenance_type.css_class}}">
     <div class="dashboard-item dashboard-account">
         <span class="dashboard-title">Compte</span>
-        <span class="dashboard-value"><a href="/" class="home-link" title="Retour à l'accueil">{{object.company.name}}</a></span>
+        <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="Retour à l'accueil">{{object.company.name}}</a></span>
     </div>
     <div class="dashboard-item">
         <span class="dashboard-title">Demande n°</span>

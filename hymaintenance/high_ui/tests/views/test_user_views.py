@@ -47,7 +47,7 @@ class CreateUsersTestCase(TestCase):
                                      }, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertRedirects(response, reverse('high_ui:dashboard'))
         self.assertEqual(1, MaintenanceUser.objects.filter(email=email,
                                                            first_name=first_name,
                                                            last_name=last_name,
@@ -74,7 +74,7 @@ class CreateUsersTestCase(TestCase):
                                      }, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertRedirects(response, reverse('high_ui:dashboard'))
         self.assertEqual(1, MaintenanceUser.objects.filter(email=email,
                                                            first_name=first_name,
                                                            last_name=last_name,
@@ -120,7 +120,7 @@ class UpdateOperatorUsersTestCase(TestCase):
                                      }, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertRedirects(response, reverse('high_ui:dashboard'))
         self.assertEqual(1, MaintenanceUser.objects.filter(email=op_email,
                                                            is_active=False).count())
 
@@ -137,7 +137,7 @@ class UpdateOperatorUsersTestCase(TestCase):
                                      }, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertRedirects(response, reverse('high_ui:dashboard'))
         self.assertEqual(1, MaintenanceUser.objects.filter(email=op_email,
                                                            is_active=True).count())
 
@@ -181,7 +181,7 @@ class UpdateManagerUsersWithCompanyTestCase(TestCase):
                                      }, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertRedirects(response, reverse('high_ui:dashboard'))
         self.assertEqual(list(self.company.managed_by.all()), [operator])
 
 
@@ -224,6 +224,6 @@ class UpdateManagerUsersTestCase(TestCase):
                                      }, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('high_ui:home'))
+        self.assertRedirects(response, reverse('high_ui:dashboard'))
         self.assertFalse(MaintenanceUser.objects.get(id=manager1.id).is_active)
         self.assertTrue(MaintenanceUser.objects.get(id=manager2.id).is_active)
