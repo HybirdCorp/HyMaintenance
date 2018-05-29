@@ -115,17 +115,18 @@ class IssueCreateViewTestCase(TestCase):
         client = self.client
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = client.post('/high_ui/issue/add/%s/' % company.pk, dict_for_post, follow=True)
+        response = self.client.post(reverse('high_ui:project-create_issue',
+                                            kwargs={'company_name': company.slug_name}),
+                                    dict_for_post, follow=True)
 
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, 404)
 
     def test_i_cannot_get_a_form_to_create_a_new_issue_where_i_am_not_operator(self):
         user = OperatorUserFactory(email="chell@aperture-science.com",
                                    password="azerty")
         self.client.login(username=user.email, password="azerty")
         response = self.client.get(reverse('high_ui:project-create_issue',
-                                           kwargs={'company_name': self.company.slug_name}),
-                                   follow=True)
+                                           kwargs={'company_name': self.company.slug_name}), follow=True)
         self.assertEqual(response.status_code, 404)
 
 

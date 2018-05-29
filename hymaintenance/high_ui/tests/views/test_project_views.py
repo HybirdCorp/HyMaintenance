@@ -1,6 +1,7 @@
 import datetime
 
 from django.test import TestCase
+from django.urls import reverse
 
 from customers.models import Company
 from customers.tests.factories import ManagerUserFactory, OperatorUserFactory
@@ -22,6 +23,7 @@ class ProjectCreateViewTestCase(TestCase):
                           password="azerty")
 
         response = self.client.get(f"/high_ui/project/add/")
+        response = self.client.get(reverse('high_ui:create_project'))
         self.assertEqual(response.status_code, 200)
 
     def test_manager_cannot_get_create_form(self):
@@ -30,7 +32,7 @@ class ProjectCreateViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com",
                           password="azerty")
 
-        response = self.client.get(f"/high_ui/project/add/")
+        response = self.client.get(reverse('high_ui:create_project'))
         self.assertEqual(response.status_code, 404)
 
     def test_i_can_post_and_form_to_create_a_project(self):
@@ -52,7 +54,7 @@ class ProjectCreateViewTestCase(TestCase):
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.post('/high_ui/project/add/',
+        response = self.client.post(reverse('high_ui:create_project'),
                                     {"company_name": company_name,
                                      "contract1_visible": contract1_visible,
                                      "contract1_total_type": contract1_total_type,
@@ -89,7 +91,8 @@ class ProjectUpdateViewTestCase(TestCase):
     def test_i_can_get_update_form(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.get(f"/high_ui/project/{self.company.slug_name}/change/")
+        response = self.client.get(reverse('high_ui:update_project',
+                                           kwargs={'company_name': self.company.slug_name}))
         self.assertEqual(response.status_code, 200)
 
     def test_i_can_post_and_form_to_update_a_project(self):
@@ -111,7 +114,8 @@ class ProjectUpdateViewTestCase(TestCase):
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.post(f"/high_ui/project/{self.company.slug_name}/change/",
+        response = self.client.post(reverse('high_ui:update_project',
+                                            kwargs={'company_name': self.company.slug_name}),
                                     {"company_name": company_name,
                                      "contract1_visible": contract1_visible,
                                      "contract1_total_type": contract1_total_type,
