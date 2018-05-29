@@ -48,12 +48,12 @@
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:company-add_operator' company_name=company.slug_name %}" title="Créer un nouvel intervenant et l'ajouter à ce projet">Nouveau</a>
+                                    <a href="{% url 'high_ui:project-create_operator' company_name=company.slug_name %}" title="Créer un nouvel intervenant et l'ajouter à ce projet">Nouveau</a>
                                 </div>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:company-change_operators' company_name=company.slug_name %}" title="Modifier la liste des intervenants de ce projet">Modifier la liste</a>
+                                    <a href="{% url 'high_ui:project-update_operators' company_name=company.slug_name %}" title="Modifier la liste des intervenants de ce projet">Modifier la liste</a>
                                 </div>
                             </div>
                         </div>
@@ -73,12 +73,12 @@
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:company-add_manager' company_name=company.slug_name %}" title="Créer un nouveau manager et l'ajouter à ce projet">Nouveau</a>
+                                    <a href="{% url 'high_ui:project-create_manager' company_name=company.slug_name %}" title="Créer un nouveau manager et l'ajouter à ce projet">Nouveau</a>
                                 </div>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:company-change_managers' company_name=company.slug_name %}" title="Modifier la liste des managers de ce projet">Modifier la liste</a>
+                                    <a href="{% url 'high_ui:project-update_managers' company_name=company.slug_name %}" title="Modifier la liste des managers de ce projet">Modifier la liste</a>
                                 </div>
                             </div>
                         </div>
@@ -99,12 +99,12 @@
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:company-add_consumer' company_name=company.slug_name %}" title="Créer un nouveau salarié et l'ajouter à ce projet">Nouveau</a>
+                                    <a href="{% url 'high_ui:project-create_consumer' company_name=company.slug_name %}" title="Créer un nouveau salarié et l'ajouter à ce projet">Nouveau</a>
                                 </div>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:company-change_consumers' company_name=company.slug_name %}" title="Modifier la liste des salariés de ce projet">Modifier la liste</a>
+                                    <a href="{% url 'high_ui:project-update_consumers' company_name=company.slug_name %}" title="Modifier la liste des salariés de ce projet">Modifier la liste</a>
                                 </div>
                             </div>
                         </div>

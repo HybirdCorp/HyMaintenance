@@ -20,14 +20,14 @@ class CreateUsersTestCase(TestCase):
 
     def test_get_form_when_company_does_not_exist(self):
         not_used_name = "note_existing_company_slug_name"
-        response = self.client.get(reverse('high_ui:company-add_manager',
+        response = self.client.get(reverse('high_ui:project-create_manager',
                                            kwargs={'company_name': not_used_name}),
                                    follow=True)
 
         self.assertEqual(response.status_code, 404)
 
     def test_get_create_manager_form(self):
-        response = self.client.get(reverse('high_ui:company-add_manager',
+        response = self.client.get(reverse('high_ui:project-create_manager',
                                            kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
 
@@ -38,7 +38,7 @@ class CreateUsersTestCase(TestCase):
         last_name = "Calhoun"
         email = "barney.calhoun@blackmesa.com"
 
-        response = self.client.post(reverse("high_ui:company-add_manager",
+        response = self.client.post(reverse("high_ui:project-create_manager",
                                             kwargs={'company_name': self.company.slug_name}),
                                     {"first_name": first_name,
                                      "last_name": last_name,
@@ -54,7 +54,7 @@ class CreateUsersTestCase(TestCase):
                                                            company=self.company).count())
 
     def test_get_create_operator_form(self):
-        response = self.client.get(reverse('high_ui:company-add_operator',
+        response = self.client.get(reverse('high_ui:project-create_operator',
                                            kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
 
@@ -65,7 +65,7 @@ class CreateUsersTestCase(TestCase):
         last_name = "Calhoun"
         email = "barney.calhoun@blackmesa.com"
 
-        response = self.client.post(reverse("high_ui:company-add_operator",
+        response = self.client.post(reverse("high_ui:project-create_operator",
                                             kwargs={'company_name': self.company.slug_name}),
                                     {"first_name": first_name,
                                      "last_name": last_name,
@@ -93,7 +93,7 @@ class UpdateOperatorUsersTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
     def test_get_update_operators_form(self):
-        response = self.client.get(reverse('high_ui:change_operators'),
+        response = self.client.get(reverse('high_ui:update_operators'),
                                    follow=True)
 
         self.assertEqual(response.status_code, 200)
@@ -102,7 +102,7 @@ class UpdateOperatorUsersTestCase(TestCase):
         ManagerUserFactory(email="chell@aperture-science.com",
                            password="azerty")
         self.client.login(username="chell@aperture-science.com", password="azerty")
-        response = self.client.get(reverse('high_ui:change_operators'),
+        response = self.client.get(reverse('high_ui:update_operators'),
                                    follow=True)
 
         self.assertEqual(response.status_code, 404)
@@ -155,7 +155,7 @@ class UpdateManagerUsersWithCompanyTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
     def test_get_update_company_operators_form(self):
-        response = self.client.get(reverse('high_ui:company-change_operators',
+        response = self.client.get(reverse('high_ui:project-update_operators',
                                            kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
 
@@ -165,7 +165,7 @@ class UpdateManagerUsersWithCompanyTestCase(TestCase):
         ManagerUserFactory(email="chell@aperture-science.com",
                            password="azerty")
         self.client.login(username="chell@aperture-science.com", password="azerty")
-        response = self.client.get(reverse('high_ui:company-change_operators',
+        response = self.client.get(reverse('high_ui:project-update_operators',
                                            kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
 
@@ -175,7 +175,7 @@ class UpdateManagerUsersWithCompanyTestCase(TestCase):
         operator = OperatorUserFactory(is_active=True, company=self.company)
         OperatorUserFactory(is_active=True, company=self.company)
 
-        response = self.client.post(reverse("high_ui:company-change_operators",
+        response = self.client.post(reverse("high_ui:project-update_operators",
                                             kwargs={'company_name': self.company.slug_name}),
                                     {"users": operator.id,
                                      }, follow=True)
@@ -198,7 +198,7 @@ class UpdateManagerUsersTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
     def test_get_update_company_managers_form(self):
-        response = self.client.get(reverse('high_ui:company-change_managers',
+        response = self.client.get(reverse('high_ui:project-update_operators',
                                            kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
 
@@ -208,7 +208,7 @@ class UpdateManagerUsersTestCase(TestCase):
         ManagerUserFactory(email="chell@aperture-science.com",
                            password="azerty")
         self.client.login(username="chell@aperture-science.com", password="azerty")
-        response = self.client.get(reverse('high_ui:company-change_managers',
+        response = self.client.get(reverse('high_ui:project-update_operators',
                                            kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
 
@@ -218,7 +218,7 @@ class UpdateManagerUsersTestCase(TestCase):
         manager1 = ManagerUserFactory(is_active=True, company=self.company)
         manager2 = ManagerUserFactory(is_active=False, company=self.company)
 
-        response = self.client.post(reverse("high_ui:company-change_managers",
+        response = self.client.post(reverse("high_ui:project-update_operators",
                                             kwargs={'company_name': self.company.slug_name}),
                                     {"users": manager2.id,
                                      }, follow=True)

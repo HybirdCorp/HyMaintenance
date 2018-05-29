@@ -6,7 +6,7 @@ from customers.models.user import MaintenanceUser, get_companies_of_operator
 from .base import LoginRequiredMixin
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'high_ui/dashboard.html'
 
     def get_context_data(self, **kwargs):

@@ -42,8 +42,9 @@ class IssueUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('project-issue_details', kwargs={'company_name': self.object.company.slug_name,
-                                                        'company_issue_number': self.object.company_issue_number})
+        return reverse('high_ui:project-issue_details',
+                       kwargs={'company_name': self.object.company.slug_name,
+                               'company_issue_number': self.object.company_issue_number})
 
 
 class IssueDetailView(LoginRequiredMixin, DetailView):
