@@ -56,7 +56,7 @@ class IssueCreateViewTestCase(TestCase):
 
     def test_i_can_get_a_form_to_create_a_new_issue(self):
         self.client.login(username=self.user.email, password="azerty")
-        response = self.client.get(reverse('high_ui:company-add_issue',
+        response = self.client.get(reverse('high_ui:project-create_issue',
                                            kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
         self.assertEqual(response.status_code, 200)
@@ -66,7 +66,7 @@ class IssueCreateViewTestCase(TestCase):
         description = "Description of the Issue"
 
         self.client.login(username=self.user.email, password="azerty")
-        response = self.client.post(reverse('high_ui:company-add_issue',
+        response = self.client.post(reverse('high_ui:project-create_issue',
                                             kwargs={'company_name': self.company.slug_name}),
                                     self.__get_dict_for_post(subject, description), follow=True)
 
@@ -92,7 +92,7 @@ class IssueCreateViewTestCase(TestCase):
             dict_for_post['resolution_description_file'] = resolution_file
 
             self.client.login(username=self.user.email, password="azerty")
-            response = self.client.post(reverse('high_ui:company-add_issue',
+            response = self.client.post(reverse('high_ui:project-create_issue',
                                                 kwargs={'company_name': self.company.slug_name}),
                                         dict_for_post, follow=True)
 
@@ -123,7 +123,7 @@ class IssueCreateViewTestCase(TestCase):
         user = OperatorUserFactory(email="chell@aperture-science.com",
                                    password="azerty")
         self.client.login(username=user.email, password="azerty")
-        response = self.client.get(reverse('high_ui:company-add_issue',
+        response = self.client.get(reverse('high_ui:project-create_issue',
                                            kwargs={'company_name': self.company.slug_name}),
                                    follow=True)
         self.assertEqual(response.status_code, 404)
@@ -144,8 +144,9 @@ class IssueUpdateViewTestCase(TestCase):
         self.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
                                         password="azerty")
         self.issue = MaintenanceIssueFactory(company=self.company, maintenance_type=self.maintenance_type)
-        self.url_post = reverse('high_ui:change_issue', kwargs={'company_name': self.issue.company.slug_name,
-                                                                'company_issue_number': self.issue.company_issue_number})
+        self.url_post = reverse('high_ui:project-update_issue',
+                                kwargs={'company_name': self.issue.company.slug_name,
+                                        'company_issue_number': self.issue.company_issue_number})
 
     def tearDown(self):
         rmtree(os.path.join(settings.MEDIA_ROOT, "upload/", self.company.slug_name, "issue-" + str(self.issue.company_issue_number)), ignore_errors=True)
@@ -181,7 +182,7 @@ class IssueUpdateViewTestCase(TestCase):
                                      "duration": 2}, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, expected_url=reverse('high_ui:issue-details', kwargs={'company_name': self.issue.company.slug_name,
+        self.assertRedirects(response, expected_url=reverse('project-issue_details', kwargs={'company_name': self.issue.company.slug_name,
                                                                                              'company_issue_number': self.issue.company_issue_number}))
         self.assertEqual(1, MaintenanceIssue.objects.filter(company=self.company,
                                                             consumer_who_ask=self.consumer,
@@ -261,7 +262,7 @@ class IssueDetailViewTestCase(TestCase):
         ManagerUserFactory(email="chell@aperture-science.com",
                            password="azerty", company=self.company)
         self.client.login(username="chell@aperture-science.com", password="azerty")
-        response = self.client.get(reverse('high_ui:issue-details', kwargs={'company_name': self.company.slug_name,
+        response = self.client.get(reverse('project-issue_details', kwargs={'company_name': self.company.slug_name,
                                                                             'company_issue_number': self.issue.company_issue_number}))
         self.assertEqual(response.status_code, 200)
 
@@ -273,7 +274,7 @@ class IssueDetailViewTestCase(TestCase):
         ManagerUserFactory(email="chell@aperture-science.com",
                            password="azerty", company=self.company)
         self.client.login(username="chell@aperture-science.com", password="azerty")
-        response = self.client.get(reverse('high_ui:issue-details', kwargs={'company_name': issue.company.slug_name,
+        response = self.client.get(reverse('project-issue_details', kwargs={'company_name': issue.company.slug_name,
                                                                             'company_issue_number': issue.company_issue_number}))
         self.assertEqual(response.status_code, 403)
 
@@ -284,7 +285,7 @@ class IssueDetailViewTestCase(TestCase):
         issue = MaintenanceIssueFactory(company=black_mesa, maintenance_type=maintenance_type)
         client = self.client
         client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = client.get(reverse('high_ui:issue-details', kwargs={'company_name': issue.company.slug_name,
+        response = client.get(reverse('project-issue_details', kwargs={'company_name': issue.company.slug_name,
                                                                        'company_issue_number': issue.company_issue_number}))
         self.assertEqual(response.status_code, 403)
 
@@ -294,7 +295,7 @@ class IssueDetailViewTestCase(TestCase):
             self.issue.context_description_file.save(test_file_name, File(tmp_file), save=True)
 
             self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-            response = self.client.get(reverse('high_ui:issue-details', kwargs={'company_name': self.company.slug_name,
+            response = self.client.get(reverse('project-issue_details', kwargs={'company_name': self.company.slug_name,
                                                                                 'company_issue_number': self.issue.company_issue_number}))
 
             self.assertContains(response, test_file_name)
@@ -306,7 +307,7 @@ class IssueDetailViewTestCase(TestCase):
             self.issue.resolution_description_file.save(test_file_name, File(tmp_file), save=True)
 
             self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-            response = self.client.get(reverse('high_ui:issue-details', kwargs={'company_name': self.company.slug_name,
+            response = self.client.get(reverse('project-issue_details', kwargs={'company_name': self.company.slug_name,
                                                                                 'company_issue_number': self.issue.company_issue_number}))
 
             self.assertContains(response, test_file_name)

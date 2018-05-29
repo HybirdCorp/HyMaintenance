@@ -22,7 +22,7 @@
                     </div>
                     <div class="dashboard-item dashboard-button">
                         <div class="dashboard-value">
-                            <a href="{% url 'high_ui:change_project' company_name=company.slug_name %}">Modifier</a> {# TMP #}
+                            <a href="{% url 'high_ui:update_project' company_name=company.slug_name %}">Modifier</a> {# TMP #}
                         </div>
                     </div>
                     <div style="flex: 1"></div>
@@ -34,7 +34,7 @@
                     {% endfor %}
                     <div class="dashboard-item dashboard-button">
                         <div class="dashboard-value">
-                            <a href="{% url 'high_ui:company-add_issue' company_name=company.slug_name %}">Enregistrer une demande</a>
+                            <a href="{% url 'high_ui:project-create_issue' company_name=company.slug_name %}">Enregistrer une demande</a>
                         </div>
                     </div>
                 </div>

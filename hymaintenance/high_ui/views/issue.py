@@ -11,7 +11,7 @@ from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
 
 class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = MaintenanceIssueCreateForm
-    template_name = "high_ui/forms/add_issue.html"
+    template_name = "high_ui/forms/create_issue.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,7 +42,7 @@ class IssueUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('high_ui:issue-details', kwargs={'company_name': self.object.company.slug_name,
+        return reverse('project-issue_details', kwargs={'company_name': self.object.company.slug_name,
                                                         'company_issue_number': self.object.company_issue_number})
 
 

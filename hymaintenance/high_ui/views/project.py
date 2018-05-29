@@ -11,7 +11,7 @@ from .base import LoginRequiredMixin, ViewWithCompany
 
 class ProjectCreateView(FormView):
     form_class = ProjectCreateForm
-    template_name = "high_ui/forms/add_project.html"
+    template_name = "high_ui/forms/create_project.html"
     success_url = "/"
 
     def get_context_data(self, **kwargs):
