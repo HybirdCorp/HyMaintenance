@@ -214,11 +214,11 @@ class UpdateManagerUsersTestCase(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    def test_post_archive_company_managers_form(self):
+    def test_post_company_managers_form(self):
         manager1 = ManagerUserFactory(is_active=True, company=self.company)
         manager2 = ManagerUserFactory(is_active=False, company=self.company)
 
-        response = self.client.post(reverse("high_ui:project-update_operators",
+        response = self.client.post(reverse("high_ui:project-update_managers",
                                             kwargs={'company_name': self.company.slug_name}),
                                     {"users": manager2.id,
                                      }, follow=True)
