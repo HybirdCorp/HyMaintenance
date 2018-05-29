@@ -16,7 +16,7 @@
             <a href="{% url 'high_ui:dashboard' %}" title="Retour à l'accueil">Accueil</a> &nbsp;/&nbsp;
             <span>Demande n°{{object.company_issue_number}}</span> &nbsp;
             <div class="dashboard-item dashboard-button">
-                <a href="{% url 'high_ui:change_issue' company_issue_number=object.company_issue_number company_name=object.company.slug_name %}">Modifier</a>
+                <a href="{% url 'high_ui:project-update_issue' company_issue_number=object.company_issue_number company_name=object.company.slug_name %}">Modifier</a>
             </div>
          </div>
         <div class="content">
