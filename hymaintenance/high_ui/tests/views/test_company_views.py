@@ -3,17 +3,17 @@ from django.urls import reverse
 from django.utils.timezone import now
 
 from customers.tests.factories import CompanyFactory, ManagerUserFactory, OperatorUserFactory
-from high_ui.views.company import CompanyDetailView
+from high_ui.views.company import ProjectDetailsView
 from maintenance.models import MaintenanceContract
 from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory, get_default_maintenance_type
 
 
-class CompanyDetailViewTestCase(TestCase):
+class ProjectDetailsViewTestCase(TestCase):
 
     def test_when_the_company_does_not_exist(self):
         OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse('high_ui:company-details', args=[1]))
+        response = self.client.get(reverse('high_ui:project_details', args=[1]))
 
         self.assertEqual(response.status_code, 404)
 
@@ -21,7 +21,7 @@ class CompanyDetailViewTestCase(TestCase):
         first_company = CompanyFactory(name="First Company")
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse('high_ui:company-details', args=[first_company.slug_name]))
+        response = self.client.get(reverse('high_ui:project_details', args=[first_company.slug_name]))
 
         self.assertEqual(response.status_code, 200)
 
@@ -30,7 +30,7 @@ class CompanyDetailViewTestCase(TestCase):
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=first_company)
         black_mesa = CompanyFactory()
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse('high_ui:company-details', args=[black_mesa.slug_name]))
+        response = self.client.get(reverse('high_ui:project_details', args=[black_mesa.slug_name]))
 
         self.assertEqual(response.status_code, 404)
 
@@ -38,7 +38,7 @@ class CompanyDetailViewTestCase(TestCase):
         OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         black_mesa = CompanyFactory()
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse('high_ui:company-details', args=[black_mesa.slug_name]))
+        response = self.client.get(reverse('high_ui:project_details', args=[black_mesa.slug_name]))
 
         self.assertEqual(response.status_code, 404)
 
@@ -65,7 +65,7 @@ class MonthDisplayInFrenchTestCase(TestCase):
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.get(reverse('high_ui:company-details', args=[company.slug_name]))
+        response = self.client.get(reverse('high_ui:project_details', args=[company.slug_name]))
 
         month = now().date().month
         frenchmonths = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "décembre"]
@@ -79,9 +79,9 @@ class ContractVisibilityTestCase(TestCase):
         self.factory = RequestFactory()
 
     def create_company_detail_view_with_request(self, user, company_slug_name):
-        request = self.factory.get(reverse('high_ui:company-details', args=[company_slug_name]))
+        request = self.factory.get(reverse('high_ui:project_details', args=[company_slug_name]))
         request.user = user
-        view = CompanyDetailView()
+        view = ProjectDetailsView()
         view.request = request
         return view
 
@@ -159,10 +159,10 @@ class IssueVisibilityTestCase(TestCase):
         self.company = CompanyFactory()
         self.factory = RequestFactory()
 
-    def create_company_detail_view_with_request(self, user, company_slug_name):
-        request = self.factory.get(reverse('high_ui:company-details', args=[company_slug_name]))
+    def create_project_details_view_with_request(self, user, company_slug_name):
+        request = self.factory.get(reverse('high_ui:project_details', args=[company_slug_name]))
         request.user = user
-        view = CompanyDetailView()
+        view = ProjectDetailsView()
         view.request = request
         return view
 
