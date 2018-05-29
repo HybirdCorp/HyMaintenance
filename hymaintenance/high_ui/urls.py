@@ -20,13 +20,13 @@ urlpatterns = [
     path(r'projects/<slug:company_name>/', ProjectDetailsView.as_view(),
          name='project_details'),
 
-    path(r'projects/create/', ProjectCreateView.as_view(),
+    path(r'projects/', ProjectCreateView.as_view(),
          name='create_project'),
 
     path(r'projects/<slug:company_name>/update/', ProjectUpdateView.as_view(),
          name='update_project'),
 
-    path(r'projects/<slug:company_name>/issues/create/', IssueCreateView.as_view(),
+    path(r'projects/<slug:company_name>/issues/', IssueCreateView.as_view(),
          name='project-create_issue'),
 
     path(r'projects/<slug:company_name>/issues/<int:company_issue_number>/', IssueDetailView.as_view(),
@@ -35,19 +35,19 @@ urlpatterns = [
     path(r'projects/<slug:company_name>/issues/<int:company_issue_number>/update/', IssueUpdateView.as_view(),
          name='project-update_issue'),
 
-    path(r'projects/<slug:company_name>/consumers/create/', ConsumerCreateView.as_view(),
+    path(r'projects/<slug:company_name>/consumers/', ConsumerCreateView.as_view(),
          name='project-create_consumer'),
 
     path(r'projects/<slug:company_name>/consumers/update/', ConsumersUpdateView.as_view(),
          name='project-update_consumers'),
 
-    path(r'projects/<slug:company_name>/managers/create/', ManagerUserCreateView.as_view(),
+    path(r'projects/<slug:company_name>/managers/', ManagerUserCreateView.as_view(),
          name='project-create_manager'),
 
     path(r'projects/<slug:company_name>/managers/update/', ManagerUsersUpdateView.as_view(),
          name='project-update_managers'),
 
-    path(r'projects/<slug:company_name>/operators/create/', OperatorUserCreateView.as_view(),
+    path(r'projects/<slug:company_name>/operators/', OperatorUserCreateView.as_view(),
          name='project-create_operator'),
 
     path(r'projects/<slug:company_name>/operators/update/', OperatorUsersUpdateViewWithCompany.as_view(),
