@@ -65,7 +65,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-LOGIN_REDIRECT_URL = 'high_ui:home'
+LOGIN_REDIRECT_URL = 'high_ui:dashboard'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 

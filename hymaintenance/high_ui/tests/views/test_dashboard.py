@@ -14,14 +14,14 @@ class DashboardTestCase(TestCase):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         user.operator_for.add(self.company)
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse('high_ui:home'))
+        response = self.client.get(reverse('high_ui:dashboard'))
 
         self.assertEqual(response.status_code, 200)
 
     def test_manager_cannot_seen_the_dashboard(self):
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse('high_ui:home'))
+        response = self.client.get(reverse('high_ui:dashboard'))
 
         self.assertRedirects(response, self.company.get_absolute_url())
 
@@ -33,7 +33,7 @@ class DashboardTestCase(TestCase):
         op2.operator_for.add(self.company)
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse('high_ui:home'))
+        response = self.client.get(reverse('high_ui:dashboard'))
 
         self.assertEqual(1, self.company.managed_by.count())
         self.assertEqual(response.status_code, 200)
