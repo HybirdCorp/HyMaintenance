@@ -34,7 +34,7 @@
                                     <label>
                                         <input value="{{user.data.value}}" name="users" {% if user.data.selected %} checked='' {% endif %} type="checkbox"> 
                                         <div class="item-container">
-                                            <div class="item-name">{{user.data.label}}</div>
+                                            {% block item_label %}{% endblock %}
                                         </div>
                                     </label>
                                 </li>
