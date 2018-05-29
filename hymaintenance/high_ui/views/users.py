@@ -15,7 +15,7 @@ from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
 
 class ConsumerCreateView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = MaintenanceConsumerCreateForm
-    template_name = "high_ui/forms/add_consumer.html"
+    template_name = "high_ui/forms/create_consumer.html"
 
 
 class ConsumersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
@@ -35,7 +35,7 @@ class ConsumersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
 
 class ManagerUserCreateView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = ManagerUserCreateForm
-    template_name = "high_ui/forms/add_user.html"
+    template_name = "high_ui/forms/create_user.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -61,7 +61,7 @@ class ManagerUsersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
 
 class OperatorUserCreateView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = OperatorUserCreateForm
-    template_name = "high_ui/forms/add_user.html"
+    template_name = "high_ui/forms/create_user.html"
 
     # TMP: Technically, only the template needs the Company right now, so don't send it to the form init.
     # This is done until we have the concept of "maintenance providers" or "projects" which this view/form
