@@ -12,6 +12,11 @@
 Sélectionner les managers pour ce projet, parmi les {{company.maintenanceuser_set.get_manager_users_queryset.count}} existants:
 {% endblock %}
 
+{% block item_label %}
+<div class="item-name">{{user.data.label}} {% if user.data.selected %}<span class="typography dash">&mdash;</span> manager du projet</div>{% endif %}
+<div class="item-description">{{user.data.label.email}}</div>
+{% endblock %}
+
 {% block form_footer %}
 <button type="submit">Modifier la liste des managers</button>
 <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>

@@ -1,5 +1,7 @@
 from django import forms
 
+from toolkit.forms import UsersMultipleChoiceField
+
 from .models import Company, MaintenanceUser
 
 
@@ -42,7 +44,7 @@ class ManagerUserCreateForm(MaintenanceUserCreateForm):
 
 
 class ManagerUsersUpdateForm(forms.Form):
-    users = forms.ModelMultipleChoiceField(
+    users = UsersMultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple,
         queryset=None
@@ -83,7 +85,7 @@ class OperatorUserCreateForm(MaintenanceUserCreateForm):
 
 
 class OperatorUsersUpdateForm(forms.Form):
-    users = forms.ModelMultipleChoiceField(
+    users = UsersMultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple,
         queryset=None
