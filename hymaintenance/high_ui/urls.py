@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from .views.company import CompanyDetailView
+from .views.company import ProjectDetailsView
 from .views.dashboard import DashboardView
 from .views.issue import IssueCreateView, IssueDetailView, IssueUpdateView
 from .views.project import ProjectCreateView, ProjectUpdateView
@@ -17,7 +17,7 @@ app_name = 'high_ui'
 urlpatterns = [
     path(r'', DashboardView.as_view(), name='dashboard'),
 
-    path(r'projects/<slug:company_name>/', CompanyDetailView.as_view(),
+    path(r'projects/<slug:company_name>/', ProjectDetailsView.as_view(),
          name='project_details'),
 
     path(r'projects/create/', ProjectCreateView.as_view(),

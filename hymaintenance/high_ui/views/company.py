@@ -8,7 +8,7 @@ from maintenance.models import MaintenanceContract, MaintenanceIssue
 from .base import LoginRequiredMixin
 
 
-class CompanyDetailView(LoginRequiredMixin, DetailView):
+class ProjectDetailsView(LoginRequiredMixin, DetailView):
     template_name = 'high_ui/company_details.html'
     model = Company
     slug_url_kwarg = "company_name"
@@ -45,7 +45,7 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         return issues
 
     def get_context_data(self, **kwargs):
-        context = super(CompanyDetailView, self).get_context_data(**kwargs)
+        context = super(ProjectDetailsView, self).get_context_data(**kwargs)
         contracts = self.get_maintenance_contracts(self.object)
         now = datetime.now()
         last_month = now - timedelta(days=(now.day + 1))
