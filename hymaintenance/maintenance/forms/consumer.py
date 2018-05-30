@@ -3,7 +3,7 @@ from django import forms
 from ..models import MaintenanceConsumer
 
 
-class MaintenanceConsumerCreateForm(forms.ModelForm):
+class MaintenanceConsumerModelForm(forms.ModelForm):
     class Meta:
         model = MaintenanceConsumer
         fields = ('name',)
@@ -14,7 +14,7 @@ class MaintenanceConsumerCreateForm(forms.ModelForm):
 
     def save(self, commit=True):
         self.instance.company = self.company
-        return super(MaintenanceConsumerCreateForm, self).save(commit)
+        return super().save(commit)
 
 
 class MaintenanceConsumersUpdateForm(forms.Form):
