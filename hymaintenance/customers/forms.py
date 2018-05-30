@@ -36,7 +36,6 @@ class MaintenanceUserModelForm(forms.ModelForm):
 
 class ManagerUserModelForm(MaintenanceUserModelForm):
     def __init__(self, *args, **kwargs):
-        print(kwargs)
         self.company = kwargs.pop('company')
         super().__init__(*args, **kwargs)
 
