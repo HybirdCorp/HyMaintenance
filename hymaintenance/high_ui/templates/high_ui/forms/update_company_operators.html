@@ -13,8 +13,10 @@ Sélectionner les intervenants pour ce projet, parmi les {{operators.count}} exi
 {% endblock %}
 
 {% block item_label %}
+<a href='{% url 'high_ui:project-update_operator' company_name=company.slug_name pk=user.data.value %}'>
 <div class="item-name">{{user.data.label}} {% if user.data.selected %}<span class="typography dash">&mdash;</span> intervenant du projet</div>{% endif %}
 <div class="item-description">{{user.data.label.email}}</div>
+</a>
 {% endblock %}
 
 {% block form_footer %}

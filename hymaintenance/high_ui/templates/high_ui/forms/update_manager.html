@@ -1,7 +1,7 @@
-{% extends 'high_ui/forms/base_consumer.html' %}
+{% extends 'high_ui/forms/base_user.html' %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; {{object.company.name}}, modification du salarié </title> {# TMP #}
+<title>Maintenance Hybird &mdash; {{object.company.name}}, modification du manager </title> {# TMP #}
 {% endblock %}
 
 {% block header %}
@@ -9,10 +9,10 @@
 {% endblock %}
 
 {% block form_title %}
-<div class="group-title">Modification du salarié</div>
+<div class="group-title">Modification du manager</div>
 {% endblock %}
 
 {% block form_footer %}
-<button type="submit">Modifier ce salarié</button>
+<button type="submit">Modifier ce manager</button>
 <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
 {% endblock %}

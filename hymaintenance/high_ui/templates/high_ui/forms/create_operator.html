@@ -1,0 +1,14 @@
+{% extends 'high_ui/forms/base_user.html' %}
+
+{% block page_title %}
+<title>Maintenance Hybird &mdash; Nouveau intervenant de {{company.name}}</title>
+{% endblock %}
+
+{% block form_title %}
+<div class="group-title">Nouvel intervenant</div>
+{% endblock %}
+
+{% block form_footer %}
+<button type="submit">Ajouter cet intervenant</button>
+<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas ajouter</a></span>
+{% endblock %}
