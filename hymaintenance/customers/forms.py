@@ -11,7 +11,7 @@ class CompanyCreateForm(forms.ModelForm):
         fields = ('name', 'maintenance_contact')
 
 
-class MaintenanceUserCreateForm(forms.ModelForm):
+class MaintenanceUserModelForm(forms.ModelForm):
     class Meta:
         model = MaintenanceUser
         fields = ('first_name', 'last_name', 'email', 'password')
@@ -34,8 +34,9 @@ class MaintenanceUserCreateForm(forms.ModelForm):
         pass
 
 
-class ManagerUserCreateForm(MaintenanceUserCreateForm):
+class ManagerUserModelForm(MaintenanceUserModelForm):
     def __init__(self, *args, **kwargs):
+        print(kwargs)
         self.company = kwargs.pop('company')
         super().__init__(*args, **kwargs)
 
@@ -69,13 +70,15 @@ class ManagerUsersUpdateForm(forms.Form):
                 manager.save()
 
 
-class OperatorUserCreateForm(MaintenanceUserCreateForm):
+class OperatorUserModelForm(MaintenanceUserModelForm):
+    def fill_user(self, user):
+        user.is_staff = True
+
+
+class OperatorUserModelFormWithCompany(OperatorUserModelForm):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop('company')
         super().__init__(*args, **kwargs)
-
-    def fill_user(self, user):
-        user.is_staff = True
 
     def save(self, commit=True):
         user = super().save(commit=commit)

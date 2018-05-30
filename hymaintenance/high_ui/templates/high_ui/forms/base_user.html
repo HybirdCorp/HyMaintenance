@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; Nouveau manager {{company.name}}</title>
+{% block page_title %}{% endblock %}
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="/static/css/create.css" />
 </head>
 <body>
-    {% include "high_ui/company_details_header.html" %}
+    {% block header %}{% endblock %}
     <div class="content-container">
         <div class="content">
             <form action="" method="post">
@@ -19,7 +19,7 @@
                 <div class="form-content auto-min-height">
                     <div class="form-group">
                         <div class="group-title-container">
-                            <div class="group-title">{{form_label}}</div>
+                            {% block form_title %}{% endblock %}
                             <label>Compte client</label>
                             <span>{{company}}</span>
                         </div>
@@ -108,8 +108,7 @@
                     {% endif %}
 
                     <div class="form-footer">
-                        <button type="submit">{{form_submit_label}}</button>
-                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas ajouter</a></span>
+                        {% block form_footer %}{% endblock %}
                     </div>
                 </div>
             </form>

@@ -4,8 +4,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import FormView, TemplateView, UpdateView
 
 from customers.forms import (
-    ManagerUserCreateForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserCreateForm, OperatorUsersUpdateForm,
-    OperatorUserUnarchiveForm
+    ManagerUserModelForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserModelForm, OperatorUserModelFormWithCompany,
+    OperatorUsersUpdateForm, OperatorUserUnarchiveForm
 )
 from customers.models import Company
 from customers.models.user import MaintenanceUser, get_companies_of_operator
@@ -24,7 +24,6 @@ class ConsumerUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
     form_class = MaintenanceConsumerModelForm
     template_name = "high_ui/forms/update_consumer.html"
     model = MaintenanceConsumer
-    success_url = "/"
 
     def get_object(self):
         return self.get_queryset().get(id=self.kwargs.get('pk'))
@@ -58,14 +57,29 @@ class ConsumersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
 
 
 class ManagerUserCreateView(LoginRequiredMixin, CreateViewWithCompany):
-    form_class = ManagerUserCreateForm
-    template_name = "high_ui/forms/create_user.html"
+    form_class = ManagerUserModelForm
+    template_name = "high_ui/forms/create_manager.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form_label'] = "Nouveau manager"
-        context['form_submit_label'] = "Ajouter ce manager"
-        return context
+
+class ManagerUserUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
+    form_class = ManagerUserModelForm
+    template_name = "high_ui/forms/update_manager.html"
+    model = MaintenanceUser
+
+    def get_object(self):
+        return self.get_queryset().get(id=self.kwargs.get('pk'))
+
+    def get_queryset(self):
+        return MaintenanceUser.objects.get_manager_users_queryset()
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('high_ui:project-update_managers',
+                       kwargs={'company_name': self.company.slug_name})
 
 
 class ManagerUsersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
@@ -83,20 +97,49 @@ class ManagerUsersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
         return super().form_valid(form)
 
 
-class OperatorUserCreateView(LoginRequiredMixin, CreateViewWithCompany):
-    form_class = OperatorUserCreateForm
-    template_name = "high_ui/forms/create_user.html"
+class OperatorUserCreateViewWithCompany(LoginRequiredMixin, CreateViewWithCompany):
+    form_class = OperatorUserModelFormWithCompany
+    template_name = "high_ui/forms/create_operator.html"
 
     # TMP: Technically, only the template needs the Company right now, so don't send it to the form init.
     # This is done until we have the concept of "maintenance providers" or "projects" which this view/form
     # will need to link the MaintenanceUser to this Company as the "maintainer"
     # Until then, the view/form have the company but the MaintenanceUser created will not use it
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form_label'] = "Nouvel intervenant"
-        context['form_submit_label'] = "Ajouter cet intervenant"
-        return context
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
+
+
+class OperatorUserUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = OperatorUserModelForm
+    template_name = "high_ui/forms/update_operator.html"
+    model = MaintenanceUser
+
+    def get_object(self):
+        return self.get_queryset().get(id=self.kwargs.get('pk'))
+
+    def get_queryset(self):
+        return MaintenanceUser.objects.get_active_operator_users_queryset()
+
+    def get_success_url(self):
+        return reverse('high_ui:update_operators')
+
+
+class OperatorUserUpdateViewWithCompany(ViewWithCompany, OperatorUserUpdateView):
+    form_class = OperatorUserModelFormWithCompany
+    template_name = "high_ui/forms/update_company_operator.html"
+    model = MaintenanceUser
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('high_ui:project-update_operators',
+                       kwargs={'company_name': self.company.slug_name})
 
 
 class OperatorUsersUpdateViewWithCompany(LoginRequiredMixin, ViewWithCompany, FormView):

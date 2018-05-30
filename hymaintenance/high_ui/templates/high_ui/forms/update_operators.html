@@ -42,10 +42,12 @@
                                     <label>
                                         <input value="{{value}}" name="active_operators" type="checkbox"> 
                                         <div class="item-container">
+                                            <a href='{% url 'high_ui:update_operator' pk=value %}'>
                                             <div class="item-name">
                                                 {{label}}
                                             </div>
                                             <div class="item-description">Intervenant <span class="typography dash">&mdash;</span> {{value|print_operator_projects}}</div>
+                                            </a>
                                         </div>
                                     </label>
                                 </li>
