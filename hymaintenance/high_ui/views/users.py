@@ -1,6 +1,7 @@
 from django.http import Http404
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView, TemplateView, UpdateView
 
 from customers.forms import (
     ManagerUserCreateForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserCreateForm, OperatorUsersUpdateForm,
@@ -9,6 +10,7 @@ from customers.forms import (
 from customers.models import Company
 from customers.models.user import MaintenanceUser, get_companies_of_operator
 from maintenance.forms.consumer import MaintenanceConsumerCreateForm, MaintenanceConsumersUpdateForm
+from maintenance.models import MaintenanceConsumer
 
 from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
 
@@ -16,6 +18,28 @@ from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
 class ConsumerCreateView(LoginRequiredMixin, CreateViewWithCompany):
     form_class = MaintenanceConsumerCreateForm
     template_name = "high_ui/forms/create_consumer.html"
+
+
+class ConsumerUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
+    form_class = MaintenanceConsumerCreateForm
+    template_name = "high_ui/forms/update_consumer.html"
+    model = MaintenanceConsumer
+    success_url = "/"
+
+    def get_object(self):
+        return self.get_queryset().get(id=self.kwargs.get('pk'))
+
+    def get_queryset(self):
+        return MaintenanceConsumer.objects.filter(company=self.company)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('high_ui:project-update_consumers',
+                       kwargs={'company_name': self.company.slug_name})
 
 
 class ConsumersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):

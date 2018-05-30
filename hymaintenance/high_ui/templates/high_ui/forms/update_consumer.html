@@ -1,0 +1,15 @@
+{% extends 'high_ui/forms/base_consumer.html' %}
+
+{% block page_title %}
+<title>Maintenance Hybird &mdash; Nouveau salarié {{company.name}}</title> {# TMP #}
+<title>Maintenance Hybird &mdash; {{object.company.name}}, modification du salarié </title> {# TMP #}
+{% endblock %}
+
+{% block form_title %}
+<div class="group-title">Modification du salarié</div>
+{% endblock %}
+
+{% block form_footer %}
+<button type="submit">Modifier ce salarié</button>
+<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+{% endblock %}
