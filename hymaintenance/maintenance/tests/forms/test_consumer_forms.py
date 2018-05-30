@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from customers.tests.factories import CompanyFactory
 
-from ...forms.consumer import MaintenanceConsumersUpdateForm
+from ...forms.consumer import MaintenanceConsumerModelForm, MaintenanceConsumersUpdateForm
 from ...models import MaintenanceConsumer
 from ..factories import MaintenanceConsumerFactory
 
@@ -33,3 +33,24 @@ class MaintenanceConsumersUpdateFormTestCase(TestCase):
         self.assertTrue(MaintenanceConsumer.objects.get(name="Glados").is_used)
         self.assertFalse(MaintenanceConsumer.objects.get(name="Gordon Freeman").is_used)
         self.assertFalse(MaintenanceConsumer.objects.get(name="Wheatley").is_used)
+
+
+class MaintenanceConsumerModelFormTestCase(TestCase):
+
+    def setUp(self):
+        self.company = CompanyFactory()
+
+    def test_create_consumer_with_model_form(self):
+        form = MaintenanceConsumerModelForm(company=self.company,
+                                            data={"name": "Chell"})
+        self.assertTrue(form.is_valid(), form.errors)
+        form.save()
+        self.assertEqual(1, MaintenanceConsumer.objects.filter(name="Chell").count())
+
+    def test_update_consumer_with_model_form(self):
+        self.consumer = MaintenanceConsumerFactory(name="Gordon", company=self.company)
+        form = MaintenanceConsumerModelForm(company=self.company, instance=self.consumer,
+                                            data={"name": "Chell"})
+        self.assertTrue(form.is_valid(), form.errors)
+        form.save()
+        self.assertEqual(1, MaintenanceConsumer.objects.filter(pk=self.consumer.pk, name="Chell").count())

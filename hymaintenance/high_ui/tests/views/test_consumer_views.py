@@ -54,6 +54,59 @@ class ConsumerCreateViewTestCase(TestCase):
         self.assertEqual(1, MaintenanceConsumer.objects.filter(company=self.company, name=name).count())
 
 
+class ConsumerUpdateViewTestCase(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
+                                       password="azerty")
+        cls.company = CompanyFactory()
+        cls.user.operator_for.add(cls.company)
+        cls.consumer = MaintenanceConsumerFactory(name="Chell", company=cls.company)
+
+    def setUp(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+    def test_get_form(self):
+        response = self.client.get(reverse("high_ui:project-update_consumer",
+                                           kwargs={'company_name': self.company.slug_name,
+                                                   'pk': self.consumer.pk}),
+                                   follow=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_form_when_company_does_not_exist(self):
+        not_used_name = "not_used_company_slug_name"
+        response = self.client.get(reverse("high_ui:project-update_consumer",
+                                           kwargs={'company_name': not_used_name,
+                                                   'pk': self.consumer.pk}),
+                                   follow=True)
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_form_when_user_doesnt_operate_the_company(self):
+        other_company = CompanyFactory()
+        response = self.client.get(reverse("high_ui:project-update_consumer",
+                                           kwargs={'company_name': other_company.slug_name,
+                                                   'pk': self.consumer.pk}),
+                                   follow=True)
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_update_maintenance_consumer_with_form(self):
+        name = "Wheatley"
+
+        response = self.client.post(reverse("high_ui:project-update_consumer",
+                                            kwargs={'company_name': self.company.slug_name,
+                                                    'pk': self.consumer.pk}),
+                                    {"name": name},
+                                    follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('high_ui:project-update_consumers',
+                                               kwargs={'company_name': self.company.slug_name}))
+        self.assertEqual(1, MaintenanceConsumer.objects.filter(pk=self.consumer.pk, name=name).count())
+
+
 class UpdateMaintenanceConsumersTestCase(TestCase):
 
     @classmethod

@@ -9,19 +9,19 @@ from customers.forms import (
 )
 from customers.models import Company
 from customers.models.user import MaintenanceUser, get_companies_of_operator
-from maintenance.forms.consumer import MaintenanceConsumerCreateForm, MaintenanceConsumersUpdateForm
+from maintenance.forms.consumer import MaintenanceConsumerModelForm, MaintenanceConsumersUpdateForm
 from maintenance.models import MaintenanceConsumer
 
 from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
 
 
 class ConsumerCreateView(LoginRequiredMixin, CreateViewWithCompany):
-    form_class = MaintenanceConsumerCreateForm
+    form_class = MaintenanceConsumerModelForm
     template_name = "high_ui/forms/create_consumer.html"
 
 
 class ConsumerUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
-    form_class = MaintenanceConsumerCreateForm
+    form_class = MaintenanceConsumerModelForm
     template_name = "high_ui/forms/update_consumer.html"
     model = MaintenanceConsumer
     success_url = "/"
