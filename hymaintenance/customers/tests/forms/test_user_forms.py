@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
 from ...forms import (
-    MaintenanceUserCreateForm, ManagerUserCreateForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserCreateForm,
+    MaintenanceUserModelForm, ManagerUserModelForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserModelFormWithCompany,
     OperatorUsersUpdateForm, OperatorUserUnarchiveForm
 )
 from ...models import MaintenanceUser
@@ -20,7 +20,7 @@ class UserCreateFormTestCase(TestCase):
                 "password": "azerty"}
 
     def test_all_required_fields_by_sending_a_empty_create_form(self):
-        form = MaintenanceUserCreateForm(data={})
+        form = MaintenanceUserModelForm(data={})
         self.assertFalse(form.is_valid())
         expected = _("This field is required.")
         self.assertDictEqual(form.errors, {'email': [expected],
@@ -28,7 +28,7 @@ class UserCreateFormTestCase(TestCase):
 
     def test_if_create_user_form_works(self):
         self.assertEqual(0, MaintenanceUser.objects.filter().count())
-        form = MaintenanceUserCreateForm(data=self.__get_dict_for_post())
+        form = MaintenanceUserModelForm(data=self.__get_dict_for_post())
         self.assertTrue(form.is_valid())
         self.assertTrue(form.save())
         self.assertEqual(1, MaintenanceUser.objects.filter().count())
@@ -37,7 +37,7 @@ class UserCreateFormTestCase(TestCase):
 
     def test_if_create_operator_form_works(self):
         self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
-        form = OperatorUserCreateForm(company=self.company, data=self.__get_dict_for_post())
+        form = OperatorUserModelFormWithCompany(company=self.company, data=self.__get_dict_for_post())
         self.assertTrue(form.is_valid())
         self.assertTrue(form.save())
         self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=False).count())
@@ -47,7 +47,7 @@ class UserCreateFormTestCase(TestCase):
 
     def test_if_create_manager_form_works(self):
         self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
-        form = ManagerUserCreateForm(company=self.company, data=self.__get_dict_for_post())
+        form = ManagerUserModelForm(company=self.company, data=self.__get_dict_for_post())
         self.assertTrue(form.is_valid())
         self.assertTrue(form.save())
         self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=False).count())
@@ -57,7 +57,7 @@ class UserCreateFormTestCase(TestCase):
 
     def test_if_create_operator_form_works_without_commit(self):
         self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
-        form = OperatorUserCreateForm(company=self.company, data=self.__get_dict_for_post())
+        form = OperatorUserModelFormWithCompany(company=self.company, data=self.__get_dict_for_post())
         self.assertTrue(form.is_valid())
         self.assertTrue(form.save(False))
         self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
