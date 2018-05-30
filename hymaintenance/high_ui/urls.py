@@ -7,8 +7,8 @@ from .views.dashboard import DashboardView
 from .views.issue import IssueCreateView, IssueDetailView, IssueUpdateView
 from .views.project import ProjectCreateView, ProjectUpdateView
 from .views.users import (
-    ConsumerCreateView, ConsumersUpdateView, ManagerUserCreateView, ManagerUsersUpdateView, OperatorUserCreateView, OperatorUsersArchiveView,
-    OperatorUsersUnarchiveView, OperatorUsersUpdateView, OperatorUsersUpdateViewWithCompany
+    ConsumerCreateView, ConsumersUpdateView, ConsumerUpdateView, ManagerUserCreateView, ManagerUsersUpdateView, OperatorUserCreateView,
+    OperatorUsersArchiveView, OperatorUsersUnarchiveView, OperatorUsersUpdateView, OperatorUsersUpdateViewWithCompany
 )
 
 
@@ -38,6 +38,9 @@ urlpatterns = [
     path(r'projects/<slug:company_name>/consumers/', ConsumerCreateView.as_view(),
          name='project-create_consumer'),
 
+    path(r'projects/<slug:company_name>/consumers/<int:pk>/update/', ConsumerUpdateView.as_view(),
+         name='project-update_consumer'),
+
     path(r'projects/<slug:company_name>/consumers/update/', ConsumersUpdateView.as_view(),
          name='project-update_consumers'),
 
@@ -64,8 +67,6 @@ urlpatterns = [
 
 ]
 
-#   path(r'projects/<slug:company_name>/consumers/<int:pk>/update/', ConsumerUpdateView.as_view(),
-#        name='project-update_consumer'),
 #   path(r'projects/<slug:company_name>/managers/<int:pk>/update/', ManagerUserUpdateView.as_view(),
 #        name='project-update_manager'),
 #   path(r'operators/<int:pk>/update/', OperatorUserUpdateView.as_view(),

@@ -13,7 +13,9 @@ Sélectionner les salariés pour ce projet, parmi les {{ company.maintenancecons
 {% endblock %}
 
 {% block item_label %}
+<a href='{% url 'high_ui:project-update_consumer' company_name=company.slug_name pk=user.data.value %}'>
 <div class="item-name">{{user.data.label}} {% if user.data.selected %}<span class="typography dash">&mdash;</span> salarié du projet</div>{% endif %}
+</a>
 {% endblock %}
 
 {% block form_footer %}

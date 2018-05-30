@@ -1,0 +1,62 @@
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+{% block page_title %}{% endblock %}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+</head>
+<body>
+    {% include "high_ui/company_details_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content auto-min-height">
+                    <div class="form-group">
+                        <div class="group-title-container">
+                            {% block form_title %}{% endblock %}
+                            <label>Compte client</label>
+                            <span>{{company}}</span>
+                        </div>
+
+                        <div class="form-row form-label-row {% if form.name.errors %}form-error{% endif %}">
+                            {% if form.name.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.name.id_for_label}}">Nom *</label>
+                            {{form.name}}
+
+                            {% if form.name.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.name.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                    {% if form.non_field_errors %}
+                    <div>
+                        {% for error in form.non_field_errors %}
+                            <p><i>{{ error }}</i></p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-footer">
+                        {% block form_footer %}{% endblock %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+</body>
+</html>
