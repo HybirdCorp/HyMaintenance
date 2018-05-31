@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import FormView
@@ -6,10 +7,10 @@ from customers.models import Company, MaintenanceUser
 from maintenance.forms.project import ProjectCreateForm, ProjectUpdateForm
 from maintenance.models import MaintenanceType
 
-from .base import LoginRequiredMixin, ViewWithCompany
+from .base import ViewWithCompany
 
 
-class ProjectCreateView(FormView):
+class ProjectCreateView(LoginRequiredMixin, FormView):
     form_class = ProjectCreateForm
     template_name = "high_ui/forms/create_project.html"
     success_url = "/"

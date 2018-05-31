@@ -1,4 +1,3 @@
-from django.contrib.auth import decorators
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -7,13 +6,6 @@ from django.views.generic import CreateView, View
 
 from customers.models import Company
 from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceType
-
-
-class LoginRequiredMixin(object):
-    @classmethod
-    def as_view(cls, **kwargs):
-        view = super(LoginRequiredMixin, cls).as_view(**kwargs)
-        return decorators.login_required(view)
 
 
 class ViewWithCompany(View):

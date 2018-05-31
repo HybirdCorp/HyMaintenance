@@ -1,11 +1,10 @@
 from datetime import datetime, timedelta
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView
 
 from customers.models import Company
 from maintenance.models import MaintenanceContract, MaintenanceIssue
-
-from .base import LoginRequiredMixin
 
 
 class ProjectDetailsView(LoginRequiredMixin, DetailView):

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.views.generic import DetailView, UpdateView
@@ -6,7 +7,7 @@ from customers.models import Company
 from maintenance.forms.issue import MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm
 from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceIssue
 
-from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
+from .base import CreateViewWithCompany, ViewWithCompany
 
 
 class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):

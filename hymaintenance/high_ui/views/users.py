@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
@@ -12,7 +13,7 @@ from customers.models.user import MaintenanceUser, get_companies_of_operator
 from maintenance.forms.consumer import MaintenanceConsumerModelForm, MaintenanceConsumersUpdateForm
 from maintenance.models import MaintenanceConsumer
 
-from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
+from .base import CreateViewWithCompany, ViewWithCompany
 
 
 class ConsumerCreateView(LoginRequiredMixin, CreateViewWithCompany):
