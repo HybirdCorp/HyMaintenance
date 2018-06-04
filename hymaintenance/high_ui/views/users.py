@@ -1,8 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import FormView, TemplateView, UpdateView
+from django.views.generic import CreateView, FormView, TemplateView, UpdateView
 
 from customers.forms import (
     ManagerUserModelForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserModelForm, OperatorUserModelFormWithCompany,
@@ -11,17 +10,32 @@ from customers.forms import (
 from customers.models import Company
 from customers.models.user import MaintenanceUser, get_companies_of_operator
 from maintenance.forms.consumer import MaintenanceConsumerModelForm, MaintenanceConsumersUpdateForm
-from maintenance.models import MaintenanceConsumer
+from maintenance.models import MaintenanceConsumer, MaintenanceContract
 
-from .base import CreateViewWithCompany, ViewWithCompany
+from .base import IsAdminTestMixin, IsAtLeastAllowedOperatorTestMixin, ViewWithCompany
 
 
-class ConsumerCreateView(LoginRequiredMixin, CreateViewWithCompany):
+class ConsumerCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
     form_class = MaintenanceConsumerModelForm
     template_name = "high_ui/forms/create_consumer.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['company'] = self.company
+        contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
+        context['contracts'] = contracts
+        return context
 
-class ConsumerUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('high_ui:dashboard')
+
+
+class ConsumerUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, UpdateView):
     form_class = MaintenanceConsumerModelForm
     template_name = "high_ui/forms/update_consumer.html"
     model = MaintenanceConsumer
@@ -42,7 +56,7 @@ class ConsumerUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
                        kwargs={'company_name': self.company.slug_name})
 
 
-class ConsumersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
+class ConsumersUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, FormView):
     form_class = MaintenanceConsumersUpdateForm
     template_name = "high_ui/forms/update_consumers.html"
     success_url = "/"
@@ -57,12 +71,27 @@ class ConsumersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
         return super().form_valid(form)
 
 
-class ManagerUserCreateView(LoginRequiredMixin, CreateViewWithCompany):
+class ManagerUserCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
     form_class = ManagerUserModelForm
     template_name = "high_ui/forms/create_manager.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['company'] = self.company
+        contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
+        context['contracts'] = contracts
+        return context
 
-class ManagerUserUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.company
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('high_ui:dashboard')
+
+
+class ManagerUserUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, UpdateView):
     form_class = ManagerUserModelForm
     template_name = "high_ui/forms/update_manager.html"
     model = MaintenanceUser
@@ -83,7 +112,7 @@ class ManagerUserUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
                        kwargs={'company_name': self.company.slug_name})
 
 
-class ManagerUsersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
+class ManagerUsersUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, FormView):
     form_class = ManagerUsersUpdateForm
     template_name = "high_ui/forms/update_managers.html"
     success_url = "/"
@@ -98,7 +127,7 @@ class ManagerUsersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
         return super().form_valid(form)
 
 
-class OperatorUserCreateViewWithCompany(LoginRequiredMixin, CreateViewWithCompany):
+class OperatorUserCreateViewWithCompany(ViewWithCompany, IsAdminTestMixin, CreateView):
     form_class = OperatorUserModelFormWithCompany
     template_name = "high_ui/forms/create_operator.html"
 
@@ -112,8 +141,18 @@ class OperatorUserCreateViewWithCompany(LoginRequiredMixin, CreateViewWithCompan
         kwargs['company'] = self.company
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['company'] = self.company
+        contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
+        context['contracts'] = contracts
+        return context
 
-class OperatorUserUpdateView(LoginRequiredMixin, UpdateView):
+    def get_success_url(self):
+        return reverse('high_ui:dashboard')
+
+
+class OperatorUserUpdateView(IsAdminTestMixin, UpdateView):
     form_class = OperatorUserModelForm
     template_name = "high_ui/forms/update_operator.html"
     model = MaintenanceUser
@@ -143,7 +182,7 @@ class OperatorUserUpdateViewWithCompany(ViewWithCompany, OperatorUserUpdateView)
                        kwargs={'company_name': self.company.slug_name})
 
 
-class OperatorUsersUpdateViewWithCompany(LoginRequiredMixin, ViewWithCompany, FormView):
+class OperatorUsersUpdateViewWithCompany(ViewWithCompany, IsAdminTestMixin, FormView):
     form_class = OperatorUsersUpdateForm
     template_name = "high_ui/forms/update_company_operators.html"
     success_url = "/"
@@ -163,7 +202,7 @@ class OperatorUsersUpdateViewWithCompany(LoginRequiredMixin, ViewWithCompany, Fo
         return super().form_valid(form)
 
 
-class OperatorUsersUpdateView(LoginRequiredMixin, TemplateView):
+class OperatorUsersUpdateView(IsAdminTestMixin, TemplateView):
     template_name = "high_ui/forms/update_operators.html"
 
     def get_context_data(self, **kwargs):
@@ -186,7 +225,7 @@ class OperatorUsersUpdateView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
 
-class OperatorUsersArchiveView(LoginRequiredMixin, FormView):
+class OperatorUsersArchiveView(IsAdminTestMixin, FormView):
     form_class = OperatorUserArchiveForm
     success_url = "/"
 
@@ -195,7 +234,7 @@ class OperatorUsersArchiveView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
 
-class OperatorUsersUnarchiveView(LoginRequiredMixin, FormView):
+class OperatorUsersUnarchiveView(IsAdminTestMixin, FormView):
     form_class = OperatorUserUnarchiveForm
     success_url = "/"
 

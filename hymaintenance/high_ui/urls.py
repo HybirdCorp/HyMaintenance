@@ -2,10 +2,9 @@
 
 from django.urls import path
 
-from .views.company import ProjectDetailsView
 from .views.dashboard import DashboardView
 from .views.issue import IssueCreateView, IssueDetailView, IssueUpdateView
-from .views.project import ProjectCreateView, ProjectUpdateView
+from .views.project import ProjectCreateView, ProjectDetailsView, ProjectUpdateView
 from .views.users import (
     ConsumerCreateView, ConsumersUpdateView, ConsumerUpdateView, ManagerUserCreateView, ManagerUsersUpdateView, ManagerUserUpdateView,
     OperatorUserCreateViewWithCompany, OperatorUsersArchiveView, OperatorUsersUnarchiveView, OperatorUsersUpdateView,
