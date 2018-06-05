@@ -1,14 +1,17 @@
 import datetime
+from django.utils.timezone import now
 
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
 from customers.models import Company
-from customers.tests.factories import AdminUserFactory, ManagerUserFactory, OperatorUserFactory
+from customers.tests.factories import CompanyFactory, AdminUserFactory, ManagerUserFactory, OperatorUserFactory
 from maintenance.forms.project import INACTIF_CONTRACT_INPUT
 from maintenance.models import MaintenanceContract
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
-from maintenance.tests.factories import create_project
+from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory, get_default_maintenance_type, create_project
+
+from high_ui.views.project import ProjectDetailsView
 
 
 class ProjectCreateViewTestCase(TestCase):
@@ -30,9 +33,10 @@ class ProjectCreateViewTestCase(TestCase):
 
         self.assertRedirects(response, self.login_url)
 
-    def test_operator_cannot_get_create_form(self):
-        OperatorUserFactory(email="chell@aperture-science.com",
-                            password="azerty")
+    def test_operator_of_the_company_cannot_get_create_form(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com",
+                                       password="azerty")
+        operator.operator_for.add(self.company)
 
         self.client.login(username="chell@aperture-science.com",
                           password="azerty")
@@ -236,3 +240,196 @@ class ProjectDetailsViewTestCase(TestCase):
         response = self.client.get(self.form_url)
 
         self.assertEqual(response.status_code, 200)
+
+
+def create_mtype_maintenance_and_issue(maintenance_type_visibility, contract_visibility, company):
+        maintenance_type = get_default_maintenance_type()
+        maintenance_type.visibility = maintenance_type_visibility
+        MaintenanceContract.objects.create(company=company,
+                                           start=now().date(),
+                                           maintenance_type=maintenance_type,
+                                           visible=contract_visibility,
+                                           number_hours=40)
+        MaintenanceIssueFactory(company=company,
+                                maintenance_type=maintenance_type,
+                                number_minutes=12)
+
+
+class MonthDisplayInFrenchTestCase(TestCase):
+    def test_month_display_in_french(self):
+        company, _, _, _ = create_project()
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user.operator_for.add(company)
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+        response = self.client.get(reverse("high_ui:project_details", args=[company.slug_name]))
+
+        month = now().date().month
+        frenchmonths = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "décembre"]
+
+        self.assertContains(response, frenchmonths[month - 1])
+
+
+class ContractVisibilityTestCase(TestCase):
+    def setUp(self):
+        self.company = CompanyFactory()
+        self.factory = RequestFactory()
+
+    def create_project_details_view_with_request(self, user):
+        request = self.factory.get(reverse("high_ui:project_details", args=[self.company.slug_name]))
+        request.user = user
+        view = ProjectDetailsView()
+        view.request = request
+        view.company = self.company
+        return view
+
+    def test_manager_user_cannot_see_invisible(self):
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
+                                  password="azerty",
+                                  company=self.company)
+        create_mtype_maintenance_and_issue(False, False, self.company)
+        view = self.create_project_details_view_with_request(user)
+        contracts = view.get_maintenance_contracts()
+        self.assertEqual(0, contracts.count())
+
+    def test_manager_user_can_see_visible(self):
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
+                                  password="azerty",
+                                  company=self.company)
+        create_mtype_maintenance_and_issue(True, True, self.company)
+        view = self.create_project_details_view_with_request(user)
+        contracts = view.get_maintenance_contracts()
+        self.assertEqual(1, contracts.count())
+
+    def test_manager_user_cannot_see_invisible_in_contract(self):
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
+                                  password="azerty",
+                                  company=self.company)
+        create_mtype_maintenance_and_issue(True, False, self.company)
+        view = self.create_project_details_view_with_request(user)
+        contracts = view.get_maintenance_contracts()
+        self.assertEqual(0, contracts.count())
+
+    def test_manager_user_can_see_visible_in_contract(self):
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
+                                  password="azerty",
+                                  company=self.company)
+        create_mtype_maintenance_and_issue(False, True, self.company)
+        view = self.create_project_details_view_with_request(user)
+        contracts = view.get_maintenance_contracts()
+        self.assertEqual(1, contracts.count())
+
+    def test_operator_user_can_see_invisible(self):
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user.operator_for.add(self.company)
+        create_mtype_maintenance_and_issue(False, False, self.company)
+        view = self.create_project_details_view_with_request(user)
+        contracts = view.get_maintenance_contracts()
+        self.assertEqual(1, contracts.count())
+
+    def test_operator_user_can_see_visible(self):
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user.operator_for.add(self.company)
+        create_mtype_maintenance_and_issue(True, True, self.company)
+        view = self.create_project_details_view_with_request(user)
+        contracts = view.get_maintenance_contracts()
+        self.assertEqual(1, contracts.count())
+
+    def test_operator_user_can_see_invisible_in_contract(self):
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user.operator_for.add(self.company)
+        create_mtype_maintenance_and_issue(True, False, self.company)
+        view = self.create_project_details_view_with_request(user)
+        contracts = view.get_maintenance_contracts()
+        self.assertEqual(1, contracts.count())
+
+    def test_operator_user_can_see_visible_in_contract(self):
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user.operator_for.add(self.company)
+        create_mtype_maintenance_and_issue(False, True, self.company)
+        view = self.create_project_details_view_with_request(user)
+        contracts = view.get_maintenance_contracts()
+        self.assertEqual(1, contracts.count())
+
+
+class IssueVisibilityTestCase(TestCase):
+    def setUp(self):
+        self.company = CompanyFactory()
+        self.factory = RequestFactory()
+
+    def create_project_details_view_with_request(self, user):
+        request = self.factory.get(reverse("high_ui:project_details", args=[self.company.slug_name]))
+        request.user = user
+        view = ProjectDetailsView()
+        view.request = request
+        view.company = self.company
+        return view
+
+    def test_manager_user_cannot_see_invisible(self):
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
+                                  password="azerty",
+                                  company=self.company)
+        create_mtype_maintenance_and_issue(False, False, self.company)
+        view = self.create_project_details_view_with_request(user)
+        issues = view.get_maintenance_issues(now().date())
+        self.assertEqual(0, issues.count())
+
+    def test_manager_user_can_see_visible(self):
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
+                                  password="azerty",
+                                  company=self.company)
+        create_mtype_maintenance_and_issue(True, True, self.company)
+        view = self.create_project_details_view_with_request(user)
+        issues = view.get_maintenance_issues(now().date())
+        self.assertEqual(1, issues.count())
+
+    def test_manager_user_cannot_see_invisible_in_contract(self):
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
+                                  password="azerty",
+                                  company=self.company)
+        create_mtype_maintenance_and_issue(True, False, self.company)
+        view = self.create_project_details_view_with_request(user)
+        issues = view.get_maintenance_issues(now().date())
+        self.assertEqual(0, issues.count())
+
+    def test_manager_user_can_see_visible_in_contract(self):
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
+                                  password="azerty",
+                                  company=self.company)
+        create_mtype_maintenance_and_issue(False, True, self.company)
+        view = self.create_project_details_view_with_request(user)
+        issues = view.get_maintenance_issues(now().date())
+        self.assertEqual(1, issues.count())
+
+    def test_operator_user_can_see_invisible(self):
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user.operator_for.add(self.company)
+        create_mtype_maintenance_and_issue(False, False, self.company)
+        view = self.create_project_details_view_with_request(user)
+        issues = view.get_maintenance_issues(now().date())
+        self.assertEqual(1, issues.count())
+
+    def test_operator_user_can_see_visible(self):
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user.operator_for.add(self.company)
+        create_mtype_maintenance_and_issue(True, True, self.company)
+        view = self.create_project_details_view_with_request(user)
+        issues = view.get_maintenance_issues(now().date())
+        self.assertEqual(1, issues.count())
+
+    def test_operator_user_can_see_invisible_in_contract(self):
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user.operator_for.add(self.company)
+        create_mtype_maintenance_and_issue(True, False, self.company)
+        view = self.create_project_details_view_with_request(user)
+        issues = view.get_maintenance_issues(now().date())
+        self.assertEqual(1, issues.count())
+
+    def test_operator_user_can_see_visible_in_contract(self):
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user.operator_for.add(self.company)
+        create_mtype_maintenance_and_issue(False, True, self.company)
+        view = self.create_project_details_view_with_request(user)
+        issues = view.get_maintenance_issues(now().date())
+        self.assertEqual(1, issues.count())
