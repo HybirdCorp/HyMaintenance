@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 
-DB_PORT = os.environ.setdefault("DB_PORT", "5432")
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,10 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'bsmonazudqr$icwo#6(q&e5(!sew*k=*wwo9z+mjo!to2lm212'
+SECRET_KEY = os.getenv("HYMAINTENANCE_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -95,12 +93,13 @@ WSGI_APPLICATION = 'hymaintenance.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('DB', 'bdhymaintenance'),
-        'USER': os.getenv('DB_USER', 'hymaintenance'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'password'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': DB_PORT,
+        'ENGINE': os.getenv('HYMAINTENANCE_DB_ENGINE',
+                            'django.db.backends.postgresql_psycopg2'),
+        'NAME': os.getenv('HYMAINTENANCE_DB_NAME'),
+        'USER': os.getenv('HYMAINTENANCE_DB_USER'),
+        'PASSWORD': os.getenv('HYMAINTENANCE_DB_PASSWORD'),
+        'HOST': os.getenv('HYMAINTENANCE_DB_HOST', 'localhost'),
+        'PORT': os.getenv("HYMAINTENANCE_DB_PORT", "5432"),
     }
 }
 
