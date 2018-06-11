@@ -25,18 +25,29 @@ def create_temporary_file(content=b"I am not empty", directory=None):
 
 
 class IssueCreateViewTestCase(TestCase):
-
     @classmethod
     def setUpTestData(cls):
-        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
-                                       password="azerty")
-        cls.tmp_directory = TemporaryDirectory(prefix="create-issue-view-", dir=os.path.join(settings.MEDIA_ROOT, 'upload/'))
-        cls.company, contract1, _contract2, _contract3 = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
-        cls.user.operator_for.add(cls.company)
+        AdminUserFactory(email="gordon.freeman@blackmesa.com",
+                         password="azerty")
+
+        cls.tmp_directory = TemporaryDirectory(
+            prefix="create-issue-view-",
+            dir=os.path.join(settings.MEDIA_ROOT,
+            'upload/'))
+
+        cls.company, contract1, _, _ = create_project(
+            company={"name": os.path.basename(cls.tmp_directory.name)})
+
         cls.maintenance_type = contract1.maintenance_type
-        MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)
+        MaintenanceContractFactory(company=cls.company,
+            maintenance_type=cls.maintenance_type)
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
+
+        cls.form_url = reverse(
+            'high_ui:project-create_issue',
+            kwargs={'company_name': self.company.slug_name})
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
 
     @classmethod
     def tearDownClass(cls):
@@ -54,32 +65,68 @@ class IssueCreateViewTestCase(TestCase):
                 "duration_type": "hours",
                 "duration": 2}
 
-    def test_i_can_get_a_form_to_create_a_new_issue(self):
-        self.client.login(username=self.user.email, password="azerty")
-        response = self.client.get(reverse('high_ui:project-create_issue',
-                                           kwargs={'company_name': self.company.slug_name}),
-                                   follow=True)
+    def test_manager_cannot_get_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com",
+                           password="azerty",
+                           company=self.company)
+
+        self.client.login(username="chell@aperture-science.com",
+                          password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_operator_of_the_company_can_get_form(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com",
+                                       password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="chell@aperture-science.com",
+                          password="azerty")
+        response = self.client.get(self.form_url)
+
         self.assertEqual(response.status_code, 200)
 
-    def test_i_can_post_a_form_to_create_a_new_issue(self):
+    def test_operator_of_other_company_cannot_get_form(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com",
+                                       password="azerty")
+
+        self.client.login(username="chell@aperture-science.com",
+                          password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_admin_can_get_form(self):
+        self.client.login(username="gordon.freeman@blackmesa.com",
+                          password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_a_form_to_create_a_new_issue(self):
         subject = "Subject of the issue"
         description = "Description of the Issue"
 
         self.client.login(username=self.user.email, password="azerty")
-        response = self.client.post(reverse('high_ui:project-create_issue',
-                                            kwargs={'company_name': self.company.slug_name}),
-                                    self.__get_dict_for_post(subject, description), follow=True)
+        response = self.client.post(
+            self.form_url,
+            self.__get_dict_for_post(subject, description),
+            follow=True)
 
-        self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, self.company.get_absolute_url())
-        self.assertEqual(1, MaintenanceIssue.objects.filter(company=self.company,
-                                                            consumer_who_ask=self.consumer,
-                                                            user_who_fix=self.user,
-                                                            incoming_channel=self.channel,
-                                                            subject=subject,
-                                                            maintenance_type=self.maintenance_type,
-                                                            number_minutes=120,
-                                                            description=description).count())
+        issues = MaintenanceIssue.objects.filter(
+            company=self.company,
+            consumer_who_ask=self.consumer,
+            user_who_fix=self.user,
+            incoming_channel=self.channel,
+            subject=subject,
+            maintenance_type=self.maintenance_type,
+            number_minutes=120,
+            description=description))
+
+
+        self.assertEqual(1, issues.count())
 
     def test_i_can_post_a_form_to_create_a_new_issue_with_attachments(self):
         test_file_content = b"I'm not empty"
@@ -87,7 +134,9 @@ class IssueCreateViewTestCase(TestCase):
         description = "Description of the Issue"
 
         dict_for_post = self.__get_dict_for_post(subject, description)
-        with create_temporary_file(test_file_content) as context_file, create_temporary_file(test_file_content) as resolution_file:
+        with create_temporary_file(test_file_content) \
+            as context_file, create_temporary_file(test_file_content) \
+            as resolution_file:
             dict_for_post['context_description_file'] = context_file
             dict_for_post['resolution_description_file'] = resolution_file
 
