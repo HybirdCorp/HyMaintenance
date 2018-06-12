@@ -33,10 +33,9 @@ class ProjectCreateViewTestCase(TestCase):
 
         self.assertRedirects(response, self.login_url)
 
-    def test_operator_of_the_company_cannot_get_create_form(self):
-        operator = OperatorUserFactory(email="chell@aperture-science.com",
-                                       password="azerty")
-        operator.operator_for.add(self.company)
+    def test_operator_cannot_get_create_form(self):
+        OperatorUserFactory(email="chell@aperture-science.com",
+                            password="azerty")
 
         self.client.login(username="chell@aperture-science.com",
                           password="azerty")

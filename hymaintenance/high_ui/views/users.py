@@ -1,6 +1,4 @@
-from django.http import Http404
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, FormView, TemplateView, UpdateView
 
 from customers.forms import (
@@ -8,7 +6,7 @@ from customers.forms import (
     OperatorUsersUpdateForm, OperatorUserUnarchiveForm
 )
 from customers.models import Company
-from customers.models.user import MaintenanceUser, get_companies_of_operator
+from customers.models.user import MaintenanceUser
 from maintenance.forms.consumer import MaintenanceConsumerModelForm, MaintenanceConsumersUpdateForm
 from maintenance.models import MaintenanceConsumer, MaintenanceContract
 
@@ -212,17 +210,8 @@ class OperatorUsersUpdateView(IsAdminTestMixin, TemplateView):
         context["unarchive_form"] = OperatorUserUnarchiveForm()
         context["active_operators_number"] = context["maintainers"].filter(is_active=True).count()
         context["archived_operators_number"] = context["maintainers"].filter(is_active=False).count()
+        context["companies"] = Company.objects.all()
         return context
-
-    def get(self, request, *args, **kwargs):
-        user = request.user
-        if not user.is_staff:
-            raise Http404(_("No %(verbose_name)s found matching the query") %
-                          {'verbose_name': Company._meta.verbose_name})
-        context = self.get_context_data(**kwargs)
-        context["companies"] = get_companies_of_operator(user)
-
-        return self.render_to_response(context)
 
 
 class OperatorUsersArchiveView(IsAdminTestMixin, FormView):

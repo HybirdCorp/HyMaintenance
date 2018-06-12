@@ -1,7 +1,5 @@
 from datetime import datetime, timedelta
 
-from django.http import Http404
-from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, FormView
 
 from customers.models import Company, MaintenanceUser
@@ -17,10 +15,6 @@ class ProjectCreateView(IsAdminTestMixin, FormView):
     success_url = "/"
 
     def get_context_data(self, **kwargs):
-        user = self.request.user
-        if not user.is_staff:
-            raise Http404(_("No %(verbose_name)s found matching the query") %
-                          {'verbose_name': Company._meta.verbose_name})
         context = super().get_context_data(**kwargs)
         context["maintenance_types"] = MaintenanceType.objects.order_by("id")
         context["companies"] = Company.objects.all()
