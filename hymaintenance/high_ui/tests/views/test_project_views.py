@@ -1,17 +1,16 @@
 import datetime
+
+from django.test import RequestFactory, TestCase
+from django.urls import reverse
 from django.utils.timezone import now
 
-from django.test import TestCase, RequestFactory
-from django.urls import reverse
-
 from customers.models import Company
-from customers.tests.factories import CompanyFactory, AdminUserFactory, ManagerUserFactory, OperatorUserFactory
+from customers.tests.factories import AdminUserFactory, CompanyFactory, ManagerUserFactory, OperatorUserFactory
+from high_ui.views.project import ProjectDetailsView
 from maintenance.forms.project import INACTIF_CONTRACT_INPUT
 from maintenance.models import MaintenanceContract
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
-from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory, get_default_maintenance_type, create_project
-
-from high_ui.views.project import ProjectDetailsView
+from maintenance.tests.factories import MaintenanceIssueFactory, create_project, get_default_maintenance_type
 
 
 class ProjectCreateViewTestCase(TestCase):

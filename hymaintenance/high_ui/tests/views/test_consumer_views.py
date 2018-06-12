@@ -2,8 +2,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from customers.tests.factories import (
-    CompanyFactory, ManagerUserFactory, OperatorUserFactory, AdminUserFactory)
+from customers.tests.factories import AdminUserFactory, CompanyFactory, ManagerUserFactory, OperatorUserFactory
 from maintenance.models import MaintenanceConsumer
 from maintenance.tests.factories import MaintenanceConsumerFactory
 
@@ -43,8 +42,8 @@ class ConsumerCreateViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_operator_of_other_company_cannot_get_form(self):
-        operator = OperatorUserFactory(email="chell@aperture-science.com",
-                                       password="azerty")
+        OperatorUserFactory(email="chell@aperture-science.com",
+                            password="azerty")
 
         self.client.login(username="chell@aperture-science.com",
                           password="azerty")
@@ -120,8 +119,8 @@ class ConsumerUpdateViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_operator_of_other_company_cannot_get_form(self):
-        operator = OperatorUserFactory(email="chell@aperture-science.com",
-                                       password="azerty")
+        OperatorUserFactory(email="chell@aperture-science.com",
+                            password="azerty")
 
         self.client.login(username="chell@aperture-science.com",
                           password="azerty")
@@ -197,8 +196,8 @@ class UpdateMaintenanceConsumersListTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_operator_of_other_company_cannot_get_form(self):
-        operator = OperatorUserFactory(email="chell@aperture-science.com",
-                                       password="azerty")
+        OperatorUserFactory(email="chell@aperture-science.com",
+                            password="azerty")
 
         self.client.login(username="chell@aperture-science.com",
                           password="azerty")
