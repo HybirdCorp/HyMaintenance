@@ -1,10 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from customers.models.user import MaintenanceUser
 from customers.models.user import get_companies_of_operator
-
-from .base import LoginRequiredMixin
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):

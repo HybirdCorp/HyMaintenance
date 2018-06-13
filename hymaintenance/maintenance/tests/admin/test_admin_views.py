@@ -4,8 +4,8 @@ from django.test import Client
 from django.test import TestCase
 from django.urls import reverse
 
+from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
-from customers.tests.factories import SuperUserFactory
 
 from ..factories import IncomingChannelFactory
 from ..factories import MaintenanceConsumerFactory
@@ -17,7 +17,7 @@ from ..factories import get_default_maintenance_type
 
 class AdminMaintenanceViewTestCase(TestCase):
     def test_listview_admin_pages(self):
-        user = SuperUserFactory()
+        user = AdminUserFactory()
         client = Client()
         client.login(username=user.email, password="password")
 
@@ -35,7 +35,7 @@ class AdminMaintenanceViewTestCase(TestCase):
             self.assertContains(resp, "<!DOCTYPE html")
 
     def test_detailview_admin_pages(self):
-        user = SuperUserFactory()
+        user = AdminUserFactory()
         client = Client()
         client.login(username=user.email, password="password")
 
@@ -61,14 +61,14 @@ class AdminMaintenanceViewTestCase(TestCase):
             self.assertContains(resp, "<!DOCTYPE html")
 
     def test_search_in_issue_list_view(self):
-        user = SuperUserFactory()
+        user = AdminUserFactory()
         client = Client()
         client.login(username=user.email, password="password")
         resp = client.get(reverse("admin:maintenance_maintenanceissue_changelist"), {"q": "test"}, follow=True)
         self.assertEqual(resp.status_code, 200)
 
     def test_search_in_contract_list_view(self):
-        user = SuperUserFactory()
+        user = AdminUserFactory()
         client = Client()
         client.login(username=user.email, password="password")
         resp = client.get(reverse("admin:maintenance_maintenancecontract_changelist"), {"q": "test"}, follow=True)

@@ -2,6 +2,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
@@ -12,147 +13,175 @@ from maintenance.tests.factories import MaintenanceConsumerFactory
 class ConsumerCreateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
-        cls.user.operator_for.add(cls.company)
+        cls.form_url = reverse("high_ui:project-create_consumer", kwargs={"company_name": cls.company.slug_name})
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
 
-    def setUp(self):
+    def test_manager_cannot_get_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_operator_of_the_company_can_get_form(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_operator_of_other_company_cannot_get_form(self):
+        OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_admin_can_get_form(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
 
-    def test_get_form(self):
-        response = self.client.get(
-            reverse("high_ui:project-create_consumer", kwargs={"company_name": self.company.slug_name}), follow=True
-        )
         self.assertEqual(response.status_code, 200)
 
     def test_get_form_when_company_does_not_exist(self):
         not_used_name = "not_used_company_slug_name"
-        response = self.client.get(
-            reverse("high_ui:project-create_consumer", kwargs={"company_name": not_used_name}), follow=True
-        )
 
-        self.assertEqual(response.status_code, 404)
-
-    def test_get_form_when_user_doesnt_operate_the_company(self):
-        other_company = CompanyFactory()
-        response = self.client.get(
-            reverse("high_ui:project-create_consumer", kwargs={"company_name": other_company.slug_name}), follow=True
-        )
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        test_url = reverse("high_ui:project-create_consumer", kwargs={"company_name": not_used_name})
+        response = self.client.get(test_url)
 
         self.assertEqual(response.status_code, 404)
 
     def test_create_maintenance_consumer_with_form(self):
         name = "Wheatley"
 
-        response = self.client.post(
-            reverse("high_ui:project-create_consumer", kwargs={"company_name": self.company.slug_name}),
-            {"name": name},
-            follow=True,
-        )
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.post(self.form_url, {"name": name})
 
-        self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse("high_ui:dashboard"))
-        self.assertEqual(1, MaintenanceConsumer.objects.filter(company=self.company, name=name).count())
+        consumers = MaintenanceConsumer.objects.filter(company=self.company, name=name)
+        self.assertEqual(1, consumers.count())
 
 
 class ConsumerUpdateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
-        cls.user.operator_for.add(cls.company)
         cls.consumer = MaintenanceConsumerFactory(name="Chell", company=cls.company)
-
-    def setUp(self):
-        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-
-    def test_get_form(self):
-        response = self.client.get(
-            reverse(
-                "high_ui:project-update_consumer",
-                kwargs={"company_name": self.company.slug_name, "pk": self.consumer.pk},
-            ),
-            follow=True,
+        cls.form_url = reverse(
+            "high_ui:project-update_consumer", kwargs={"company_name": cls.company.slug_name, "pk": cls.consumer.pk}
         )
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_manager_cannot_get_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_operator_of_the_company_can_get_form(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_operator_of_other_company_cannot_get_form(self):
+        OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_admin_can_get_update_form(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
         self.assertEqual(response.status_code, 200)
 
     def test_get_form_when_company_does_not_exist(self):
         not_used_name = "not_used_company_slug_name"
-        response = self.client.get(
-            reverse("high_ui:project-update_consumer", kwargs={"company_name": not_used_name, "pk": self.consumer.pk}),
-            follow=True,
+        test_url = reverse(
+            "high_ui:project-update_consumer", kwargs={"company_name": not_used_name, "pk": self.consumer.pk}
         )
-
-        self.assertEqual(response.status_code, 404)
-
-    def test_get_form_when_user_doesnt_operate_the_company(self):
-        other_company = CompanyFactory()
-        response = self.client.get(
-            reverse(
-                "high_ui:project-update_consumer",
-                kwargs={"company_name": other_company.slug_name, "pk": self.consumer.pk},
-            ),
-            follow=True,
-        )
+        response = self.client.get(test_url)
 
         self.assertEqual(response.status_code, 404)
 
     def test_update_maintenance_consumer_with_form(self):
         name = "Wheatley"
 
-        response = self.client.post(
-            reverse(
-                "high_ui:project-update_consumer",
-                kwargs={"company_name": self.company.slug_name, "pk": self.consumer.pk},
-            ),
-            {"name": name},
-            follow=True,
-        )
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.post(self.form_url, {"name": name}, follow=True)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertRedirects(
-            response, reverse("high_ui:project-update_consumers", kwargs={"company_name": self.company.slug_name})
-        )
-        self.assertEqual(1, MaintenanceConsumer.objects.filter(pk=self.consumer.pk, name=name).count())
+        success_url = reverse("high_ui:project-update_consumers", kwargs={"company_name": self.company.slug_name})
+        self.assertRedirects(response, success_url)
+        consumers = MaintenanceConsumer.objects.filter(pk=self.consumer.pk, name=name)
+        self.assertEqual(1, consumers.count())
 
 
-class UpdateMaintenanceConsumersTestCase(TestCase):
+class UpdateMaintenanceConsumersListTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
-        user.operator_for.add(cls.company)
+        cls.form_url = reverse("high_ui:project-update_consumers", kwargs={"company_name": cls.company.slug_name})
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
 
-    def setUp(self):
-        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+    def test_manager_cannot_get_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
 
-    def test_get_update_company_consumers_form(self):
-        response = self.client.get(
-            reverse("high_ui:project-update_consumers", kwargs={"company_name": self.company.slug_name}), follow=True
-        )
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_operator_of_the_company_can_get_form(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
 
         self.assertEqual(response.status_code, 200)
 
-    def test_manager_cannot_get_update_company_consumers_form(self):
-        ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
+    def test_operator_of_other_company_cannot_get_form(self):
+        OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+
         self.client.login(username="chell@aperture-science.com", password="azerty")
-        response = self.client.get(
-            reverse("high_ui:project-update_consumers", kwargs={"company_name": self.company.slug_name}), follow=True
-        )
+        response = self.client.get(self.form_url)
 
-        self.assertEqual(response.status_code, 404)
+        self.assertRedirects(response, self.login_url)
 
-    def test_post_archive_company_consumers_form(self):
+    def test_admin_can_get_form(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_consumers_list_update_form(self):
         consumer1 = MaintenanceConsumerFactory(is_used=True, company=self.company)
         consumer2 = MaintenanceConsumerFactory(is_used=False, company=self.company)
 
-        response = self.client.post(
-            reverse("high_ui:project-update_consumers", kwargs={"company_name": self.company.slug_name}),
-            {"users": consumer2.id},
-            follow=True,
-        )
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.post(self.form_url, {"users": consumer2.id}, follow=True)
 
-        self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse("high_ui:dashboard"))
         self.assertFalse(MaintenanceConsumer.objects.get(id=consumer1.id).is_used)
         self.assertTrue(MaintenanceConsumer.objects.get(id=consumer2.id).is_used)

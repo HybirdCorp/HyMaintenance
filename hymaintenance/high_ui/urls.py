@@ -2,12 +2,12 @@
 
 from django.urls import path
 
-from .views.company import ProjectDetailsView
 from .views.dashboard import DashboardView
 from .views.issue import IssueCreateView
 from .views.issue import IssueDetailView
 from .views.issue import IssueUpdateView
 from .views.project import ProjectCreateView
+from .views.project import ProjectDetailsView
 from .views.project import ProjectUpdateView
 from .views.users import ConsumerCreateView
 from .views.users import ConsumersUpdateView

@@ -8,21 +8,27 @@ from customers.tests.factories import OperatorUserFactory
 
 
 class DashboardTestCase(TestCase):
-    def setUp(self):
-        self.company = CompanyFactory()
+    @classmethod
+    def setUpTestData(cls):
+        cls.company = CompanyFactory()
+        cls.page_url = reverse("high_ui:dashboard")
 
     def test_operator_can_seen_the_dashboard(self):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         user.operator_for.add(self.company)
+
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse("high_ui:dashboard"))
+
+        response = self.client.get(self.page_url)
 
         self.assertEqual(response.status_code, 200)
 
     def test_manager_cannot_seen_the_dashboard(self):
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
+
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse("high_ui:dashboard"))
+
+        response = self.client.get(self.page_url)
 
         self.assertRedirects(response, self.company.get_absolute_url())
 
@@ -34,7 +40,8 @@ class DashboardTestCase(TestCase):
         op2.operator_for.add(self.company)
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse("high_ui:dashboard"))
+
+        response = self.client.get(self.page_url)
 
         self.assertEqual(1, self.company.managed_by.count())
         self.assertEqual(response.status_code, 200)
