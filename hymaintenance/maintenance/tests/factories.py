@@ -3,9 +3,15 @@ import factory
 
 from django.utils.timezone import now
 
-from customers.tests.factories import CompanyFactory, OperatorUserFactory
+from customers.tests.factories import CompanyFactory
+from customers.tests.factories import OperatorUserFactory
 
-from ..models import IncomingChannel, MaintenanceConsumer, MaintenanceContract, MaintenanceCredit, MaintenanceIssue, MaintenanceType
+from ..models import IncomingChannel
+from ..models import MaintenanceConsumer
+from ..models import MaintenanceContract
+from ..models import MaintenanceCredit
+from ..models import MaintenanceIssue
+from ..models import MaintenanceType
 
 
 class IncomingChannelFactory(factory.django.DjangoModelFactory):
@@ -66,19 +72,25 @@ class MaintenanceIssueFactory(factory.django.DjangoModelFactory):
 
 def create_project(**kwargs):
     if "company" in kwargs:
-        company = CompanyFactory(**kwargs['company'])
+        company = CompanyFactory(**kwargs["company"])
     else:
         company = CompanyFactory()
     if "contract1" in kwargs:
-        contract1 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=1), **kwargs['contract1'])
+        contract1 = MaintenanceContractFactory(
+            company=company, maintenance_type=MaintenanceType.objects.get(id=1), **kwargs["contract1"]
+        )
     else:
         contract1 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=1))
     if "contract2" in kwargs:
-        contract2 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=2), **kwargs['contract2'])
+        contract2 = MaintenanceContractFactory(
+            company=company, maintenance_type=MaintenanceType.objects.get(id=2), **kwargs["contract2"]
+        )
     else:
         contract2 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=2))
     if "contract3" in kwargs:
-        contract3 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=3), **kwargs['contract3'])
+        contract3 = MaintenanceContractFactory(
+            company=company, maintenance_type=MaintenanceType.objects.get(id=3), **kwargs["contract3"]
+        )
     else:
         contract3 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=3))
     return {company, contract1, contract2, contract3}

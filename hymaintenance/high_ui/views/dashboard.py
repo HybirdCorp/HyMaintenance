@@ -1,13 +1,14 @@
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from customers.models.user import MaintenanceUser, get_companies_of_operator
+from customers.models.user import MaintenanceUser
+from customers.models.user import get_companies_of_operator
 
 from .base import LoginRequiredMixin
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'high_ui/dashboard.html'
+    template_name = "high_ui/dashboard.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

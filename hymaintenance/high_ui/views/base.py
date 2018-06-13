@@ -3,10 +3,13 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import CreateView, View
+from django.views.generic import CreateView
+from django.views.generic import View
 
 from customers.models import Company
-from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceType
+from maintenance.models import IncomingChannel
+from maintenance.models import MaintenanceContract
+from maintenance.models import MaintenanceType
 
 
 class LoginRequiredMixin(object):
@@ -27,32 +30,33 @@ class ViewWithCompany(View):
         user = self.request.user
         company = get_object_or_404(Company, slug_name=self.kwargs.get(self.pk_url_kwarg))
         if not user.is_staff or company not in user.operator_for.all():
-            raise Http404(_("No %(verbose_name)s found matching the query") %
-                          {'verbose_name': Company._meta.verbose_name})
+            raise Http404(
+                _("No %(verbose_name)s found matching the query") % {"verbose_name": Company._meta.verbose_name}
+            )
         return company
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["maintenance_types"] = MaintenanceType.objects.order_by("id")
-        context['channels'] = IncomingChannel.objects.all()
+        context["channels"] = IncomingChannel.objects.all()
         contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
-        context['contracts'] = contracts
-        context['company'] = self.company
+        context["contracts"] = contracts
+        context["company"] = self.company
         return context
 
 
 class CreateViewWithCompany(ViewWithCompany, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['company'] = self.company
+        context["company"] = self.company
         contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
-        context['contracts'] = contracts
+        context["contracts"] = contracts
         return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['company'] = self.company
+        kwargs["company"] = self.company
         return kwargs
 
     def get_success_url(self):
-        return reverse('high_ui:dashboard')
+        return reverse("high_ui:dashboard")

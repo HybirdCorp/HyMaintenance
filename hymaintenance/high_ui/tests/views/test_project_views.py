@@ -4,35 +4,32 @@ from django.test import TestCase
 from django.urls import reverse
 
 from customers.models import Company
-from customers.tests.factories import ManagerUserFactory, OperatorUserFactory
+from customers.tests.factories import ManagerUserFactory
+from customers.tests.factories import OperatorUserFactory
 from maintenance.forms.project import INACTIF_CONTRACT_INPUT
 from maintenance.models import MaintenanceContract
-from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
+from maintenance.models.contract import AVAILABLE_TOTAL_TIME
+from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 from maintenance.tests.factories import create_project
 
 
 class ProjectCreateViewTestCase(TestCase):
-
     @classmethod
     def setUpTestData(cls):
-        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
-                                       password="azerty")
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
     def test_i_can_get_create_form(self):
-        self.client.login(username="gordon.freeman@blackmesa.com",
-                          password="azerty")
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
         response = self.client.get(f"/high_ui/project/add/")
-        response = self.client.get(reverse('high_ui:create_project'))
+        response = self.client.get(reverse("high_ui:create_project"))
         self.assertEqual(response.status_code, 200)
 
     def test_manager_cannot_get_create_form(self):
-        ManagerUserFactory(email="chell@aperture-science.com",
-                           password="azerty")
-        self.client.login(username="chell@aperture-science.com",
-                          password="azerty")
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
+        self.client.login(username="chell@aperture-science.com", password="azerty")
 
-        response = self.client.get(reverse('high_ui:create_project'))
+        response = self.client.get(reverse("high_ui:create_project"))
         self.assertEqual(response.status_code, 404)
 
     def test_i_can_post_and_form_to_create_a_project(self):
@@ -54,45 +51,47 @@ class ProjectCreateViewTestCase(TestCase):
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.post(reverse('high_ui:create_project'),
-                                    {"company_name": company_name,
-                                     "contract1_visible": contract1_visible,
-                                     "contract1_total_type": contract1_total_type,
-                                     "contract1_number_hours": contract1_number_hours,
-                                     "contract1_counter_name": "Maintenance",
-                                     "contract1_date": datetime.date.today(),
-                                     "contract2_visible": contract2_visible,
-                                     "contract2_total_type": contract2_total_type,
-                                     "contract2_number_hours": contract2_number_hours,
-                                     "contract2_counter_name": "Support",
-                                     "contract2_date": datetime.date.today(),
-                                     "contract3_visible": contract3_visible,
-                                     "contract3_total_type": contract3_total_type,
-                                     "contract3_number_hours": contract3_number_hours,
-                                     "contract3_counter_name": "Corrective",
-                                     "contract3_date": datetime.date.today()}, follow=True)
+        response = self.client.post(
+            reverse("high_ui:create_project"),
+            {
+                "company_name": company_name,
+                "contract1_visible": contract1_visible,
+                "contract1_total_type": contract1_total_type,
+                "contract1_number_hours": contract1_number_hours,
+                "contract1_counter_name": "Maintenance",
+                "contract1_date": datetime.date.today(),
+                "contract2_visible": contract2_visible,
+                "contract2_total_type": contract2_total_type,
+                "contract2_number_hours": contract2_number_hours,
+                "contract2_counter_name": "Support",
+                "contract2_date": datetime.date.today(),
+                "contract3_visible": contract3_visible,
+                "contract3_total_type": contract3_total_type,
+                "contract3_number_hours": contract3_number_hours,
+                "contract3_counter_name": "Corrective",
+                "contract3_date": datetime.date.today(),
+            },
+            follow=True,
+        )
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, '/high_ui/')
+        self.assertRedirects(response, "/high_ui/")
         self.assertEqual(1, Company.objects.filter(name=company_name).count())
         company = Company.objects.get(name=company_name)
         self.assertEqual(2, MaintenanceContract.objects.filter(company_id=company.id, disabled=False).count())
 
 
 class ProjectUpdateViewTestCase(TestCase):
-
     @classmethod
     def setUpTestData(cls):
-        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
-                                       password="azerty")
+        cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.company, contract1, contract2, contract3 = create_project()
         cls.user.operator_for.add(cls.company)
 
     def test_i_can_get_update_form(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.get(reverse('high_ui:update_project',
-                                           kwargs={'company_name': self.company.slug_name}))
+        response = self.client.get(reverse("high_ui:update_project", kwargs={"company_name": self.company.slug_name}))
         self.assertEqual(response.status_code, 200)
 
     def test_i_can_post_and_form_to_update_a_project(self):
@@ -114,27 +113,31 @@ class ProjectUpdateViewTestCase(TestCase):
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.post(reverse('high_ui:update_project',
-                                            kwargs={'company_name': self.company.slug_name}),
-                                    {"company_name": company_name,
-                                     "contract1_visible": contract1_visible,
-                                     "contract1_total_type": contract1_total_type,
-                                     "contract1_number_hours": contract1_number_hours,
-                                     "contract1_counter_name": "Maintenance",
-                                     "contract1_date": datetime.date.today(),
-                                     "contract2_visible": contract2_visible,
-                                     "contract2_total_type": contract2_total_type,
-                                     "contract2_number_hours": contract2_number_hours,
-                                     "contract2_counter_name": "Support",
-                                     "contract2_date": datetime.date.today(),
-                                     "contract3_visible": contract3_visible,
-                                     "contract3_total_type": contract3_total_type,
-                                     "contract3_number_hours": contract3_number_hours,
-                                     "contract3_counter_name": "Corrective",
-                                     "contract3_date": datetime.date.today()}, follow=True)
+        response = self.client.post(
+            reverse("high_ui:update_project", kwargs={"company_name": self.company.slug_name}),
+            {
+                "company_name": company_name,
+                "contract1_visible": contract1_visible,
+                "contract1_total_type": contract1_total_type,
+                "contract1_number_hours": contract1_number_hours,
+                "contract1_counter_name": "Maintenance",
+                "contract1_date": datetime.date.today(),
+                "contract2_visible": contract2_visible,
+                "contract2_total_type": contract2_total_type,
+                "contract2_number_hours": contract2_number_hours,
+                "contract2_counter_name": "Support",
+                "contract2_date": datetime.date.today(),
+                "contract3_visible": contract3_visible,
+                "contract3_total_type": contract3_total_type,
+                "contract3_number_hours": contract3_number_hours,
+                "contract3_counter_name": "Corrective",
+                "contract3_date": datetime.date.today(),
+            },
+            follow=True,
+        )
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, '/high_ui/')
+        self.assertRedirects(response, "/high_ui/")
         self.assertEqual(1, Company.objects.filter(name=company_name).count())
         company = Company.objects.get(name=company_name)
         self.assertEqual(2, MaintenanceContract.objects.filter(company_id=company.id, disabled=False).count())

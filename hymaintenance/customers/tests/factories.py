@@ -1,7 +1,8 @@
 
 import factory
 
-from ..models import Company, MaintenanceUser
+from ..models import Company
+from ..models import MaintenanceUser
 
 
 class CompanyFactory(factory.django.DjangoModelFactory):
@@ -16,8 +17,8 @@ class MaintenanceUserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = MaintenanceUser
 
-    password = factory.PostGenerationMethodCall('set_password', 'password')
-    email = factory.Sequence(lambda n: 'robot{0}@example.com'.format(n))
+    password = factory.PostGenerationMethodCall("set_password", "password")
+    email = factory.Sequence(lambda n: "robot{0}@example.com".format(n))
 
 
 class SuperUserFactory(MaintenanceUserFactory):

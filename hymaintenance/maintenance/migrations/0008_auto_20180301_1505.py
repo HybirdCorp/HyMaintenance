@@ -2,19 +2,18 @@
 
 import datetime
 
-from django.db import migrations, models
+from django.db import migrations
+from django.db import models
 
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('maintenance', '0007_auto_20180301_1421'),
-    ]
+    dependencies = [("maintenance", "0007_auto_20180301_1421")]
 
     operations = [
         migrations.AlterField(
-            model_name='maintenancecontract',
-            name='start',
-            field=models.DateField(default=datetime.date.today, verbose_name='Start Date'),
-        ),
+            model_name="maintenancecontract",
+            name="start",
+            field=models.DateField(default=datetime.date.today, verbose_name="Start Date"),
+        )
     ]

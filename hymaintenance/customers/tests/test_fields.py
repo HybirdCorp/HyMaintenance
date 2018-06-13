@@ -5,7 +5,6 @@ from ..fields import LowerCaseEmailField
 
 
 class LowerCaseEmailFieldTestCase(SimpleTestCase):
-
     def test_when_none_value_if_it_works(self):
         email_field = LowerCaseEmailField()
         self.assertEqual(None, email_field.get_prep_value(None))

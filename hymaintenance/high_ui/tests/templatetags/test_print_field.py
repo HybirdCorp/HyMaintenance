@@ -1,14 +1,19 @@
-from django.test import SimpleTestCase, TestCase
+from django.test import SimpleTestCase
+from django.test import TestCase
 from django.utils.translation import ugettext as _
 
-from customers.tests.factories import CompanyFactory, OperatorUserFactory
-from maintenance.tests.factories import MaintenanceContractFactory, MaintenanceIssueFactory, get_default_maintenance_type
+from customers.tests.factories import CompanyFactory
+from customers.tests.factories import OperatorUserFactory
+from maintenance.tests.factories import MaintenanceContractFactory
+from maintenance.tests.factories import MaintenanceIssueFactory
+from maintenance.tests.factories import get_default_maintenance_type
 
-from ...templatetags.print_fields import pretty_print_contract_counter, pretty_print_minutes, print_operator_projects
+from ...templatetags.print_fields import pretty_print_contract_counter
+from ...templatetags.print_fields import pretty_print_minutes
+from ...templatetags.print_fields import print_operator_projects
 
 
 class PrettyPrintMinutesTestCase(SimpleTestCase):
-
     def test_pretty_print_minutes_if_value_is_blank(self):
         self.assertEqual("", pretty_print_minutes(""))
 
@@ -22,8 +27,7 @@ class PrettyPrintMinutesTestCase(SimpleTestCase):
         self.assertEqual("40m", pretty_print_minutes(40))
 
     def test_pretty_print_minutes_with_only_minutes_and_long_format(self):
-        self.assertEqual("40 mins", pretty_print_minutes(40,
-                                                         use_long_minute_format=True))
+        self.assertEqual("40 mins", pretty_print_minutes(40, use_long_minute_format=True))
 
     def test_negative_pretty_print_minutes_with_hours_and_no_minutes(self):
         self.assertEqual("-3h", pretty_print_minutes(-180))
@@ -35,21 +39,17 @@ class PrettyPrintMinutesTestCase(SimpleTestCase):
         self.assertEqual("-40m", pretty_print_minutes(-40))
 
     def test_negative_pretty_print_minutes_with_only_minutes_and_long_format(self):
-        self.assertEqual("-40 mins", pretty_print_minutes(-40,
-                                                          use_long_minute_format=True))
+        self.assertEqual("-40 mins", pretty_print_minutes(-40, use_long_minute_format=True))
 
 
 class PrettyPrintContractCounterTestCase(TestCase):
     def create_company_mtype_contract_and_issue(self, total_type):
         company = CompanyFactory()
         maintenance_type = get_default_maintenance_type()
-        contract = MaintenanceContractFactory(company=company,
-                                              maintenance_type=maintenance_type,
-                                              number_hours=1,
-                                              total_type=total_type)
-        MaintenanceIssueFactory(company=company,
-                                maintenance_type=maintenance_type,
-                                number_minutes=10)
+        contract = MaintenanceContractFactory(
+            company=company, maintenance_type=maintenance_type, number_hours=1, total_type=total_type
+        )
+        MaintenanceIssueFactory(company=company, maintenance_type=maintenance_type, number_minutes=10)
         return contract
 
     def test_print_comsummed_time(self):
@@ -86,5 +86,7 @@ class PrintOperatorProjectsTestCase(TestCase):
         self.user.operator_for.add(company2)
         company3 = CompanyFactory()
         self.user.operator_for.add(company3)
-        self.assertEqual(_("projects:") + "{}, {}, {}".format(company1.name, company2.name, company3.name),
-                         print_operator_projects(self.op_id))
+        self.assertEqual(
+            _("projects:") + "{}, {}, {}".format(company1.name, company2.name, company3.name),
+            print_operator_projects(self.op_id),
+        )

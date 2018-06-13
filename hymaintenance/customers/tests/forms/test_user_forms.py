@@ -2,29 +2,31 @@
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
-from ...forms import (
-    MaintenanceUserModelForm, ManagerUserModelForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserModelFormWithCompany,
-    OperatorUsersUpdateForm, OperatorUserUnarchiveForm
-)
+from ...forms import MaintenanceUserModelForm
+from ...forms import ManagerUserModelForm
+from ...forms import ManagerUsersUpdateForm
+from ...forms import OperatorUserArchiveForm
+from ...forms import OperatorUserModelFormWithCompany
+from ...forms import OperatorUsersUpdateForm
+from ...forms import OperatorUserUnarchiveForm
 from ...models import MaintenanceUser
-from ..factories import CompanyFactory, ManagerUserFactory, OperatorUserFactory
+from ..factories import CompanyFactory
+from ..factories import ManagerUserFactory
+from ..factories import OperatorUserFactory
 
 
 class UserCreateFormTestCase(TestCase):
-
     def setUp(self):
         self.company = CompanyFactory()
 
     def __get_dict_for_post(self):
-        return {"email": "gordon.freeman@blackmesa.com",
-                "password": "azerty"}
+        return {"email": "gordon.freeman@blackmesa.com", "password": "azerty"}
 
     def test_all_required_fields_by_sending_a_empty_create_form(self):
         form = MaintenanceUserModelForm(data={})
         self.assertFalse(form.is_valid())
         expected = _("This field is required.")
-        self.assertDictEqual(form.errors, {'email': [expected],
-                                           'password': [expected]})
+        self.assertDictEqual(form.errors, {"email": [expected], "password": [expected]})
 
     def test_if_create_user_form_works(self):
         self.assertEqual(0, MaintenanceUser.objects.filter().count())
@@ -64,16 +66,13 @@ class UserCreateFormTestCase(TestCase):
 
 
 class OperatorUserArchiveFormTestCase(TestCase):
-
     def setUp(self):
-        self.op1 = OperatorUserFactory(email="chell@aperture-science.com",
-                                       password="azerty",
-                                       is_active=False,
-                                       first_name="Chell")
-        self.op2 = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
-                                       password="azerty",
-                                       first_name="Gordon",
-                                       last_name="Freeman")
+        self.op1 = OperatorUserFactory(
+            email="chell@aperture-science.com", password="azerty", is_active=False, first_name="Chell"
+        )
+        self.op2 = OperatorUserFactory(
+            email="gordon.freeman@blackmesa.com", password="azerty", first_name="Gordon", last_name="Freeman"
+        )
 
     def test_archive_form_update_new_status(self):
         form = OperatorUserArchiveForm(data={"active_operators": [self.op2]})
@@ -105,7 +104,6 @@ class OperatorUserArchiveFormTestCase(TestCase):
 
 
 class ManagerUserUpdateFormTestCase(TestCase):
-
     def setUp(self):
         self.company = CompanyFactory()
         self.m2 = ManagerUserFactory(is_active=False, company=self.company)
@@ -115,11 +113,10 @@ class ManagerUserUpdateFormTestCase(TestCase):
 
     def test_update_form_initial_values(self):
         form = ManagerUsersUpdateForm(company=self.company)
-        self.assertEqual(list(form.fields['users'].initial), [self.m1, self.m3])
+        self.assertEqual(list(form.fields["users"].initial), [self.m1, self.m3])
 
     def test_update_form(self):
-        form = ManagerUsersUpdateForm(company=self.company,
-                                      data={"users": [self.m1, self.m2]})
+        form = ManagerUsersUpdateForm(company=self.company, data={"users": [self.m1, self.m2]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertTrue(MaintenanceUser.objects.get(id=self.m2.id).is_active)
@@ -129,7 +126,6 @@ class ManagerUserUpdateFormTestCase(TestCase):
 
 
 class OperatorUserUpdateFormTestCase(TestCase):
-
     def setUp(self):
         self.company = CompanyFactory()
 
@@ -143,12 +139,11 @@ class OperatorUserUpdateFormTestCase(TestCase):
 
     def test_update_form_initial_values(self):
         form = OperatorUsersUpdateForm(company=self.company)
-        self.assertEqual(list(form.fields['users'].initial), [self.op1, self.op2])
+        self.assertEqual(list(form.fields["users"].initial), [self.op1, self.op2])
 
     def test_update_form(self):
         self.assertEqual(list(self.company.managed_by.all()), [self.op1, self.op2])
-        form = OperatorUsersUpdateForm(company=self.company,
-                                       data={"users": [self.op1, self.op3]})
+        form = OperatorUsersUpdateForm(company=self.company, data={"users": [self.op1, self.op3]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertEqual(list(self.company.managed_by.all()), [self.op1, self.op3])

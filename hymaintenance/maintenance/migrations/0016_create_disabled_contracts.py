@@ -14,27 +14,17 @@ def create_disabled_contracts(apps, schema_editor):
     maintenance_types = list(MaintenanceType.objects.all())
     companies = Company.objects.all()
     for company in companies:
-        contracts_by_type = {contract.maintenance_type: contract
-                             for contract in company.contracts.all()}
+        contracts_by_type = {contract.maintenance_type: contract for contract in company.contracts.all()}
         if len(contracts_by_type) == len(maintenance_types):
             continue
         else:
             for maintenance_type in maintenance_types:
                 if maintenance_type not in contracts_by_type:
-                    MaintenanceContract.objects.create(
-                        company=company,
-                        maintenance_type=maintenance_type,
-                        disable=True,
-                    )
+                    MaintenanceContract.objects.create(company=company, maintenance_type=maintenance_type, disable=True)
 
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('customers', '0005_auto_20180330_1521'),
-        ('maintenance', '0015_maintenancecontract_disable'),
-    ]
+    dependencies = [("customers", "0005_auto_20180330_1521"), ("maintenance", "0015_maintenancecontract_disable")]
 
-    operations = [
-        migrations.RunPython(create_disabled_contracts, do_nothing),
-    ]
+    operations = [migrations.RunPython(create_disabled_contracts, do_nothing)]

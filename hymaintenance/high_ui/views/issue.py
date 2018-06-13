@@ -1,12 +1,18 @@
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView
+from django.views.generic import UpdateView
 
 from customers.models import Company
-from maintenance.forms.issue import MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm
-from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceIssue
+from maintenance.forms.issue import MaintenanceIssueCreateForm
+from maintenance.forms.issue import MaintenanceIssueUpdateForm
+from maintenance.models import IncomingChannel
+from maintenance.models import MaintenanceContract
+from maintenance.models import MaintenanceIssue
 
-from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
+from .base import CreateViewWithCompany
+from .base import LoginRequiredMixin
+from .base import ViewWithCompany
 
 
 class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):
@@ -15,7 +21,7 @@ class IssueCreateView(LoginRequiredMixin, CreateViewWithCompany):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['channels'] = IncomingChannel.objects.all()
+        context["channels"] = IncomingChannel.objects.all()
         return context
 
     def get_success_url(self):
@@ -28,32 +34,38 @@ class IssueUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
     model = MaintenanceIssue
 
     def get_object(self):
-        return self.get_queryset().filter(company_issue_number=self.kwargs.get('company_issue_number')).first()
+        return self.get_queryset().filter(company_issue_number=self.kwargs.get("company_issue_number")).first()
 
     def get_queryset(self):
         return MaintenanceIssue.objects.filter(company=self.company)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['channels'] = IncomingChannel.objects.all()
+        context["channels"] = IncomingChannel.objects.all()
 
         contracts = MaintenanceContract.objects.filter(company=self.object.company_id, disabled=False)
-        context['contracts'] = contracts
+        context["contracts"] = contracts
         return context
 
     def get_success_url(self):
-        return reverse('high_ui:project-issue_details',
-                       kwargs={'company_name': self.object.company.slug_name,
-                               'company_issue_number': self.object.company_issue_number})
+        return reverse(
+            "high_ui:project-issue_details",
+            kwargs={
+                "company_name": self.object.company.slug_name,
+                "company_issue_number": self.object.company_issue_number,
+            },
+        )
 
 
 class IssueDetailView(LoginRequiredMixin, DetailView):
-    template_name = 'high_ui/issue_details.html'
+    template_name = "high_ui/issue_details.html"
     model = MaintenanceIssue
 
     def get_object(self):
-        company = Company.objects.filter(slug_name=self.kwargs.get('company_name')).first()
-        issue = MaintenanceIssue.objects.filter(company_issue_number=self.kwargs.get('company_issue_number'), company=company).first()
+        company = Company.objects.filter(slug_name=self.kwargs.get("company_name")).first()
+        issue = MaintenanceIssue.objects.filter(
+            company_issue_number=self.kwargs.get("company_issue_number"), company=company
+        ).first()
         # TODO is it better to return 404? with 403 the user can kown that the asked company issue exists
         # if 403 stays, maybe we have to design a custom forbidden access page ?
         user = self.request.user

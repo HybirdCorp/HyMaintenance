@@ -16,7 +16,7 @@ class MaintenanceType(models.Model):
         return MaintenanceType.CSS_CLASSES[self.id - 1]
 
     def __str__(self):
-        return '%s' % self.name
+        return "%s" % self.name
 
 
 class IncomingChannel(models.Model):
@@ -27,4 +27,4 @@ class IncomingChannel(models.Model):
         verbose_name_plural = _("Maintenance's Incoming Channel")
 
     def __str__(self):
-        return '%s' % self.name
+        return "%s" % self.name

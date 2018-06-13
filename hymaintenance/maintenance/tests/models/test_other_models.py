@@ -1,11 +1,11 @@
 from django.test import TestCase
 
-from ...models import IncomingChannel, MaintenanceType
+from ...models import IncomingChannel
+from ...models import MaintenanceType
 from ..factories import IncomingChannelFactory
 
 
 class MaintenanceTypeTestCase(TestCase):
-
     def test_i_can_create_a_maintenance_type(self):
         MaintenanceType.objects.all().delete()
         MaintenanceType.objects.create(name="Support")
@@ -16,7 +16,6 @@ class MaintenanceTypeTestCase(TestCase):
 
 
 class IncomingChannelTestCase(TestCase):
-
     def test_i_can_create_an_incoming_channel(self):
         IncomingChannel.objects.create(name="Phone")
         self.assertEqual(1, IncomingChannel.objects.count())

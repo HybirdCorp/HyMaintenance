@@ -5,19 +5,9 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('customers', '0006_company_issues_counter'),
-        ('maintenance', '0021_auto_20180406_1554'),
-    ]
+    dependencies = [("customers", "0006_company_issues_counter"), ("maintenance", "0021_auto_20180406_1554")]
 
     operations = [
-        migrations.RenameField(
-            model_name='maintenanceissue',
-            old_name='number',
-            new_name='company_issue_number',
-        ),
-        migrations.AlterUniqueTogether(
-            name='maintenanceissue',
-            unique_together={('company_issue_number', 'company')},
-        ),
+        migrations.RenameField(model_name="maintenanceissue", old_name="number", new_name="company_issue_number"),
+        migrations.AlterUniqueTogether(name="maintenanceissue", unique_together={("company_issue_number", "company")}),
     ]

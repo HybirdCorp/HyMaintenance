@@ -1,15 +1,17 @@
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
 
 from django.views.generic import DetailView
 
 from customers.models import Company
-from maintenance.models import MaintenanceContract, MaintenanceIssue
+from maintenance.models import MaintenanceContract
+from maintenance.models import MaintenanceIssue
 
 from .base import LoginRequiredMixin
 
 
 class ProjectDetailsView(LoginRequiredMixin, DetailView):
-    template_name = 'high_ui/company_details.html'
+    template_name = "high_ui/company_details.html"
     model = Company
     slug_url_kwarg = "company_name"
     slug_field = "slug_name"
@@ -17,7 +19,7 @@ class ProjectDetailsView(LoginRequiredMixin, DetailView):
     def get_queryset(self):
         user = self.request.user
         if user.is_staff:
-            return user.operator_for.order_by('id')
+            return user.operator_for.order_by("id")
         return Company.objects.filter(pk=user.company.pk)
 
     def get_maintenance_contracts(self, company):
@@ -31,17 +33,19 @@ class ProjectDetailsView(LoginRequiredMixin, DetailView):
     def get_maintenance_issues(self, company, month):
         user = self.request.user
         if user.is_staff:
-            issues = MaintenanceIssue.objects.filter(company=company,
-                                                     date__month=month.month,
-                                                     date__year=month.year
-                                                     ).order_by("-date")
+            issues = MaintenanceIssue.objects.filter(
+                company=company, date__month=month.month, date__year=month.year
+            ).order_by("-date")
         else:
-            maintenance_type_ids = MaintenanceContract.objects.values_list('maintenance_type').filter(visible=True, company_id=company, disabled=False)
-            issues = MaintenanceIssue.objects.filter(maintenance_type__in=maintenance_type_ids,
-                                                     company_id=company,
-                                                     date__month=month.month,
-                                                     date__year=month.year
-                                                     ).order_by("-date")
+            maintenance_type_ids = MaintenanceContract.objects.values_list("maintenance_type").filter(
+                visible=True, company_id=company, disabled=False
+            )
+            issues = MaintenanceIssue.objects.filter(
+                maintenance_type__in=maintenance_type_ids,
+                company_id=company,
+                date__month=month.month,
+                date__year=month.year,
+            ).order_by("-date")
         return issues
 
     def get_context_data(self, **kwargs):
@@ -59,8 +63,13 @@ class ProjectDetailsView(LoginRequiredMixin, DetailView):
         for month in months:
             info_contract = []
             for contract in contracts:
-                info_contract.append((contract, contract.get_number_consumed_minutes_in_month(month),
-                                      contract.get_number_credited_hours_in_month(month)))
+                info_contract.append(
+                    (
+                        contract,
+                        contract.get_number_consumed_minutes_in_month(month),
+                        contract.get_number_credited_hours_in_month(month),
+                    )
+                )
             activities.append((month, info_contract))
 
         history = []
@@ -68,8 +77,13 @@ class ProjectDetailsView(LoginRequiredMixin, DetailView):
             info_contract = []
             # info_issues = []
             for contract in contracts:
-                info_contract.append((contract, contract.get_number_consumed_minutes_in_month(month),
-                                      contract.get_number_credited_hours_in_month(month)))
+                info_contract.append(
+                    (
+                        contract,
+                        contract.get_number_consumed_minutes_in_month(month),
+                        contract.get_number_credited_hours_in_month(month),
+                    )
+                )
 
             issues = self.get_maintenance_issues(self.object, month)
             info_issues = list(issues)

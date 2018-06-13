@@ -4,7 +4,8 @@ from django.utils.html import mark_safe
 from django.utils.translation import ugettext as _
 from django.utils.translation import ungettext as _p
 
-from customers.models.user import MaintenanceUser, get_companies_of_operator
+from customers.models.user import MaintenanceUser
+from customers.models.user import get_companies_of_operator
 
 
 register = Library()
@@ -48,5 +49,5 @@ def print_operator_projects(operator_id):
     projects = get_companies_of_operator(operator)
     if projects:
         projects_names = [project.name for project in projects]
-        return _p('project:', 'projects:', len(projects_names)) + ", ".join(projects_names)
-    return _('project:') + _('none')
+        return _p("project:", "projects:", len(projects_names)) + ", ".join(projects_names)
+    return _("project:") + _("none")
