@@ -1,50 +1,50 @@
 import datetime
 
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory
+from django.test import TestCase
 from django.urls import reverse
 from django.utils.timezone import now
 
 from customers.models import Company
-from customers.tests.factories import AdminUserFactory, CompanyFactory, ManagerUserFactory, OperatorUserFactory
+from customers.tests.factories import AdminUserFactory
+from customers.tests.factories import CompanyFactory
+from customers.tests.factories import ManagerUserFactory
+from customers.tests.factories import OperatorUserFactory
 from high_ui.views.project import ProjectDetailsView
 from maintenance.forms.project import INACTIF_CONTRACT_INPUT
 from maintenance.models import MaintenanceContract
-from maintenance.models.contract import AVAILABLE_TOTAL_TIME, CONSUMMED_TOTAL_TIME
-from maintenance.tests.factories import MaintenanceIssueFactory, create_project, get_default_maintenance_type
+from maintenance.models.contract import AVAILABLE_TOTAL_TIME
+from maintenance.models.contract import CONSUMMED_TOTAL_TIME
+from maintenance.tests.factories import MaintenanceIssueFactory
+from maintenance.tests.factories import create_project
+from maintenance.tests.factories import get_default_maintenance_type
 
 
 class ProjectCreateViewTestCase(TestCase):
-
     @classmethod
     def setUpTestData(cls):
-        AdminUserFactory(email="gordon.freeman@blackmesa.com",
-                         password="azerty")
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.form_url = reverse("high_ui:create_project")
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
     def test_manager_cannot_get_create_form(self):
-        ManagerUserFactory(email="chell@aperture-science.com",
-                           password="azerty")
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
-        self.client.login(username="chell@aperture-science.com",
-                          password="azerty")
+        self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
         self.assertRedirects(response, self.login_url)
 
     def test_operator_cannot_get_create_form(self):
-        OperatorUserFactory(email="chell@aperture-science.com",
-                            password="azerty")
+        OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
 
-        self.client.login(username="chell@aperture-science.com",
-                          password="azerty")
+        self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
         self.assertRedirects(response, self.login_url)
 
     def test_admin_can_get_create_form(self):
-        self.client.login(username="gordon.freeman@blackmesa.com",
-                          password="azerty")
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
         self.assertEqual(response.status_code, 200)
@@ -69,23 +69,28 @@ class ProjectCreateViewTestCase(TestCase):
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.post(self.form_url,
-                                    {"company_name": company_name,
-                                     "contract1_visible": contract1_visible,
-                                     "contract1_total_type": contract1_total_type,
-                                     "contract1_number_hours": contract1_number_hours,
-                                     "contract1_counter_name": "Maintenance",
-                                     "contract1_date": datetime.date.today(),
-                                     "contract2_visible": contract2_visible,
-                                     "contract2_total_type": contract2_total_type,
-                                     "contract2_number_hours": contract2_number_hours,
-                                     "contract2_counter_name": "Support",
-                                     "contract2_date": datetime.date.today(),
-                                     "contract3_visible": contract3_visible,
-                                     "contract3_total_type": contract3_total_type,
-                                     "contract3_number_hours": contract3_number_hours,
-                                     "contract3_counter_name": "Corrective",
-                                     "contract3_date": datetime.date.today()}, follow=True)
+        response = self.client.post(
+            self.form_url,
+            {
+                "company_name": company_name,
+                "contract1_visible": contract1_visible,
+                "contract1_total_type": contract1_total_type,
+                "contract1_number_hours": contract1_number_hours,
+                "contract1_counter_name": "Maintenance",
+                "contract1_date": datetime.date.today(),
+                "contract2_visible": contract2_visible,
+                "contract2_total_type": contract2_total_type,
+                "contract2_number_hours": contract2_number_hours,
+                "contract2_counter_name": "Support",
+                "contract2_date": datetime.date.today(),
+                "contract3_visible": contract3_visible,
+                "contract3_total_type": contract3_total_type,
+                "contract3_number_hours": contract3_number_hours,
+                "contract3_counter_name": "Corrective",
+                "contract3_date": datetime.date.today(),
+            },
+            follow=True,
+        )
 
         self.assertRedirects(response, reverse("high_ui:dashboard"))
         self.assertEqual(1, Company.objects.filter(name=company_name).count())
@@ -95,35 +100,27 @@ class ProjectCreateViewTestCase(TestCase):
 
 
 class ProjectUpdateViewTestCase(TestCase):
-
     @classmethod
     def setUpTestData(cls):
-        AdminUserFactory(email="gordon.freeman@blackmesa.com",
-                         password="azerty")
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.company, _, _, _ = create_project()
 
-        cls.form_url = reverse('high_ui:update_project',
-                               kwargs={'company_name': cls.company.slug_name})
-        cls.login_url = reverse('login') + "?next=" + cls.form_url
+        cls.form_url = reverse("high_ui:update_project", kwargs={"company_name": cls.company.slug_name})
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
 
     def test_manager_cannot_get_update_form(self):
-        ManagerUserFactory(email="chell@aperture-science.com",
-                           password="azerty",
-                           company=self.company)
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
 
-        self.client.login(username="chell@aperture-science.com",
-                          password="azerty")
+        self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
         self.assertRedirects(response, self.login_url)
 
     def test_operator_cannot_get_update_form(self):
-        operator = OperatorUserFactory(email="chell@aperture-science.com",
-                                       password="azerty")
+        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
         operator.operator_for.add(self.company)
 
-        self.client.login(username="chell@aperture-science.com",
-                          password="azerty")
+        self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
         self.assertRedirects(response, self.login_url)
@@ -154,23 +151,28 @@ class ProjectUpdateViewTestCase(TestCase):
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.post(self.form_url,
-                                    {"company_name": company_name,
-                                     "contract1_visible": contract1_visible,
-                                     "contract1_total_type": contract1_total_type,
-                                     "contract1_number_hours": contract1_number_hours,
-                                     "contract1_counter_name": "Maintenance",
-                                     "contract1_date": datetime.date.today(),
-                                     "contract2_visible": contract2_visible,
-                                     "contract2_total_type": contract2_total_type,
-                                     "contract2_number_hours": contract2_number_hours,
-                                     "contract2_counter_name": "Support",
-                                     "contract2_date": datetime.date.today(),
-                                     "contract3_visible": contract3_visible,
-                                     "contract3_total_type": contract3_total_type,
-                                     "contract3_number_hours": contract3_number_hours,
-                                     "contract3_counter_name": "Corrective",
-                                     "contract3_date": datetime.date.today()}, follow=True)
+        response = self.client.post(
+            self.form_url,
+            {
+                "company_name": company_name,
+                "contract1_visible": contract1_visible,
+                "contract1_total_type": contract1_total_type,
+                "contract1_number_hours": contract1_number_hours,
+                "contract1_counter_name": "Maintenance",
+                "contract1_date": datetime.date.today(),
+                "contract2_visible": contract2_visible,
+                "contract2_total_type": contract2_total_type,
+                "contract2_number_hours": contract2_number_hours,
+                "contract2_counter_name": "Support",
+                "contract2_date": datetime.date.today(),
+                "contract3_visible": contract3_visible,
+                "contract3_total_type": contract3_total_type,
+                "contract3_number_hours": contract3_number_hours,
+                "contract3_counter_name": "Corrective",
+                "contract3_date": datetime.date.today(),
+            },
+            follow=True,
+        )
 
         self.assertRedirects(response, reverse("high_ui:dashboard"))
         self.assertTrue(Company.objects.get(name=company_name, pk=self.company.pk))
@@ -179,7 +181,6 @@ class ProjectUpdateViewTestCase(TestCase):
 
 
 class ProjectDetailsViewTestCase(TestCase):
-
     @classmethod
     def setUpTestData(cls):
         cls.company, _, _, _ = create_project()
@@ -190,15 +191,12 @@ class ProjectDetailsViewTestCase(TestCase):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(reverse('high_ui:project_details',
-                                           args=["the-cake-is-a-lie"]))
+        response = self.client.get(reverse("high_ui:project_details", args=["the-cake-is-a-lie"]))
 
         self.assertEqual(response.status_code, 404)
 
     def test_manager_can_seen_his_company(self):
-        ManagerUserFactory(email="gordon.freeman@blackmesa.com",
-                           password="azerty",
-                           company=self.company)
+        ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
@@ -214,8 +212,7 @@ class ProjectDetailsViewTestCase(TestCase):
         self.assertRedirects(response, self.login_url)
 
     def test_operator_can_seen_his_company(self):
-        operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com",
-                                       password="azerty")
+        operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         operator.operator_for.add(self.company)
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
@@ -241,16 +238,16 @@ class ProjectDetailsViewTestCase(TestCase):
 
 
 def create_mtype_maintenance_and_issue(maintenance_type_visibility, contract_visibility, company):
-        maintenance_type = get_default_maintenance_type()
-        maintenance_type.visibility = maintenance_type_visibility
-        MaintenanceContract.objects.create(company=company,
-                                           start=now().date(),
-                                           maintenance_type=maintenance_type,
-                                           visible=contract_visibility,
-                                           number_hours=40)
-        MaintenanceIssueFactory(company=company,
-                                maintenance_type=maintenance_type,
-                                number_minutes=12)
+    maintenance_type = get_default_maintenance_type()
+    maintenance_type.visibility = maintenance_type_visibility
+    MaintenanceContract.objects.create(
+        company=company,
+        start=now().date(),
+        maintenance_type=maintenance_type,
+        visible=contract_visibility,
+        number_hours=40,
+    )
+    MaintenanceIssueFactory(company=company, maintenance_type=maintenance_type, number_minutes=12)
 
 
 class MonthDisplayInFrenchTestCase(TestCase):
@@ -264,7 +261,20 @@ class MonthDisplayInFrenchTestCase(TestCase):
         response = self.client.get(reverse("high_ui:project_details", args=[company.slug_name]))
 
         month = now().date().month
-        frenchmonths = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "décembre"]
+        frenchmonths = [
+            "janvier",
+            "février",
+            "mars",
+            "avril",
+            "mai",
+            "juin",
+            "juillet",
+            "aout",
+            "septembre",
+            "octobre",
+            "novembre",
+            "décembre",
+        ]
 
         self.assertContains(response, frenchmonths[month - 1])
 
@@ -283,36 +293,28 @@ class ContractVisibilityTestCase(TestCase):
         return view
 
     def test_manager_user_cannot_see_invisible(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
-                                  password="azerty",
-                                  company=self.company)
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
         create_mtype_maintenance_and_issue(False, False, self.company)
         view = self.create_project_details_view_with_request(user)
         contracts = view.get_maintenance_contracts()
         self.assertEqual(0, contracts.count())
 
     def test_manager_user_can_see_visible(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
-                                  password="azerty",
-                                  company=self.company)
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
         create_mtype_maintenance_and_issue(True, True, self.company)
         view = self.create_project_details_view_with_request(user)
         contracts = view.get_maintenance_contracts()
         self.assertEqual(1, contracts.count())
 
     def test_manager_user_cannot_see_invisible_in_contract(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
-                                  password="azerty",
-                                  company=self.company)
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
         create_mtype_maintenance_and_issue(True, False, self.company)
         view = self.create_project_details_view_with_request(user)
         contracts = view.get_maintenance_contracts()
         self.assertEqual(0, contracts.count())
 
     def test_manager_user_can_see_visible_in_contract(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
-                                  password="azerty",
-                                  company=self.company)
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
         create_mtype_maintenance_and_issue(False, True, self.company)
         view = self.create_project_details_view_with_request(user)
         contracts = view.get_maintenance_contracts()
@@ -365,36 +367,28 @@ class IssueVisibilityTestCase(TestCase):
         return view
 
     def test_manager_user_cannot_see_invisible(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
-                                  password="azerty",
-                                  company=self.company)
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
         create_mtype_maintenance_and_issue(False, False, self.company)
         view = self.create_project_details_view_with_request(user)
         issues = view.get_maintenance_issues(now().date())
         self.assertEqual(0, issues.count())
 
     def test_manager_user_can_see_visible(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
-                                  password="azerty",
-                                  company=self.company)
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
         create_mtype_maintenance_and_issue(True, True, self.company)
         view = self.create_project_details_view_with_request(user)
         issues = view.get_maintenance_issues(now().date())
         self.assertEqual(1, issues.count())
 
     def test_manager_user_cannot_see_invisible_in_contract(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
-                                  password="azerty",
-                                  company=self.company)
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
         create_mtype_maintenance_and_issue(True, False, self.company)
         view = self.create_project_details_view_with_request(user)
         issues = view.get_maintenance_issues(now().date())
         self.assertEqual(0, issues.count())
 
     def test_manager_user_can_see_visible_in_contract(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com",
-                                  password="azerty",
-                                  company=self.company)
+        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
         create_mtype_maintenance_and_issue(False, True, self.company)
         view = self.create_project_details_view_with_request(user)
         issues = view.get_maintenance_issues(now().date())

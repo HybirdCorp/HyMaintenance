@@ -5,13 +5,6 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('maintenance', '0011_remove_maintenancetype_label_for_company_detailview'),
-    ]
+    dependencies = [("maintenance", "0011_remove_maintenancetype_label_for_company_detailview")]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='maintenancetype',
-            name='css_class',
-        ),
-    ]
+    operations = [migrations.RemoveField(model_name="maintenancetype", name="css_class")]

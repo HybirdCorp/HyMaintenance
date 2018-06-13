@@ -3,7 +3,9 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import View
 
 from customers.models import Company
-from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceType
+from maintenance.models import IncomingChannel
+from maintenance.models import MaintenanceContract
+from maintenance.models import MaintenanceType
 
 
 class ViewWithCompany(View):
@@ -21,10 +23,10 @@ class ViewWithCompany(View):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["maintenance_types"] = MaintenanceType.objects.order_by("id")
-        context['channels'] = IncomingChannel.objects.all()
+        context["channels"] = IncomingChannel.objects.all()
         contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
-        context['contracts'] = contracts
-        context['company'] = self.company
+        context["contracts"] = contracts
+        context["company"] = self.company
         return context
 
 
@@ -36,9 +38,9 @@ class IsAdminTestMixin(UserPassesTestMixin):
 
 class IsAtLeastAllowedOperatorTestMixin(IsAdminTestMixin):
     def test_func(self):
-        return (super().test_func() or (self.user.is_staff and self.company in self.user.operator_for.all()))
+        return super().test_func() or (self.user.is_staff and self.company in self.user.operator_for.all())
 
 
 class IsAtLeastAllowedManagerTestMixin(IsAtLeastAllowedOperatorTestMixin):
     def test_func(self):
-        return (super().test_func() or (self.company == self.user.company))
+        return super().test_func() or (self.company == self.user.company)

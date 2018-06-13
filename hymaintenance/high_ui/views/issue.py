@@ -1,10 +1,17 @@
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView
+from django.views.generic import DetailView
+from django.views.generic import UpdateView
 
-from maintenance.forms.issue import MaintenanceIssueCreateForm, MaintenanceIssueUpdateForm
-from maintenance.models import IncomingChannel, MaintenanceContract, MaintenanceIssue
+from maintenance.forms.issue import MaintenanceIssueCreateForm
+from maintenance.forms.issue import MaintenanceIssueUpdateForm
+from maintenance.models import IncomingChannel
+from maintenance.models import MaintenanceContract
+from maintenance.models import MaintenanceIssue
 
-from .base import IsAtLeastAllowedManagerTestMixin, IsAtLeastAllowedOperatorTestMixin, ViewWithCompany
+from .base import IsAtLeastAllowedManagerTestMixin
+from .base import IsAtLeastAllowedOperatorTestMixin
+from .base import ViewWithCompany
 
 
 class IssueCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
@@ -13,10 +20,10 @@ class IssueCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Create
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['channels'] = IncomingChannel.objects.all()
-        context['company'] = self.company
+        context["channels"] = IncomingChannel.objects.all()
+        context["company"] = self.company
         contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
-        context['contracts'] = contracts
+        context["contracts"] = contracts
         return context
 
     def get_success_url(self):
@@ -24,7 +31,7 @@ class IssueCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Create
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['company'] = self.company
+        kwargs["company"] = self.company
         return kwargs
 
 
@@ -34,28 +41,34 @@ class IssueUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Update
     model = MaintenanceIssue
 
     def get_object(self):
-        return self.get_queryset().filter(company_issue_number=self.kwargs.get('company_issue_number')).first()
+        return self.get_queryset().filter(company_issue_number=self.kwargs.get("company_issue_number")).first()
 
     def get_queryset(self):
         return MaintenanceIssue.objects.filter(company=self.company)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['channels'] = IncomingChannel.objects.all()
+        context["channels"] = IncomingChannel.objects.all()
 
         contracts = MaintenanceContract.objects.filter(company=self.object.company_id, disabled=False)
-        context['contracts'] = contracts
+        context["contracts"] = contracts
         return context
 
     def get_success_url(self):
-        return reverse('high_ui:project-issue_details',
-                       kwargs={'company_name': self.object.company.slug_name,
-                               'company_issue_number': self.object.company_issue_number})
+        return reverse(
+            "high_ui:project-issue_details",
+            kwargs={
+                "company_name": self.object.company.slug_name,
+                "company_issue_number": self.object.company_issue_number,
+            },
+        )
 
 
 class IssueDetailView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, DetailView):
-    template_name = 'high_ui/issue_details.html'
+    template_name = "high_ui/issue_details.html"
     model = MaintenanceIssue
 
     def get_object(self):
-        return MaintenanceIssue.objects.filter(company_issue_number=self.kwargs.get('company_issue_number'), company=self.company).first()
+        return MaintenanceIssue.objects.filter(
+            company_issue_number=self.kwargs.get("company_issue_number"), company=self.company
+        ).first()

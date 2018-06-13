@@ -1,12 +1,20 @@
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
 
-from django.views.generic import DetailView, FormView
+from django.views.generic import DetailView
+from django.views.generic import FormView
 
-from customers.models import Company, MaintenanceUser
-from maintenance.forms.project import ProjectCreateForm, ProjectUpdateForm
-from maintenance.models import MaintenanceContract, MaintenanceIssue, MaintenanceType
+from customers.models import Company
+from customers.models import MaintenanceUser
+from maintenance.forms.project import ProjectCreateForm
+from maintenance.forms.project import ProjectUpdateForm
+from maintenance.models import MaintenanceContract
+from maintenance.models import MaintenanceIssue
+from maintenance.models import MaintenanceType
 
-from .base import IsAdminTestMixin, IsAtLeastAllowedManagerTestMixin, ViewWithCompany
+from .base import IsAdminTestMixin
+from .base import IsAtLeastAllowedManagerTestMixin
+from .base import ViewWithCompany
 
 
 class ProjectCreateView(IsAdminTestMixin, FormView):
@@ -42,7 +50,7 @@ class ProjectUpdateView(IsAdminTestMixin, ViewWithCompany, FormView):
 
 
 class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, DetailView):
-    template_name = 'high_ui/company_details.html'
+    template_name = "high_ui/company_details.html"
     model = Company
     slug_url_kwarg = "company_name"
     slug_field = "slug_name"
@@ -58,17 +66,19 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
     def get_maintenance_issues(self, month):
         user = self.request.user
         if user.is_staff:
-            issues = MaintenanceIssue.objects.filter(company=self.company,
-                                                     date__month=month.month,
-                                                     date__year=month.year
-                                                     ).order_by("-date")
+            issues = MaintenanceIssue.objects.filter(
+                company=self.company, date__month=month.month, date__year=month.year
+            ).order_by("-date")
         else:
-            maintenance_type_ids = MaintenanceContract.objects.values_list('maintenance_type').filter(visible=True, company_id=self.company, disabled=False)
-            issues = MaintenanceIssue.objects.filter(maintenance_type__in=maintenance_type_ids,
-                                                     company_id=self.company,
-                                                     date__month=month.month,
-                                                     date__year=month.year
-                                                     ).order_by("-date")
+            maintenance_type_ids = MaintenanceContract.objects.values_list("maintenance_type").filter(
+                visible=True, company_id=self.company, disabled=False
+            )
+            issues = MaintenanceIssue.objects.filter(
+                maintenance_type__in=maintenance_type_ids,
+                company_id=self.company,
+                date__month=month.month,
+                date__year=month.year,
+            ).order_by("-date")
         return issues
 
     def get_context_data(self, **kwargs):
@@ -87,8 +97,13 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
         for month in months:
             info_contract = []
             for contract in contracts:
-                info_contract.append((contract, contract.get_number_consumed_minutes_in_month(month),
-                                      contract.get_number_credited_hours_in_month(month)))
+                info_contract.append(
+                    (
+                        contract,
+                        contract.get_number_consumed_minutes_in_month(month),
+                        contract.get_number_credited_hours_in_month(month),
+                    )
+                )
             activities.append((month, info_contract))
 
         history = []
@@ -96,8 +111,13 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
             info_contract = []
             # info_issues = []
             for contract in contracts:
-                info_contract.append((contract, contract.get_number_consumed_minutes_in_month(month),
-                                      contract.get_number_credited_hours_in_month(month)))
+                info_contract.append(
+                    (
+                        contract,
+                        contract.get_number_consumed_minutes_in_month(month),
+                        contract.get_number_credited_hours_in_month(month),
+                    )
+                )
 
             issues = self.get_maintenance_issues(month)
             info_issues = list(issues)

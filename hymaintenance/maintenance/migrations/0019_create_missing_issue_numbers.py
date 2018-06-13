@@ -23,11 +23,6 @@ def create_missing_issue_numbers(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('customers', '0006_company_issues_counter'),
-        ('maintenance', '0018_maintenanceissue_number'),
-    ]
+    dependencies = [("customers", "0006_company_issues_counter"), ("maintenance", "0018_maintenanceissue_number")]
 
-    operations = [
-        migrations.RunPython(create_missing_issue_numbers, do_nothing),
-    ]
+    operations = [migrations.RunPython(create_missing_issue_numbers, do_nothing)]

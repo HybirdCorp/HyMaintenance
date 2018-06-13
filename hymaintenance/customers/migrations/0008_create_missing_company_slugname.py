@@ -18,10 +18,6 @@ def create_missing_company_slugname(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('customers', '0007_company_slug_name'),
-    ]
+    dependencies = [("customers", "0007_company_slug_name")]
 
-    operations = [
-        migrations.RunPython(create_missing_company_slugname, do_nothing),
-    ]
+    operations = [migrations.RunPython(create_missing_company_slugname, do_nothing)]

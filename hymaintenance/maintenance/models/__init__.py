@@ -6,5 +6,11 @@ from .consumer import MaintenanceConsumer
 from .credit import MaintenanceCredit
 from .issue import MaintenanceIssue
 
-__all__ = ['MaintenanceType', 'IncomingChannel', 'MaintenanceContract',
-           'MaintenanceConsumer', 'MaintenanceCredit', 'MaintenanceIssue']
+__all__ = [
+    "MaintenanceType",
+    "IncomingChannel",
+    "MaintenanceContract",
+    "MaintenanceConsumer",
+    "MaintenanceCredit",
+    "MaintenanceIssue",
+]

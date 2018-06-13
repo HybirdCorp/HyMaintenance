@@ -1,11 +1,11 @@
 from django.test import TestCase
 
 from ..models.user import get_companies_of_operator
-from .factories import CompanyFactory, OperatorUserFactory
+from .factories import CompanyFactory
+from .factories import OperatorUserFactory
 
 
 class MaintenanceUserTestCase(TestCase):
-
     def test_get_companies_for_an_operator_all_companies_are_ok(self):
         c1 = CompanyFactory(name="Company1")
         c2 = CompanyFactory(name="Company2")

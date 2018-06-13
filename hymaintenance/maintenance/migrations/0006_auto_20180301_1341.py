@@ -5,14 +5,8 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('maintenance', '0005_auto_20180228_1126'),
-    ]
+    dependencies = [("maintenance", "0005_auto_20180228_1126")]
 
     operations = [
-        migrations.RenameField(
-            model_name='maintenancetype',
-            old_name='visible',
-            new_name='default_visibility',
-        ),
+        migrations.RenameField(model_name="maintenancetype", old_name="visible", new_name="default_visibility")
     ]
