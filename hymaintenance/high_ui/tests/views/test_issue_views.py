@@ -31,6 +31,7 @@ def create_temporary_file(content=b"I am not empty", directory=None):
 class IssueCreateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
         cls.tmp_directory = TemporaryDirectory(
@@ -102,6 +103,7 @@ class IssueCreateViewTestCase(TestCase):
         response = self.client.post(self.form_url, self.__get_dict_for_post(subject, description), follow=True)
 
         self.assertRedirects(response, self.company.get_absolute_url())
+
         issues = MaintenanceIssue.objects.filter(
             company=self.company,
             consumer_who_ask=self.consumer,
@@ -120,6 +122,7 @@ class IssueCreateViewTestCase(TestCase):
         description = "Description of the Issue"
 
         dict_for_post = self.__get_dict_for_post(subject, description)
+
         f1 = create_temporary_file(test_file_content)
         f2 = create_temporary_file(test_file_content)
         with f1 as context_file, f2 as resolution_file:
@@ -142,6 +145,7 @@ class IssueCreateViewTestCase(TestCase):
 class IssueUpdateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
         cls.tmp_directory = TemporaryDirectory(
@@ -151,10 +155,12 @@ class IssueUpdateViewTestCase(TestCase):
         cls.company, contract1, _, _ = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
 
         cls.maintenance_type = contract1.maintenance_type
+
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
 
     def setUp(self):
+
         self.issue = MaintenanceIssueFactory(company=self.company, maintenance_type=self.maintenance_type)
         self.form_url = reverse(
             "high_ui:project-update_issue",
@@ -163,6 +169,7 @@ class IssueUpdateViewTestCase(TestCase):
                 "company_issue_number": self.issue.company_issue_number,
             },
         )
+
         self.login_url = reverse("login") + "?next=" + self.form_url
 
     def tearDown(self):
@@ -310,6 +317,7 @@ class IssueDetailViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_user_can_see_issue_context_attachment_of_this_company(self):
+
         test_file_name = "the_cake.lie"
         with TemporaryFile() as tmp_file:
             self.issue.context_description_file.save(test_file_name, File(tmp_file), save=True)

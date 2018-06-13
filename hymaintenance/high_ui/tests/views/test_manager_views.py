@@ -12,7 +12,9 @@ from customers.tests.factories import OperatorUserFactory
 class CreateManagerTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
         cls.form_url = reverse("high_ui:project-create_manager", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
@@ -72,7 +74,9 @@ class CreateManagerTestCase(TestCase):
 class UpdateManagerTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
         cls.manager = ManagerUserFactory(company=cls.company)
         cls.form_url = reverse(
@@ -134,7 +138,9 @@ class UpdateManagerTestCase(TestCase):
 class UpdateManagerUsersTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
         cls.manager = ManagerUserFactory(company=cls.company)
         cls.form_url = reverse("high_ui:project-update_managers", kwargs={"company_name": cls.company.slug_name})

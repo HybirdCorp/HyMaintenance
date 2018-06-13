@@ -12,7 +12,9 @@ from customers.tests.factories import OperatorUserFactory
 class CreateOperatorTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
         cls.form_url = reverse("high_ui:project-create_operator", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
@@ -54,6 +56,7 @@ class CreateOperatorTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse("high_ui:dashboard"))
+
         issues = MaintenanceUser.objects.filter(
             email=email, first_name=first_name, last_name=last_name, company__isnull=True
         )
@@ -63,7 +66,9 @@ class CreateOperatorTestCase(TestCase):
 class UpdateOperatorWithCompanyTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
         cls.operator = OperatorUserFactory()
         cls.operator.operator_for.add(cls.company)
@@ -118,7 +123,9 @@ class UpdateOperatorWithCompanyTestCase(TestCase):
 class UpdateOperatorTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
         cls.operator = OperatorUserFactory()
         cls.operator.operator_for.add(cls.company)
@@ -170,6 +177,7 @@ class UpdateOperatorTestCase(TestCase):
 class UpdateOperatorUsersTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.company = CompanyFactory()
         cls.form_url = reverse("high_ui:update_operators")
@@ -228,7 +236,9 @@ class UpdateOperatorUsersTestCase(TestCase):
 class UpdateOperatorUsersWithCompanyTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
         cls.form_url = reverse("high_ui:project-update_operators", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url

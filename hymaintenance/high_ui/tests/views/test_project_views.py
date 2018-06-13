@@ -23,6 +23,7 @@ from maintenance.tests.factories import get_default_maintenance_type
 class ProjectCreateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.form_url = reverse("high_ui:create_project")
         cls.login_url = reverse("login") + "?next=" + cls.form_url
@@ -93,6 +94,7 @@ class ProjectCreateViewTestCase(TestCase):
         )
 
         self.assertRedirects(response, reverse("high_ui:dashboard"))
+
         self.assertEqual(1, Company.objects.filter(name=company_name).count())
         company = Company.objects.get(name=company_name)
         contracts = MaintenanceContract.objects.filter(company_id=company.id)
@@ -102,6 +104,7 @@ class ProjectCreateViewTestCase(TestCase):
 class ProjectUpdateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.company, _, _, _ = create_project()
 
@@ -129,6 +132,7 @@ class ProjectUpdateViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
         response = self.client.get(self.form_url)
+
         self.assertEqual(response.status_code, 200)
 
     def test_i_can_post_and_form_to_update_a_project(self):

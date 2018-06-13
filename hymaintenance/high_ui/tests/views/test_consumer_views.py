@@ -13,7 +13,9 @@ from maintenance.tests.factories import MaintenanceConsumerFactory
 class ConsumerCreateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
         cls.form_url = reverse("high_ui:project-create_consumer", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
@@ -51,6 +53,7 @@ class ConsumerCreateViewTestCase(TestCase):
 
     def test_get_form_when_company_does_not_exist(self):
         not_used_name = "not_used_company_slug_name"
+
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         test_url = reverse("high_ui:project-create_consumer", kwargs={"company_name": not_used_name})
         response = self.client.get(test_url)
@@ -71,7 +74,9 @@ class ConsumerCreateViewTestCase(TestCase):
 class ConsumerUpdateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
         cls.consumer = MaintenanceConsumerFactory(name="Chell", company=cls.company)
         cls.form_url = reverse(
@@ -134,6 +139,7 @@ class UpdateMaintenanceConsumersListTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
         cls.company = CompanyFactory()
         cls.form_url = reverse("high_ui:project-update_consumers", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url

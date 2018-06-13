@@ -23,6 +23,7 @@ class ProjectCreateView(IsAdminTestMixin, FormView):
     success_url = "/"
 
     def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
         context["maintenance_types"] = MaintenanceType.objects.order_by("id")
         context["companies"] = Company.objects.all()

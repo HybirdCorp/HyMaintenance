@@ -18,6 +18,7 @@ class DashboardTestCase(TestCase):
         user.operator_for.add(self.company)
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
         response = self.client.get(self.page_url)
 
         self.assertEqual(response.status_code, 200)
@@ -26,6 +27,7 @@ class DashboardTestCase(TestCase):
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
         response = self.client.get(self.page_url)
 
         self.assertRedirects(response, self.company.get_absolute_url())
@@ -38,6 +40,7 @@ class DashboardTestCase(TestCase):
         op2.operator_for.add(self.company)
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
         response = self.client.get(self.page_url)
 
         self.assertEqual(1, self.company.managed_by.count())

@@ -17,7 +17,9 @@ class ViewWithCompany(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get_company(self):
+
         company = get_object_or_404(Company, slug_name=self.kwargs.get(self.slug_url_kwarg))
+
         return company
 
     def get_context_data(self, **kwargs):

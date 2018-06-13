@@ -21,9 +21,11 @@ class IssueCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Create
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["channels"] = IncomingChannel.objects.all()
+
         context["company"] = self.company
         contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
         context["contracts"] = contracts
+
         return context
 
     def get_success_url(self):
@@ -65,10 +67,12 @@ class IssueUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Update
 
 
 class IssueDetailView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, DetailView):
+
     template_name = "high_ui/issue_details.html"
     model = MaintenanceIssue
 
     def get_object(self):
+
         return MaintenanceIssue.objects.filter(
             company_issue_number=self.kwargs.get("company_issue_number"), company=self.company
         ).first()
