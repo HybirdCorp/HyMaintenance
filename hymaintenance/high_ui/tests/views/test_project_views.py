@@ -265,7 +265,7 @@ class MonthDisplayInFrenchTestCase(TestCase):
         response = self.client.get(reverse("high_ui:project_details", args=[company.slug_name]))
 
         month = now().date().month
-        frenchmonths = [
+        french_months = [
             "janvier",
             "février",
             "mars",
@@ -280,7 +280,7 @@ class MonthDisplayInFrenchTestCase(TestCase):
             "décembre",
         ]
 
-        self.assertContains(response, frenchmonths[month - 1])
+        self.assertContains(response, french_months[month - 1])
 
 
 class ContractVisibilityTestCase(TestCase):
