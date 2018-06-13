@@ -1,5 +1,5 @@
 {% load i18n print_fields %}
-<div class="dashboard {{contracts.0.maintenance_type.css_class}}">
+<div class="dashboard {% if contracts %}{{contracts.0.maintenance_type.css_class}}{% else %}type-maintenance{% endif %}">
     <div class="dashboard-item dashboard-account">
         <span class="dashboard-title">{% trans "Account" %}</span>
         <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="Retour à l'accueil">{{company.name}}</a></span>
