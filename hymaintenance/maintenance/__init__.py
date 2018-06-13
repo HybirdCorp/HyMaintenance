@@ -1,1 +1,1 @@
-default_app_config = 'maintenance.apps.MaintenanceConfig'
+default_app_config = "maintenance.apps.MaintenanceConfig"

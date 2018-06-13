@@ -1,22 +1,25 @@
 
 
-from django.test import Client, TestCase
+from django.test import Client
+from django.test import TestCase
 from django.urls import reverse
 
-from customers.tests.factories import CompanyFactory, SuperUserFactory
+from customers.tests.factories import CompanyFactory
+from customers.tests.factories import SuperUserFactory
 
-from ..factories import (
-    IncomingChannelFactory, MaintenanceConsumerFactory, MaintenanceContractFactory, MaintenanceCreditFactory, MaintenanceIssueFactory,
-    get_default_maintenance_type
-)
+from ..factories import IncomingChannelFactory
+from ..factories import MaintenanceConsumerFactory
+from ..factories import MaintenanceContractFactory
+from ..factories import MaintenanceCreditFactory
+from ..factories import MaintenanceIssueFactory
+from ..factories import get_default_maintenance_type
 
 
 class AdminMaintenanceViewTestCase(TestCase):
-
     def test_listview_admin_pages(self):
         user = SuperUserFactory()
         client = Client()
-        client.login(username=user.email, password='password')
+        client.login(username=user.email, password="password")
 
         admin_pages = [
             "/hymaintadmin/maintenance/maintenanceconsumer/",
@@ -34,16 +37,12 @@ class AdminMaintenanceViewTestCase(TestCase):
     def test_detailview_admin_pages(self):
         user = SuperUserFactory()
         client = Client()
-        client.login(username=user.email, password='password')
+        client.login(username=user.email, password="password")
 
         company = CompanyFactory()
         maintenance_type = get_default_maintenance_type()
-        contract = MaintenanceContractFactory(company=company,
-                                              maintenance_type=maintenance_type,
-                                              number_hours=2)
-        credit = MaintenanceCreditFactory(company=company,
-                                          maintenance_type=maintenance_type,
-                                          hours_number=5)
+        contract = MaintenanceContractFactory(company=company, maintenance_type=maintenance_type, number_hours=2)
+        credit = MaintenanceCreditFactory(company=company, maintenance_type=maintenance_type, hours_number=5)
         channel = IncomingChannelFactory()
         consumer = MaintenanceConsumerFactory()
         issue = MaintenanceIssueFactory()
@@ -64,13 +63,13 @@ class AdminMaintenanceViewTestCase(TestCase):
     def test_search_in_issue_list_view(self):
         user = SuperUserFactory()
         client = Client()
-        client.login(username=user.email, password='password')
+        client.login(username=user.email, password="password")
         resp = client.get(reverse("admin:maintenance_maintenanceissue_changelist"), {"q": "test"}, follow=True)
         self.assertEqual(resp.status_code, 200)
 
     def test_search_in_contract_list_view(self):
         user = SuperUserFactory()
         client = Client()
-        client.login(username=user.email, password='password')
+        client.login(username=user.email, password="password")
         resp = client.get(reverse("admin:maintenance_maintenancecontract_changelist"), {"q": "test"}, follow=True)
         self.assertEqual(resp.status_code, 200)

@@ -1,17 +1,19 @@
 import os
 
 from django.core.files.storage import FileSystemStorage
-from django.db import models, transaction
+from django.db import models
+from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
 
-from customers.models import Company, MaintenanceUser
+from customers.models import Company
+from customers.models import MaintenanceUser
 
 from .consumer import MaintenanceConsumer
-from .other_models import IncomingChannel, MaintenanceType
+from .other_models import IncomingChannel
+from .other_models import MaintenanceType
 
 
 class MaintenanceIssueAttachmentStorage(FileSystemStorage):
-
     def _save(self, name, content):
         if self.exists(name):
             self.delete(name)
@@ -22,31 +24,40 @@ class MaintenanceIssueAttachmentStorage(FileSystemStorage):
 
 
 def _get_context_file_path(instance, filename):
-    return os.path.join('upload',
-                        instance.company.slug_name,
-                        "issue-" + str(instance.company_issue_number),
-                        "context",
-                        filename)
+    return os.path.join(
+        "upload", instance.company.slug_name, "issue-" + str(instance.company_issue_number), "context", filename
+    )
 
 
 def _get_resolution_file_path(instance, filename):
-    return os.path.join('upload',
-                        instance.company.slug_name,
-                        "issue-" + str(instance.company_issue_number),
-                        "resolution",
-                        filename)
+    return os.path.join(
+        "upload", instance.company.slug_name, "issue-" + str(instance.company_issue_number), "resolution", filename
+    )
 
 
 class MaintenanceIssue(models.Model):
     company_issue_number = models.PositiveIntegerField(verbose_name=_("Issue number"))
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
-    consumer_who_ask = models.ForeignKey(MaintenanceConsumer, verbose_name="Who ask the question ?", null=True, blank=True,
-                                         related_name="consumers_who_asked", on_delete=models.PROTECT)
+    consumer_who_ask = models.ForeignKey(
+        MaintenanceConsumer,
+        verbose_name="Who ask the question ?",
+        null=True,
+        blank=True,
+        related_name="consumers_who_asked",
+        on_delete=models.PROTECT,
+    )
 
-    user_who_fix = models.ForeignKey(MaintenanceUser, verbose_name="Who fix the issue ? ", null=True, blank=True,
-                                     related_name="users_who_fixed", on_delete=models.PROTECT)
-    incoming_channel = models.ForeignKey(IncomingChannel, verbose_name="Incoming Channel", null=True, blank=True,
-                                         on_delete=models.PROTECT)
+    user_who_fix = models.ForeignKey(
+        MaintenanceUser,
+        verbose_name="Who fix the issue ? ",
+        null=True,
+        blank=True,
+        related_name="users_who_fixed",
+        on_delete=models.PROTECT,
+    )
+    incoming_channel = models.ForeignKey(
+        IncomingChannel, verbose_name="Incoming Channel", null=True, blank=True, on_delete=models.PROTECT
+    )
 
     subject = models.CharField(_("Subject"), max_length=500, default="une question")
     date = models.DateField(_("Issue Date"))
@@ -57,13 +68,27 @@ class MaintenanceIssue(models.Model):
     resolution_date = models.DateTimeField(null=True, blank=True)
     shipping_date = models.DateTimeField(null=True, blank=True)
     answer = models.TextField(null=True, blank=True)
-    context_description_file = models.FileField(null=True, max_length=200, storage=MaintenanceIssueAttachmentStorage(), upload_to=_get_context_file_path)
-    resolution_description_file = models.FileField(null=True, max_length=200, storage=MaintenanceIssueAttachmentStorage(), upload_to=_get_resolution_file_path)
+    context_description_file = models.FileField(
+        null=True, max_length=200, storage=MaintenanceIssueAttachmentStorage(), upload_to=_get_context_file_path
+    )
+    resolution_description_file = models.FileField(
+        null=True, max_length=200, storage=MaintenanceIssueAttachmentStorage(), upload_to=_get_resolution_file_path
+    )
 
-    fields_for_form = ('consumer_who_ask', 'user_who_fix', 'incoming_channel',
-                       'subject', 'date', 'maintenance_type', 'description',
-                       'resolution_date', 'shipping_date', 'answer', 'context_description_file',
-                       'resolution_description_file')
+    fields_for_form = (
+        "consumer_who_ask",
+        "user_who_fix",
+        "incoming_channel",
+        "subject",
+        "date",
+        "maintenance_type",
+        "description",
+        "resolution_date",
+        "shipping_date",
+        "answer",
+        "context_description_file",
+        "resolution_description_file",
+    )
 
     class Meta:
         verbose_name = "Issue"
@@ -71,9 +96,12 @@ class MaintenanceIssue(models.Model):
         unique_together = [["company_issue_number", "company"]]
 
     def __str__(self):
-        return "Date : %s, Subject :%s For : %s , Type :%s " % (self.date.strftime("%d/%m/%Y at %H:%M"),
-                                                                self.subject,
-                                                                self.company, self.maintenance_type)
+        return "Date : %s, Subject :%s For : %s , Type :%s " % (
+            self.date.strftime("%d/%m/%Y at %H:%M"),
+            self.subject,
+            self.company,
+            self.maintenance_type,
+        )
 
     def get_counter_name(self):
         counter_name = self.company.contracts.filter(maintenance_type=self.maintenance_type).first().counter_name
@@ -90,6 +118,8 @@ class MaintenanceIssue(models.Model):
     @transaction.atomic
     def save(self, *args, **kwargs):
         if self.id is None:
-            Company.objects.filter(id=self.company_id).update(issues_counter=models.F('issues_counter') + 1)
-            self.company_issue_number = Company.objects.filter(id=self.company_id).values_list('issues_counter', flat=True).first()
+            Company.objects.filter(id=self.company_id).update(issues_counter=models.F("issues_counter") + 1)
+            self.company_issue_number = (
+                Company.objects.filter(id=self.company_id).values_list("issues_counter", flat=True).first()
+            )
         super().save(*args, **kwargs)

@@ -2,11 +2,14 @@ from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import FormView
 
-from customers.models import Company, MaintenanceUser
-from maintenance.forms.project import ProjectCreateForm, ProjectUpdateForm
+from customers.models import Company
+from customers.models import MaintenanceUser
+from maintenance.forms.project import ProjectCreateForm
+from maintenance.forms.project import ProjectUpdateForm
 from maintenance.models import MaintenanceType
 
-from .base import LoginRequiredMixin, ViewWithCompany
+from .base import LoginRequiredMixin
+from .base import ViewWithCompany
 
 
 class ProjectCreateView(FormView):
@@ -17,8 +20,9 @@ class ProjectCreateView(FormView):
     def get_context_data(self, **kwargs):
         user = self.request.user
         if not user.is_staff:
-            raise Http404(_("No %(verbose_name)s found matching the query") %
-                          {'verbose_name': Company._meta.verbose_name})
+            raise Http404(
+                _("No %(verbose_name)s found matching the query") % {"verbose_name": Company._meta.verbose_name}
+            )
         context = super().get_context_data(**kwargs)
         context["maintenance_types"] = MaintenanceType.objects.order_by("id")
         context["companies"] = Company.objects.all()

@@ -1,18 +1,27 @@
 from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import FormView, TemplateView, UpdateView
+from django.views.generic import FormView
+from django.views.generic import TemplateView
+from django.views.generic import UpdateView
 
-from customers.forms import (
-    ManagerUserModelForm, ManagerUsersUpdateForm, OperatorUserArchiveForm, OperatorUserModelForm, OperatorUserModelFormWithCompany,
-    OperatorUsersUpdateForm, OperatorUserUnarchiveForm
-)
+from customers.forms import ManagerUserModelForm
+from customers.forms import ManagerUsersUpdateForm
+from customers.forms import OperatorUserArchiveForm
+from customers.forms import OperatorUserModelForm
+from customers.forms import OperatorUserModelFormWithCompany
+from customers.forms import OperatorUsersUpdateForm
+from customers.forms import OperatorUserUnarchiveForm
 from customers.models import Company
-from customers.models.user import MaintenanceUser, get_companies_of_operator
-from maintenance.forms.consumer import MaintenanceConsumerModelForm, MaintenanceConsumersUpdateForm
+from customers.models.user import MaintenanceUser
+from customers.models.user import get_companies_of_operator
+from maintenance.forms.consumer import MaintenanceConsumerModelForm
+from maintenance.forms.consumer import MaintenanceConsumersUpdateForm
 from maintenance.models import MaintenanceConsumer
 
-from .base import CreateViewWithCompany, LoginRequiredMixin, ViewWithCompany
+from .base import CreateViewWithCompany
+from .base import LoginRequiredMixin
+from .base import ViewWithCompany
 
 
 class ConsumerCreateView(LoginRequiredMixin, CreateViewWithCompany):
@@ -26,19 +35,18 @@ class ConsumerUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
     model = MaintenanceConsumer
 
     def get_object(self):
-        return self.get_queryset().get(id=self.kwargs.get('pk'))
+        return self.get_queryset().get(id=self.kwargs.get("pk"))
 
     def get_queryset(self):
         return MaintenanceConsumer.objects.filter(company=self.company)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['company'] = self.company
+        kwargs["company"] = self.company
         return kwargs
 
     def get_success_url(self):
-        return reverse('high_ui:project-update_consumers',
-                       kwargs={'company_name': self.company.slug_name})
+        return reverse("high_ui:project-update_consumers", kwargs={"company_name": self.company.slug_name})
 
 
 class ConsumersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
@@ -48,7 +56,7 @@ class ConsumersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['company'] = self.company
+        kwargs["company"] = self.company
         return kwargs
 
     def form_valid(self, form):
@@ -67,19 +75,18 @@ class ManagerUserUpdateView(LoginRequiredMixin, ViewWithCompany, UpdateView):
     model = MaintenanceUser
 
     def get_object(self):
-        return self.get_queryset().get(id=self.kwargs.get('pk'))
+        return self.get_queryset().get(id=self.kwargs.get("pk"))
 
     def get_queryset(self):
         return MaintenanceUser.objects.get_manager_users_queryset()
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['company'] = self.company
+        kwargs["company"] = self.company
         return kwargs
 
     def get_success_url(self):
-        return reverse('high_ui:project-update_managers',
-                       kwargs={'company_name': self.company.slug_name})
+        return reverse("high_ui:project-update_managers", kwargs={"company_name": self.company.slug_name})
 
 
 class ManagerUsersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
@@ -89,7 +96,7 @@ class ManagerUsersUpdateView(LoginRequiredMixin, ViewWithCompany, FormView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['company'] = self.company
+        kwargs["company"] = self.company
         return kwargs
 
     def form_valid(self, form):
@@ -108,7 +115,7 @@ class OperatorUserCreateViewWithCompany(LoginRequiredMixin, CreateViewWithCompan
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['company'] = self.company
+        kwargs["company"] = self.company
         return kwargs
 
 
@@ -118,13 +125,13 @@ class OperatorUserUpdateView(LoginRequiredMixin, UpdateView):
     model = MaintenanceUser
 
     def get_object(self):
-        return self.get_queryset().get(id=self.kwargs.get('pk'))
+        return self.get_queryset().get(id=self.kwargs.get("pk"))
 
     def get_queryset(self):
         return MaintenanceUser.objects.get_active_operator_users_queryset()
 
     def get_success_url(self):
-        return reverse('high_ui:update_operators')
+        return reverse("high_ui:update_operators")
 
 
 class OperatorUserUpdateViewWithCompany(ViewWithCompany, OperatorUserUpdateView):
@@ -134,12 +141,11 @@ class OperatorUserUpdateViewWithCompany(ViewWithCompany, OperatorUserUpdateView)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['company'] = self.company
+        kwargs["company"] = self.company
         return kwargs
 
     def get_success_url(self):
-        return reverse('high_ui:project-update_operators',
-                       kwargs={'company_name': self.company.slug_name})
+        return reverse("high_ui:project-update_operators", kwargs={"company_name": self.company.slug_name})
 
 
 class OperatorUsersUpdateViewWithCompany(LoginRequiredMixin, ViewWithCompany, FormView):
@@ -154,7 +160,7 @@ class OperatorUsersUpdateViewWithCompany(LoginRequiredMixin, ViewWithCompany, Fo
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['company'] = self.company
+        kwargs["company"] = self.company
         return kwargs
 
     def form_valid(self, form):
@@ -177,8 +183,9 @@ class OperatorUsersUpdateView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         user = request.user
         if not user.is_staff:
-            raise Http404(_("No %(verbose_name)s found matching the query") %
-                          {'verbose_name': Company._meta.verbose_name})
+            raise Http404(
+                _("No %(verbose_name)s found matching the query") % {"verbose_name": Company._meta.verbose_name}
+            )
         context = self.get_context_data(**kwargs)
         context["companies"] = get_companies_of_operator(user)
 

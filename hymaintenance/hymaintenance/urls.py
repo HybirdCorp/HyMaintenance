@@ -17,20 +17,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import include, path, reverse_lazy
+from django.urls import include
+from django.urls import path
+from django.urls import reverse_lazy
 from django.views.generic import RedirectView
 
 
 urlpatterns = [
-    path('hymaintadmin/', admin.site.urls),
-    path('high_ui/', include('high_ui.urls', namespace='high_ui')),
-    path('login', auth_views.login, {'template_name': 'high_ui/login.html'}, name="login"),
-    path('logout', auth_views.logout_then_login, name="logout"),
-
-    path('', RedirectView.as_view(url=reverse_lazy('high_ui:dashboard'), permanent=False)),
+    path("hymaintadmin/", admin.site.urls),
+    path("high_ui/", include("high_ui.urls", namespace="high_ui")),
+    path("login", auth_views.login, {"template_name": "high_ui/login.html"}, name="login"),
+    path("logout", auth_views.logout_then_login, name="logout"),
+    path("", RedirectView.as_view(url=reverse_lazy("high_ui:dashboard"), permanent=False)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     import debug_toolbar
-    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))] + staticfiles_urlpatterns()
+
+    urlpatterns += [path("__debug__/", include(debug_toolbar.urls))] + staticfiles_urlpatterns()

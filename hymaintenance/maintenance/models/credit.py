@@ -13,4 +13,9 @@ class MaintenanceCredit(models.Model):
     hours_number = models.PositiveIntegerField(u"Hours number", default=0)
 
     def __str__(self):
-        return '%s, the %s for %s and %s hours' % (self.company, self.date.strftime("%d/%m/%Y"), self.maintenance_type, self.hours_number)
+        return "%s, the %s for %s and %s hours" % (
+            self.company,
+            self.date.strftime("%d/%m/%Y"),
+            self.maintenance_type,
+            self.hours_number,
+        )
