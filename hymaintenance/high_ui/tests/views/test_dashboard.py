@@ -2,6 +2,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
@@ -10,7 +11,7 @@ from customers.tests.factories import OperatorUserFactory
 class DashboardTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.company = CompanyFactory()
+        cls.company = CompanyFactory(name="Aperture Science")
         cls.page_url = reverse("high_ui:dashboard")
 
     def test_operator_can_seen_the_dashboard(self):
@@ -47,3 +48,17 @@ class DashboardTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Op2 Op2")
         self.assertNotContains(response, "Op1 Op1")
+
+    def test_admin_user_can_seen_all_companies(self):
+        admin = AdminUserFactory(email="other.man@blackmesa.com", password="azerty")
+        admin.operator_for.add(self.company)
+        other_company = CompanyFactory(name="Black Mesa")
+
+        self.client.login(username=admin.email, password="azerty")
+
+        response = self.client.get(self.page_url)
+
+        self.assertEqual(0, other_company.managed_by.count())
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.company.name)
+        self.assertContains(response, other_company.name)

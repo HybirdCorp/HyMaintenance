@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
+from customers.models import Company
 from customers.models.user import MaintenanceUser
 from customers.models.user import get_companies_of_operator
 
@@ -18,7 +19,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         user = request.user
         if user.is_staff:
             context = self.get_context_data(**kwargs)
-            context["companies"] = get_companies_of_operator(user)
+            if user.is_superuser:
+                context["companies"] = Company.objects.all()
+            else:
+                context["companies"] = get_companies_of_operator(user)
 
             # TODO prefetch the Company relations in one query for all companies:
             # 1) Company to its MaintenanceConsumers
