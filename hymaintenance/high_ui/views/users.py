@@ -163,6 +163,12 @@ class OperatorUserUpdateView(IsAdminTestMixin, UpdateView):
     template_name = "high_ui/forms/update_operator.html"
     model = MaintenanceUser
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["maintainers"] = MaintenanceUser.objects.get_active_operator_users_queryset()
+        context["companies"] = Company.objects.all()
+        return context
+
     def get_object(self):
         return self.get_queryset().get(id=self.kwargs.get("pk"))
 
@@ -212,7 +218,7 @@ class OperatorUsersUpdateView(IsAdminTestMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["maintainers"] = MaintenanceUser.objects.get_operator_users_queryset()
+        context["maintainers"] = MaintenanceUser.objects.get_active_operator_users_queryset()
         context["archive_form"] = OperatorUserArchiveForm()
         context["unarchive_form"] = OperatorUserUnarchiveForm()
         context["active_operators_number"] = context["maintainers"].filter(is_active=True).count()
