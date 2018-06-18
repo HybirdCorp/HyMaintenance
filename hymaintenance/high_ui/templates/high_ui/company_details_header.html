@@ -17,7 +17,7 @@
         <span class="dashboard-value">{{company.maintenance_contact}}</span>
     </div>
     <div class="dashboard-item dashboard-user">
-        <span class="dashboard-title">{{company.name}}</span>
+		<span class="dashboard-title">{% if request.user.is_staff %}Hybird{% else %}{{request.user.company}}{% endif %}</span>
         <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
     </div>
     <div class="dashboard-item dashboard-button">
