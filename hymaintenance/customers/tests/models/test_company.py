@@ -6,6 +6,8 @@ from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import get_default_maintenance_type
 
 from ...models import Company
+from ..factories import CompanyFactory
+from ..factories import OperatorUserFactory
 
 
 class CompanyTestCase(TestCase):
@@ -65,3 +67,31 @@ class CompanyTestCase(TestCase):
         self.assertListEqual([company], list(Company.objects.filter(name=company.name)))
         company = Company.objects.filter(name=company.name).first()
         self.assertEqual("aperture-science", company.slug_name)
+
+    def test_get_operators_choices(self):
+        company = CompanyFactory()
+
+        operator = OperatorUserFactory(first_name="Gordon", last_name="Freeman")
+        operator.operator_for.add(company)
+        operator.is_active = False
+        operator.save()
+
+        operator2 = OperatorUserFactory(first_name="Cave", last_name="Johnson")
+        operator2.operator_for.add(company)
+
+        operators_choices = company.get_operators_choices()
+        self.assertEqual([(operator.pk, "Gordon Freeman"), (operator2.pk, "Cave Johnson")], operators_choices)
+
+    def test_get_active_operators_choices(self):
+        company = CompanyFactory()
+
+        operator = OperatorUserFactory(first_name="Gordon", last_name="Freeman")
+        operator.operator_for.add(company)
+        operator.is_active = False
+        operator.save()
+
+        operator2 = OperatorUserFactory(first_name="Cave", last_name="Johnson")
+        operator2.operator_for.add(company)
+
+        operators_choices = company.get_active_operators_choices()
+        self.assertEqual([(operator2.pk, "Cave Johnson")], operators_choices)

@@ -39,3 +39,6 @@ class Company(models.Model):
 
     def get_operators_choices(self):
         return [(operator.pk, operator.get_full_name()) for operator in self.managed_by.all()]
+
+    def get_active_operators_choices(self):
+        return [(operator.pk, operator.get_full_name()) for operator in self.managed_by.filter(is_active=True)]
