@@ -1,0 +1,26 @@
+{% load i18n print_fields %}
+<div class="dashboard {% if contracts %}{{contracts.0.maintenance_type.css_class}}{% else %}type-maintenance{% endif %}">
+    <div class="dashboard-item dashboard-account">
+		{% if request.user.is_staff %}
+        <span class="dashboard-title">{% trans "Tableau de bord" %}</span>
+        <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="Retour à l'accueil">Hybird</a></span> {# TMP: names and urls are hardcoded until "maintenance providers" are added #}
+		{% else %}
+        <span class="dashboard-title">{% trans "Account" %}</span>
+        <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="Retour à l'accueil">{{request.user.company}}</a></span>
+		{% endif %}
+    </div>
+
+    <div class="dashboard-item dashboard-contact">
+    </div>
+    <div class="dashboard-item dashboard-user">
+		<span class="dashboard-title">{{request.user.company}}</span>
+        <a href='{% url 'high_ui:update_user' pk=request.user.pk %}'>
+        <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
+        </a>
+    </div>
+    <div class="dashboard-item dashboard-button">
+        <div class="dashboard-value">
+            <a href="/logout" title="Quitter l'application">{% trans "Disconnect" %}</a>
+        </div>
+    </div>
+</div>
