@@ -4,6 +4,7 @@ from django.views.generic import FormView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
+from customers.forms import MaintenanceUserModelForm
 from customers.forms import ManagerUserModelForm
 from customers.forms import ManagerUsersUpdateForm
 from customers.forms import OperatorUserArchiveForm
@@ -18,6 +19,7 @@ from maintenance.models import MaintenanceConsumer
 
 from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedOperatorTestMixin
+from .base import IsUserAccountTestMixin
 from .base import ViewWithCompany
 from .base import get_context_data_dashboard_header
 
@@ -216,3 +218,26 @@ class OperatorUsersUnarchiveView(IsAdminTestMixin, FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+
+class UserUpdateView(IsUserAccountTestMixin, UpdateView):
+    form_class = MaintenanceUserModelForm
+    template_name = "high_ui/forms/update_user.html"
+    model = MaintenanceUser
+
+    def get_object(self):
+        return self.get_queryset().get(id=self.kwargs.get("pk"))
+
+    def get_queryset(self):
+        return MaintenanceUser.objects.all()
+
+    def get_success_url(self):
+        return reverse("high_ui:dashboard")
+
+
+class UserProfilUpdateView(IsUserAccountTestMixin, UpdateView):
+    pass
+
+
+class UserPasswordUpdateView(IsUserAccountTestMixin, UpdateView):
+    pass
