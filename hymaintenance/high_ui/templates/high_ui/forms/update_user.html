@@ -1,0 +1,193 @@
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance Hybird &mdash; votre profil</title> {# TMP #}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/edit-list.css" />
+<link rel="stylesheet" href="/static/css/edit-operators.css" />
+</head>
+<body>
+{% include "high_ui/user_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <div class="form-content">
+                <div class="form-intro">
+                    <div class="group-title-container">
+                        <div class="group-title">Vos informations personnelles</div>
+                    </div>
+                </div>
+				<form action="{% url 'high_ui:update_user_profil' pk=request.user.pk %}" method="post">
+					{% csrf_token %}
+                    <div class="form-group archive-group form-group-collapsable">
+                        <div class="group-title-container">
+							<div class="group-title" title="Afficher/cacher la liste des intervenants actifs">Modifier votre profil</div>
+                        </div>
+
+                        <div class="form-group-collapsable-content">
+
+							<div class="form-row form-label-row {% if form.first_name.errors %}form-error{% endif %}">
+								{% if form.first_name.errors %}
+								<div class="form-row-wrapper">
+								{% endif %}
+
+								<label for="{{form.first_name.id_for_label}}">Prénom *</label>
+								{{form.first_name}}
+
+								{% if form.first_name.errors %}
+								</div>
+								{% endif %}
+
+								{% for error in form.first_name.errors %}
+								<div class="form-error-text">{{error|escape}}</div>
+								{% endfor %}
+							</div>
+
+							<div class="form-row form-label-row {% if form.last_name.errors %}form-error{% endif %}">
+								{% if form.last_name.errors %}
+								<div class="form-row-wrapper">
+								{% endif %}
+
+								<label for="{{form.last_name.id_for_label}}">Nom *</label>
+								{{form.last_name}}
+
+								{% if form.last_name.errors %}
+								</div>
+								{% endif %}
+
+								{% for error in form.last_name.errors %}
+								<div class="form-error-text">{{error|escape}}</div>
+								{% endfor %}
+							</div>
+
+							<div class="form-row form-label-row {% if form.email.errors %}form-error{% endif %}">
+								{% if form.email.errors %}
+								<div class="form-row-wrapper">
+								{% endif %}
+
+								<label for="{{form.email.id_for_label}}">E-mail *</label>
+								{{form.email}}
+
+								{% if form.email.errors %}
+								</div>
+								{% endif %}
+
+								{% for error in form.email.errors %}
+								<div class="form-error-text">{{error|escape}}</div>
+								{% endfor %}
+							</div>
+						</div>
+
+						{% if form.non_field_errors %}
+						<div>
+							{% for error in form.non_field_errors %}
+								<p><i>{{ error }}</i></p>
+							{% endfor %}
+						</div>
+						{% endif %}
+					</div>
+					<div class="form-footer">
+						<button type="submit">Modifier mes informations</button>
+						<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+					</div>
+				</form>
+				<form action="'high_ui:update_user_password'" method="post">
+					{% csrf_token %}
+                    <div class="form-group reactivate-form form-group-collapsable form-group-collapsed">
+                        <div class="group-title-container">
+							<div class="group-title" title="Afficher/cacher la liste des intervenants actifs">Modifier votre mot de passe</div>
+                        </div>
+
+                        <div class="form-group-collapsable-content">
+
+							<div class="form-row form-label-row {% if form.password.errors %}form-error{% endif %}">
+								{% if form.password.errors %}
+								<div class="form-row-wrapper">
+								{% endif %}
+
+								<label for="{{form.password.id_for_label}}">Mot de passe actuel*</label>
+								{{form.password}}
+
+								{% if form.password.errors %}
+								</div>
+								{% endif %}
+
+								{% for error in form.password.errors %}
+								<div class="form-error-text">{{error|escape}}</div>
+								{% endfor %}
+							</div>
+
+
+							<div class="form-row form-label-row {% if form.password.errors %}form-error{% endif %}">
+								{% if form.password.errors %}
+								<div class="form-row-wrapper">
+								{% endif %}
+
+								<label for="{{form.password.id_for_label}}">Nouveau mot de passe *</label>
+								{{form.password}}
+
+								{% if form.password.errors %}
+								</div>
+								{% endif %}
+
+								{% for error in form.password.errors %}
+								<div class="form-error-text">{{error|escape}}</div>
+								{% endfor %}
+							</div>
+
+							<div class="form-row form-label-row {% if form.password.errors %}form-error{% endif %}">
+								{% if form.password.errors %}
+								<div class="form-row-wrapper">
+								{% endif %}
+
+								<label for="{{form.password.id_for_label}}">Confirmation nouveau mot de passe *</label>
+								{{form.password}}
+
+								{% if form.password.errors %}
+								</div>
+								{% endif %}
+
+								{% for error in form.password.errors %}
+								<div class="form-error-text">{{error|escape}}</div>
+								{% endfor %}
+							</div>
+
+						</div>
+
+						{% if form.non_field_errors %}
+						<div>
+							{% for error in form.non_field_errors %}
+								<p><i>{{ error }}</i></p>
+							{% endfor %}
+						</div>
+						{% endif %}
+					</div>
+					<div class="form-footer">
+						<button type="submit">Modifier mon mot de passe</button>
+						<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+					</div>
+				</form>
+            </div>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script>
+        var collapsableTriggers = document.querySelectorAll("form .group-title");
+        for (var i = 0; i < collapsableTriggers.length; ++i) {
+            var trigger = collapsableTriggers[i];
+            trigger.addEventListener("click", function(e) {
+                var className = "form-group-collapsed";
+                
+                var collapsable = this.parentElement.parentElement;                
+                if (collapsable.className.indexOf(className) === -1) {
+                    collapsable.className += " " + className;
+                } else {
+                    collapsable.className = collapsable.className.replace(className, "");
+                }
+            }, false);
+        }
+    </script>
