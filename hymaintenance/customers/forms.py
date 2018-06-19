@@ -128,3 +128,9 @@ class OperatorUserUnarchiveForm(forms.Form):
         for operator in self.cleaned_data["inactive_operators"]:
             operator.is_active = True
             operator.save()
+
+
+class MaintenanceUserProfilUpdateForm(forms.ModelForm):
+    class Meta:
+        model = MaintenanceUser
+        fields = ("first_name", "last_name", "email")

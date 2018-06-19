@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
 from customers.forms import MaintenanceUserModelForm
+from customers.forms import MaintenanceUserProfilUpdateForm
 from customers.forms import ManagerUserModelForm
 from customers.forms import ManagerUsersUpdateForm
 from customers.forms import OperatorUserArchiveForm
@@ -236,7 +237,18 @@ class UserUpdateView(IsUserAccountTestMixin, UpdateView):
 
 
 class UserProfilUpdateView(IsUserAccountTestMixin, UpdateView):
-    pass
+    form_class = MaintenanceUserProfilUpdateForm
+    success_url = "/"
+
+    def get_object(self):
+        return self.get_queryset().get(id=self.kwargs.get("pk"))
+
+    def get_queryset(self):
+        return MaintenanceUser.objects.all()
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 
 class UserPasswordUpdateView(IsUserAccountTestMixin, UpdateView):
