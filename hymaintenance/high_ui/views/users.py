@@ -1,10 +1,13 @@
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
-from customers.forms import MaintenanceUserModelForm
 from customers.forms import MaintenanceUserProfilUpdateForm
 from customers.forms import ManagerUserModelForm
 from customers.forms import ManagerUsersUpdateForm
@@ -20,7 +23,6 @@ from maintenance.models import MaintenanceConsumer
 
 from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedOperatorTestMixin
-from .base import IsUserAccountTestMixin
 from .base import ViewWithCompany
 from .base import get_context_data_dashboard_header
 
@@ -221,35 +223,42 @@ class OperatorUsersUnarchiveView(IsAdminTestMixin, FormView):
         return super().form_valid(form)
 
 
-class UserUpdateView(IsUserAccountTestMixin, UpdateView):
-    form_class = MaintenanceUserModelForm
+class UserUpdateView(LoginRequiredMixin, TemplateView):
     template_name = "high_ui/forms/update_user.html"
-    model = MaintenanceUser
 
-    def get_object(self):
-        return self.get_queryset().get(id=self.kwargs.get("pk"))
-
-    def get_queryset(self):
-        return MaintenanceUser.objects.all()
-
-    def get_success_url(self):
-        return reverse("high_ui:dashboard")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["profil_form"] = MaintenanceUserProfilUpdateForm(instance=self.request.user)
+        context["password_form"] = PasswordChangeForm(self.request.user)
+        return context
 
 
-class UserProfilUpdateView(IsUserAccountTestMixin, UpdateView):
+class UserProfilUpdateView(LoginRequiredMixin, UpdateView):
     form_class = MaintenanceUserProfilUpdateForm
     success_url = "/"
 
     def get_object(self):
-        return self.get_queryset().get(id=self.kwargs.get("pk"))
+        return self.request.user
 
-    def get_queryset(self):
-        return MaintenanceUser.objects.all()
+    def post(self, request, inconnu, *args, **kwargs):
+        profil_form = self.form_class(request.POST)
+        password_form = PasswordChangeForm(self.request.user)
+        if profil_form.is_valid():
+            profil_form.save()
+            return self.render_to_response(self.get_context_data(success=True))
+        else:
+            return self.render_to_response(self.get_context_data(profil_form=profil_form, password_form=password_form))
 
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
 
+class UserPasswordUpdateView(PasswordChangeView):
+    template_name = "high_ui/forms/update_user.html"
+    success_url = reverse_lazy("high_ui:dashboard")
 
-class UserPasswordUpdateView(IsUserAccountTestMixin, UpdateView):
-    pass
+    def post(self, request, *args, **kwargs):
+        password_form = self.form_class(request.POST)
+        profil_form = PasswordChangeForm(self.request.user)
+        if password_form.is_valid():
+            password_form.save()
+            return self.render_to_response(self.get_context_data(success=True))
+        else:
+            return self.render_to_response(self.get_context_data(profil_form=profil_form, password_form=password_form))
