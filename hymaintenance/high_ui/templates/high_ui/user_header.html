@@ -14,7 +14,7 @@
     </div>
     <div class="dashboard-item dashboard-user">
 		<span class="dashboard-title">{{request.user.company}}</span>
-        <a href='{% url 'high_ui:update_user' pk=request.user.pk %}'>
+        <a href='{% url 'high_ui:update_user' %}'>
         <span class="dashboard-value">{{request.user.first_name}} {{request.user.last_name}}</span>
         </a>
     </div>
