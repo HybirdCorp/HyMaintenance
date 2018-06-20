@@ -68,8 +68,3 @@ class IsAtLeastAllowedOperatorTestMixin(IsAdminTestMixin):
 class IsAtLeastAllowedManagerTestMixin(IsAtLeastAllowedOperatorTestMixin):
     def test_func(self):
         return super().test_func() or (self.company == self.user.company)
-
-
-class IsUserAccountTestMixin(UserPassesTestMixin):
-    def test_func(self):
-        return self.request.user.id == self.kwargs.get("pk")

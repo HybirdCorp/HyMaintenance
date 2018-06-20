@@ -21,156 +21,155 @@
                         <div class="group-title">Vos informations personnelles</div>
                     </div>
                 </div>
-				<form action="{% url 'high_ui:update_user_profil' pk=request.user.pk %}" method="post">
-					{% csrf_token %}
+                <form action="{% url 'high_ui:update_user_profil' %}" method="post">
+                    {% csrf_token %}
                     <div class="form-group archive-group form-group-collapsable">
                         <div class="group-title-container">
-							<div class="group-title" title="Afficher/cacher la liste des intervenants actifs">Modifier votre profil</div>
+                            <div class="group-title" title="Afficher/cacher le formulaire de modification de profil">Modifier votre profil</div>
                         </div>
 
                         <div class="form-group-collapsable-content">
 
-							<div class="form-row form-label-row {% if form.first_name.errors %}form-error{% endif %}">
-								{% if form.first_name.errors %}
-								<div class="form-row-wrapper">
-								{% endif %}
+                            <div class="form-row form-label-row {% if profil_form.first_name.errors %}form-error{% endif %}">
+                                {% if profil_form.first_name.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
 
-								<label for="{{form.first_name.id_for_label}}">Prénom *</label>
-								{{form.first_name}}
+                                <label for="{{profil_form.first_name.id_for_label}}">Prénom *</label>
+                                {{profil_form.first_name}}
 
-								{% if form.first_name.errors %}
-								</div>
-								{% endif %}
+                                {% if profil_form.first_name.errors %}
+                                </div>
+                                {% endif %}
 
-								{% for error in form.first_name.errors %}
-								<div class="form-error-text">{{error|escape}}</div>
-								{% endfor %}
-							</div>
+                                {% for error in profil_form.first_name.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
 
-							<div class="form-row form-label-row {% if form.last_name.errors %}form-error{% endif %}">
-								{% if form.last_name.errors %}
-								<div class="form-row-wrapper">
-								{% endif %}
+                            <div class="form-row form-label-row {% if profil_form.last_name.errors %}form-error{% endif %}">
+                                {% if profil_form.last_name.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
 
-								<label for="{{form.last_name.id_for_label}}">Nom *</label>
-								{{form.last_name}}
+                                <label for="{{profil_form.last_name.id_for_label}}">Nom *</label>
+                                {{profil_form.last_name}}
 
-								{% if form.last_name.errors %}
-								</div>
-								{% endif %}
+                                {% if profil_form.last_name.errors %}
+                                </div>
+                                {% endif %}
 
-								{% for error in form.last_name.errors %}
-								<div class="form-error-text">{{error|escape}}</div>
-								{% endfor %}
-							</div>
+                                {% for error in profil_form.last_name.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
 
-							<div class="form-row form-label-row {% if form.email.errors %}form-error{% endif %}">
-								{% if form.email.errors %}
-								<div class="form-row-wrapper">
-								{% endif %}
+                            <div class="form-row form-label-row {% if profil_form.email.errors %}form-error{% endif %}">
+                                {% if profil_form.email.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
 
-								<label for="{{form.email.id_for_label}}">E-mail *</label>
-								{{form.email}}
+                                <label for="{{profil_form.email.id_for_label}}">E-mail *</label>
+                                {{profil_form.email}}
 
-								{% if form.email.errors %}
-								</div>
-								{% endif %}
+                                {% if profil_form.email.errors %}
+                                </div>
+                                {% endif %}
 
-								{% for error in form.email.errors %}
-								<div class="form-error-text">{{error|escape}}</div>
-								{% endfor %}
-							</div>
-						</div>
+                                {% for error in profil_form.email.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
 
-						{% if form.non_field_errors %}
-						<div>
-							{% for error in form.non_field_errors %}
-								<p><i>{{ error }}</i></p>
-							{% endfor %}
-						</div>
-						{% endif %}
-					</div>
-					<div class="form-footer">
-						<button type="submit">Modifier mes informations</button>
-						<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
-					</div>
-				</form>
-				<form action="'high_ui:update_user_password'" method="post">
-					{% csrf_token %}
-                    <div class="form-group reactivate-form form-group-collapsable form-group-collapsed">
+                        {% if profil_form.non_field_errors %}
+                        <div>
+                            {% for error in profil_form.non_field_errors %}
+                                <p><i>{{ error }}</i></p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-footer">
+                        <button type="submit">Modifier mes informations</button>
+                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+                    </div>
+                </form>
+                <form action="{% url 'high_ui:update_user_password' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group archive-group form-group-collapsable">
                         <div class="group-title-container">
-							<div class="group-title" title="Afficher/cacher la liste des intervenants actifs">Modifier votre mot de passe</div>
+                            <div class="group-title" title="Afficher/cacher le formulaire de modification de mot de passe">Modifier votre mot de passe</div>
                         </div>
 
                         <div class="form-group-collapsable-content">
 
-							<div class="form-row form-label-row {% if form.password.errors %}form-error{% endif %}">
-								{% if form.password.errors %}
-								<div class="form-row-wrapper">
-								{% endif %}
+                            <div class="form-row form-label-row {% if password_form.old_password.errors %}form-error{% endif %}">
+                                {% if password_form.old_password.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
 
-								<label for="{{form.password.id_for_label}}">Mot de passe actuel*</label>
-								{{form.password}}
+                                <label for="{{password_form.old_password.id_for_label}}">Mot de passe actuel*</label>
+                                {{password_form.old_password}}
 
-								{% if form.password.errors %}
-								</div>
-								{% endif %}
+                                {% if password_form.old_password.errors %}
+                                </div>
+                                {% endif %}
 
-								{% for error in form.password.errors %}
-								<div class="form-error-text">{{error|escape}}</div>
-								{% endfor %}
-							</div>
+                                {% for error in password_form.old_password.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
 
 
-							<div class="form-row form-label-row {% if form.password.errors %}form-error{% endif %}">
-								{% if form.password.errors %}
-								<div class="form-row-wrapper">
-								{% endif %}
+                            <div class="form-row form-label-row {% if password_form.new_password1.errors %}form-error{% endif %}">
+                                {% if password_form.new_password1.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
 
-								<label for="{{form.password.id_for_label}}">Nouveau mot de passe *</label>
-								{{form.password}}
+                                <label for="{{password_form.new_password1.id_for_label}}">Nouveau mot de passe *</label>
+                                {{password_form.new_password1}}
 
-								{% if form.password.errors %}
-								</div>
-								{% endif %}
+                                {% if password_form.new_password1.errors %}
+                                </div>
+                                {% endif %}
 
-								{% for error in form.password.errors %}
-								<div class="form-error-text">{{error|escape}}</div>
-								{% endfor %}
-							</div>
+                                {% for error in password_form.new_password1.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
 
-							<div class="form-row form-label-row {% if form.password.errors %}form-error{% endif %}">
-								{% if form.password.errors %}
-								<div class="form-row-wrapper">
-								{% endif %}
+                            <div class="form-row form-label-row {% if password_form.new_password2.errors %}form-error{% endif %}">
+                                {% if password_form.new_password1.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
 
-								<label for="{{form.password.id_for_label}}">Confirmation nouveau mot de passe *</label>
-								{{form.password}}
+                                <label for="{{password_form.new_password2.id_for_label}}">Confirmation nouveau mot de passe *</label>
+                                {{password_form.new_password2}}
 
-								{% if form.password.errors %}
-								</div>
-								{% endif %}
+                                {% if password_form.new_password2.errors %}
+                                </div>
+                                {% endif %}
 
-								{% for error in form.password.errors %}
-								<div class="form-error-text">{{error|escape}}</div>
-								{% endfor %}
-							</div>
+                                {% for error in password_form.new_password2.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
 
-						</div>
-
-						{% if form.non_field_errors %}
-						<div>
-							{% for error in form.non_field_errors %}
-								<p><i>{{ error }}</i></p>
-							{% endfor %}
-						</div>
-						{% endif %}
-					</div>
-					<div class="form-footer">
-						<button type="submit">Modifier mon mot de passe</button>
-						<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
-					</div>
-				</form>
+                        {% if password_form.non_field_errors %}
+                        <div>
+                            {% for error in password_form.non_field_errors %}
+                                <p><i>{{ error }}</i></p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-footer">
+                        <button type="submit">Modifier mon mot de passe</button>
+                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
