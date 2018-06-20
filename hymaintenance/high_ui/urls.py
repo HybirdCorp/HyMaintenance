@@ -86,7 +86,7 @@ urlpatterns = [
     path(r"operators/update/", OperatorUsersUpdateView.as_view(), name="update_operators"),
     path(r"operators/archive/", OperatorUsersArchiveView.as_view(), name="archive_operators"),
     path(r"operators/unarchive/", OperatorUsersUnarchiveView.as_view(), name="unarchive_operators"),
-    path(r"users/<int:pk>/update/", UserUpdateView.as_view(), name="update_user"),
-    path(r"users/<int:pk>/update/profil", UserProfilUpdateView.as_view(), name="update_user_profil"),
-    path(r"users/<int:pk>/update/password", UserPasswordUpdateView.as_view(), name="update_user_password"),
+    path(r"account/update/", UserUpdateView.as_view(), name="update_user"),
+    path(r"account/update/profil", UserProfilUpdateView.as_view(), name="update_user_profil"),
+    path(r"account/update/password", UserPasswordUpdateView.as_view(), name="update_user_password"),
 ]
