@@ -1,6 +1,5 @@
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -225,40 +224,51 @@ class OperatorUsersUnarchiveView(IsAdminTestMixin, FormView):
 
 class UserUpdateView(LoginRequiredMixin, TemplateView):
     template_name = "high_ui/forms/update_user.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["profil_form"] = MaintenanceUserProfilUpdateForm(instance=self.request.user)
-        context["password_form"] = PasswordChangeForm(self.request.user)
-        return context
-
-
-class UserProfilUpdateView(LoginRequiredMixin, UpdateView):
-    form_class = MaintenanceUserProfilUpdateForm
-    success_url = "/"
+    success_url = reverse_lazy("high_ui:dashboard")
 
     def get_object(self):
         return self.request.user
 
-    def post(self, request, inconnu, *args, **kwargs):
-        profil_form = self.form_class(request.POST)
-        password_form = PasswordChangeForm(self.request.user)
-        if profil_form.is_valid():
-            profil_form.save()
-            return self.render_to_response(self.get_context_data(success=True))
-        else:
-            return self.render_to_response(self.get_context_data(profil_form=profil_form, password_form=password_form))
+    def get_password_form(self, *args, **kwargs):
+        form = PasswordChangeForm(*args, **kwargs)
+        form.fields['old_password'].widget.attrs['autofocus'] = False
+        return form
 
+    def get_profile_form(self, *args, **kwargs):
+        return MaintenanceUserProfilUpdateForm(*args, **kwargs)
 
-class UserPasswordUpdateView(PasswordChangeView):
-    template_name = "high_ui/forms/update_user.html"
-    success_url = reverse_lazy("high_ui:dashboard")
+    def get(self, request, *args, **kwargs):
+        user = self.get_object()
+        profile_form = MaintenanceUserProfilUpdateForm(instance=user)
+        password_form = self.get_password_form(user)
+        return self.render_to_response(
+            self.get_context_data(profile_form=profile_form,
+                                  password_form=password_form))
 
     def post(self, request, *args, **kwargs):
-        password_form = self.form_class(request.POST)
-        profil_form = PasswordChangeForm(self.request.user)
-        if password_form.is_valid():
-            password_form.save()
-            return self.render_to_response(self.get_context_data(success=True))
-        else:
-            return self.render_to_response(self.get_context_data(profil_form=profil_form, password_form=password_form))
+        user = self.get_object()
+
+        context = {}
+        # initial state
+        profile_form = self.get_profile_form(instance=user)
+        password_form = self.get_password_form(user)
+
+        data = request.POST.copy()
+        form_mod = data.pop('form-mod', [None])[0]
+
+        if form_mod == 'profile':
+            profile_form = self.get_profile_form(
+                data=data, instance=user)
+            if profile_form.is_valid():
+                profile_form.save()
+                context['profile_form_success'] = True
+
+        elif form_mod == 'password':
+            password_form = self.get_password_form(user, data=data)
+            if password_form.is_valid():
+                password_form.save()
+                context['password_form_success'] = True
+
+        return self.render_to_response(
+            self.get_context_data(profile_form=profile_form,
+                                  password_form=password_form, **context))

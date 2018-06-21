@@ -1,5 +1,5 @@
 from django import forms
-
+from django.core.exceptions import ValidationError
 from toolkit.forms import UsersMultipleChoiceField
 
 from .models import Company
@@ -131,6 +131,23 @@ class OperatorUserUnarchiveForm(forms.Form):
 
 
 class MaintenanceUserProfilUpdateForm(forms.ModelForm):
+    confirm_password = forms.CharField(
+        label="Confirmer le mot de passe",
+        strip=False,
+        widget=forms.PasswordInput,
+        required=True,
+    )
+
     class Meta:
         model = MaintenanceUser
-        fields = ("first_name", "last_name", "email")
+        fields = ("confirm_password", "first_name", "last_name", "email")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["first_name"].required = True
+        self.fields["last_name"].required = True
+
+    def clean_confirm_password(self):
+        password = self.cleaned_data['confirm_password']
+        if not self.instance.check_password(password):
+            raise ValidationError('Mot de passe invalide.')
