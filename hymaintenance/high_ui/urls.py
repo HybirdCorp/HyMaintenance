@@ -22,8 +22,6 @@ from .views.users import OperatorUsersUpdateView
 from .views.users import OperatorUsersUpdateViewWithCompany
 from .views.users import OperatorUserUpdateView
 from .views.users import OperatorUserUpdateViewWithCompany
-from .views.users import UserPasswordUpdateView
-from .views.users import UserProfilUpdateView
 from .views.users import UserUpdateView
 
 
@@ -87,6 +85,4 @@ urlpatterns = [
     path(r"operators/archive/", OperatorUsersArchiveView.as_view(), name="archive_operators"),
     path(r"operators/unarchive/", OperatorUsersUnarchiveView.as_view(), name="unarchive_operators"),
     path(r"account/update/", UserUpdateView.as_view(), name="update_user"),
-    path(r"account/update/profil", UserProfilUpdateView.as_view(), name="update_user_profil"),
-    path(r"account/update/password", UserPasswordUpdateView.as_view(), name="update_user_password"),
 ]
