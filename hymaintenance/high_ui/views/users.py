@@ -1,13 +1,13 @@
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
-from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
-from customers.forms import MaintenanceUserProfilUpdateForm
+from customers.forms import MaintenanceUserProfileUpdateForm
 from customers.forms import ManagerUserModelForm
 from customers.forms import ManagerUsersUpdateForm
 from customers.forms import OperatorUserArchiveForm
@@ -224,26 +224,24 @@ class OperatorUsersUnarchiveView(IsAdminTestMixin, FormView):
 
 class UserUpdateView(LoginRequiredMixin, TemplateView):
     template_name = "high_ui/forms/update_user.html"
-    success_url = reverse_lazy("high_ui:dashboard")
 
     def get_object(self):
         return self.request.user
 
     def get_password_form(self, *args, **kwargs):
         form = PasswordChangeForm(*args, **kwargs)
-        form.fields['old_password'].widget.attrs['autofocus'] = False
+        # Remove the (REALLY) annoying autofocus of this field
+        form.fields["old_password"].widget.attrs["autofocus"] = False
         return form
 
     def get_profile_form(self, *args, **kwargs):
-        return MaintenanceUserProfilUpdateForm(*args, **kwargs)
+        return MaintenanceUserProfileUpdateForm(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         user = self.get_object()
-        profile_form = MaintenanceUserProfilUpdateForm(instance=user)
+        profile_form = self.get_profile_form(instance=user)
         password_form = self.get_password_form(user)
-        return self.render_to_response(
-            self.get_context_data(profile_form=profile_form,
-                                  password_form=password_form))
+        return self.render_to_response(self.get_context_data(profile_form=profile_form, password_form=password_form))
 
     def post(self, request, *args, **kwargs):
         user = self.get_object()
@@ -254,21 +252,21 @@ class UserUpdateView(LoginRequiredMixin, TemplateView):
         password_form = self.get_password_form(user)
 
         data = request.POST.copy()
-        form_mod = data.pop('form-mod', [None])[0]
+        form_mod = data.pop("form-mod", [None])[0]
 
-        if form_mod == 'profile':
-            profile_form = self.get_profile_form(
-                data=data, instance=user)
+        if form_mod == "profile":
+            profile_form = self.get_profile_form(data=data, instance=user)
             if profile_form.is_valid():
                 profile_form.save()
-                context['profile_form_success'] = True
+                context["profile_form_success"] = True
 
-        elif form_mod == 'password':
+        elif form_mod == "password":
             password_form = self.get_password_form(user, data=data)
             if password_form.is_valid():
                 password_form.save()
-                context['password_form_success'] = True
+                update_session_auth_hash(request, password_form.user)
+                context["password_form_success"] = True
 
         return self.render_to_response(
-            self.get_context_data(profile_form=profile_form,
-                                  password_form=password_form, **context))
+            self.get_context_data(profile_form=profile_form, password_form=password_form, **context)
+        )
