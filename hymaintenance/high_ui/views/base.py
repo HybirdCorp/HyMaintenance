@@ -3,9 +3,26 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import View
 
 from customers.models import Company
-from maintenance.models import IncomingChannel
+from customers.models import MaintenanceUser
+from customers.models.user import get_companies_of_operator
 from maintenance.models import MaintenanceContract
-from maintenance.models import MaintenanceType
+
+
+def get_context_data_dashboard_header(user):
+    context = {}
+    context["operators_number"] = MaintenanceUser.objects.get_active_operator_users_queryset().count()
+    if user.is_superuser:
+        context["companies_number"] = Company.objects.all().count()
+    else:
+        context["companies_number"] = get_companies_of_operator(user).count()
+    return context
+
+
+def get_context_data_project_header(company):
+    context = {}
+    context["contracts"] = MaintenanceContract.objects.filter(company=company, disabled=False)
+    context["company"] = company
+    return context
 
 
 class ViewWithCompany(View):
@@ -17,18 +34,12 @@ class ViewWithCompany(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get_company(self):
-
         company = get_object_or_404(Company, slug_name=self.kwargs.get(self.slug_url_kwarg))
-
         return company
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["maintenance_types"] = MaintenanceType.objects.order_by("id")
-        context["channels"] = IncomingChannel.objects.all()
-        contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
-        context["contracts"] = contracts
-        context["company"] = self.company
+        context.update(get_context_data_project_header(self.company))
         return context
 
 
