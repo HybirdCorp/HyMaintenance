@@ -218,11 +218,13 @@ class OperatorUsersUpdateView(IsAdminTestMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["maintainers"] = MaintenanceUser.objects.get_active_operator_users_queryset()
+        active_operators = MaintenanceUser.objects.get_active_operator_users_queryset()
+        context["maintainers"] = active_operators
         context["archive_form"] = OperatorUserArchiveForm()
         context["unarchive_form"] = OperatorUserUnarchiveForm()
-        context["active_operators_number"] = context["maintainers"].filter(is_active=True).count()
-        context["archived_operators_number"] = context["maintainers"].filter(is_active=False).count()
+        operators_number = MaintenanceUser.objects.get_operator_users_queryset().count()
+        context["active_operators_number"] = active_operators.count()
+        context["archived_operators_number"] = operators_number - active_operators.count()
         context["companies"] = Company.objects.all()
         return context
 
