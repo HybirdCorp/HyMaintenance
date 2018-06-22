@@ -11,28 +11,20 @@ from customers.forms import OperatorUserModelForm
 from customers.forms import OperatorUserModelFormWithCompany
 from customers.forms import OperatorUsersUpdateForm
 from customers.forms import OperatorUserUnarchiveForm
-from customers.models import Company
 from customers.models.user import MaintenanceUser
 from maintenance.forms.consumer import MaintenanceConsumerModelForm
 from maintenance.forms.consumer import MaintenanceConsumersUpdateForm
 from maintenance.models import MaintenanceConsumer
-from maintenance.models import MaintenanceContract
 
 from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedOperatorTestMixin
 from .base import ViewWithCompany
+from .base import get_context_data_dashboard_header
 
 
 class ConsumerCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
     form_class = MaintenanceConsumerModelForm
     template_name = "high_ui/forms/create_consumer.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["company"] = self.company
-        contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
-        context["contracts"] = contracts
-        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -82,13 +74,6 @@ class ManagerUserCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, 
     form_class = ManagerUserModelForm
     template_name = "high_ui/forms/create_manager.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["company"] = self.company
-        contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
-        context["contracts"] = contracts
-        return context
-
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs["company"] = self.company
@@ -137,22 +122,10 @@ class OperatorUserCreateViewWithCompany(ViewWithCompany, IsAdminTestMixin, Creat
     form_class = OperatorUserModelFormWithCompany
     template_name = "high_ui/forms/create_operator.html"
 
-    # TMP: Technically, only the template needs the Company right now, so don't send it to the form init.
-    # This is done until we have the concept of "maintenance providers" or "projects" which this view/form
-    # will need to link the MaintenanceUser to this Company as the "maintainer"
-    # Until then, the view/form have the company but the MaintenanceUser created will not use it
-
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs["company"] = self.company
         return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["company"] = self.company
-        contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
-        context["contracts"] = contracts
-        return context
 
     def get_success_url(self):
         return reverse("high_ui:dashboard")
@@ -165,8 +138,7 @@ class OperatorUserUpdateView(IsAdminTestMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["maintainers"] = MaintenanceUser.objects.get_active_operator_users_queryset()
-        context["companies"] = Company.objects.all()
+        context.update(get_context_data_dashboard_header(self.user))
         return context
 
     def get_object(self):
@@ -200,7 +172,7 @@ class OperatorUsersUpdateViewWithCompany(ViewWithCompany, IsAdminTestMixin, Form
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["operators"] = MaintenanceUser.objects.get_active_operator_users_queryset()
+        context["operators_number"] = MaintenanceUser.objects.get_active_operator_users_queryset().count()
         return context
 
     def get_form_kwargs(self):
@@ -218,12 +190,13 @@ class OperatorUsersUpdateView(IsAdminTestMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["maintainers"] = MaintenanceUser.objects.get_active_operator_users_queryset()
+        context.update(get_context_data_dashboard_header(self.user))
         context["archive_form"] = OperatorUserArchiveForm()
         context["unarchive_form"] = OperatorUserUnarchiveForm()
-        context["active_operators_number"] = context["maintainers"].filter(is_active=True).count()
-        context["archived_operators_number"] = context["maintainers"].filter(is_active=False).count()
-        context["companies"] = Company.objects.all()
+        context["active_operators_number"] = MaintenanceUser.objects.get_active_operator_users_queryset().count()
+        context["archived_operators_number"] = (
+            MaintenanceUser.objects.get_operator_users_queryset().count() - context["active_operators_number"]
+        )
         return context
 
 

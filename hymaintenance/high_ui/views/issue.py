@@ -5,8 +5,6 @@ from django.views.generic import UpdateView
 
 from maintenance.forms.issue import MaintenanceIssueCreateForm
 from maintenance.forms.issue import MaintenanceIssueUpdateForm
-from maintenance.models import IncomingChannel
-from maintenance.models import MaintenanceContract
 from maintenance.models import MaintenanceIssue
 
 from .base import IsAtLeastAllowedManagerTestMixin
@@ -17,16 +15,6 @@ from .base import ViewWithCompany
 class IssueCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
     form_class = MaintenanceIssueCreateForm
     template_name = "high_ui/forms/create_issue.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["channels"] = IncomingChannel.objects.all()
-
-        context["company"] = self.company
-        contracts = MaintenanceContract.objects.filter(company=self.company, disabled=False)
-        context["contracts"] = contracts
-
-        return context
 
     def get_success_url(self):
         return self.company.get_absolute_url()
@@ -48,14 +36,6 @@ class IssueUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Update
     def get_queryset(self):
         return MaintenanceIssue.objects.filter(company=self.company)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["channels"] = IncomingChannel.objects.all()
-
-        contracts = MaintenanceContract.objects.filter(company=self.object.company_id, disabled=False)
-        context["contracts"] = contracts
-        return context
-
     def get_success_url(self):
         return reverse(
             "high_ui:project-issue_details",
@@ -67,12 +47,10 @@ class IssueUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Update
 
 
 class IssueDetailView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, DetailView):
-
     template_name = "high_ui/issue_details.html"
     model = MaintenanceIssue
 
     def get_object(self):
-
         return MaintenanceIssue.objects.filter(
             company_issue_number=self.kwargs.get("company_issue_number"), company=self.company
         ).first()

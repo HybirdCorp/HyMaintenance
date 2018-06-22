@@ -5,7 +5,6 @@ from django.views.generic import DetailView
 from django.views.generic import FormView
 
 from customers.models import Company
-from customers.models import MaintenanceUser
 from maintenance.forms.project import ProjectCreateForm
 from maintenance.forms.project import ProjectUpdateForm
 from maintenance.models import MaintenanceContract
@@ -15,6 +14,7 @@ from maintenance.models import MaintenanceType
 from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedManagerTestMixin
 from .base import ViewWithCompany
+from .base import get_context_data_dashboard_header
 
 
 class ProjectCreateView(IsAdminTestMixin, FormView):
@@ -23,11 +23,9 @@ class ProjectCreateView(IsAdminTestMixin, FormView):
     success_url = "/"
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
-        context["maintenance_types"] = MaintenanceType.objects.order_by("id")
-        context["companies"] = Company.objects.all()
-        context["maintainers"] = MaintenanceUser.objects.get_operator_users_queryset()
+        context["maintenance_types"] = MaintenanceType.objects.all().order_by("id")
+        context.update(get_context_data_dashboard_header(self.user))
         return context
 
     def form_valid(self, form):
@@ -39,6 +37,12 @@ class ProjectUpdateView(IsAdminTestMixin, ViewWithCompany, FormView):
     form_class = ProjectUpdateForm
     template_name = "high_ui/forms/update_project.html"
     success_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["maintenance_types"] = MaintenanceType.objects.all().order_by("id")
+        context.update(get_context_data_dashboard_header(self.user))
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -124,11 +128,7 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
             info_issues = list(issues)
             history.append((month, info_contract, info_issues))
 
-        context["contracts"] = contracts
         context["activities"] = activities
         context["history"] = history
-
-        # TMP: when renaming the model to Company, this following line will be useless
-        context["company"] = context["object"]
 
         return context
