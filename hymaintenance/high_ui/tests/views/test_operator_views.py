@@ -1,4 +1,4 @@
-
+from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
 
@@ -7,6 +7,9 @@ from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
+
+from ...views.users import OperatorUsersUpdateView
+from ...views.users import OperatorUsersUpdateViewWithCompany
 
 
 class CreateOperatorTestCase(TestCase):
@@ -183,6 +186,26 @@ class UpdateOperatorUsersTestCase(TestCase):
         cls.form_url = reverse("high_ui:update_operators")
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
+    def test_get_context_data(self):
+        OperatorUserFactory(is_active=True)
+        OperatorUserFactory(is_active=False)
+
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = OperatorUsersUpdateView()
+        view.request = request
+        view.user = self.admin
+        view.company = self.company
+
+        context = view.get_context_data()
+        self.assertIn("active_operators_number", context.keys())
+        self.assertEqual(2, context["active_operators_number"])
+        self.assertIn("archived_operators_number", context.keys())
+        self.assertEqual(1, context["archived_operators_number"])
+        self.assertIn("archive_form", context.keys())
+        self.assertIn("unarchive_form", context.keys())
+
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
@@ -242,6 +265,25 @@ class UpdateOperatorUsersWithCompanyTestCase(TestCase):
         cls.company = CompanyFactory()
         cls.form_url = reverse("high_ui:project-update_operators", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_get_context_data(self):
+        op1 = OperatorUserFactory(is_active=True)
+        op1.operator_for.add(self.company)
+        op2 = OperatorUserFactory(is_active=False)
+        op2.operator_for.add(self.company)
+        OperatorUserFactory(is_active=False)
+
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = OperatorUsersUpdateViewWithCompany()
+        view.request = request
+        view.user = self.admin
+        view.company = self.company
+
+        context = view.get_context_data()
+        self.assertIn("operators_number", context.keys())
+        self.assertEqual(2, context["operators_number"])
 
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
