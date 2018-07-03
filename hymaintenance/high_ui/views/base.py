@@ -6,6 +6,13 @@ from customers.models import Company
 from customers.models import MaintenanceUser
 from customers.models.user import get_companies_of_operator
 from maintenance.models import MaintenanceContract
+from maintenance.models import MaintenanceType
+
+
+def get_maintenance_types():
+    context = {}
+    context["maintenance_types"] = MaintenanceType.objects.all().order_by("id")
+    return context
 
 
 def get_context_data_dashboard_header(user):
@@ -18,9 +25,12 @@ def get_context_data_dashboard_header(user):
     return context
 
 
-def get_context_data_project_header(company):
+def get_context_data_project_header(user, company):
     context = {}
-    context["contracts"] = MaintenanceContract.objects.filter(company=company, disabled=False)
+    if user.is_staff:
+        context["contracts"] = MaintenanceContract.objects.filter(company=company, disabled=False)
+    else:
+        context["contracts"] = MaintenanceContract.objects.filter(company=company, visible=True, disabled=False)
     context["company"] = company
     return context
 
@@ -39,7 +49,8 @@ class ViewWithCompany(View):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update(get_context_data_project_header(self.company))
+        user = self.request.user
+        context.update(get_context_data_project_header(user, self.company))
         return context
 
 
