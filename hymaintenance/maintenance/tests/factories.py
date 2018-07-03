@@ -93,4 +93,4 @@ def create_project(**kwargs):
         )
     else:
         contract3 = MaintenanceContractFactory(company=company, maintenance_type=MaintenanceType.objects.get(id=3))
-    return {company, contract1, contract2, contract3}
+    return (company, contract1, contract2, contract3)
