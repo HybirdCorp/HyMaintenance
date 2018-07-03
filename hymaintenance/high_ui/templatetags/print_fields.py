@@ -6,6 +6,8 @@ from django.utils.translation import ungettext as _p
 
 from customers.models.user import MaintenanceUser
 from customers.models.user import get_companies_of_operator
+from maintenance.models.contract import AVAILABLE_TOTAL_TIME
+from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 
 
 register = Library()
@@ -35,10 +37,10 @@ def pretty_print_minutes(value, use_long_minute_format=False):
 @register.simple_tag
 def pretty_print_contract_counter(contract):
     counter = ""
-    if contract.total_type == 0:
+    if contract.total_type == AVAILABLE_TOTAL_TIME:
         counter = pretty_print_minutes(contract.get_number_remaining_minutes())
         counter += " /&nbsp;" + str(contract.get_number_contract_hours()) + "h"
-    elif contract.total_type == 1:
+    elif contract.total_type == CONSUMMED_TOTAL_TIME:
         counter = pretty_print_minutes(contract.get_number_consumed_minutes())
     return mark_safe(counter)
 
