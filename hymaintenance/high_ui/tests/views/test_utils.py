@@ -7,6 +7,13 @@ from maintenance.tests.factories import create_project
 
 from ...views.base import get_context_data_dashboard_header
 from ...views.base import get_context_data_project_header
+from ...views.base import get_maintenance_types
+
+
+class GetMaintenanceTypesTestCase(TestCase):
+    def test_get_all_maintenance_types(self):
+        context = get_maintenance_types()
+        self.assertEqual(3, context["maintenance_types"].count())
 
 
 class DashboardGetContextDataFunctionsTestCase(TestCase):
