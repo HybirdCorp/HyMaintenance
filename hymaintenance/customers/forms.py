@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 
 from toolkit.forms import UsersMultipleChoiceField
 
@@ -148,4 +149,4 @@ class MaintenanceUserProfileUpdateForm(forms.ModelForm):
     def clean_confirm_password(self):
         password = self.cleaned_data["confirm_password"]
         if not self.instance.check_password(password):
-            raise ValidationError("Mot de passe invalide.")
+            raise ValidationError(_("Invalid password"))
