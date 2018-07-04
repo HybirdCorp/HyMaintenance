@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-27 11:50+0200\n"
+"POT-Creation-Date: 2018-07-04 15:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: customers/admin.py:27
+#: admin.py:23
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: customers/admin.py:29 customers/admin.py:62
+#: admin.py:24 admin.py:56
 msgid "Password"
 msgstr "Mot de passe"
 
-#: customers/admin.py:31
+#: admin.py:26
 msgid "Password confirmation"
 msgstr "Confirmation mot de passe"
 
-#: customers/admin.py:33
+#: admin.py:28
 msgid "Enter the same password as above, for verification."
 msgstr "Entrez le même mot de passe que précédement, pour vérification"
 
-#: customers/admin.py:63
+#: admin.py:58
 msgid ""
 "Raw passwords are not stored, so there is no way to see this user's "
 "password, but you can change the password using <a href=\"password/\">this "
@@ -43,56 +43,72 @@ msgstr ""
 "Les mots de passe ne sont pas stockés en clair. Vous pouvez les modifier en "
 "utilisant <a href=\"password/\">ce formulaire</a>. "
 
-#: customers/admin.py:95
+#: admin.py:89
 msgid "Permissions"
 msgstr "Permissions"
 
-#: customers/admin.py:98
+#: admin.py:95
 msgid "Personal info"
 msgstr "Informations personnelles"
 
-#: customers/models/user.py:28
+#: forms.py:152
+msgid "Invalid password."
+msgstr "Mot de passe invalide."
+
+#: models/user.py:29
 msgid "The given email must be set"
 msgstr ""
 
-#: customers/models/user.py:53
+#: models/user.py:59
 msgid "Creation date"
 msgstr "Date de création"
 
-#: customers/models/user.py:54
+#: models/user.py:60
 msgid "Last modification date"
 msgstr "Date de dernière modification"
 
-#: customers/models/user.py:56
+#: models/user.py:62
 msgid "first name"
 msgstr "Prénom"
 
-#: customers/models/user.py:57
+#: models/user.py:63
 msgid "last name"
 msgstr "Nom de famille"
 
-#: customers/models/user.py:58
+#: models/user.py:65
 msgid "email address"
 msgstr "Adresse e-mail"
 
-#: customers/models/user.py:59
+#: models/user.py:68
 msgid "A user with that username already exists."
 msgstr "Un utilisateur avec ce login existe déjà"
 
-#: customers/models/user.py:61
+#: models/user.py:72
 msgid "staff status"
 msgstr "Status Staff"
 
-#: customers/models/user.py:62
+#: models/user.py:72
 msgid "Designates whether the user can log into this admin site."
 msgstr ""
 
-#: customers/models/user.py:64
+#: models/user.py:75
 msgid "active"
 msgstr "Actif"
 
-#: customers/models/user.py:65
+#: models/user.py:78
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
+msgstr ""
+
+#: models/user.py:85
+msgid "Managed Companies"
+msgstr ""
+
+#: tests/forms/test_user_forms.py:29 tests/forms/test_user_forms.py:159
+msgid "This field is required."
+msgstr ""
+
+#: tests/forms/test_user_forms.py:178
+msgid "Invalid password"
 msgstr ""

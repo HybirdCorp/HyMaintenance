@@ -175,7 +175,7 @@ class MaintenanceUserProfileUpdateFormTestCase(TestCase):
         )
 
         self.assertFalse(form.is_valid())
-        self.assertDictEqual(form.errors, {"confirm_password": [_("Invalid password")]})
+        self.assertDictEqual(form.errors, {"confirm_password": [_("Invalid password.")]})
 
     def test_update_profil(self):
         user = AdminUserFactory(first_name="Chell", last_name="", email="chell@aperture-science.com", password="azerty")

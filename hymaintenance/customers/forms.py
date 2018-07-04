@@ -149,4 +149,4 @@ class MaintenanceUserProfileUpdateForm(forms.ModelForm):
     def clean_confirm_password(self):
         password = self.cleaned_data["confirm_password"]
         if not self.instance.check_password(password):
-            raise ValidationError(_("Invalid password"))
+            raise ValidationError(_("Invalid password."))
