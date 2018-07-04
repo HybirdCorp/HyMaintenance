@@ -140,6 +140,23 @@
 
 /* collapsable form rows container - end */
 
+/* form success */
+
+.form-success {
+    flex-direction: column;
+    align-items: stretch;
+
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+
+    border: 1px solid #C3E6CB;
+    padding: 7px;
+
+    background: rgba(0, 255, 0, 0.02);
+}
+
+/* form success -end */
+
 /* form errors */
 
 .form-error {
