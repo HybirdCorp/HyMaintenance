@@ -1,8 +1,8 @@
-
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
 from ...forms import MaintenanceUserModelForm
+from ...forms import MaintenanceUserProfileUpdateForm
 from ...forms import ManagerUserModelForm
 from ...forms import ManagerUsersUpdateForm
 from ...forms import OperatorUserArchiveForm
@@ -10,6 +10,7 @@ from ...forms import OperatorUserModelFormWithCompany
 from ...forms import OperatorUsersUpdateForm
 from ...forms import OperatorUserUnarchiveForm
 from ...models import MaintenanceUser
+from ..factories import AdminUserFactory
 from ..factories import CompanyFactory
 from ..factories import ManagerUserFactory
 from ..factories import OperatorUserFactory
@@ -147,3 +148,47 @@ class OperatorUserUpdateFormTestCase(TestCase):
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertEqual(list(self.company.managed_by.all()), [self.op1, self.op3])
+
+
+class MaintenanceUserProfileUpdateFormTestCase(TestCase):
+    def test_required_values(self):
+        user = AdminUserFactory()
+        form = MaintenanceUserProfileUpdateForm(instance=user, data={})
+
+        self.assertFalse(form.is_valid())
+        expected = _("This field is required.")
+        self.assertDictEqual(
+            form.errors,
+            {"email": [expected], "first_name": [expected], "last_name": [expected], "confirm_password": [expected]},
+        )
+
+    def test_wrong_confirmation_password(self):
+        user = AdminUserFactory(password="azerty")
+        form = MaintenanceUserProfileUpdateForm(
+            instance=user,
+            data={
+                "first_name": "Gordon",
+                "last_name": "Freeman",
+                "email": "gordon.freeman@blackmesa.com",
+                "confirm_password": "qwerty",
+            },
+        )
+
+        self.assertFalse(form.is_valid())
+        self.assertDictEqual(form.errors, {"confirm_password": [_("Invalid password")]})
+
+    def test_update_profil(self):
+        user = AdminUserFactory(first_name="Chell", last_name="", email="chell@aperture-science.com", password="azerty")
+        form = MaintenanceUserProfileUpdateForm(
+            instance=user,
+            data={
+                "first_name": "Gordon",
+                "last_name": "Freeman",
+                "email": "gordon.freeman@blackmesa.com",
+                "confirm_password": "azerty",
+            },
+        )
+
+        self.assertTrue(form.is_valid())
+        form.save()
+        self.assertEqual(user.pk, MaintenanceUser.objects.get(email="gordon.freeman@blackmesa.com").pk)
