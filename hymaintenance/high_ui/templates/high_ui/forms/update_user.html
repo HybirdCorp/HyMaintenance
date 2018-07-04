@@ -87,7 +87,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{profile_form.confirm_password.id_for_label}}">Confirmez votre mot de passe pour valider les modifications *</label>
+                                <label for="{{profile_form.confirm_password.id_for_label}}">Votre mot de passe pour valider les modifications *</label>
                                 {{profile_form.confirm_password}}
 
                                 {% if profile_form.confirm_password.errors %}
@@ -107,10 +107,12 @@
                             {% endfor %}
                         </div>
                         {% endif %}
+                        {% if profile_form_success %}
+                        <div class="form-row form-success">
+                            <p><i>Les modifications ont bien été prises en compte!</i></p>
+                        </div>
+                        {% endif %}
                     </div>
-                    {% if profile_form_success %}
-                        <div class="form-row form-success" style="padding: 20px 10px 10px 10px; text-align: center; color: green;">Les modifications ont bien été prises en compte!</div>
-                    {% endif %}
                     <div class="form-footer">
                         <button type="submit">Modifier mes informations</button>
                         <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
@@ -186,10 +188,12 @@
                             {% endfor %}
                         </div>
                         {% endif %}
+                        {% if password_form_success %}
+                            <div class="form-row form-success">
+                                <p><i>Les modifications ont bien été prises en compte!</i></p>
+                            </div>
+                        {% endif %}
                     </div>
-                    {% if password_form_success %}
-                        <div class="form-row form-success" style="padding: 20px 10px 10px 10px; text-align: center; color: green;">Les modifications ont bien été prises en compte!</div>
-                    {% endif %}
                     <div class="form-footer">
                         <button type="submit">Modifier mon mot de passe</button>
                         <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
