@@ -14,7 +14,9 @@ class MaintenanceCreditModelFormTestCase(TestCase):
         hours_number = 10
         maintenance_type = 1
         form = MaintenanceCreditCreateForm(
-            company=self.company, data={"hours_number": hours_number, "maintenance_type": maintenance_type}
+            company=self.company,
+            hours_number_initial=8,
+            data={"hours_number": hours_number, "maintenance_type": maintenance_type},
         )
         self.assertTrue(form.is_valid(), form.errors)
         form.save()

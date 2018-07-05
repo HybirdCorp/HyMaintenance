@@ -1,0 +1,88 @@
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance Hybird &mdash; {{company.name}} ajouter des crédits</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/buy.css" />
+<script src="/static/js/segmented-selector.js"></script>
+</head>
+<body>
+{% include "high_ui/company_details_header.html" %}
+{% with default_activity_type=contracts.0.maintenance_type.css_class|default:"type-maintenance" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-content auto-min-height">
+                    <div class="form-group">
+                        <div class="group-title-container">
+                            <div class="group-title">Ajouter des heures</div>
+                            <label>Compte client</label>
+                            <span>{{company}}</span>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="{{form.hours_number.id_for_label}}">Quantité</label>
+                            <section class="segmented-selector type-maintenance selector-hours_number">
+                                {% for hours_number in hours_numbers %}
+                                <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
+                                   data-selector-key="{{hours_number}}"
+                                   data-selector-value="{{hours_number}}"
+                                   title="Ajout de {{hours_number}}">{{hours_number}}h</a>
+                                {% endfor %}
+                                {{form.hours_number}}
+                            </section>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="{{form.maintenance_type.id_for_label}}">Type de l'activité</label>
+                            <section class="segmented-selector {{default_activity_type}} selector-activity-type">
+                                {% for contract in available_time_contracts %}
+                                <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
+                                   data-selector-key="{{contract.maintenance_type.css_class}}"
+                                   data-selector-value="{{contract.maintenance_type.pk}}"
+                                   title="Activité de type '{{contract.get_counter_name}}'">{{contract.get_counter_name}}</a>
+                                {% endfor %}
+                                {{form.maintenance_type}}
+                            </section>
+                        </div>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                    <div>
+                        {% for error in form.non_field_errors %}
+                            <p><i>{{ error }}</i></p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-footer">
+                        <button type="submit">Ajouter des crédits</button>
+                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas ajouter</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endwith %}
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script>
+        var hoursSelector = document.querySelector(".selector-hours_number");
+        new SegmentedSelector (hoursSelector, function (currentKey, selectedKey) {});
+        var activityTypeSelector = new SegmentedSelector (document.querySelector(".selector-activity-type"),
+                                                          function (currentKey, selectedKey) {
+            var currentType = currentKey;
+            var selectedType = selectedKey;
+  
+            var typeDependentElements = document.querySelectorAll("." + currentType);
+            for (var j = 0; j < typeDependentElements.length; ++j) {
+                typeDependentElements[j].className = typeDependentElements[j].className.replace(currentType, selectedType);
+            }
+        });
+    </script>
+</body>
+</html>

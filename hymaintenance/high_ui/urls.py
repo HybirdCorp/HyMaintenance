@@ -2,6 +2,7 @@
 
 from django.urls import path
 
+from .views.credit import CreditCreateView
 from .views.dashboard import DashboardView
 from .views.issue import IssueCreateView
 from .views.issue import IssueDetailView
@@ -85,4 +86,5 @@ urlpatterns = [
     path(r"operators/archive/", OperatorUsersArchiveView.as_view(), name="archive_operators"),
     path(r"operators/unarchive/", OperatorUsersUnarchiveView.as_view(), name="unarchive_operators"),
     path(r"account/update/", UserUpdateView.as_view(), name="update_user"),
+    path(r"projects/<slug:company_name>/credits/", CreditCreateView.as_view(), name="project-create_credit"),
 ]
