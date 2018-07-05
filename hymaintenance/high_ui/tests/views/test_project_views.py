@@ -7,7 +7,6 @@ from django.utils.timezone import now
 
 from customers.models import Company
 from customers.tests.factories import AdminUserFactory
-from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.forms.project import INACTIF_CONTRACT_INPUT
@@ -301,80 +300,6 @@ class MonthDisplayInFrenchTestCase(TestCase):
         self.assertContains(response, french_months[month - 1])
 
 
-class IssueVisibilityTestCase(TestCase):
-    def setUp(self):
-        self.company = CompanyFactory()
-        self.factory = RequestFactory()
-
-    def create_project_details_view_with_request(self, user):
-        request = self.factory.get(reverse("high_ui:project_details", args=[self.company.slug_name]))
-        request.user = user
-        view = ProjectDetailsView()
-        view.request = request
-        view.company = self.company
-        return view
-
-    def test_manager_user_cannot_see_invisible(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
-        create_mtype_maintenance_and_issue(False, False, self.company)
-        view = self.create_project_details_view_with_request(user)
-        issues = view.get_maintenance_issues(now().date())
-        self.assertEqual(0, issues.count())
-
-    def test_manager_user_can_see_visible(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
-        create_mtype_maintenance_and_issue(True, True, self.company)
-        view = self.create_project_details_view_with_request(user)
-        issues = view.get_maintenance_issues(now().date())
-        self.assertEqual(1, issues.count())
-
-    def test_manager_user_cannot_see_invisible_in_contract(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
-        create_mtype_maintenance_and_issue(True, False, self.company)
-        view = self.create_project_details_view_with_request(user)
-        issues = view.get_maintenance_issues(now().date())
-        self.assertEqual(0, issues.count())
-
-    def test_manager_user_can_see_visible_in_contract(self):
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
-        create_mtype_maintenance_and_issue(False, True, self.company)
-        view = self.create_project_details_view_with_request(user)
-        issues = view.get_maintenance_issues(now().date())
-        self.assertEqual(1, issues.count())
-
-    def test_operator_user_can_see_invisible(self):
-        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        user.operator_for.add(self.company)
-        create_mtype_maintenance_and_issue(False, False, self.company)
-        view = self.create_project_details_view_with_request(user)
-        issues = view.get_maintenance_issues(now().date())
-        self.assertEqual(1, issues.count())
-
-    def test_operator_user_can_see_visible(self):
-        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        user.operator_for.add(self.company)
-        create_mtype_maintenance_and_issue(True, True, self.company)
-        view = self.create_project_details_view_with_request(user)
-        issues = view.get_maintenance_issues(now().date())
-        self.assertEqual(1, issues.count())
-
-    def test_operator_user_can_see_invisible_in_contract(self):
-        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        user.operator_for.add(self.company)
-        create_mtype_maintenance_and_issue(True, False, self.company)
-        view = self.create_project_details_view_with_request(user)
-        issues = view.get_maintenance_issues(now().date())
-        self.assertEqual(1, issues.count())
-
-    def test_operator_user_can_see_visible_in_contract(self):
-        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        user.operator_for.add(self.company)
-        create_mtype_maintenance_and_issue(False, True, self.company)
-        view = self.create_project_details_view_with_request(user)
-        issues = view.get_maintenance_issues(now().date())
-        self.assertEqual(1, issues.count())
-
-
 class GetContextDataProjectDetailsTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -474,7 +399,7 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         activities = view.get_activities(months, contracts)
         self.assertEqual(6, len(activities))
 
-    def test_admin_get_maintenance_issues(self):
+    def test_get_maintenance_issues(self):
         company, c1, c2, c3 = create_project(
             contract1={"start": datetime.date(2020, 2, 29)}, contract2={"disabled": True}, contract3={"visible": False}
         )
@@ -492,49 +417,13 @@ class GetContextDataProjectDetailsTestCase(TestCase):
             company=company, maintenance_type=c3.maintenance_type, number_minutes=12, date=datetime.date(2020, 2, 29)
         )
 
-        user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        form_url = reverse("high_ui:project_details", args=[company.slug_name])
-        factory = RequestFactory()
-        request = factory.get(form_url)
-        request.user = user
         view = ProjectDetailsView()
-        view.request = request
         view.company = company
 
-        issues = view.get_maintenance_issues(month)
+        contracts = MaintenanceContract.objects.filter(company=company, disabled=False)
+        issues = view.get_maintenance_issues(month, contracts)
 
         self.assertEqual(2, len(issues))
-
-    def test_manager_get_maintenance_issues(self):
-        company, c1, c2, c3 = create_project(
-            contract1={"start": datetime.date(2020, 2, 29)}, contract2={"disabled": True}, contract3={"visible": False}
-        )
-        month = datetime.date(2020, 2, 29)
-        MaintenanceIssueFactory(
-            company=company, maintenance_type=c1.maintenance_type, number_minutes=12, date=datetime.date(2020, 2, 29)
-        )
-        MaintenanceIssueFactory(
-            company=company, maintenance_type=c1.maintenance_type, number_minutes=12, date=datetime.date(2018, 2, 28)
-        )
-        MaintenanceIssueFactory(
-            company=company, maintenance_type=c2.maintenance_type, number_minutes=12, date=datetime.date(2020, 2, 29)
-        )
-        MaintenanceIssueFactory(
-            company=company, maintenance_type=c3.maintenance_type, number_minutes=12, date=datetime.date(2020, 2, 29)
-        )
-
-        user = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        form_url = reverse("high_ui:project_details", args=[company.slug_name])
-        factory = RequestFactory()
-        request = factory.get(form_url)
-        request.user = user
-        view = ProjectDetailsView()
-        view.request = request
-        view.company = company
-
-        issues = view.get_maintenance_issues(month)
-
-        self.assertEqual(1, len(issues))
 
     def test_get_history(self):
         months_nb = 6
@@ -553,15 +442,9 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         MaintenanceIssueFactory(
             company=company, maintenance_type=c3.maintenance_type, number_minutes=12, date=datetime.date(2020, 2, 29)
         )
-        contracts = MaintenanceContract.objects.filter(company=company)
+        contracts = MaintenanceContract.objects.filter(company=company, disabled=False)
 
-        user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        form_url = reverse("high_ui:project_details", args=[company.slug_name])
-        factory = RequestFactory()
-        request = factory.get(form_url)
-        request.user = user
         view = ProjectDetailsView()
-        view.request = request
         view.company = company
 
         months = view.get_last_months(datetime.date(2020, 2, 29))

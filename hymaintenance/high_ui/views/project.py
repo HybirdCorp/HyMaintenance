@@ -7,7 +7,6 @@ from django.views.generic import FormView
 from customers.models import Company
 from maintenance.forms.project import ProjectCreateForm
 from maintenance.forms.project import ProjectUpdateForm
-from maintenance.models import MaintenanceContract
 from maintenance.models import MaintenanceIssue
 
 from .base import IsAdminTestMixin
@@ -60,16 +59,8 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
     slug_url_kwarg = "company_name"
     slug_field = "slug_name"
 
-    def get_maintenance_issues(self, month):
-        user = self.request.user
-        if user.is_staff:
-            maintenance_type_ids = MaintenanceContract.objects.values_list("maintenance_type").filter(
-                company_id=self.company, disabled=False
-            )
-        else:
-            maintenance_type_ids = MaintenanceContract.objects.values_list("maintenance_type").filter(
-                visible=True, company_id=self.company, disabled=False
-            )
+    def get_maintenance_issues(self, month, contracts):
+        maintenance_type_ids = contracts.values_list("maintenance_type").all()
         issues = MaintenanceIssue.objects.filter(
             maintenance_type__in=maintenance_type_ids,
             company_id=self.company,
@@ -110,7 +101,7 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
         history = []
         for month in months:
             info_contract = self.get_contracts_month_informations(month, contracts)
-            info_issues = list(self.get_maintenance_issues(month))
+            info_issues = list(self.get_maintenance_issues(month, contracts))
             history.append((month, info_contract, info_issues))
         return history
 
