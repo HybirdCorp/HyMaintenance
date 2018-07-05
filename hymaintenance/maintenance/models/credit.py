@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -8,7 +10,7 @@ from .other_models import MaintenanceType
 
 class MaintenanceCredit(models.Model):
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
-    date = models.DateField(_("Date of Action"))
+    date = models.DateField(_("Date of Action"), default=datetime.date.today)
     maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT)
     hours_number = models.PositiveIntegerField(u"Hours number", default=0)
 
