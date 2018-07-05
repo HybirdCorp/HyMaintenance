@@ -72,12 +72,12 @@ class PrintOperatorProjectsTestCase(TestCase):
         self.user = OperatorUserFactory(id=self.op_id)
 
     def test_print_when_operator_has_no_project(self):
-        self.assertEqual(_("project:") + _("none"), print_operator_projects(self.op_id))
+        self.assertEqual(_("project:") + " " + _("none"), print_operator_projects(self.op_id))
 
     def test_print_when_operator_has_one_project(self):
         company = CompanyFactory()
         self.user.operator_for.add(company)
-        self.assertEqual(_("project:") + "{}".format(company.name), print_operator_projects(self.op_id))
+        self.assertEqual(_("project:") + " " + "{}".format(company.name), print_operator_projects(self.op_id))
 
     def test_print_when_operator_has_projects(self):
         company1 = CompanyFactory()
@@ -87,6 +87,6 @@ class PrintOperatorProjectsTestCase(TestCase):
         company3 = CompanyFactory()
         self.user.operator_for.add(company3)
         self.assertEqual(
-            _("projects:") + "{}, {}, {}".format(company1.name, company2.name, company3.name),
+            _("projects:") + " " + "{}, {}, {}".format(company1.name, company2.name, company3.name),
             print_operator_projects(self.op_id),
         )
