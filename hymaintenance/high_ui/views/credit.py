@@ -29,4 +29,4 @@ class CreditCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Creat
         return kwargs
 
     def get_success_url(self):
-        return reverse("high_ui:project-create_credit", kwargs={"company_name": self.object.company.slug_name})
+        return reverse("high_ui:project_details", kwargs={"company_name": self.object.company.slug_name})
