@@ -257,6 +257,15 @@ class ProjectDetailsViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_add_credit_button(self):
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Commander des heures")
+
 
 def create_mtype_maintenance_and_issue(maintenance_type_visibility, contract_visibility, company):
     maintenance_type = get_default_maintenance_type()
