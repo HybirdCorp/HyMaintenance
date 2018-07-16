@@ -11,6 +11,11 @@
         <span class="dashboard-value">{% pretty_print_contract_counter contract %}</span>
     </div>
     {% endfor %}
+    <div class="dashboard-item dashboard-button">
+        <div class="dashboard-value">
+            <a href='{% url 'high_ui:project-create_credit' company_name=company.slug_name %}'>Commander des heures</a>
+        </div>
+    </div>
 
     <div class="dashboard-item dashboard-contact">
         <span class="dashboard-title">{% trans "Your Contact" %}</span>
