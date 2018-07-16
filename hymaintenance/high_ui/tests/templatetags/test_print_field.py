@@ -4,10 +4,12 @@ from django.utils.translation import ugettext as _
 
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import OperatorUserFactory
+from maintenance.tests.factories import MaintenanceConsumerFactory
 from maintenance.tests.factories import MaintenanceContractFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import get_default_maintenance_type
 
+from ...templatetags.print_fields import hide_disabled_consumer
 from ...templatetags.print_fields import pretty_print_contract_counter
 from ...templatetags.print_fields import pretty_print_minutes
 from ...templatetags.print_fields import print_operator_projects
@@ -90,3 +92,12 @@ class PrintOperatorProjectsTestCase(TestCase):
             _("projects:") + " " + "{}, {}, {}".format(company1.name, company2.name, company3.name),
             print_operator_projects(self.op_id),
         )
+
+
+class HideDisabledConsumersTestCase(TestCase):
+    def test_hide_disabled_consumers(self):
+        consumer1 = MaintenanceConsumerFactory(is_used=True)
+        consumer2 = MaintenanceConsumerFactory(is_used=False)
+
+        self.assertEqual("", hide_disabled_consumer(consumer1.id))
+        self.assertEqual('class="disabled_consumer"', hide_disabled_consumer(consumer2.id))
