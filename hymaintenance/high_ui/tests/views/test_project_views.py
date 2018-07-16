@@ -15,7 +15,6 @@ from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import create_project
-from maintenance.tests.factories import get_default_maintenance_type
 
 from ...views.project import ProjectCreateView
 from ...views.project import ProjectDetailsView
@@ -265,19 +264,6 @@ class ProjectDetailsViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Commander des heures")
-
-
-def create_mtype_maintenance_and_issue(maintenance_type_visibility, contract_visibility, company):
-    maintenance_type = get_default_maintenance_type()
-    maintenance_type.visibility = maintenance_type_visibility
-    MaintenanceContract.objects.create(
-        company=company,
-        start=now().date(),
-        maintenance_type=maintenance_type,
-        visible=contract_visibility,
-        number_hours=40,
-    )
-    MaintenanceIssueFactory(company=company, maintenance_type=maintenance_type, number_minutes=12)
 
 
 class MonthDisplayInFrenchTestCase(TestCase):
