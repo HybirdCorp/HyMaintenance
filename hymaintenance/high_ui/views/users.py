@@ -1,6 +1,7 @@
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import SuspiciousOperation
 from django.urls import reverse
 from django.views.generic import CreateView
 from django.views.generic import FormView
@@ -266,6 +267,9 @@ class UserUpdateView(LoginRequiredMixin, TemplateView):
                 password_form.save()
                 update_session_auth_hash(request, password_form.user)
                 context["password_form_success"] = True
+
+        else:
+            raise SuspiciousOperation
 
         return self.render_to_response(
             self.get_context_data(profile_form=profile_form, password_form=password_form, **context)
