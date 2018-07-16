@@ -5,6 +5,7 @@ from django.utils.translation import ugettext as _
 
 from customers.models.user import MaintenanceUser
 from customers.models.user import get_companies_of_operator
+from maintenance.models.consumer import MaintenanceConsumer
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 
@@ -55,3 +56,11 @@ def print_operator_projects(operator_id):
         else:
             return _("projects:") + " " + ", ".join(projects_names)
     return _("project:") + " " + _("none")
+
+
+@register.filter
+def hide_disabled_consumer(consumer_id):
+    if consumer_id == "" or MaintenanceConsumer.objects.get(id=consumer_id).is_used:
+        return ""
+    else:
+        return mark_safe('class="disabled_consumer"')
