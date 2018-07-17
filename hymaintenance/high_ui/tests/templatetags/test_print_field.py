@@ -10,6 +10,7 @@ from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import get_default_maintenance_type
 
 from ...templatetags.print_fields import hide_disabled_consumer
+from ...templatetags.print_fields import hide_disabled_operator
 from ...templatetags.print_fields import pretty_print_contract_counter
 from ...templatetags.print_fields import pretty_print_minutes
 from ...templatetags.print_fields import print_operator_projects
@@ -94,10 +95,17 @@ class PrintOperatorProjectsTestCase(TestCase):
         )
 
 
-class HideDisabledConsumersTestCase(TestCase):
+class HideDisabledUsersTestCase(TestCase):
     def test_hide_disabled_consumers(self):
         consumer1 = MaintenanceConsumerFactory(is_used=True)
         consumer2 = MaintenanceConsumerFactory(is_used=False)
 
         self.assertEqual("", hide_disabled_consumer(consumer1.id))
         self.assertEqual('class="disabled_consumer"', hide_disabled_consumer(consumer2.id))
+
+    def test_hide_disabled_operators(self):
+        operator1 = OperatorUserFactory(is_active=True)
+        operator2 = OperatorUserFactory(is_active=False)
+
+        self.assertEqual("", hide_disabled_operator(operator1.id))
+        self.assertEqual('class="disabled_operator"', hide_disabled_operator(operator2.id))
