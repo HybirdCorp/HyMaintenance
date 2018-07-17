@@ -15,6 +15,57 @@ from ...views.users import OperatorUsersUpdateViewWithCompany
 class CreateOperatorTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
+        cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
+        cls.form_url = reverse("high_ui:create_operator")
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_manager_cannot_get_create_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_operator_cannot_get_create_form(self):
+        OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_admin_can_get_create_operator_form(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_operator_with_form(self):
+        first_name = "Barney"
+        last_name = "Calhoun"
+        email = "barney.calhoun@blackmesa.com"
+
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.post(
+            self.form_url,
+            {"first_name": first_name, "last_name": last_name, "email": email, "password": "letmein"},
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse("high_ui:dashboard"))
+
+        issues = MaintenanceUser.objects.filter(
+            email=email, first_name=first_name, last_name=last_name,
+        )
+        self.assertEqual(1, issues.count())
+
+
+class CreateOperatorWithCompanyTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
 
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
