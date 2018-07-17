@@ -64,3 +64,11 @@ def hide_disabled_consumer(consumer_id):
         return ""
     else:
         return mark_safe('class="disabled_consumer"')
+
+
+@register.filter
+def hide_disabled_operator(operator_id):
+    if operator_id == "" or MaintenanceUser.objects.get(id=operator_id).is_active:
+        return ""
+    else:
+        return mark_safe('class="disabled_operator"')
