@@ -123,9 +123,17 @@ class ManagerUsersUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin,
         return super().form_valid(form)
 
 
+class OperatorUserCreateView(IsAdminTestMixin, CreateView):
+    form_class = OperatorUserModelForm
+    template_name = "high_ui/forms/create_operator.html"
+
+    def get_success_url(self):
+        return reverse("high_ui:dashboard")
+
+
 class OperatorUserCreateViewWithCompany(ViewWithCompany, IsAdminTestMixin, CreateView):
     form_class = OperatorUserModelFormWithCompany
-    template_name = "high_ui/forms/create_operator.html"
+    template_name = "high_ui/forms/create_company_operator.html"
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

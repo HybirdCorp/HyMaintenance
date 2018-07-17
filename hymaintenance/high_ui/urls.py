@@ -16,6 +16,7 @@ from .views.users import ConsumerUpdateView
 from .views.users import ManagerUserCreateView
 from .views.users import ManagerUsersUpdateView
 from .views.users import ManagerUserUpdateView
+from .views.users import OperatorUserCreateView
 from .views.users import OperatorUserCreateViewWithCompany
 from .views.users import OperatorUsersArchiveView
 from .views.users import OperatorUsersUnarchiveView
@@ -66,6 +67,7 @@ urlpatterns = [
         ManagerUsersUpdateView.as_view(),
         name="project-update_managers",
     ),
+    path(r"operators/", OperatorUserCreateView.as_view(), name="create_operator"),
     path(
         r"projects/<slug:company_name>/operators/",
         OperatorUserCreateViewWithCompany.as_view(),

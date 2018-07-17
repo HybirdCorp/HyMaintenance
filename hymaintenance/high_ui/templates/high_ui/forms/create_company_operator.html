@@ -1,15 +1,17 @@
 {% extends 'high_ui/forms/base_user.html' %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; Nouveau intervenant</title>
+<title>Maintenance Hybird &mdash; Nouveau intervenant de {{company.name}}</title>
 {% endblock %}
 
 {% block header %}
-{% include "high_ui/dashboard_header.html" %}
+{% include "high_ui/company_details_header.html" %}
 {% endblock %}
 
 {% block form_title %}
 <div class="group-title">Nouvel intervenant</div>
+<label>Compte client</label>
+<span>{{company}}</span>
 {% endblock %}
 
 {% block form_footer %}
