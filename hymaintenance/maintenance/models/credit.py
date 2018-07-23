@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from customers.models import Company
 
 from .other_models import MaintenanceType
+from .utils import get_counter_name
 
 
 class MaintenanceCredit(models.Model):
@@ -21,3 +22,6 @@ class MaintenanceCredit(models.Model):
             self.maintenance_type,
             self.hours_number,
         )
+
+    def get_counter_name(self):
+        return get_counter_name(self)

@@ -50,8 +50,7 @@
             <div class="container history-container">
                 <div class="container-title">{% trans "History" %}</div>
 
-                {% for month, infos, info_issues in history %}
-                {% with info_issues|length as issue_count %}
+                {% for month, issues_count, infos, info_events in history %}
                 <div class="history-month">
                     <div class="dashboard">
                         <div class="dashboard-item">
@@ -62,8 +61,7 @@
                         <div class="dashboard-item history-month-issues">
                             <span class="dashboard-title">demandes</span>
                             <span class="dashboard-value">
-                                {% if issue_count == 0 %} &mdash; {% else %} {{ issue_count }} {% endif %}
-                                {# TMP: make sure the issues don't contain the "credit" operations #}
+                                {% if issues_count == 0 %} &mdash; {% else %} {{ issues_count }} {% endif %}
                             </span>
                         </div>
 
@@ -77,20 +75,28 @@
                         {% endfor %}
                     </div>
 
-                    {% if issue_count %}
+                    {% if info_events|length %}
                     <table class="history-items">
-                        {% for issue in info_issues %}
-                        <tr class="history-item {{issue.maintenance_type.css_class}}">
-                            <td class="history-item-date">{{issue.date|date:"d/m"}}</td>
-                            <td class="history-item-duration duration">{% pretty_print_minutes issue.number_minutes %}</td>
-                            <td class="history-item-type"><div class="type-tag">{{issue.get_counter_name}}</div></td>
-                            <td class="history-item-summary"><a href="{% url 'high_ui:project-issue_details' company_name=issue.company.slug_name company_issue_number=issue.company_issue_number %}">{{issue.subject}}</a></td>
+                        {% for event in info_events %}
+                        {% if event.type == "issue" %}
+                        <tr class="history-item {{event.css_class}}">
+                            <td class="history-item-date">{{event.date|date:"d/m"}}</td>
+                            <td class="history-item-duration duration">{% pretty_print_minutes event.number_minutes %}</td>
+                            <td class="history-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
+                            <td class="history-item-summary"><a href="{% url 'high_ui:project-issue_details' company_name=event.slug_name company_issue_number=event.company_issue_number %}">{{event.subject}}</a></td>
                         </tr>
+                        {% else %}
+                        <tr class="history-item {{event.css_class}}">
+                            <td class="history-item-date">{{event.date|date:"d/m"}}</td>
+                            <td class="history-item-duration duration">+{{event.hours_number}}</td>
+                            <td class="history-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
+                            <td class="history-item-summary">{% extra_credit_subject event.hours_number %}</td>
+                        </tr>
+                        {% endif %}
                         {% endfor %}
                     </table>
                     {% endif %}
                 </div>
-                {% endwith %}
                 {% endfor %}
             </div>
         </div>

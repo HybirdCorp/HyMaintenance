@@ -7,6 +7,7 @@ from django.views.generic import FormView
 from customers.models import Company
 from maintenance.forms.project import ProjectCreateForm
 from maintenance.forms.project import ProjectUpdateForm
+from maintenance.models import MaintenanceCredit
 from maintenance.models import MaintenanceIssue
 
 from .base import IsAdminTestMixin
@@ -59,15 +60,55 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
     slug_url_kwarg = "company_name"
     slug_field = "slug_name"
 
+    def get_ordered_issues_and_credits(self, month, contracts):
+        issues = self.get_maintenance_issues(month, contracts)
+        credits = self.get_maintenance_credits(month, contracts)
+
+        events = [
+            {
+                "type": "issue",
+                "css_class": issue.maintenance_type.css_class,
+                "date": issue.date,
+                "number_minutes": issue.number_minutes,
+                "counter_name": issue.get_counter_name,
+                "slug_name": issue.company.slug_name,
+                "company_issue_number": issue.company_issue_number,
+                "subject": issue.subject,
+            }
+            for issue in issues
+        ]
+
+        events = events + [
+            {
+                "type": "credit",
+                "css_class": credit.maintenance_type.css_class,
+                "date": credit.date,
+                "hours_number": credit.hours_number,
+                "counter_name": credit.get_counter_name,
+            }
+            for credit in credits
+        ]
+        events.sort(key=lambda item: item["date"], reverse=True)
+
+        return issues.count(), events
+
     def get_maintenance_issues(self, month, contracts):
         maintenance_type_ids = contracts.values_list("maintenance_type").all()
-        issues = MaintenanceIssue.objects.filter(
+        return MaintenanceIssue.objects.filter(
             maintenance_type__in=maintenance_type_ids,
             company_id=self.company,
             date__month=month.month,
             date__year=month.year,
-        ).order_by("-date")
-        return issues
+        )
+
+    def get_maintenance_credits(self, month, contracts):
+        maintenance_type_ids = contracts.values_list("maintenance_type").all()
+        return MaintenanceCredit.objects.filter(
+            maintenance_type__in=maintenance_type_ids,
+            company_id=self.company,
+            date__month=month.month,
+            date__year=month.year,
+        )
 
     def get_last_months(self, start=datetime.now()):
         last_month = start - timedelta(days=(start.day + 1))
@@ -101,8 +142,8 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
         history = []
         for month in months:
             info_contract = self.get_contracts_month_informations(month, contracts)
-            info_issues = list(self.get_maintenance_issues(month, contracts))
-            history.append((month, info_contract, info_issues))
+            issues_count, info_events = self.get_ordered_issues_and_credits(month, contracts)
+            history.append((month, issues_count, info_contract, info_events))
         return history
 
     def get_context_data(self, **kwargs):

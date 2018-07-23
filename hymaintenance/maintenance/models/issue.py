@@ -11,6 +11,7 @@ from customers.models import MaintenanceUser
 from .consumer import MaintenanceConsumer
 from .other_models import IncomingChannel
 from .other_models import MaintenanceType
+from .utils import get_counter_name
 
 
 class MaintenanceIssueAttachmentStorage(FileSystemStorage):
@@ -104,8 +105,7 @@ class MaintenanceIssue(models.Model):
         )
 
     def get_counter_name(self):
-        counter_name = self.company.contracts.filter(maintenance_type=self.maintenance_type).first().counter_name
-        return counter_name if counter_name != "" else self.maintenance_type.name
+        return get_counter_name(self)
 
     def get_hours(self):
         return self.number_minutes / 60

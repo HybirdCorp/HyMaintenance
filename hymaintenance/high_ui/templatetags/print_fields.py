@@ -1,5 +1,6 @@
 
 from django.template import Library
+from django.utils.html import format_html
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext as _
 
@@ -72,3 +73,8 @@ def hide_disabled_operator(operator_id):
         return ""
     else:
         return mark_safe('class="disabled_operator"')
+
+
+@register.simple_tag
+def extra_credit_subject(value):
+    return format_html(_("Add extra {duration}"), duration=format_html('<span class="duration">{}h</span>', value))

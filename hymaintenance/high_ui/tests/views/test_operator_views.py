@@ -57,9 +57,7 @@ class CreateOperatorTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse("high_ui:dashboard"))
 
-        issues = MaintenanceUser.objects.filter(
-            email=email, first_name=first_name, last_name=last_name,
-        )
+        issues = MaintenanceUser.objects.filter(email=email, first_name=first_name, last_name=last_name)
         self.assertEqual(1, issues.count())
 
 
