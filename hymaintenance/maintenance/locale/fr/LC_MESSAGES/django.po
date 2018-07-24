@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-05 13:29+0200\n"
+"POT-Creation-Date: 2018-07-24 11:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,8 +56,8 @@ msgstr "Total du temps consommé"
 msgid "Name of counter"
 msgstr "Nom du Modéle"
 
-#: maintenance/models/contract.py:29 maintenance/models/credit.py:10
-#: maintenance/models/issue.py:40
+#: maintenance/models/contract.py:29 maintenance/models/credit.py:13
+#: maintenance/models/issue.py:41
 msgid "Company"
 msgstr "Société"
 
@@ -77,21 +77,21 @@ msgstr ""
 msgid "Counter type"
 msgstr "Type de compteur"
 
-#: maintenance/models/credit.py:11
+#: maintenance/models/credit.py:14
 msgid "Date of Action"
 msgstr "Date de l'action"
 
-#: maintenance/models/issue.py:39
+#: maintenance/models/issue.py:40
 #, fuzzy
 #| msgid "Issue Date"
 msgid "Issue number"
 msgstr "Date du problème"
 
-#: maintenance/models/issue.py:62
+#: maintenance/models/issue.py:63
 msgid "Subject"
 msgstr "Sujet"
 
-#: maintenance/models/issue.py:63
+#: maintenance/models/issue.py:64
 msgid "Issue Date"
 msgstr "Date du problème"
 
@@ -115,6 +115,7 @@ msgstr "Canal d'entrée des demandes"
 msgid "Maintenance's Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
+#: maintenance/tests/forms/test_credit_forms.py:21
 #: maintenance/tests/forms/test_issue_forms.py:78
 #: maintenance/tests/forms/test_issue_forms.py:293
 #: maintenance/tests/forms/test_project_forms.py:65
