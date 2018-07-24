@@ -10,8 +10,8 @@ from .models import MaintenanceUser
 
 class CompanyAdmin(admin.ModelAdmin):
     model = Company
-    fields = ("name", "maintenance_contact")
-    list_display = ("name", "maintenance_contact")
+    fields = ("name", "contact")
+    list_display = ("name", "contact")
 
 
 class MaintenanceUserCreationForm(forms.ModelForm):

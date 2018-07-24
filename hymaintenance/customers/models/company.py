@@ -6,8 +6,10 @@ from django.utils.text import slugify
 class Company(models.Model):
     name = models.CharField("name", max_length=255)
     slug_name = models.SlugField(editable=False, unique=True, max_length=255)
-    maintenance_contact = models.CharField("name of internal contact", max_length=500)
     issues_counter = models.PositiveIntegerField(default=0)
+    contact = models.ForeignKey(
+        to="customers.MaintenanceUser", null=True, blank=True, on_delete=models.PROTECT, related_name="contact_of"
+    )
 
     __original_name = None
 
@@ -30,8 +32,8 @@ class Company(models.Model):
         if self.id is not None:
             if self.__original_name != self.name:
                 self.slug_name = self.slugify_company_name()
-                super().save(update_fields=["name", "maintenance_contact", "slug_name"])
-            super().save(update_fields=["name", "maintenance_contact"])
+                super().save(update_fields=["name", "slug_name", "contact"])
+            super().save(update_fields=["name", "contact"])
         else:
             self.slug_name = self.slugify_company_name()
             super().save(*args, **kwargs)
