@@ -9,11 +9,13 @@ from maintenance.tests.factories import MaintenanceContractFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import get_default_maintenance_type
 
+from ...templatetags.print_fields import extra_credit_subject
 from ...templatetags.print_fields import hide_disabled_consumer
 from ...templatetags.print_fields import hide_disabled_operator
 from ...templatetags.print_fields import pretty_print_contract_counter
 from ...templatetags.print_fields import pretty_print_minutes
 from ...templatetags.print_fields import print_operator_projects
+from ..utils import SetDjangoLanguage
 
 
 class PrettyPrintMinutesTestCase(SimpleTestCase):
@@ -109,3 +111,9 @@ class HideDisabledUsersTestCase(TestCase):
 
         self.assertEqual("", hide_disabled_operator(operator1.id))
         self.assertEqual('class="disabled_operator"', hide_disabled_operator(operator2.id))
+
+
+class ExtraCreditSubjectTestCase(TestCase):
+    def test(self):
+        with SetDjangoLanguage("en"):
+            self.assertEqual('Add extra <span class="duration">12h</span>', extra_credit_subject(12))
