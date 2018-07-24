@@ -10,7 +10,6 @@ class CompanyFactory(factory.django.DjangoModelFactory):
         model = Company
 
     name = "Black Mesa"
-    maintenance_contact = "G-Man"
 
 
 class MaintenanceUserFactory(factory.django.DjangoModelFactory):

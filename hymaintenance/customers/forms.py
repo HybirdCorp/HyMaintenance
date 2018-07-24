@@ -4,14 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from toolkit.forms import UsersMultipleChoiceField
 
-from .models import Company
 from .models import MaintenanceUser
-
-
-class CompanyCreateForm(forms.ModelForm):
-    class Meta:
-        model = Company
-        fields = ("name", "maintenance_contact")
 
 
 class MaintenanceUserModelForm(forms.ModelForm):
