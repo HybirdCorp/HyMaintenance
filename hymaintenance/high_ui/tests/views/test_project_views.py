@@ -64,6 +64,7 @@ class ProjectCreateViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_admin_can_post_form_to_create_a_project(self):
+        operator = OperatorUserFactory(first_name="Chell")
         company_name = "Black Mesa"
         # No support contract
         contract1_visible = INACTIF_CONTRACT_INPUT
@@ -87,6 +88,7 @@ class ProjectCreateViewTestCase(TestCase):
             self.form_url,
             {
                 "company_name": company_name,
+                "contact": operator.pk,
                 "contract1_visible": contract1_visible,
                 "contract1_total_type": contract1_total_type,
                 "contract1_number_hours": contract1_number_hours,
@@ -161,6 +163,7 @@ class ProjectUpdateViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_i_can_post_and_form_to_update_a_project(self):
+        operator = OperatorUserFactory(first_name="Chell")
         company_name = "Aperture Science"
         # No support contract
         contract1_visible = INACTIF_CONTRACT_INPUT
@@ -184,6 +187,7 @@ class ProjectUpdateViewTestCase(TestCase):
             self.form_url,
             {
                 "company_name": company_name,
+                "contact": operator.pk,
                 "contract1_visible": contract1_visible,
                 "contract1_total_type": contract1_total_type,
                 "contract1_number_hours": contract1_number_hours,
