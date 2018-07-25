@@ -233,6 +233,20 @@ class ProjectCreateFormTestCase(TestCase):
         expected = _("Enter a whole number.")
         self.assertEqual(form.errors["contract1_number_hours"], [expected])
 
+    def test_when_i_send_a_contact(self):
+        operator = OperatorUserFactory(first_name="Chell")
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contact"] = operator.pk
+
+        form = ProjectCreateForm(data=dict_for_post)
+        is_valid = form.is_valid()
+        form.create_company_and_contracts()
+
+        self.assertTrue(is_valid)
+        companies = Company.objects.all()
+        self.assertEqual(1, companies.count())
+        self.assertEqual(operator, companies.first().contact)
+
 
 class ProjectUpdateFormTestCase(TestCase):
     @classmethod
@@ -409,3 +423,46 @@ class ProjectUpdateFormTestCase(TestCase):
         self.assertEqual(1, len(form.errors))
         expected = _("Enter a whole number.")
         self.assertEqual(form.errors["contract1_number_hours"], [expected])
+
+    def test_when_i_send_a_contact(self):
+        operator = OperatorUserFactory(first_name="Chell")
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contact"] = operator.pk
+
+        form = ProjectUpdateForm(company=self.company, data=dict_for_post)
+        is_valid = form.is_valid()
+        form.update_company_and_contracts()
+
+        self.assertTrue(is_valid)
+        company = Company.objects.get(pk=self.company.pk)
+        self.assertEqual(operator, company.contact)
+
+    def test_when_i_remove_the_contact(self):
+        operator = OperatorUserFactory(first_name="Chell")
+        self.company.operator = operator
+        self.company.save()
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contact"] = None
+
+        form = ProjectUpdateForm(company=self.company, data=dict_for_post)
+        is_valid = form.is_valid()
+        form.update_company_and_contracts()
+
+        self.assertTrue(is_valid)
+        company = Company.objects.get(pk=self.company.pk)
+        self.assertEqual(None, company.contact)
+
+    def test_when_i_keep_the_same_contact(self):
+        operator = OperatorUserFactory(first_name="Chell")
+        self.company.operator = operator
+        self.company.save()
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contact"] = operator.pk
+
+        form = ProjectUpdateForm(company=self.company, data=dict_for_post)
+        is_valid = form.is_valid()
+        form.update_company_and_contracts()
+
+        self.assertTrue(is_valid)
+        company = Company.objects.get(pk=self.company.pk)
+        self.assertEqual(operator, company.contact)
