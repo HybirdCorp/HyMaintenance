@@ -17,6 +17,9 @@ INACTIF_CONTRACT_INPUT = -1
 # TODO: similarly, limit the consumer_who_ask MaintenanceConsumer to the current company ones
 class ProjectForm(forms.Form):
     company_name = forms.CharField(max_length=255, required=True)
+    contact = forms.ModelChoiceField(
+        required=False, widget=forms.Select, queryset=MaintenanceUser.objects.get_active_operator_users_queryset()
+    )
     contract1_counter_name = forms.CharField(max_length=255, required=True)
     contract2_counter_name = forms.CharField(max_length=255, required=True)
     contract3_counter_name = forms.CharField(max_length=255, required=True)
@@ -57,6 +60,11 @@ class ProjectCreateForm(ProjectForm):
     def create_company_and_contracts(self, operator=None):
         company_name = self.cleaned_data["company_name"]
         company = Company.objects.create(name=company_name)
+
+        if self.cleaned_data["contact"] is not None:
+            company.contact = self.cleaned_data["contact"]
+            company.save()
+
         if operator:
             operator.operator_for.add(company)
         else:
@@ -131,6 +139,7 @@ class ProjectUpdateForm(ProjectForm):
         self.contracts = list(self.company.contracts.order_by("maintenance_type_id"))
         super().__init__(*args, **kwargs)
         self.fields["company_name"].initial = self.company.name
+        self.fields["contact"].initial = self.company.contact
         self.fields["contract1_counter_name"].initial = self.contracts[0].get_counter_name()
         self.fields["contract2_counter_name"].initial = self.contracts[1].get_counter_name()
         self.fields["contract3_counter_name"].initial = self.contracts[2].get_counter_name()
@@ -191,9 +200,18 @@ class ProjectUpdateForm(ProjectForm):
             contract.save()
 
     def update_company_and_contracts(self):
+        company_is_modified = False
         company_name = self.cleaned_data["company_name"]
         if self.company.name != company_name:
             self.company.name = company_name
+            company_is_modified = True
+
+        company_contact = self.cleaned_data["contact"]
+        if self.company.contact != company_contact:
+            self.company.contact = company_contact
+            company_is_modified = True
+
+        if company_is_modified:
             self.company.save()
 
         self.update_contract(1, self.contracts[0])
