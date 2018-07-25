@@ -41,6 +41,22 @@
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
                         </div>
+                        <div class="form-row {% if form.contact.errors %}form-error{% endif %}">
+                            {% if form.contact.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.contact.id_for_label}}">Contact</label>
+                            {{form.contact}}
+
+                            {% if form.contact.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.contact.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <div class="form-group activation-active counter-total">
