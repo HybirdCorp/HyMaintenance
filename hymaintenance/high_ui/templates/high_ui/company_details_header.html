@@ -20,12 +20,12 @@
     <div class="dashboard-item dashboard-contact">
     {% if not request.user.is_staff %}
         <span class="dashboard-title">{% trans "Your Contact" %}</span>
-        <span class="dashboard-value">{{company.contact.first_name}} {{company.contact.last_name}}</span>
+        <span class="dashboard-value">{% pretty_print_name company.contact.first_name company.contact.last_name %}</span>
     </div>
     <div class="dashboard-item dashboard-user">
     {% endif %}
 	<span class="dashboard-title">{% if request.user.is_staff %}Hybird{% else %}{{request.user.company}}{% endif %}</span>
-        <span class="dashboard-value"><a href='{% url 'high_ui:update_user' %}'>{{request.user.first_name}} {{request.user.last_name}}</a></span>
+        <span class="dashboard-value"><a href='{% url 'high_ui:update_user' %}'>{% pretty_print_name request.user.first_name request.user.last_name %}</a></span>
     </div>
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
