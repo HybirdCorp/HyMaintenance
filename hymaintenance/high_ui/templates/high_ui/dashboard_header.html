@@ -25,7 +25,7 @@
     </div>
     <div class="dashboard-item dashboard-contact">
 	<span class="dashboard-title">Hybird</span>
-        <span class="dashboard-value"><a href='{% url 'high_ui:update_user' %}'>{{request.user.first_name}} {{request.user.last_name}}</a></span>
+        <span class="dashboard-value"><a href='{% url 'high_ui:update_user' %}'>{% pretty_print_name request.user.first_name request.user.last_name %}</a></span>
     </div>
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">

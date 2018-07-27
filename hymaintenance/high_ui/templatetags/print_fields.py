@@ -78,3 +78,13 @@ def hide_disabled_operator(operator_id):
 @register.simple_tag
 def extra_credit_subject(value):
     return format_html(_("Add extra {duration}"), duration=format_html('<span class="duration">{}h</span>', value))
+
+
+@register.simple_tag
+def pretty_print_name(first_name, last_name):
+    name = ""
+    if first_name:
+        name += format_html("{}", first_name.title())
+    if last_name:
+        name += format_html(" {}.", last_name[0].upper())
+    return name
