@@ -14,6 +14,7 @@ from ...templatetags.print_fields import hide_disabled_consumer
 from ...templatetags.print_fields import hide_disabled_operator
 from ...templatetags.print_fields import pretty_print_contract_counter
 from ...templatetags.print_fields import pretty_print_minutes
+from ...templatetags.print_fields import pretty_print_name
 from ...templatetags.print_fields import print_operator_projects
 from ..utils import SetDjangoLanguage
 
@@ -117,3 +118,26 @@ class ExtraCreditSubjectTestCase(TestCase):
     def test(self):
         with SetDjangoLanguage("en"):
             self.assertEqual('Add extra <span class="duration">12h</span>', extra_credit_subject(12))
+
+
+class PrettyPrintNameTestCase(TestCase):
+    def test_first_letter_upper_case(self):
+        self.assertEqual('Gordon F.', pretty_print_name("Gordon", "Freeman"))
+
+    def test_all_letter_lower_case(self):
+        self.assertEqual('Gordon F.', pretty_print_name("gordon", "freeman"))
+
+    def test_all_letter_upper_case(self):
+        self.assertEqual('Gordon F.', pretty_print_name("GORDON", "FREEMAN"))
+
+    def test_no_last_name(self):
+        self.assertEqual('Gordon', pretty_print_name("gordon", None))
+
+    def test_no_first_name(self):
+        self.assertEqual(' F.', pretty_print_name(None, "freeman"))
+
+    def test_no_name(self):
+        self.assertEqual('', pretty_print_name(None, None))
+
+    def test_no_name_empty_string(self):
+        self.assertEqual('', pretty_print_name('', ''))
