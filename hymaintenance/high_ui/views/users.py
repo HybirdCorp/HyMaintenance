@@ -16,6 +16,7 @@ from customers.forms import OperatorUserModelForm
 from customers.forms import OperatorUserModelFormWithCompany
 from customers.forms import OperatorUsersUpdateForm
 from customers.forms import OperatorUserUnarchiveForm
+from customers.forms import StaffUserProfileUpdateForm
 from customers.models.user import MaintenanceUser
 from maintenance.forms.consumer import MaintenanceConsumerModelForm
 from maintenance.forms.consumer import MaintenanceConsumersUpdateForm
@@ -243,12 +244,15 @@ class UserUpdateView(LoginRequiredMixin, TemplateView):
         form.fields["old_password"].widget.attrs["autofocus"] = False
         return form
 
-    def get_profile_form(self, *args, **kwargs):
-        return MaintenanceUserProfileUpdateForm(*args, **kwargs)
+    def get_profile_form(self, is_staff, *args, **kwargs):
+        if is_staff:
+            return StaffUserProfileUpdateForm(*args, **kwargs)
+        else:
+            return MaintenanceUserProfileUpdateForm(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         user = self.get_object()
-        profile_form = self.get_profile_form(instance=user)
+        profile_form = self.get_profile_form(is_staff=self.request.user.is_staff, instance=user)
         password_form = self.get_password_form(user)
         return self.render_to_response(self.get_context_data(profile_form=profile_form, password_form=password_form))
 
@@ -257,14 +261,14 @@ class UserUpdateView(LoginRequiredMixin, TemplateView):
 
         context = {}
         # initial state
-        profile_form = self.get_profile_form(instance=user)
+        profile_form = self.get_profile_form(is_staff=self.request.user.is_staff, instance=user)
         password_form = self.get_password_form(user)
 
         data = request.POST.copy()
         form_mod = data.pop("form-mod", [None])[0]
 
         if form_mod == "profile":
-            profile_form = self.get_profile_form(data=data, instance=user)
+            profile_form = self.get_profile_form(is_staff=self.request.user.is_staff, data=data, instance=user)
             if profile_form.is_valid():
                 profile_form.save()
                 context["profile_form_success"] = True

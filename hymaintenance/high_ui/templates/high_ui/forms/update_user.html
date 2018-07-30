@@ -81,6 +81,24 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
+                            {% if profile_form.phone %}
+                            <div class="form-row form-label-row {% if profile_form.phone.errors %}form-error{% endif %}">
+                                {% if profile_form.phone.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
+                            
+                                <label for="{{profile_form.phone.id_for_label}}">Téléphone</label>
+                                {{profile_form.phone}}
+                            
+                                {% if profile_form.phone.errors %}
+                                </div>
+                                {% endif %}
+                            
+                                {% for error in profile_form.phone.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
 
                             <div class="form-row form-label-row {% if profile_form.confirm_password.errors %}form-error{% endif %}">
                                 {% if profile_form.confirm_password.errors %}
