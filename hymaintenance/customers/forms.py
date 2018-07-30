@@ -62,6 +62,11 @@ class ManagerUsersUpdateForm(forms.Form):
 
 
 class OperatorUserModelForm(MaintenanceUserModelForm):
+    class Meta:
+        model = MaintenanceUser
+        fields = ("first_name", "last_name", "phone", "email", "password")
+        widgets = {"password": forms.PasswordInput()}
+
     def fill_user(self, user):
         user.is_staff = True
 
@@ -143,3 +148,13 @@ class MaintenanceUserProfileUpdateForm(forms.ModelForm):
         password = self.cleaned_data["confirm_password"]
         if not self.instance.check_password(password):
             raise ValidationError(_("Invalid password."))
+
+
+class StaffUserProfileUpdateForm(MaintenanceUserProfileUpdateForm):
+    confirm_password = forms.CharField(
+        label="Confirmer le mot de passe", strip=False, widget=forms.PasswordInput, required=True
+    )
+
+    class Meta:
+        model = MaintenanceUser
+        fields = ("confirm_password", "first_name", "last_name", "email", "phone")
