@@ -67,6 +67,7 @@ class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
         db_index=True,
         error_messages={"unique": _("A user with that username already exists.")},
     )
+    phone = models.CharField(_("phone number"), max_length=20, blank=True, null=True)
 
     is_staff = models.BooleanField(
         _("staff status"), default=False, help_text=_("Designates whether the user can log into this admin " "site.")
