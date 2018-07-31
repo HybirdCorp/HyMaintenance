@@ -122,22 +122,22 @@ class ExtraCreditSubjectTestCase(TestCase):
 
 class PrettyPrintNameTestCase(TestCase):
     def test_first_letter_upper_case(self):
-        self.assertEqual('Gordon F.', pretty_print_name("Gordon", "Freeman"))
+        self.assertEqual("Gordon F.", pretty_print_name("Gordon", "Freeman"))
 
     def test_all_letter_lower_case(self):
-        self.assertEqual('Gordon F.', pretty_print_name("gordon", "freeman"))
+        self.assertEqual("Gordon F.", pretty_print_name("gordon", "freeman"))
 
     def test_all_letter_upper_case(self):
-        self.assertEqual('Gordon F.', pretty_print_name("GORDON", "FREEMAN"))
+        self.assertEqual("Gordon F.", pretty_print_name("GORDON", "FREEMAN"))
 
     def test_no_last_name(self):
-        self.assertEqual('Gordon', pretty_print_name("gordon", None))
+        self.assertEqual("Gordon", pretty_print_name("gordon", None))
 
     def test_no_first_name(self):
-        self.assertEqual(' F.', pretty_print_name(None, "freeman"))
+        self.assertEqual(" F.", pretty_print_name(None, "freeman"))
 
     def test_no_name(self):
-        self.assertEqual('', pretty_print_name(None, None))
+        self.assertEqual("", pretty_print_name(None, None))
 
     def test_no_name_empty_string(self):
-        self.assertEqual('', pretty_print_name('', ''))
+        self.assertEqual("", pretty_print_name("", ""))
