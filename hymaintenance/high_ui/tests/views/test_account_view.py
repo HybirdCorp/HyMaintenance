@@ -4,6 +4,7 @@ from django.urls import reverse
 from customers.models import MaintenanceUser
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
+from customers.tests.factories import ManagerUserFactory
 
 
 class UpdateAccountTestCase(TestCase):
@@ -20,12 +21,37 @@ class UpdateAccountTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_update_profile_form(self):
+    def test_staff_update_profile_form(self):
+        first_name = "Barney"
+        last_name = "Calhoun"
+        email = "barney.calhoun@blackmesa.com"
+        phone = "+336 06 06 06 06"
+
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.post(
+            self.form_url,
+            {
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "phone": phone,
+                "confirm_password": "azerty",
+                "form-mod": "profile",
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Les modifications ont bien été prises en compte!")
+        self.assertEqual(self.admin.pk, MaintenanceUser.objects.get(email=email, phone=phone).pk)
+
+    def test_manager_update_profile_form(self):
+        user = ManagerUserFactory(email="glados@aperture-science.com", password="azerty")
         first_name = "Barney"
         last_name = "Calhoun"
         email = "barney.calhoun@blackmesa.com"
 
-        self.client.login(username=self.admin.email, password="azerty")
+        self.client.login(username=user.email, password="azerty")
         response = self.client.post(
             self.form_url,
             {
@@ -40,7 +66,7 @@ class UpdateAccountTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Les modifications ont bien été prises en compte!")
-        self.assertEqual(self.admin.pk, MaintenanceUser.objects.get(email=email).pk)
+        self.assertEqual(user.pk, MaintenanceUser.objects.get(email=email).pk)
 
     def test_errors_using_update_profile_form(self):
         first_name = "Barney"
