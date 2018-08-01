@@ -17,8 +17,8 @@ class Command(BaseCommand):
     ).format(email, password)
 
     def handle(self, *args, **options):
-        admins = MaintenanceUser.objects.filter(is_superuser=True)
-        if not admins:
+        admins_number = MaintenanceUser.objects.filter(is_superuser=True).count()
+        if admins_number == 0:
             admin = MaintenanceUser.objects.create(is_superuser=True, is_staff=True, is_active=True, email=email)
             admin.set_password(password)
             admin.save()
@@ -33,7 +33,7 @@ class Command(BaseCommand):
                     ).format(email, password)
                 )
             )
-        if admins == 1:
+        elif admins_number == 1:
             self.stdout.write(self.style.ERROR(_("There is already one admin user.")))
         else:
-            self.stdout.write(self.style.ERROR(_("There are already {} admin users.").format(admins.count())))
+            self.stdout.write(self.style.ERROR(_("There are already {} admin users.").format(admins_number)))

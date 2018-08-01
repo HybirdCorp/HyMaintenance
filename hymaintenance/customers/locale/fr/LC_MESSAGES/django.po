@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-24 11:41+0200\n"
+"POT-Creation-Date: 2018-08-01 13:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: customers/admin.py:23
+#: admin.py:23
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: customers/admin.py:24 customers/admin.py:56
+#: admin.py:24 admin.py:56
 msgid "Password"
 msgstr "Mot de passe"
 
-#: customers/admin.py:26
+#: admin.py:26
 msgid "Password confirmation"
 msgstr "Confirmation mot de passe"
 
-#: customers/admin.py:28
+#: admin.py:28
 msgid "Enter the same password as above, for verification."
 msgstr "Entrez le même mot de passe que précédement, pour vérification"
 
-#: customers/admin.py:58
+#: admin.py:58
 msgid ""
 "Raw passwords are not stored, so there is no way to see this user's "
 "password, but you can change the password using <a href=\"password/\">this "
@@ -43,69 +43,101 @@ msgstr ""
 "Les mots de passe ne sont pas stockés en clair. Vous pouvez les modifier en "
 "utilisant <a href=\"password/\">ce formulaire</a>. "
 
-#: customers/admin.py:89
+#: admin.py:89
 msgid "Permissions"
 msgstr "Permissions"
 
-#: customers/admin.py:95
+#: admin.py:95
 msgid "Personal info"
 msgstr "Informations personnelles"
 
-#: customers/forms.py:152 customers/tests/forms/test_user_forms.py:178
+#: forms.py:145 tests/forms/test_user_forms.py:178
 msgid "Invalid password."
 msgstr "Mot de passe invalide."
 
-#: customers/models/user.py:29
+#: management/commands/create_admin.py:14
+msgid ""
+"Create a admin user if it does not exist. The default login are:\n"
+"           * email: \"{}\"\n"
+"           * password: \"{}\"\n"
+"           Please do not forget to change this information."
+msgstr ""
+"S'il n'existe pas d'administrateur, créer un utilisateur administrateur. Les "
+"identifiants par défaut sont:           * email: \"{}\"\n"
+"           * mot de passe: \"{}\"\n"
+"           Merci de ne pas oublier de modifier ces informations."
+
+#: management/commands/create_admin.py:32
+msgid ""
+"Successfully create an admin user. the login are:\n"
+"                       * email: \"{}\"\n"
+"                       * password: \"{}\"\n"
+"                       Please do not forget to change this information."
+msgstr ""
+"L'utilisateur administrateur a bien été créée. Ces identifiants "
+"sont:           * email: \"{}\"\n"
+"           * mot de passe: \"{}\"\n"
+"           Merci de ne pas oublier de modifier ces informations."
+
+#: management/commands/create_admin.py:44
+msgid "There is already one admin user."
+msgstr "Il existe déjà un utilisateur administrateur."
+
+#: management/commands/create_admin.py:50
+#| msgid "There is already one admin user."
+msgid "There are already {} admin users."
+msgstr "Il existe déjà {} utilisateurs administrateurs."
+
+#: models/user.py:29
 msgid "The given email must be set"
 msgstr ""
 
-#: customers/models/user.py:59
+#: models/user.py:59
 msgid "Creation date"
 msgstr "Date de création"
 
-#: customers/models/user.py:60
+#: models/user.py:60
 msgid "Last modification date"
 msgstr "Date de dernière modification"
 
-#: customers/models/user.py:62
+#: models/user.py:62
 msgid "first name"
 msgstr "Prénom"
 
-#: customers/models/user.py:63
+#: models/user.py:63
 msgid "last name"
 msgstr "Nom de famille"
 
-#: customers/models/user.py:65
+#: models/user.py:65
 msgid "email address"
 msgstr "Adresse e-mail"
 
-#: customers/models/user.py:68
+#: models/user.py:68
 msgid "A user with that username already exists."
 msgstr "Un utilisateur avec ce login existe déjà"
 
-#: customers/models/user.py:72
+#: models/user.py:72
 msgid "staff status"
 msgstr "Status Staff"
 
-#: customers/models/user.py:72
+#: models/user.py:72
 msgid "Designates whether the user can log into this admin site."
 msgstr ""
 
-#: customers/models/user.py:75
+#: models/user.py:75
 msgid "active"
 msgstr "Actif"
 
-#: customers/models/user.py:78
+#: models/user.py:78
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
 msgstr ""
 
-#: customers/models/user.py:85
+#: models/user.py:85
 msgid "Managed Companies"
 msgstr ""
 
-#: customers/tests/forms/test_user_forms.py:29
-#: customers/tests/forms/test_user_forms.py:159
+#: tests/forms/test_user_forms.py:29 tests/forms/test_user_forms.py:159
 msgid "This field is required."
 msgstr ""
