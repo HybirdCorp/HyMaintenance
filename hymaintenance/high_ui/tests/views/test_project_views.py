@@ -302,7 +302,7 @@ class MonthDisplayInFrenchTestCase(TestCase):
             "mai",
             "juin",
             "juillet",
-            "aout",
+            "août",
             "septembre",
             "octobre",
             "novembre",
