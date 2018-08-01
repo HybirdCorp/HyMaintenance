@@ -63,6 +63,7 @@ class MaintenanceIssue(models.Model):
     subject = models.CharField(_("Subject"), max_length=500, default="une question")
     date = models.DateField(_("Issue Date"))
     maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT)
+    contract = models.ForeignKey(to="maintenance.MaintenanceContract", on_delete=models.PROTECT, null=True)
     description = models.TextField(null=True, blank=True)
 
     number_minutes = models.PositiveIntegerField(default=0, blank=True)
@@ -82,7 +83,7 @@ class MaintenanceIssue(models.Model):
         "incoming_channel",
         "subject",
         "date",
-        "maintenance_type",
+        "contract",
         "description",
         "resolution_date",
         "shipping_date",
