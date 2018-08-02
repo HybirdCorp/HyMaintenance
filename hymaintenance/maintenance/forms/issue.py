@@ -30,7 +30,7 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
             "description": forms.Textarea(attrs={"rows": 4}),
             "answer": forms.Textarea(attrs={"rows": 4}),
             "incoming_channel": forms.HiddenInput(),
-            "maintenance_type": forms.HiddenInput(),
+            "contract": forms.HiddenInput(),
             "context_description_file": AttachmentInput,
             "resolution_description_file": AttachmentInput,
         }

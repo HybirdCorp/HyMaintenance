@@ -10,9 +10,9 @@ from .models import MaintenanceType
 
 class MaintenanceIssueAdmin(admin.ModelAdmin):
     model = MaintenanceIssue
-    list_display = ("subject", "company", "consumer_who_ask", "date", "maintenance_type")
+    list_display = ("subject", "company", "consumer_who_ask", "date", "contract")
 
-    list_filter = ("consumer_who_ask", "company", "maintenance_type")
+    list_filter = ("consumer_who_ask", "company", "contract")
     search_fields = ("subject", "company__name")
 
 

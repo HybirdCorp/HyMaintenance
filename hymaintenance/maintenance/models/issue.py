@@ -10,7 +10,6 @@ from customers.models import MaintenanceUser
 
 from .consumer import MaintenanceConsumer
 from .other_models import IncomingChannel
-from .other_models import MaintenanceType
 from .utils import get_counter_name
 
 
@@ -62,8 +61,7 @@ class MaintenanceIssue(models.Model):
 
     subject = models.CharField(_("Subject"), max_length=500, default="une question")
     date = models.DateField(_("Issue Date"))
-    maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT)
-    contract = models.ForeignKey(to="maintenance.MaintenanceContract", on_delete=models.PROTECT, null=True)
+    contract = models.ForeignKey(to="maintenance.MaintenanceContract", on_delete=models.PROTECT)
     description = models.TextField(null=True, blank=True)
 
     number_minutes = models.PositiveIntegerField(default=0, blank=True)
@@ -102,7 +100,7 @@ class MaintenanceIssue(models.Model):
             self.date.strftime("%d/%m/%Y at %H:%M"),
             self.subject,
             self.company,
-            self.maintenance_type,
+            self.contract,
         )
 
     def get_counter_name(self):
