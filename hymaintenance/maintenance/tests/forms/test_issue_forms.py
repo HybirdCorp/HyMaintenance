@@ -9,15 +9,12 @@ from django.test import TestCase
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
 
-from customers.tests.factories import CompanyFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceIssue
 from maintenance.tests.factories import IncomingChannelFactory
 from maintenance.tests.factories import MaintenanceConsumerFactory
-from maintenance.tests.factories import MaintenanceContractFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import create_project
-from maintenance.tests.factories import get_default_maintenance_type
 
 from ...forms.issue import MaintenanceIssueCreateForm
 from ...forms.issue import MaintenanceIssueUpdateForm
@@ -46,11 +43,7 @@ class IssueCreateFormTestCase(TestCase):
         cls.tmp_directory = TemporaryDirectory(
             prefix="create-issue-view-", dir=os.path.join(settings.MEDIA_ROOT, "upload/")
         )
-        cls.company, contract1, _contract2, _contract3 = create_project(
-            company={"name": os.path.basename(cls.tmp_directory.name)}
-        )
-        cls.maintenance_type = contract1.maintenance_type
-        MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)
+        cls.company, cls.contract, _, _ = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
 
@@ -66,7 +59,7 @@ class IssueCreateFormTestCase(TestCase):
             "incoming_channel": self.channel.pk,
             "subject": subject,
             "date": now().date(),
-            "maintenance_type": self.maintenance_type.pk,
+            "contract": self.contract.pk,
             "description": description,
             "duration_type": "hours",
             "duration": 2,
@@ -81,7 +74,7 @@ class IssueCreateFormTestCase(TestCase):
             {
                 "subject": [expected],
                 "date": [expected],
-                "maintenance_type": [expected],
+                "contract": [expected],
                 "duration": [expected],
                 "duration_type": [expected],
             },
@@ -143,7 +136,7 @@ class IssueCreateFormTestCase(TestCase):
         self.assertEqual(1, issues.count())
         self.assertEqual(self.company, issues.first().company)
         self.assertEqual(subject, issues.first().subject)
-        self.assertEqual(self.maintenance_type, issues.first().maintenance_type)
+        self.assertEqual(self.contract, issues.first().contract)
         self.assertEqual(120, issues.first().number_minutes)
 
     def test_if_create_form_works_when_i_send_a_attachment(self):
@@ -252,14 +245,12 @@ class IssueUpdateFormTestCase(TestCase):
         cls.tmp_directory = TemporaryDirectory(
             prefix="create-issue-view-", dir=os.path.join(settings.MEDIA_ROOT, "upload/")
         )
-        cls.company = CompanyFactory(name=os.path.basename(cls.tmp_directory.name))
-        cls.maintenance_type = get_default_maintenance_type()
+        cls.company, cls.contract, _, _ = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
-        cls.contract = MaintenanceContractFactory(company=cls.company, maintenance_type=cls.maintenance_type)
 
     def setUp(self):
-        self.issue = MaintenanceIssueFactory(company=self.company, maintenance_type=self.maintenance_type)
+        self.issue = MaintenanceIssueFactory(company=self.company, contract=self.contract)
 
     def tearDown(self):
         rmtree(
@@ -281,7 +272,7 @@ class IssueUpdateFormTestCase(TestCase):
             "incoming_channel": self.channel.pk,
             "subject": subject,
             "date": now().date(),
-            "maintenance_type": self.maintenance_type.pk,
+            "contract": self.contract.pk,
             "description": description,
             "duration_type": "hours",
             "duration": 2,
@@ -296,7 +287,7 @@ class IssueUpdateFormTestCase(TestCase):
             {
                 "subject": [expected],
                 "date": [expected],
-                "maintenance_type": [expected],
+                "contract": [expected],
                 "duration": [expected],
                 "duration_type": [expected],
             },
@@ -359,7 +350,7 @@ class IssueUpdateFormTestCase(TestCase):
                 user_who_fix=self.user,
                 incoming_channel=self.channel,
                 subject=subject,
-                maintenance_type=self.maintenance_type,
+                contract=self.contract,
                 number_minutes=120,
                 description=description,
             ).count(),
