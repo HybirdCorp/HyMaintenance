@@ -187,10 +187,10 @@
                                 {% for contract in contracts %}
                                 <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
                                    data-selector-key="{{contract.maintenance_type.css_class}}"
-                                   data-selector-value="{{contract.maintenance_type.pk}}"
+                                   data-selector-value="{{contract.pk}}"
                                    title="Activité de type '{{contract.get_counter_name}}'">{{contract.get_counter_name}}</a>
                                 {% endfor %}
-                                {{form.maintenance_type}}
+                                {{form.contract}}
                             </section>
                         </div>
 

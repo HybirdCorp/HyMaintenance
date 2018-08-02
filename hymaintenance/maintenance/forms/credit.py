@@ -6,8 +6,8 @@ from ..models import MaintenanceCredit
 class MaintenanceCreditCreateForm(forms.ModelForm):
     class Meta:
         model = MaintenanceCredit
-        fields = ("hours_number", "maintenance_type")
-        widgets = {"hours_number": forms.HiddenInput(), "maintenance_type": forms.HiddenInput()}
+        fields = ("hours_number", "contract")
+        widgets = {"hours_number": forms.HiddenInput(), "contract": forms.HiddenInput()}
 
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")

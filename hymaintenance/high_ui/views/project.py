@@ -67,7 +67,7 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
         events = [
             {
                 "type": "issue",
-                "css_class": issue.maintenance_type.css_class,
+                "css_class": issue.contract.maintenance_type.css_class,
                 "date": issue.date,
                 "number_minutes": issue.number_minutes,
                 "counter_name": issue.get_counter_name,
@@ -81,7 +81,7 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
         events = events + [
             {
                 "type": "credit",
-                "css_class": credit.maintenance_type.css_class,
+                "css_class": credit.contract.maintenance_type.css_class,
                 "date": credit.date,
                 "hours_number": credit.hours_number,
                 "counter_name": credit.get_counter_name,
@@ -93,21 +93,13 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
         return issues.count(), events
 
     def get_maintenance_issues(self, month, contracts):
-        maintenance_type_ids = contracts.values_list("maintenance_type").all()
         return MaintenanceIssue.objects.filter(
-            maintenance_type__in=maintenance_type_ids,
-            company_id=self.company,
-            date__month=month.month,
-            date__year=month.year,
+            contract__in=contracts, company_id=self.company, date__month=month.month, date__year=month.year
         )
 
     def get_maintenance_credits(self, month, contracts):
-        maintenance_type_ids = contracts.values_list("maintenance_type").all()
         return MaintenanceCredit.objects.filter(
-            maintenance_type__in=maintenance_type_ids,
-            company_id=self.company,
-            date__month=month.month,
-            date__year=month.year,
+            contract__in=contracts, company_id=self.company, date__month=month.month, date__year=month.year
         )
 
     def get_last_months(self, start=datetime.now()):

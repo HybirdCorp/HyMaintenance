@@ -1,5 +1,5 @@
 {% load i18n print_fields %}
-<div class="dashboard {{object.maintenance_type.css_class}}">
+<div class="dashboard {{object.contract.maintenance_type.css_class}}">
     <div class="dashboard-item dashboard-account">
         <span class="dashboard-title">Compte</span>
         <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="Retour à l'accueil">{{object.company.name}}</a></span>

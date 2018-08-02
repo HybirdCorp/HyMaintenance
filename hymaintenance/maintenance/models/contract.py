@@ -43,9 +43,9 @@ class MaintenanceContract(models.Model):
         return self.counter_name if self.counter_name != "" else self.maintenance_type.name
 
     def get_number_contract_hours(self) -> int:
-        hours_sum = MaintenanceCredit.objects.filter(
-            company=self.company, maintenance_type=self.maintenance_type
-        ).aggregate(models.Sum("hours_number"))
+        hours_sum = MaintenanceCredit.objects.filter(company=self.company, contract=self).aggregate(
+            models.Sum("hours_number")
+        )
         hours_sum = hours_sum["hours_number__sum"]
         if hours_sum is None:
             hours_sum = 0
@@ -56,15 +56,15 @@ class MaintenanceContract(models.Model):
 
     def get_number_consumed_minutes_in_month(self, date: datetime.date) -> int:
         consumed = MaintenanceIssue.objects.filter(
-            company=self.company, date__month=date.month, date__year=date.year, maintenance_type=self.maintenance_type
+            company=self.company, date__month=date.month, date__year=date.year, contract=self
         ).aggregate(models.Sum("number_minutes"))
         consumed = consumed["number_minutes__sum"]
         return consumed if consumed is not None else 0
 
     def get_number_consumed_minutes(self) -> int:
-        consumed = MaintenanceIssue.objects.filter(
-            company=self.company, maintenance_type=self.maintenance_type
-        ).aggregate(models.Sum("number_minutes"))
+        consumed = MaintenanceIssue.objects.filter(company=self.company, contract=self).aggregate(
+            models.Sum("number_minutes")
+        )
         consumed = consumed["number_minutes__sum"]
         return consumed if consumed is not None else 0
 
@@ -74,7 +74,7 @@ class MaintenanceContract(models.Model):
 
     def get_number_credited_hours_in_month(self, date: datetime.date) -> int:
         credited = MaintenanceCredit.objects.filter(
-            company=self.company, date__month=date.month, date__year=date.year, maintenance_type=self.maintenance_type
+            company=self.company, date__month=date.month, date__year=date.year, contract=self
         ).aggregate(models.Sum("hours_number"))
         credited = credited["hours_number__sum"]
         if credited is None:

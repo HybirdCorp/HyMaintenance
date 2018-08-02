@@ -12,7 +12,7 @@
 <body>
     {% include "high_ui/issue_details_header.html" %}
     <div class="content-container">
-        <div class="home-link-header {{object.maintenance_type.css_class}}">
+        <div class="home-link-header {{object.contract.maintenance_type.css_class}}">
             <a href="{% url 'high_ui:dashboard' %}" title="Retour à l'accueil">Accueil</a> &nbsp;/&nbsp;
             <span>Demande n°{{object.company_issue_number}}</span> &nbsp;
             <div class="dashboard-item dashboard-button">
@@ -48,7 +48,7 @@
                 {% endif %}
             </div>
 
-            <div class="container resolution-container {{object.maintenance_type.css_class}}">
+            <div class="container resolution-container {{object.contract.maintenance_type.css_class}}">
                 <div class="container-title">Résolution</div>
                 <div class="property-container">
                     <span class="property-key">Intervenant</span>
