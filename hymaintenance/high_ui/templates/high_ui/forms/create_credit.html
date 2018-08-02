@@ -27,7 +27,7 @@
 
                         <div class="form-row">
                             <label for="{{form.hours_number.id_for_label}}">Quantité</label>
-                            <section class="segmented-selector type-maintenance selector-hours_number">
+                            <section class="segmented-selector {{default_activity_type}} selector-hours_number">
                                 {% for hours_number in hours_numbers %}
                                 <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
                                    data-selector-key="{{hours_number}}"
