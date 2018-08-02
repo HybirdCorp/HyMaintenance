@@ -38,9 +38,8 @@ class IssueCreateViewTestCase(TestCase):
             prefix="create-issue-view-", dir=os.path.join(settings.MEDIA_ROOT, "upload/")
         )
 
-        cls.company, contract1, _, _ = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
+        cls.company, cls.contract, _, _ = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
 
-        cls.maintenance_type = contract1.maintenance_type
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
 
@@ -58,7 +57,7 @@ class IssueCreateViewTestCase(TestCase):
             "incoming_channel": self.channel.pk,
             "subject": subject,
             "date": now().date(),
-            "maintenance_type": self.maintenance_type.pk,
+            "contract": self.contract.pk,
             "description": description,
             "duration_type": "hours",
             "duration": 2,
@@ -109,7 +108,7 @@ class IssueCreateViewTestCase(TestCase):
             consumer_who_ask=self.consumer,
             incoming_channel=self.channel,
             subject=subject,
-            maintenance_type=self.maintenance_type,
+            contract=self.contract,
             number_minutes=120,
             description=description,
         )
@@ -152,16 +151,14 @@ class IssueUpdateViewTestCase(TestCase):
             prefix="create-issue-view-", dir=os.path.join(settings.MEDIA_ROOT, "upload/")
         )
 
-        cls.company, contract1, _, _ = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
-
-        cls.maintenance_type = contract1.maintenance_type
+        cls.company, cls.contract, _, _ = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
 
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
 
     def setUp(self):
 
-        self.issue = MaintenanceIssueFactory(company=self.company, maintenance_type=self.maintenance_type)
+        self.issue = MaintenanceIssueFactory(company=self.company, contract=self.contract)
         self.form_url = reverse(
             "high_ui:project-update_issue",
             kwargs={
@@ -229,7 +226,7 @@ class IssueUpdateViewTestCase(TestCase):
                 "incoming_channel": self.channel.pk,
                 "subject": subject,
                 "date": "2017-03-22",
-                "maintenance_type": self.maintenance_type.pk,
+                "contract": self.contract.pk,
                 "description": description,
                 "duration_type": "hours",
                 "duration": 2,
@@ -251,7 +248,7 @@ class IssueUpdateViewTestCase(TestCase):
             consumer_who_ask=self.consumer,
             incoming_channel=self.channel,
             subject=subject,
-            maintenance_type=self.maintenance_type,
+            contract=self.contract,
             number_minutes=120,
             description=description,
         )
@@ -266,14 +263,13 @@ class IssueDetailViewTestCase(TestCase):
         cls.tmp_directory = TemporaryDirectory(
             prefix="issue_details-view-", dir=os.path.join(settings.MEDIA_ROOT, "upload/")
         )
-        cls.company, contract1, _, _ = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
+        cls.company, cls.contract, _, _ = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
 
-        cls.maintenance_type = contract1.maintenance_type
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
 
     def setUp(self):
-        self.issue = MaintenanceIssueFactory(company=self.company, maintenance_type=self.maintenance_type)
+        self.issue = MaintenanceIssueFactory(company=self.company, contract=self.contract)
         self.view_url = reverse(
             "high_ui:project-issue_details",
             kwargs={"company_name": self.company.slug_name, "company_issue_number": self.issue.company_issue_number},

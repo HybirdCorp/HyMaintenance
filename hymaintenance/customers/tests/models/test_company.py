@@ -3,7 +3,6 @@ from django.test import TestCase
 
 from maintenance.tests.factories import MaintenanceContractFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
-from maintenance.tests.factories import get_default_maintenance_type
 
 from ...models import Company
 from ..factories import CompanyFactory
@@ -30,8 +29,8 @@ class CompanyTestCase(TestCase):
 
     def test_if_counter_is_updated_when_new_issue(self):
         company = Company.objects.create(name="Black Mesa")
-        MaintenanceContractFactory(company=company)
-        MaintenanceIssueFactory(company=company, maintenance_type=get_default_maintenance_type())
+        contract = MaintenanceContractFactory(company=company)
+        MaintenanceIssueFactory(company=company, contract=contract)
         company = Company.objects.filter(name="Black Mesa").first()
         self.assertEqual(1, company.issues_counter)
 

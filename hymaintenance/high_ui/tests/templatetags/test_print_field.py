@@ -55,7 +55,7 @@ class PrettyPrintContractCounterTestCase(TestCase):
         contract = MaintenanceContractFactory(
             company=company, maintenance_type=maintenance_type, number_hours=1, total_type=total_type
         )
-        MaintenanceIssueFactory(company=company, maintenance_type=maintenance_type, number_minutes=10)
+        MaintenanceIssueFactory(company=company, contract=contract, number_minutes=10)
         return contract
 
     def test_print_comsummed_time(self):

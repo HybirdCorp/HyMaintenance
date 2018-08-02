@@ -7,7 +7,6 @@ from django.core.files import File
 from django.test import TestCase
 from django.utils.timezone import now
 
-from customers.tests.factories import CompanyFactory
 from customers.tests.factories import OperatorUserFactory
 
 from ...models import MaintenanceIssue
@@ -15,13 +14,11 @@ from ..factories import IncomingChannelFactory
 from ..factories import MaintenanceConsumerFactory
 from ..factories import MaintenanceIssueFactory
 from ..factories import create_project
-from ..factories import get_default_maintenance_type
 
 
 class MaintenanceIssueTestCase(TestCase):
     def test_i_can_create_a_maintenance_issue(self):
-        company = CompanyFactory()
-        maintenance_type = get_default_maintenance_type()
+        company, contract, _, _ = create_project()
         channel = IncomingChannelFactory()
         user = OperatorUserFactory()
         consumer = MaintenanceConsumerFactory()
@@ -33,7 +30,7 @@ class MaintenanceIssueTestCase(TestCase):
             incoming_channel=channel,
             subject="It's not working",
             date=now().date(),
-            maintenance_type=maintenance_type,
+            contract=contract,
             number_minutes=12,
             answer="Have you tried turning it off and on again?",
         )
@@ -53,22 +50,22 @@ class MaintenanceIssueTestCase(TestCase):
         self.assertEqual("", issue.who_ask())
 
     def test_issue_number_with_one_company(self):
-        company, contract1, _contract2, _contract3 = create_project()
-        issue = MaintenanceIssueFactory(company=company, maintenance_type=contract1.maintenance_type)
+        company, contract, _, _ = create_project()
+        issue = MaintenanceIssueFactory(company=company, contract=contract)
         self.assertEqual(1, issue.company_issue_number)
-        issue = MaintenanceIssueFactory(company=company, maintenance_type=contract1.maintenance_type)
+        issue = MaintenanceIssueFactory(company=company, contract=contract)
         self.assertEqual(2, issue.company_issue_number)
 
     def test_issue_number_when_one_company_already_exists(self):
-        company, contract1, _contract2, _contract3 = create_project()
-        MaintenanceIssueFactory(company=company, maintenance_type=contract1.maintenance_type)
-        company2, contract4, _contract5, _contract6 = create_project()
-        issue = MaintenanceIssueFactory(company=company2, maintenance_type=contract4.maintenance_type)
+        company, contract, _, _ = create_project()
+        MaintenanceIssueFactory(company=company, contract=contract)
+        company2, contract2, _, _ = create_project()
+        issue = MaintenanceIssueFactory(company=company2, contract=contract2)
         self.assertEqual(1, issue.company_issue_number)
 
     def test_upload_to_function(self):
-        company, contract1, _contract2, _contract3 = create_project()
-        issue = MaintenanceIssueFactory(company=company, maintenance_type=contract1.maintenance_type)
+        company, contract, _, _ = create_project()
+        issue = MaintenanceIssueFactory(company=company, contract=contract)
         self.assertEqual(
             os.path.join("upload", company.slug_name, "issue-" + str(issue.company_issue_number), "context", "my_file"),
             issue._meta.get_field("context_description_file").generate_filename(issue, "my_file"),
@@ -82,11 +79,9 @@ class MaintenanceIssueTestCase(TestCase):
 
     def test_upload_to_function_when_a_same_named_file_already_exists(self):
         tmp_directory = TemporaryDirectory(prefix="test-issue-", dir=os.path.join(settings.MEDIA_ROOT, "upload/"))
-        company, contract1, _contract2, _contract3 = create_project(
-            company={"name": os.path.basename(tmp_directory.name)}
-        )
+        company, contract, _, _ = create_project(company={"name": os.path.basename(tmp_directory.name)})
 
-        issue = MaintenanceIssueFactory(company=company, maintenance_type=contract1.maintenance_type)
+        issue = MaintenanceIssueFactory(company=company, contract=contract)
         with TemporaryFile() as tmp_file:
             issue.context_description_file.save("my_file", File(tmp_file), save=True)
             issue.resolution_description_file.save("my_file", File(tmp_file), save=True)
