@@ -28,9 +28,13 @@ def get_context_data_dashboard_header(user):
 def get_context_data_project_header(user, company):
     context = {}
     if user.is_staff:
-        context["contracts"] = MaintenanceContract.objects.filter(company=company, disabled=False)
+        context["contracts"] = MaintenanceContract.objects.filter(company=company, disabled=False).order_by(
+            "maintenance_type__pk"
+        )
     else:
-        context["contracts"] = MaintenanceContract.objects.filter(company=company, visible=True, disabled=False)
+        context["contracts"] = MaintenanceContract.objects.filter(
+            company=company, visible=True, disabled=False
+        ).order_by("maintenance_type__pk")
     context["company"] = company
     return context
 
