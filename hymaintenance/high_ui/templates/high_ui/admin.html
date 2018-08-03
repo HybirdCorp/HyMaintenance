@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance Hybird &mdash; Tableau de bord Hybird</title> {# TMP #}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/dashboard.css" />
+</head>
+<body>
+    {% include "high_ui/dashboard_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <div class="dashboard-item dashboard-button">
+                <div class="dashboard-value">
+                    <a href="#" title="Créer un administrateur">Créer un administrateur</a>
+                </div>
+            </div>
+            <div class="dashboard-item dashboard-button">
+                <div class="dashboard-value">
+                    <a href="#" title="Modifier un administrateur">Modifier un administrateur</a>
+                </div>
+            </div>
+            <div class="dashboard-item dashboard-button">
+                <div class="dashboard-value">
+                    <a href="#" title="Gérer la gestion des alertes emails">Alerte emails</a>
+                </div>
+            </div>
+            <div class="dashboard-item dashboard-button">
+                <div class="dashboard-value">
+                    <a href="#" title="Modifier le nom par défaut des types de contract">Modifier contracts par défaut</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+</body>
+</html>

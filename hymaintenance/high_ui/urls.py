@@ -2,6 +2,7 @@
 
 from django.urls import path
 
+from .views.admin import AdminView
 from .views.credit import CreditCreateView
 from .views.dashboard import DashboardView
 from .views.issue import IssueCreateView
@@ -31,6 +32,7 @@ app_name = "high_ui"
 
 urlpatterns = [
     path(r"", DashboardView.as_view(), name="dashboard"),
+    path(r"admin/", AdminView.as_view(), name="admin"),
     path(r"projects/<slug:company_name>/", ProjectDetailsView.as_view(), name="project_details"),
     path(r"projects/", ProjectCreateView.as_view(), name="create_project"),
     path(r"projects/<slug:company_name>/update/", ProjectUpdateView.as_view(), name="update_project"),
