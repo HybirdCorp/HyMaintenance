@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance Hybird &mdash; Modifier les compteurs par défaut</title> {# TMP #}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/create-project.css" />
+<link rel="stylesheet" href="/static/css/date-picker.css" />
+<script src="/static/js/segmented-selector.js"></script>
+<script src="/static/js/date-picker.js"></script>
+</head>
+<body>
+    {% include "high_ui/dashboard_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content">
+                    <div class="form-group">
+                        <div class="group-title-container">
+                            <div class="group-title">Compteurs par défaut</div>
+                        </div>
+                        <div class="form-row {% if form.maintenance_type1_name.errors %}form-error{% endif %}">
+                            {% if form.maintenance_type1_name.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.maintenance_type1_name.id_for_label}}">Compteur vert</label>
+                            {{form.maintenance_type1_name}}
+
+                            {% if form.maintenance_type1_name.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.maintenance_type1_name.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-row {% if form.maintenance_type2_name.errors %}form-error{% endif %}">
+                            {% if form.maintenance_type2_name.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.maintenance_type2_name.id_for_label}}">Compteur bleu</label>
+                            {{form.maintenance_type2_name}}
+
+                            {% if form.maintenance_type2_name.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.maintenance_type2_name.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-row {% if form.maintenance_type3_name.errors %}form-error{% endif %}">
+                            {% if form.maintenance_type3_name.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.maintenance_type3_name.id_for_label}}">Compteur gris</label>
+                            {{form.maintenance_type3_name}}
+
+                            {% if form.maintenance_type3_name.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.maintenance_type3_name.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+
+                    {% if form.non_field_errors %}
+                    <div>
+                        {% for error in form.non_field_errors %}
+                            <p><i>{{ error }}</i></p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-footer">
+                        <button type="submit">Modifier les compteurs</button>
+                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script>
+        var activationTypes = document.querySelectorAll(".form-row.row-activation-type");
+        for (var i = 0; i < activationTypes.length; ++i) {
+            var activationType = activationTypes[i];
+            new SegmentedSelector(activationType.querySelector(".segmented-selector"),
+                                  function(node, currentKey, selectedKey) {
+                var currentActivation = "activation-" + currentKey;
+                var selectedActivation = "activation-" + selectedKey;
+
+                var parent = node.parentElement;
+                parent.className = parent.className.replace(currentActivation, selectedActivation);
+
+                if (selectedActivation === "activation-inactive") {
+                    var creditInput = parent.querySelector(".row-credit input");
+                    creditInput.required = false;
+                }
+            }.bind(null, activationType));
+        }
+
+        var counterTypes = document.querySelectorAll(".form-row.row-counter-type");
+        for (var i = 0; i < counterTypes.length; ++i) {
+            var counterType = counterTypes[i];
+            new SegmentedSelector(counterType.querySelector(".segmented-selector"),
+                                  function (node, currentKey, selectedKey) {
+                var currentType = "counter-" + currentKey;
+                var selectedType = "counter-" + selectedKey;
+
+                var parent = node.parentElement;
+                parent.className = parent.className.replace(currentType, selectedType);
+
+                var creditInput = parent.querySelector(".row-credit input");
+                creditInput.required = selectedType === "counter-credit";
+            }.bind(null, counterType));
+        }
+        
+        var showMoreLinks = document.querySelectorAll(".form-group a.show-more");
+        for (var i = 0; i < showMoreLinks.length; ++i) {
+            var link = showMoreLinks[i];
+            
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                
+                var node = e.target;
+                var formGroup = node.parentElement.parentElement;
+                
+                var showMoreContainer = formGroup.querySelector(".show-more-container");
+                if (showMoreContainer.className.indexOf("is-showing") === -1) {
+                    showMoreContainer.className += " is-showing";
+                }
+                
+                node.parentElement.removeChild(node);
+            }, false);
+        }
+
+        // setup date pickers
+        var dateFields = ["{{form.contract1_date.id_for_label}}", "{{form.contract2_date.id_for_label}}", "{{form.contract3_date.id_for_label}}"];
+        for (var i = 0; i < dateFields.length; ++i) {
+            var fieldId = dateFields[i];
+            new DatePicker(document.getElementById(fieldId));
+        }
+    </script>
+</body>
+</html>
