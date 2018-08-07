@@ -8,6 +8,7 @@ from .views.dashboard import DashboardView
 from .views.issue import IssueCreateView
 from .views.issue import IssueDetailView
 from .views.issue import IssueUpdateView
+from .views.maintenance_type import MaintenanceTypeUpdateView
 from .views.project import ProjectCreateView
 from .views.project import ProjectDetailsView
 from .views.project import ProjectUpdateView
@@ -33,6 +34,7 @@ app_name = "high_ui"
 urlpatterns = [
     path(r"", DashboardView.as_view(), name="dashboard"),
     path(r"admin/", AdminView.as_view(), name="admin"),
+    path(r"counters/", MaintenanceTypeUpdateView.as_view(), name="update_maintenance_types"),
     path(r"projects/<slug:company_name>/", ProjectDetailsView.as_view(), name="project_details"),
     path(r"projects/", ProjectCreateView.as_view(), name="create_project"),
     path(r"projects/<slug:company_name>/update/", ProjectUpdateView.as_view(), name="update_project"),
