@@ -29,6 +29,9 @@
     </div>
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
+            {% if request.user.is_superuser %}
+            <a href="{% url 'high_ui:admin' %}" title="Accéder à la page d'administration d'HyMaintenance">Administration</a>
+            {% endif %}
             <a href="/logout" title="Quitter l'application">Déconnexion</a>
         </div>
     </div>
