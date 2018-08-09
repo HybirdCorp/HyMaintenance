@@ -278,7 +278,7 @@ class ProjectDetailsViewTestCase(TestCase):
         response = self.client.get(self.form_url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<td class="history-item-duration duration">+10</td>')
+        self.assertContains(response, '<td class="history-item-duration duration">+10h</td>')
 
 
 class MonthDisplayInFrenchTestCase(TestCase):
