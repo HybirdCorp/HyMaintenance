@@ -141,6 +141,13 @@ class UpdateManagerTestCase(TestCase):
         )
         self.assertEqual(1, managers.count())
 
+    def test_errors_on_update_manager_profile(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.post(self.form_url, {"first_name": "Chell", "form-mod": "profile"}, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "form-error")
+
     def test_update_manager_password_with_form(self):
         password = "my safe password"
 
@@ -152,6 +159,27 @@ class UpdateManagerTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
         self.assertTrue(MaintenanceUser.objects.get(pk=self.manager.pk).check_password(password))
+
+    def test_errors_on_update_manager_password(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.post(
+            self.form_url,
+            {"new_password1": "my safe password", "new_password2": "my password", "form-mod": "password"},
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "form-error")
+
+    def test_update_wrong_keyword_form(self):
+        password = "qwertyuiop"
+
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.post(
+            self.form_url, {"new_password1": password, "new_password2": password, "form-mod": "wrong"}, follow=True
+        )
+
+        self.assertEqual(response.status_code, 400)
 
 
 class UpdateManagerUsersTestCase(TestCase):

@@ -146,9 +146,6 @@ class ManagerUserUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, 
     def get_queryset(self):
         return MaintenanceUser.objects.get_manager_users_queryset()
 
-    def get_success_url(self):
-        return reverse("high_ui:project-update_managers", kwargs={"company_name": self.company.slug_name})
-
 
 class ManagerUsersUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, FormView):
     form_class = ManagerUsersUpdateForm
@@ -200,9 +197,6 @@ class OperatorUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
     def get_queryset(self):
         return MaintenanceUser.objects.get_operator_users_queryset()
 
-    def get_success_url(self):
-        return reverse("high_ui:update_operators")
-
 
 class OperatorUserUpdateViewWithCompany(ViewWithCompany, IsAdminTestMixin, MaintenanceUserUpdateView):
     template_name = "high_ui/forms/update_company_operator.html"
@@ -212,9 +206,6 @@ class OperatorUserUpdateViewWithCompany(ViewWithCompany, IsAdminTestMixin, Maint
 
     def get_queryset(self):
         return MaintenanceUser.objects.get_active_operator_users_queryset()
-
-    def get_success_url(self):
-        return reverse("high_ui:project-update_operators", kwargs={"company_name": self.company.slug_name})
 
 
 class OperatorUsersUpdateViewWithCompany(ViewWithCompany, IsAdminTestMixin, FormView):
