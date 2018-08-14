@@ -35,9 +35,12 @@ class MaintenanceUserCreateForm(MaintenanceUserModelForm):
         label=_("New password"),
         widget=forms.PasswordInput,
         strip=False,
+        required=True,
         help_text=password_validation.password_validators_help_text_html(),
     )
-    password2 = forms.CharField(label=_("New password confirmation"), strip=False, widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label=_("New password confirmation"), strip=False, required=True, widget=forms.PasswordInput
+    )
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
