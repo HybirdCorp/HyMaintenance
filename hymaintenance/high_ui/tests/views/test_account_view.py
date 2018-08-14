@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from customers.models import MaintenanceUser
 from customers.tests.factories import AdminUserFactory
@@ -42,7 +43,7 @@ class UpdateAccountTestCase(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Les modifications ont bien été prises en compte!")
+        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
         self.assertEqual(self.admin.pk, MaintenanceUser.objects.get(email=email, phone=phone).pk)
 
     def test_manager_update_profile_form(self):
@@ -65,7 +66,7 @@ class UpdateAccountTestCase(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Les modifications ont bien été prises en compte!")
+        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
         self.assertEqual(user.pk, MaintenanceUser.objects.get(email=email).pk)
 
     def test_errors_using_update_profile_form(self):
@@ -99,7 +100,7 @@ class UpdateAccountTestCase(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Les modifications ont bien été prises en compte!")
+        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
 
         self.assertTrue(MaintenanceUser.objects.get(pk=self.admin.pk).check_password(password))
 

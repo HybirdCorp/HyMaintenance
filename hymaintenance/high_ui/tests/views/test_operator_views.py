@@ -1,6 +1,7 @@
 from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from customers.models import MaintenanceUser
 from customers.tests.factories import AdminUserFactory
@@ -50,7 +51,13 @@ class CreateOperatorTestCase(TestCase):
         self.client.login(username=self.admin.email, password="azerty")
         response = self.client.post(
             self.form_url,
-            {"first_name": first_name, "last_name": last_name, "email": email, "password": "letmein"},
+            {
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "password1": "my safe password",
+                "password2": "my safe password",
+            },
             follow=True,
         )
 
@@ -102,7 +109,13 @@ class CreateOperatorWithCompanyTestCase(TestCase):
         self.client.login(username=self.admin.email, password="azerty")
         response = self.client.post(
             self.form_url,
-            {"first_name": first_name, "last_name": last_name, "email": email, "password": "letmein"},
+            {
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "password1": "my safe password",
+                "password2": "my safe password",
+            },
             follow=True,
         )
 
@@ -152,7 +165,7 @@ class UpdateOperatorWithCompanyTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_update_operator_with_form(self):
+    def test_update_operator_profile_with_form(self):
         first_name = "Barney"
         last_name = "Calhoun"
         email = "barney.calhoun@blackmesa.com"
@@ -160,16 +173,28 @@ class UpdateOperatorWithCompanyTestCase(TestCase):
         self.client.login(username=self.admin.email, password="azerty")
         response = self.client.post(
             self.form_url,
-            {"first_name": first_name, "last_name": last_name, "email": email, "password": "letmein"},
+            {"first_name": first_name, "last_name": last_name, "email": email, "form-mod": "profile"},
             follow=True,
         )
 
-        success_url = reverse("high_ui:project-update_operators", kwargs={"company_name": self.company.slug_name})
-        self.assertRedirects(response, success_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
         operators = MaintenanceUser.objects.filter(
             email=email, first_name=first_name, last_name=last_name, pk=self.operator.pk
         )
         self.assertEqual(1, operators.count())
+
+    def test_update_operator_password_with_form(self):
+        password = "my safe password"
+
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.post(
+            self.form_url, {"new_password1": password, "new_password2": password, "form-mod": "password"}, follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
+        self.assertTrue(MaintenanceUser.objects.get(pk=self.operator.pk).check_password(password))
 
 
 class UpdateOperatorTestCase(TestCase):
@@ -207,7 +232,7 @@ class UpdateOperatorTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_update_operator_with_form(self):
+    def test_update_operator_profile_with_form(self):
         first_name = "Barney"
         last_name = "Calhoun"
         email = "barney.calhoun@blackmesa.com"
@@ -215,15 +240,28 @@ class UpdateOperatorTestCase(TestCase):
         self.client.login(username=self.admin.email, password="azerty")
         response = self.client.post(
             self.form_url,
-            {"first_name": first_name, "last_name": last_name, "email": email, "password": "letmein"},
+            {"first_name": first_name, "last_name": last_name, "email": email, "form-mod": "profile"},
             follow=True,
         )
 
-        self.assertRedirects(response, reverse("high_ui:update_operators"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
         operators = MaintenanceUser.objects.filter(
             email=email, first_name=first_name, last_name=last_name, pk=self.operator.pk
         )
         self.assertEqual(1, operators.count())
+
+    def test_update_operator_password_with_form(self):
+        password = "my safe password"
+
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.post(
+            self.form_url, {"new_password1": password, "new_password2": password, "form-mod": "password"}, follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
+        self.assertTrue(MaintenanceUser.objects.get(pk=self.operator.pk).check_password(password))
 
 
 class UpdateOperatorUsersTestCase(TestCase):

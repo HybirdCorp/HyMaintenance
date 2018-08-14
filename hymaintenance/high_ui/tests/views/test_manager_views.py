@@ -1,6 +1,7 @@
 
 from django.test import TestCase
 from django.urls import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from customers.models import MaintenanceUser
 from customers.tests.factories import AdminUserFactory
@@ -58,7 +59,13 @@ class CreateManagerTestCase(TestCase):
         self.client.login(username=self.admin.email, password="azerty")
         response = self.client.post(
             self.form_url,
-            {"first_name": first_name, "last_name": last_name, "email": email, "password": "letmein"},
+            {
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "password1": "my safe password",
+                "password2": "my safe password",
+            },
             follow=True,
         )
 
@@ -115,7 +122,7 @@ class UpdateManagerTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_update_manager_with_form(self):
+    def test_update_manager_profile_with_form(self):
         first_name = "Barney"
         last_name = "Calhoun"
         email = "barney.calhoun@blackmesa.com"
@@ -123,16 +130,28 @@ class UpdateManagerTestCase(TestCase):
         self.client.login(username=self.admin.email, password="azerty")
         response = self.client.post(
             self.form_url,
-            {"first_name": first_name, "last_name": last_name, "email": email, "password": "letmein"},
+            {"first_name": first_name, "last_name": last_name, "email": email, "form-mod": "profile"},
             follow=True,
         )
 
-        success_url = reverse("high_ui:project-update_managers", kwargs={"company_name": self.company.slug_name})
-        self.assertRedirects(response, success_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
         managers = MaintenanceUser.objects.filter(
             email=email, first_name=first_name, last_name=last_name, company=self.company, pk=self.manager.pk
         )
         self.assertEqual(1, managers.count())
+
+    def test_update_manager_password_with_form(self):
+        password = "my safe password"
+
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.post(
+            self.form_url, {"new_password1": password, "new_password2": password, "form-mod": "password"}, follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
+        self.assertTrue(MaintenanceUser.objects.get(pk=self.manager.pk).check_password(password))
 
 
 class UpdateManagerUsersTestCase(TestCase):
