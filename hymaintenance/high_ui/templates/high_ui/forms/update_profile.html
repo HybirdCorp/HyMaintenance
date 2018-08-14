@@ -1,0 +1,31 @@
+{% extends 'high_ui/forms/update_user.html' %}
+
+{% block page_title %}
+<title>Maintenance Hybird &mdash; votre profil</title> {# TMP #}
+{% endblock %}
+
+{% block header %}
+{% include "high_ui/user_header.html" %}
+{% endblock %}
+                        
+{% block form_title %}
+<div class="group-title">Vos informations personnelles</div>
+{% endblock %}
+
+{% block profile_form_title %}
+<div class="group-title" title="Afficher/cacher le formulaire de modification de profil">Modifier votre profil</div>
+{% endblock %}
+
+{% block profile_form_footer %}
+<button type="submit">Modifier mes informations</button>
+<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+{% endblock %}
+
+{% block password_form_title %}
+<div class="group-title" title="Afficher/cacher le formulaire de modification de profil">Modifier votre profil</div>
+{% endblock %}
+
+{% block password_form_footer %}
+<button type="submit">Modifier mon mot de passe</button>
+<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+{% endblock %}

@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
@@ -10,12 +11,10 @@ from .models import MaintenanceUser
 class MaintenanceUserModelForm(forms.ModelForm):
     class Meta:
         model = MaintenanceUser
-        fields = ("first_name", "last_name", "email", "password")
-        widgets = {"password": forms.PasswordInput()}
+        fields = ("first_name", "last_name", "email")
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password"])
 
         self.fill_user(user)
 
@@ -30,7 +29,35 @@ class MaintenanceUserModelForm(forms.ModelForm):
         pass
 
 
-class ManagerUserModelForm(MaintenanceUserModelForm):
+class MaintenanceUserCreateForm(MaintenanceUserModelForm):
+    error_messages = {"password_mismatch": _("The two password fields didn't match.")}
+    password1 = forms.CharField(
+        label=_("New password"),
+        widget=forms.PasswordInput,
+        strip=False,
+        help_text=password_validation.password_validators_help_text_html(),
+    )
+    password2 = forms.CharField(label=_("New password confirmation"), strip=False, widget=forms.PasswordInput)
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2:
+            if password1 != password2:
+                raise forms.ValidationError(self.error_messages["password_mismatch"], code="password_mismatch")
+        password_validation.validate_password(password2)
+        return password2
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+
+        if commit:
+            user.save()
+        return user
+
+
+class ManagerUserCreateForm(MaintenanceUserCreateForm):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
         super().__init__(*args, **kwargs)
@@ -61,17 +88,22 @@ class ManagerUsersUpdateForm(forms.Form):
                 manager.save()
 
 
-class OperatorUserModelForm(MaintenanceUserModelForm):
+class OperatorUserCreateForm(MaintenanceUserCreateForm):
     class Meta:
         model = MaintenanceUser
-        fields = ("first_name", "last_name", "phone", "email", "password")
-        widgets = {"password": forms.PasswordInput()}
+        fields = ("first_name", "last_name", "phone", "email")
 
     def fill_user(self, user):
         user.is_staff = True
 
 
-class OperatorUserModelFormWithCompany(OperatorUserModelForm):
+class OperatorUserUpdateForm(MaintenanceUserModelForm):
+    class Meta:
+        model = MaintenanceUser
+        fields = ("first_name", "last_name", "phone", "email")
+
+
+class OperatorUserCreateFormWithCompany(OperatorUserCreateForm):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
         super().__init__(*args, **kwargs)

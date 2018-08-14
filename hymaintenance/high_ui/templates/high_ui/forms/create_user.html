@@ -55,7 +55,25 @@
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
                         </div>
-                        {% block phone_field %}{% endblock %}
+                        {% if form.phone %}
+                        <div class="form-row form-label-row {% if form.phone.errors %}form-error{% endif %}">
+                            {% if form.phone.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+                        
+                            <label for="{{form.phone.id_for_label}}">Téléphone</label>
+                            {{form.phone}}
+                        
+                            {% if form.phone.errors %}
+                            </div>
+                            {% endif %}
+                        
+                            {% for error in form.phone.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
                     </div>
 
                     <div class="form-group">
@@ -80,19 +98,36 @@
                             {% endfor %}
                         </div>
 
-                        <div class="form-row form-label-row {% if form.password.errors %}form-error{% endif %}">
-                            {% if form.password.errors %}
+                        <div class="form-row form-label-row {% if form.password1.errors %}form-error{% endif %}">
+                            {% if form.password1.errors %}
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.password.id_for_label}}">Mot de passe *</label>
-                            {{form.password}}
+                            <label for="{{form.password1.id_for_label}}">Mot de passe *</label>
+                            {{form.password1}}
 
-                            {% if form.password.errors %}
+                            {% if form.password1.errors %}
                             </div>
                             {% endif %}
 
-                            {% for error in form.password.errors %}
+                            {% for error in form.password1.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-row form-label-row {% if form.password2.errors %}form-error{% endif %}">
+                            {% if form.password2.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.password2.id_for_label}}">Confirmation du mot de passe *</label>
+                            {{form.password2}}
+
+                            {% if form.password2.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.password2.errors %}
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
                         </div>
