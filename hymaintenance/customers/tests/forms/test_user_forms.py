@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
+from ...forms import MaintenanceUserCreateForm
 from ...forms import MaintenanceUserModelForm
 from ...forms import MaintenanceUserProfileUpdateForm
 from ...forms import ManagerUserCreateForm
@@ -32,6 +33,19 @@ class UserCreateFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
         expected = _("This field is required.")
         self.assertDictEqual(form.errors, {"email": [expected]})
+
+    def test_password_mismatch_error(self):
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["password2"] = "my password"
+        form = MaintenanceUserCreateForm(data=dict_for_post)
+        self.assertFalse(form.is_valid())
+        self.assertEqual([_("The two password fields didn't match.")], form.errors["password2"])
+
+    def test_wen_one_password_is_missing(self):
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["password1"] = None
+        form = MaintenanceUserCreateForm(data=dict_for_post)
+        self.assertFalse(form.is_valid())
 
     def test_if_create_user_form_works(self):
         self.assertEqual(0, MaintenanceUser.objects.filter().count())
