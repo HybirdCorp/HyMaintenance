@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-24 11:41+0200\n"
+"POT-Creation-Date: 2018-08-14 17:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,73 +18,69 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: high_ui/templates/high_ui/company_details.html:20
+#: templates/high_ui/company_details.html:20
 msgid "Summary"
 msgstr "Résumé"
 
-#: high_ui/templates/high_ui/company_details.html:37
+#: templates/high_ui/company_details.html:37
 msgid "consumed"
 msgstr "consommées"
 
-#: high_ui/templates/high_ui/company_details.html:40
+#: templates/high_ui/company_details.html:40
 msgid "credited"
 msgstr "créditées"
 
-#: high_ui/templates/high_ui/company_details.html:51
+#: templates/high_ui/company_details.html:51
 msgid "History"
 msgstr "Historique"
 
-#: high_ui/templates/high_ui/company_details_header.html:4
-#: high_ui/templates/high_ui/user_header.html:8
+#: templates/high_ui/company_details_header.html:4
+#: templates/high_ui/user_header.html:8
 msgid "Account"
 msgstr "Compte"
 
-#: high_ui/templates/high_ui/company_details_header.html:21
-#: high_ui/templates/high_ui/dashboard_header.html:27
+#: templates/high_ui/company_details_header.html:22
+#: templates/high_ui/issue_details_header.html:21
 msgid "Your Contact"
 msgstr "Votre Contact"
 
-#: high_ui/templates/high_ui/company_details_header.html:32
-#: high_ui/templates/high_ui/user_header.html:23
+#: templates/high_ui/company_details_header.html:32
+#: templates/high_ui/user_header.html:19
 msgid "Disconnect"
 msgstr "Déconnexion"
 
-#: high_ui/templates/high_ui/dashboard_header.html:4
-#: high_ui/templates/high_ui/user_header.html:5
+#: templates/high_ui/dashboard_header.html:4
+#: templates/high_ui/user_header.html:5
 msgid "Tableau de bord"
 msgstr ""
 
-#: high_ui/templates/high_ui/login.html:5
-#: high_ui/templates/high_ui/login.html:475
+#: templates/high_ui/login.html:5 templates/high_ui/login.html:475
 msgid "Log in"
 msgstr "Loguez vous"
 
-#: high_ui/templates/high_ui/login.html:466
+#: templates/high_ui/login.html:466
 msgid "Username"
 msgstr "Login"
 
-#: high_ui/templates/high_ui/login.html:470
+#: templates/high_ui/login.html:470
 msgid "Password"
 msgstr "Mot de passe"
 
-#: high_ui/templatetags/print_fields.py:56
-#: high_ui/templatetags/print_fields.py:59
-#: high_ui/tests/templatetags/test_print_field.py:80
-#: high_ui/tests/templatetags/test_print_field.py:85
+#: templatetags/print_fields.py:56 templatetags/print_fields.py:59
+#: tests/templatetags/test_print_field.py:81
+#: tests/templatetags/test_print_field.py:86
 msgid "project:"
 msgstr "projet :"
 
-#: high_ui/templatetags/print_fields.py:58
-#: high_ui/tests/templatetags/test_print_field.py:95
+#: templatetags/print_fields.py:58 tests/templatetags/test_print_field.py:96
 msgid "projects:"
 msgstr "projets :"
 
-#: high_ui/templatetags/print_fields.py:59
-#: high_ui/tests/templatetags/test_print_field.py:80
+#: templatetags/print_fields.py:59 tests/templatetags/test_print_field.py:81
 msgid "none"
 msgstr "aucun"
 
-#: high_ui/templatetags/print_fields.py:80
+#: templatetags/print_fields.py:80
 #, python-brace-format
 msgid "Add extra {duration}"
 msgstr "Ajout de {duration} supplémentaires"

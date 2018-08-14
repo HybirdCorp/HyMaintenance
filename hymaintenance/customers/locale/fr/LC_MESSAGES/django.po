@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-01 13:01+0200\n"
+"POT-Creation-Date: 2018-08-14 17:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,11 +51,11 @@ msgstr "Permissions"
 msgid "Personal info"
 msgstr "Informations personnelles"
 
-#: forms.py:145 tests/forms/test_user_forms.py:178
+#: forms.py:150 tests/forms/test_user_forms.py:178
 msgid "Invalid password."
 msgstr "Mot de passe invalide."
 
-#: management/commands/create_admin.py:14
+#: management/commands/create_admin.py:13
 msgid ""
 "Create a admin user if it does not exist. The default login are:\n"
 "           * email: \"{}\"\n"
@@ -67,7 +67,7 @@ msgstr ""
 "           * mot de passe: \"{}\"\n"
 "           Merci de ne pas oublier de modifier ces informations."
 
-#: management/commands/create_admin.py:32
+#: management/commands/create_admin.py:31
 msgid ""
 "Successfully create an admin user. the login are:\n"
 "                       * email: \"{}\"\n"
@@ -79,12 +79,11 @@ msgstr ""
 "           * mot de passe: \"{}\"\n"
 "           Merci de ne pas oublier de modifier ces informations."
 
-#: management/commands/create_admin.py:44
+#: management/commands/create_admin.py:39 tests/test_commands.py:33
 msgid "There is already one admin user."
 msgstr "Il existe déjà un utilisateur administrateur."
 
-#: management/commands/create_admin.py:50
-#| msgid "There is already one admin user."
+#: management/commands/create_admin.py:41 tests/test_commands.py:45
 msgid "There are already {} admin users."
 msgstr "Il existe déjà {} utilisateurs administrateurs."
 
@@ -116,28 +115,38 @@ msgstr "Adresse e-mail"
 msgid "A user with that username already exists."
 msgstr "Un utilisateur avec ce login existe déjà"
 
-#: models/user.py:72
+#: models/user.py:70
+msgid "phone number"
+msgstr ""
+
+#: models/user.py:73
 msgid "staff status"
 msgstr "Status Staff"
 
-#: models/user.py:72
+#: models/user.py:73
 msgid "Designates whether the user can log into this admin site."
 msgstr ""
 
-#: models/user.py:75
+#: models/user.py:76
 msgid "active"
 msgstr "Actif"
 
-#: models/user.py:78
+#: models/user.py:79
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
 msgstr ""
 
-#: models/user.py:85
+#: models/user.py:86
 msgid "Managed Companies"
 msgstr ""
 
 #: tests/forms/test_user_forms.py:29 tests/forms/test_user_forms.py:159
 msgid "This field is required."
 msgstr ""
+
+#: tests/test_commands.py:22
+#, fuzzy
+#| msgid "There is already one admin user."
+msgid "Successfully create an admin user."
+msgstr "Il existe déjà un utilisateur administrateur."
