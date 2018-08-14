@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; votre profil</title> {# TMP #}
+{% block page_title %}{% endblock %}
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -12,13 +12,13 @@
 <link rel="stylesheet" href="/static/css/edit-operators.css" />
 </head>
 <body>
-{% include "high_ui/user_header.html" %}
+{% block header %}{% endblock %}
     <div class="content-container">
         <div class="content">
             <div class="form-content">
                 <div class="form-intro">
                     <div class="group-title-container">
-                        <div class="group-title">Vos informations personnelles</div>
+                        {% block form_title %}{% endblock %}
                     </div>
                 </div>
                 <form action="" method="post">
@@ -26,7 +26,7 @@
                     <input type="hidden" name="form-mod" value="profile">
                     <div class="form-group archive-group form-group-collapsable">
                         <div class="group-title-container">
-                            <div class="group-title" title="Afficher/cacher le formulaire de modification de profil">Modifier votre profil</div>
+                            {% block profile_form_title %}{% endblock %}
                         </div>
 
                         <div class="form-group-collapsable-content">
@@ -100,6 +100,7 @@
                             </div>
                             {% endif %}
 
+                            {% if profile_form.confirm_password %}
                             <div class="form-row form-label-row {% if profile_form.confirm_password.errors %}form-error{% endif %}">
                                 {% if profile_form.confirm_password.errors %}
                                 <div class="form-row-wrapper">
@@ -116,6 +117,7 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
+                            {% endif %}
                         </div>
 
                         {% if profile_form.non_field_errors %}
@@ -132,20 +134,20 @@
                         {% endif %}
                     </div>
                     <div class="form-footer">
-                        <button type="submit">Modifier mes informations</button>
-                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+                        {% block profile_form_footer %}{% endblock %}
                     </div>
                 </form>
                 <form action="" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="form-mod" value="password">
-                    <div class="form-group archive-group form-group-collapsable">
+                    <div class="form-group archive-group form-group-collapsable {% if not password_form.errors and not password_form_success %}form-group-collapsed{% endif %}">
                         <div class="group-title-container">
-                            <div class="group-title" title="Afficher/cacher le formulaire de modification de mot de passe">Modifier votre mot de passe</div>
+                            {% block password_form_title %}{% endblock %}
                         </div>
 
                         <div class="form-group-collapsable-content">
 
+                            {% if password_form.old_password %}
                             <div class="form-row form-label-row {% if password_form.old_password.errors %}form-error{% endif %}">
                                 {% if password_form.old_password.errors %}
                                 <div class="form-row-wrapper">
@@ -162,7 +164,7 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-
+                            {% endif %}
 
                             <div class="form-row form-label-row {% if password_form.new_password1.errors %}form-error{% endif %}">
                                 {% if password_form.new_password1.errors %}
@@ -213,8 +215,7 @@
                         {% endif %}
                     </div>
                     <div class="form-footer">
-                        <button type="submit">Modifier mon mot de passe</button>
-                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+                        {% block password_form_footer %}{% endblock %}
                     </div>
                 </form>
             </div>
