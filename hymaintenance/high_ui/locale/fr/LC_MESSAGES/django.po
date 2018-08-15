@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-14 17:16+0200\n"
+"POT-Creation-Date: 2018-08-15 16:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,72 +18,88 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: templates/high_ui/company_details.html:20
+#: high_ui/templates/high_ui/company_details.html:20
 msgid "Summary"
 msgstr "Résumé"
 
-#: templates/high_ui/company_details.html:37
+#: high_ui/templates/high_ui/company_details.html:37
 msgid "consumed"
 msgstr "consommées"
 
-#: templates/high_ui/company_details.html:40
+#: high_ui/templates/high_ui/company_details.html:40
 msgid "credited"
 msgstr "créditées"
 
-#: templates/high_ui/company_details.html:51
+#: high_ui/templates/high_ui/company_details.html:51
 msgid "History"
 msgstr "Historique"
 
-#: templates/high_ui/company_details_header.html:4
-#: templates/high_ui/user_header.html:8
+#: high_ui/templates/high_ui/company_details_header.html:4
+#: high_ui/templates/high_ui/user_header.html:8
 msgid "Account"
 msgstr "Compte"
 
-#: templates/high_ui/company_details_header.html:22
-#: templates/high_ui/issue_details_header.html:21
+#: high_ui/templates/high_ui/company_details_header.html:22
+#: high_ui/templates/high_ui/issue_details_header.html:21
 msgid "Your Contact"
 msgstr "Votre Contact"
 
-#: templates/high_ui/company_details_header.html:32
-#: templates/high_ui/user_header.html:19
+#: high_ui/templates/high_ui/company_details_header.html:32
+#: high_ui/templates/high_ui/user_header.html:19
 msgid "Disconnect"
 msgstr "Déconnexion"
 
-#: templates/high_ui/dashboard_header.html:4
-#: templates/high_ui/user_header.html:5
+#: high_ui/templates/high_ui/dashboard_header.html:4
+#: high_ui/templates/high_ui/user_header.html:5
 msgid "Tableau de bord"
-msgstr ""
+msgstr "Tableau de bord"
 
-#: templates/high_ui/login.html:5 templates/high_ui/login.html:475
+#: high_ui/templates/high_ui/login.html:5
+#: high_ui/templates/high_ui/login.html:475
 msgid "Log in"
-msgstr "Loguez vous"
+msgstr "Connectez vous"
 
-#: templates/high_ui/login.html:466
+#: high_ui/templates/high_ui/login.html:466
 msgid "Username"
 msgstr "Login"
 
-#: templates/high_ui/login.html:470
+#: high_ui/templates/high_ui/login.html:470
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templatetags/print_fields.py:56 templatetags/print_fields.py:59
-#: tests/templatetags/test_print_field.py:81
-#: tests/templatetags/test_print_field.py:86
+#: high_ui/templatetags/print_fields.py:56
+#: high_ui/templatetags/print_fields.py:59
+#: high_ui/tests/templatetags/test_print_field.py:81
+#: high_ui/tests/templatetags/test_print_field.py:86
 msgid "project:"
 msgstr "projet :"
 
-#: templatetags/print_fields.py:58 tests/templatetags/test_print_field.py:96
+#: high_ui/templatetags/print_fields.py:58
+#: high_ui/tests/templatetags/test_print_field.py:96
 msgid "projects:"
 msgstr "projets :"
 
-#: templatetags/print_fields.py:59 tests/templatetags/test_print_field.py:81
+#: high_ui/templatetags/print_fields.py:59
+#: high_ui/tests/templatetags/test_print_field.py:81
 msgid "none"
 msgstr "aucun"
 
-#: templatetags/print_fields.py:80
+#: high_ui/templatetags/print_fields.py:80
 #, python-brace-format
 msgid "Add extra {duration}"
 msgstr "Ajout de {duration} supplémentaires"
+
+#: high_ui/tests/views/test_account_view.py:46
+#: high_ui/tests/views/test_account_view.py:69
+#: high_ui/tests/views/test_account_view.py:103
+#: high_ui/tests/views/test_manager_views.py:138
+#: high_ui/tests/views/test_manager_views.py:160
+#: high_ui/tests/views/test_operator_views.py:181
+#: high_ui/tests/views/test_operator_views.py:196
+#: high_ui/tests/views/test_operator_views.py:248
+#: high_ui/tests/views/test_operator_views.py:263
+msgid "Les modifications ont bien été prises en compte!"
+msgstr "Les modifications ont bien été prises en compte!"
 
 #~ msgid "Create issue"
 #~ msgstr "Nouvelle demande"
