@@ -10,6 +10,7 @@ from django.utils.timezone import now
 from django.utils.translation import gettext as _
 
 from customers.tests.factories import OperatorUserFactory
+from high_ui.tests.utils import SetDjangoLanguage
 from maintenance.models import MaintenanceIssue
 from maintenance.tests.factories import IncomingChannelFactory
 from maintenance.tests.factories import MaintenanceConsumerFactory
@@ -81,19 +82,19 @@ class IssueCreateFormTestCase(TestCase):
         )
 
     def test_when_i_bound_a_create_form_with_invalid_duration_type_i_have_an_error(self):
+        with SetDjangoLanguage("en"):
+            subject = "subject of the issue"
+            description = "Description of the Issue"
 
-        subject = "subject of the issue"
-        description = "Description of the Issue"
+            dict_for_post = self.__get_dict_for_post(subject, description)
 
-        dict_for_post = self.__get_dict_for_post(subject, description)
+            dict_for_post["duration_type"] = "years"
 
-        dict_for_post["duration_type"] = "years"
-
-        form = MaintenanceIssueCreateForm(company=self.company, data=dict_for_post)
-        self.assertFalse(form.is_valid())
-        self.assertEqual(1, len(form.errors))
-        expected = _("Invalid duration type: '%s'") % dict_for_post["duration_type"]
-        self.assertEqual(form.errors["duration"], [expected])
+            form = MaintenanceIssueCreateForm(company=self.company, data=dict_for_post)
+            self.assertFalse(form.is_valid())
+            self.assertEqual(1, len(form.errors))
+            expected = _("Invalid duration type: '%s'") % dict_for_post["duration_type"]
+            self.assertEqual(form.errors["duration"], [expected])
 
     def test_when_i_bound_a_create_form_with_under_min_duration_i_have_an_error(self):
         subject = "subject of the issue"
@@ -294,17 +295,18 @@ class IssueUpdateFormTestCase(TestCase):
         )
 
     def test_when_i_bound_a_update_form_with_invalid_duration_type_i_have_an_error(self):
-        subject = "subject of the issue"
-        description = "Description of the Issue"
-        dict_for_post = self.__get_dict_for_post(subject, description)
+        with SetDjangoLanguage("en"):
+            subject = "subject of the issue"
+            description = "Description of the Issue"
+            dict_for_post = self.__get_dict_for_post(subject, description)
 
-        dict_for_post["duration_type"] = "years"
+            dict_for_post["duration_type"] = "years"
 
-        form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post)
-        self.assertFalse(form.is_valid())
-        self.assertEqual(1, len(form.errors))
-        expected = _("Invalid duration type: '%s'") % dict_for_post["duration_type"]
-        self.assertEqual(form.errors["duration"], [expected])
+            form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post)
+            self.assertFalse(form.is_valid())
+            self.assertEqual(1, len(form.errors))
+            expected = _("Invalid duration type: '%s'") % dict_for_post["duration_type"]
+            self.assertEqual(form.errors["duration"], [expected])
 
     def test_when_i_bound_a_update_form_with_under_min_duration_i_have_an_error(self):
         subject = "subject of the issue"

@@ -124,7 +124,7 @@ msgstr "Ce champs est obligatoire."
 #: maintenance/tests/forms/test_issue_forms.py:306
 #, python-format
 msgid "Invalid duration type: '%s'"
-msgstr "Unité de duée invalide: '%s'"
+msgstr "Unité invalide: '%s'"
 
 #: maintenance/tests/forms/test_issue_forms.py:109
 #: maintenance/tests/forms/test_issue_forms.py:319
