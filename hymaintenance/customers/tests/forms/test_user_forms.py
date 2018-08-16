@@ -1,15 +1,19 @@
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
+from ...forms import AdminUserCreateForm
 from ...forms import MaintenanceUserCreateForm
 from ...forms import MaintenanceUserModelForm
 from ...forms import MaintenanceUserProfileUpdateForm
 from ...forms import ManagerUserCreateForm
 from ...forms import ManagerUsersUpdateForm
 from ...forms import OperatorUserArchiveForm
+from ...forms import OperatorUserCreateForm
 from ...forms import OperatorUserCreateFormWithCompany
 from ...forms import OperatorUsersUpdateForm
 from ...forms import OperatorUserUnarchiveForm
+from ...forms import StaffUserProfileUpdateForm
+from ...forms import StaffUserUpdateForm
 from ...models import MaintenanceUser
 from ..factories import AdminUserFactory
 from ..factories import CompanyFactory
@@ -18,21 +22,26 @@ from ..factories import OperatorUserFactory
 
 
 class UserCreateFormTestCase(TestCase):
-    def setUp(self):
-        self.company = CompanyFactory()
+    @classmethod
+    def setUpTestData(cls):
+        cls.company = CompanyFactory()
+        cls.email = "gordon.freeman@blackmesa.com"
+        cls.password = "my safe password"
 
     def __get_dict_for_post(self):
         return {
-            "email": "gordon.freeman@blackmesa.com",
-            "password1": "my safe password",
-            "password2": "my safe password",
+            "first_name": "Gordon",
+            "last_name": "Freeman",
+            "email": self.email,
+            "password1": self.password,
+            "password2": self.password,
         }
 
     def test_all_required_fields_by_sending_a_empty_create_form(self):
         form = MaintenanceUserModelForm(data={})
         self.assertFalse(form.is_valid())
         expected = _("This field is required.")
-        self.assertDictEqual(form.errors, {"email": [expected]})
+        self.assertDictEqual(form.errors, {"email": [expected], "first_name": [expected], "last_name": [expected]})
 
     def test_password_mismatch_error(self):
         dict_for_post = self.__get_dict_for_post()
@@ -41,30 +50,21 @@ class UserCreateFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual([_("The two password fields didn't match.")], form.errors["password2"])
 
-    def test_wen_one_password_is_missing(self):
+    def test_when_one_password_is_missing(self):
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["password1"] = None
         form = MaintenanceUserCreateForm(data=dict_for_post)
         self.assertFalse(form.is_valid())
 
-    def test_if_create_user_form_works(self):
+    def test_if_create_maintenance_user_form_works(self):
         self.assertEqual(0, MaintenanceUser.objects.filter().count())
-        form = MaintenanceUserModelForm(data=self.__get_dict_for_post())
+        form = MaintenanceUserCreateForm(data=self.__get_dict_for_post())
         self.assertTrue(form.is_valid())
         self.assertTrue(form.save())
         self.assertEqual(1, MaintenanceUser.objects.filter().count())
-        operator = MaintenanceUser.objects.filter(is_superuser=False).first()
-        self.assertEqual("gordon.freeman@blackmesa.com", operator.email)
-
-    def test_if_create_operator_form_works(self):
-        self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
-        form = OperatorUserCreateFormWithCompany(company=self.company, data=self.__get_dict_for_post())
-        self.assertTrue(form.is_valid())
-        self.assertTrue(form.save())
-        self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=False).count())
-        operator = MaintenanceUser.objects.filter(is_superuser=False).first()
-        self.assertEqual("gordon.freeman@blackmesa.com", operator.email)
-        self.assertEqual(1, operator.operator_for.all().count())
+        user = MaintenanceUser.objects.filter(is_superuser=False).first()
+        self.assertEqual(self.email, user.email)
+        self.assertTrue(user.check_password(self.password))
 
     def test_if_create_manager_form_works(self):
         self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
@@ -73,8 +73,39 @@ class UserCreateFormTestCase(TestCase):
         self.assertTrue(form.save())
         self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=False).count())
         manager = MaintenanceUser.objects.filter(is_superuser=False).first()
-        self.assertEqual("gordon.freeman@blackmesa.com", manager.email)
-        self.assertEqual(self.company, manager.company)
+        self.assertEqual(self.email, manager.email)
+        self.assertTrue(manager.check_password(self.password))
+
+    def test_if_create_operator_form_works(self):
+        self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
+        form = OperatorUserCreateForm(data=self.__get_dict_for_post())
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=False).count())
+        operator = MaintenanceUser.objects.filter(is_superuser=False).first()
+        self.assertEqual(self.email, operator.email)
+        self.assertTrue(operator.check_password(self.password))
+
+    def test_if_create_operator_with_company_form_works(self):
+        self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
+        form = OperatorUserCreateFormWithCompany(company=self.company, data=self.__get_dict_for_post())
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=False).count())
+        operator = MaintenanceUser.objects.filter(is_superuser=False).first()
+        self.assertEqual(self.email, operator.email)
+        self.assertTrue(operator.check_password(self.password))
+        self.assertEqual(1, operator.operator_for.all().count())
+
+    def test_if_create_admin_form_works(self):
+        self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
+        form = AdminUserCreateForm(data=self.__get_dict_for_post())
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=True).count())
+        admin = MaintenanceUser.objects.filter(is_superuser=True).first()
+        self.assertEqual(self.email, admin.email)
+        self.assertTrue(admin.check_password(self.password))
 
     def test_if_create_operator_form_works_without_commit(self):
         self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
@@ -82,6 +113,33 @@ class UserCreateFormTestCase(TestCase):
         self.assertTrue(form.is_valid())
         self.assertTrue(form.save(False))
         self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
+
+
+class UserUpdateFormTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.company = CompanyFactory()
+        cls.operator = OperatorUserFactory(email="glados@aperture-science.com")
+        cls.manager = ManagerUserFactory(email="chell@aperture-science.com")
+        cls.email = "gordon.freeman@blackmesa.com"
+        cls.password = "my safe password"
+
+    def __get_dict_for_post(self):
+        return {"first_name": "Gordon", "last_name": "Freeman", "email": self.email}
+
+    def test_if_update_maintenance_user_form_works(self):
+        form = MaintenanceUserModelForm(instance=self.manager, data=self.__get_dict_for_post())
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        user = MaintenanceUser.objects.get(pk=self.manager.pk)
+        self.assertEqual(self.email, user.email)
+
+    def test_if_update_staff_user_form_works(self):
+        form = StaffUserUpdateForm(instance=self.operator, data=self.__get_dict_for_post())
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        user = MaintenanceUser.objects.get(pk=self.operator.pk)
+        self.assertEqual(self.email, user.email)
 
 
 class OperatorUserArchiveFormTestCase(TestCase):
@@ -122,7 +180,7 @@ class OperatorUserArchiveFormTestCase(TestCase):
         self.assertTrue(MaintenanceUser.objects.get(email="gordon.freeman@blackmesa.com").is_active)
 
 
-class ManagerUserUpdateFormTestCase(TestCase):
+class ManagerUsersUpdateFormTestCase(TestCase):
     def setUp(self):
         self.company = CompanyFactory()
         self.m2 = ManagerUserFactory(is_active=False, company=self.company)
@@ -144,7 +202,7 @@ class ManagerUserUpdateFormTestCase(TestCase):
         self.assertFalse(MaintenanceUser.objects.get(id=self.m4.id).is_active)
 
 
-class OperatorUserUpdateFormTestCase(TestCase):
+class OperatorUsersUpdateFormTestCase(TestCase):
     def setUp(self):
         self.company = CompanyFactory()
 
@@ -195,9 +253,27 @@ class MaintenanceUserProfileUpdateFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
         self.assertDictEqual(form.errors, {"confirm_password": [_("Invalid password.")]})
 
-    def test_update_profil(self):
-        user = AdminUserFactory(first_name="Chell", last_name="", email="chell@aperture-science.com", password="azerty")
+    def test_maintenance_user_update_profil(self):
+        user = ManagerUserFactory(
+            first_name="Chell", last_name="", email="chell@aperture-science.com", password="azerty"
+        )
         form = MaintenanceUserProfileUpdateForm(
+            instance=user,
+            data={
+                "first_name": "Gordon",
+                "last_name": "Freeman",
+                "email": "gordon.freeman@blackmesa.com",
+                "confirm_password": "azerty",
+            },
+        )
+
+        self.assertTrue(form.is_valid())
+        form.save()
+        self.assertEqual(user.pk, MaintenanceUser.objects.get(email="gordon.freeman@blackmesa.com").pk)
+
+    def test_staff_user_update_profil(self):
+        user = AdminUserFactory(first_name="Chell", last_name="", email="chell@aperture-science.com", password="azerty")
+        form = StaffUserProfileUpdateForm(
             instance=user,
             data={
                 "first_name": "Gordon",

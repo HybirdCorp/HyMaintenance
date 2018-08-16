@@ -2,6 +2,9 @@
 from django.test import TestCase
 
 from ...models import MaintenanceUser
+from ..factories import AdminUserFactory
+from ..factories import ManagerUserFactory
+from ..factories import OperatorUserFactory
 
 
 class MaintenanceUserTestCase(TestCase):
@@ -56,3 +59,36 @@ class MaintenanceUserTestCase(TestCase):
             "gordon.freeman@blackmesa.com", "azerty", True, False, first_name="Gordon", last_name="Freeman"
         )
         self.assertEqual(user, MaintenanceUser.objects.get_by_primary_key(1))
+
+    def test_get_admin_users_queryset(self):
+        user = AdminUserFactory()
+        OperatorUserFactory()
+        ManagerUserFactory()
+        self.assertEqual(1, MaintenanceUser.objects.get_admin_users_queryset().count())
+        self.assertEqual(user.pk, MaintenanceUser.objects.get_admin_users_queryset().first().pk)
+
+    def test_get_operator_users_queryset(self):
+        admin = AdminUserFactory()
+        operator = OperatorUserFactory()
+        ManagerUserFactory()
+        self.assertEqual([admin, operator], list(MaintenanceUser.objects.get_operator_users_queryset()))
+
+    def test_get_active_operator_users_queryset(self):
+        admin = AdminUserFactory(is_active=True)
+        operator = OperatorUserFactory(is_active=True)
+        OperatorUserFactory(is_active=False)
+        ManagerUserFactory()
+        self.assertEqual([admin, operator], list(MaintenanceUser.objects.get_active_operator_users_queryset()))
+
+    def test_get_manager_users_queryset(self):
+        AdminUserFactory()
+        OperatorUserFactory()
+        manager = ManagerUserFactory()
+        self.assertEqual([manager], list(MaintenanceUser.objects.get_manager_users_queryset()))
+
+    def test_get_active_manager_users_queryset(self):
+        AdminUserFactory()
+        OperatorUserFactory()
+        manager = ManagerUserFactory(is_active=True)
+        ManagerUserFactory(is_active=False)
+        self.assertEqual([manager], list(MaintenanceUser.objects.get_active_manager_users_queryset()))
