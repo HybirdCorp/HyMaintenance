@@ -42,6 +42,9 @@ class MaintenanceUserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         return self._create_user(email, password, True, True, **extra_fields)
 
+    def get_admin_users_queryset(self):
+        return self.get_queryset().filter(is_staff=True, is_superuser=True).order_by("first_name")
+
     def get_operator_users_queryset(self):
         return self.get_queryset().filter(is_staff=True).order_by("first_name")
 

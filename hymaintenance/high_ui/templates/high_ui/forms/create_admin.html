@@ -1,0 +1,18 @@
+{% extends 'high_ui/forms/create_user.html' %}
+
+{% block page_title %}
+<title>Maintenance Hybird &mdash; Nouvel admin</title>
+{% endblock %}
+
+{% block header %}
+{% include "high_ui/dashboard_header.html" %}
+{% endblock %}
+
+{% block form_title %}
+<div class="group-title">Nouvel admin</div>
+{% endblock %}
+
+{% block form_footer %}
+<button type="submit">Ajouter cet admin</button>
+<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas ajouter</a></span>
+{% endblock %}
