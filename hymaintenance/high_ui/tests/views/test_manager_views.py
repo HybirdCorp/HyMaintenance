@@ -13,7 +13,6 @@ from customers.tests.factories import OperatorUserFactory
 class CreateManagerTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
         cls.company = CompanyFactory()
