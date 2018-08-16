@@ -13,14 +13,11 @@ class MaintenanceUserModelForm(forms.ModelForm):
         model = MaintenanceUser
         fields = ("first_name", "last_name", "email")
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-        self.fill_user(user)
-
-        if commit:
-            user.save()
-        return user
+        self.fields["first_name"].required = True
+        self.fields["last_name"].required = True
 
     def fill_user(self, user):
         """Extending classes can modify the user here before it is saved.
@@ -54,6 +51,8 @@ class MaintenanceUserCreateForm(MaintenanceUserModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+
+        self.fill_user(user)
 
         if commit:
             user.save()
@@ -100,10 +99,20 @@ class OperatorUserCreateForm(MaintenanceUserCreateForm):
         user.is_staff = True
 
 
-class OperatorUserUpdateForm(MaintenanceUserModelForm):
+class StaffUserUpdateForm(MaintenanceUserModelForm):
     class Meta:
         model = MaintenanceUser
         fields = ("first_name", "last_name", "phone", "email")
+
+
+class AdminUserCreateForm(MaintenanceUserCreateForm):
+    class Meta:
+        model = MaintenanceUser
+        fields = ("first_name", "last_name", "phone", "email")
+
+    def fill_user(self, user):
+        user.is_staff = True
+        user.is_superuser = True
 
 
 class OperatorUserCreateFormWithCompany(OperatorUserCreateForm):
@@ -165,7 +174,7 @@ class OperatorUserUnarchiveForm(forms.Form):
             operator.save()
 
 
-class MaintenanceUserProfileUpdateForm(forms.ModelForm):
+class MaintenanceUserProfileUpdateForm(MaintenanceUserModelForm):
     confirm_password = forms.CharField(
         label="Confirmer le mot de passe", strip=False, widget=forms.PasswordInput, required=True
     )
@@ -173,11 +182,6 @@ class MaintenanceUserProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = MaintenanceUser
         fields = ("confirm_password", "first_name", "last_name", "email")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["first_name"].required = True
-        self.fields["last_name"].required = True
 
     def clean_confirm_password(self):
         password = self.cleaned_data["confirm_password"]

@@ -9,6 +9,7 @@ from django.views.generic import FormView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
+from customers.forms import AdminUserCreateForm
 from customers.forms import MaintenanceUserModelForm
 from customers.forms import MaintenanceUserProfileUpdateForm
 from customers.forms import ManagerUserCreateForm
@@ -19,6 +20,7 @@ from customers.forms import OperatorUserCreateFormWithCompany
 from customers.forms import OperatorUsersUpdateForm
 from customers.forms import OperatorUserUnarchiveForm
 from customers.forms import StaffUserProfileUpdateForm
+from customers.forms import StaffUserUpdateForm
 from customers.models.user import MaintenanceUser
 from maintenance.forms.consumer import MaintenanceConsumerModelForm
 from maintenance.forms.consumer import MaintenanceConsumersUpdateForm
@@ -92,12 +94,12 @@ class ManagerUserCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, 
 
 
 class MaintenanceUserUpdateView(TemplateView):
+    def get_object(self):
+        return self.get_queryset().get(id=self.kwargs.get("pk"))
+
     def get_password_form(self, *args, **kwargs):
         form = SetPasswordForm(*args, **kwargs)
         return form
-
-    def get_profile_form(self, *args, **kwargs):
-        return MaintenanceUserModelForm(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         user = self.get_object()
@@ -140,8 +142,8 @@ class MaintenanceUserUpdateView(TemplateView):
 class ManagerUserUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, MaintenanceUserUpdateView):
     template_name = "high_ui/forms/update_manager.html"
 
-    def get_object(self):
-        return self.get_queryset().get(id=self.kwargs.get("pk"))
+    def get_profile_form(self, *args, **kwargs):
+        return MaintenanceUserModelForm(*args, **kwargs)
 
     def get_queryset(self):
         return MaintenanceUser.objects.get_manager_users_queryset()
@@ -160,6 +162,14 @@ class ManagerUsersUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin,
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+
+class AdminUserCreateView(IsAdminTestMixin, CreateView):
+    form_class = AdminUserCreateForm
+    template_name = "high_ui/forms/create_admin.html"
+
+    def get_success_url(self):
+        return reverse("high_ui:admin")
 
 
 class OperatorUserCreateView(IsAdminTestMixin, CreateView):
@@ -186,13 +196,13 @@ class OperatorUserCreateViewWithCompany(ViewWithCompany, IsAdminTestMixin, Creat
 class OperatorUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
     template_name = "high_ui/forms/update_operator.html"
 
+    def get_profile_form(self, *args, **kwargs):
+        return StaffUserUpdateForm(*args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
         return context
-
-    def get_object(self):
-        return self.get_queryset().get(id=self.kwargs.get("pk"))
 
     def get_queryset(self):
         return MaintenanceUser.objects.get_operator_users_queryset()
@@ -201,8 +211,8 @@ class OperatorUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
 class OperatorUserUpdateViewWithCompany(ViewWithCompany, IsAdminTestMixin, MaintenanceUserUpdateView):
     template_name = "high_ui/forms/update_company_operator.html"
 
-    def get_object(self):
-        return self.get_queryset().get(id=self.kwargs.get("pk"))
+    def get_profile_form(self, *args, **kwargs):
+        return StaffUserUpdateForm(*args, **kwargs)
 
     def get_queryset(self):
         return MaintenanceUser.objects.get_active_operator_users_queryset()
