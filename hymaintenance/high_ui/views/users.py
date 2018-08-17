@@ -172,6 +172,21 @@ class AdminUserCreateView(IsAdminTestMixin, CreateView):
         return reverse("high_ui:admin")
 
 
+class AdminUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
+    template_name = "high_ui/forms/update_admin.html"
+
+    def get_profile_form(self, *args, **kwargs):
+        return StaffUserUpdateForm(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_data_dashboard_header(self.user))
+        return context
+
+    def get_queryset(self):
+        return MaintenanceUser.objects.get_admin_users_queryset()
+
+
 class OperatorUserCreateView(IsAdminTestMixin, CreateView):
     form_class = OperatorUserCreateForm
     template_name = "high_ui/forms/create_operator.html"

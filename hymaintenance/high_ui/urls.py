@@ -13,6 +13,7 @@ from .views.project import ProjectCreateView
 from .views.project import ProjectDetailsView
 from .views.project import ProjectUpdateView
 from .views.users import AdminUserCreateView
+from .views.users import AdminUserUpdateView
 from .views.users import ConsumerCreateView
 from .views.users import ConsumersUpdateView
 from .views.users import ConsumerUpdateView
@@ -95,5 +96,6 @@ urlpatterns = [
     path(r"account/update/", UserUpdateView.as_view(), name="update_user"),
     path(r"projects/<slug:company_name>/credits/", CreditCreateView.as_view(), name="project-create_credit"),
     path(r"admins/", AdminUserCreateView.as_view(), name="create_admin"),
+    path(r"admins/<int:pk>/update/", AdminUserUpdateView.as_view(), name="update_admin"),
     path(r"operators/archive/", OperatorUsersArchiveView.as_view(), name="archive_operators"),
 ]
