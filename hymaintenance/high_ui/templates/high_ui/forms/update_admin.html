@@ -1,17 +1,15 @@
 {% extends 'high_ui/forms/update_user.html' %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; {{object.company.name}}, modification du intervenant </title> {# TMP #}
+<title>Maintenance Hybird &mdash; {{object.company.name}}, modification du admin </title> {# TMP #}
 {% endblock %}
 
 {% block header %}
-{% include "high_ui/company_details_header.html" %}
+{% include "high_ui/dashboard_header.html" %}
 {% endblock %}
 
 {% block form_title %}
-<div class="group-title">Modification de l'intervenant</div>
-<label>Compte client</label>
-<span>{{company}}</span>
+<div class="group-title">Modification de l'admin</div>
 {% endblock %}
 
 {% block profile_form_title %}

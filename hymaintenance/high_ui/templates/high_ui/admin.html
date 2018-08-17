@@ -5,30 +5,48 @@
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
-<link rel="stylesheet" href="/static/css/dashboard.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/edit-list.css" />
+<link rel="stylesheet" href="/static/css/edit-operators.css" />
 </head>
 <body>
     {% include "high_ui/dashboard_header.html" %}
     <div class="content-container">
         <div class="content">
-            <div class="dashboard-item dashboard-button">
-                <div class="dashboard-value">
-                    <a href="{% url 'high_ui:create_admin' %}" title="Créer un administrateur">Créer un administrateur</a>
+            <div class="container details-container">
+                <div class="container-title">Création d'un administrateur</div>
+                <div class="dashboard-item dashboard-button">
+                    <div class="dashboard-value">
+                        <a href="{% url 'high_ui:create_admin' %}" title="Créer un administrateur">Créer un administrateur</a>
+                    </div>
                 </div>
             </div>
-            <div class="dashboard-item dashboard-button">
-                <div class="dashboard-value">
-                    <a href="#" title="Modifier un administrateur">Modifier un administrateur</a>
+            <div class="container details-container">
+                <div class="container-title">Modification des administrateurs</div>
+                {% if admins %}
+                <span>Liste des administrateurs. Cliquez sur un administrateur pour pouvoir le modifier.</span>
+                <ul>
+                {% for admin in admins %}
+                    <li><a href='{% url 'high_ui:update_admin' pk=admin.pk %}'>{{admin.first_name}} {{admin.last_name}}</a></li>
+                {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="container details-container">
+                <div class="container-title">Gestion des alertes par emails</div>
+                <div class="dashboard-item dashboard-button">
+                    <div class="dashboard-value">
+                        <a href="#" title="Gérer la gestion des alertes emails">Alerte emails</a>
+                    </div>
                 </div>
             </div>
-            <div class="dashboard-item dashboard-button">
-                <div class="dashboard-value">
-                    <a href="#" title="Gérer la gestion des alertes emails">Alerte emails</a>
-                </div>
-            </div>
-            <div class="dashboard-item dashboard-button">
-                <div class="dashboard-value">
-                    <a href="{% url 'high_ui:update_maintenance_types' %}" title="Modifier le nom par défaut des types de contract">Modifier contracts par défaut</a>
+            <div class="container details-container">
+                <div class="container-title">Gestion des types de contract par défaut</div>
+                <div class="dashboard-item dashboard-button">
+                    <div class="dashboard-value">
+                        <a href="{% url 'high_ui:update_maintenance_types' %}" title="Modifier le nom par défaut des types de contract">Modifier contracts par défaut</a>
+                    </div>
                 </div>
             </div>
         </div>
