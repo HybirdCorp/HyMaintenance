@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from ..fields import LowerCaseEmailField
@@ -43,19 +44,26 @@ class MaintenanceUserManager(BaseUserManager):
         return self._create_user(email, password, True, True, **extra_fields)
 
     def get_admin_users_queryset(self):
-        return self.get_queryset().filter(is_staff=True, is_superuser=True).order_by("first_name")
+        return self.get_queryset().filter(is_superuser=True).order_by("first_name")
 
     def get_operator_users_queryset(self):
-        return self.get_queryset().filter(is_staff=True).order_by("first_name")
+        return self.get_queryset().filter(Q(is_superuser=True) | Q(is_staff=True)).order_by("first_name")
 
     def get_active_operator_users_queryset(self):
-        return self.get_queryset().filter(is_staff=True).filter(is_active=True).order_by("first_name")
+        return (
+            self.get_queryset()
+            .filter(Q(is_superuser=True) | Q(is_staff=True))
+            .filter(is_active=True)
+            .order_by("first_name")
+        )
 
     def get_manager_users_queryset(self):
-        return self.get_queryset().filter(is_staff=False).order_by("first_name")
+        return self.get_queryset().filter(is_staff=False, is_superuser=False).order_by("first_name")
 
     def get_active_manager_users_queryset(self):
-        return self.get_queryset().filter(is_staff=False).filter(is_active=True).order_by("first_name")
+        return (
+            self.get_queryset().filter(is_staff=False, is_superuser=False).filter(is_active=True).order_by("first_name")
+        )
 
 
 class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
