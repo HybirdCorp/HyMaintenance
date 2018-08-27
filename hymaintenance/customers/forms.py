@@ -77,7 +77,7 @@ class ManagerUsersUpdateForm(forms.Form):
         self.fields["users"].queryset = MaintenanceUser.objects.filter(company=self.company, is_staff=False)
         self.fields["users"].initial = MaintenanceUser.objects.filter(
             company=self.company, is_staff=False, is_active=True
-        )
+        ).order_by("first_name", "last_name")
 
     def save(self):
         for manager in self.cleaned_data["users"].filter(is_active=False):
@@ -134,7 +134,7 @@ class OperatorUsersUpdateForm(forms.Form):
         self.company = kwargs.pop("company")
         super().__init__(*args, **kwargs)
         self.fields["users"].queryset = MaintenanceUser.objects.get_active_operator_users_queryset()
-        self.fields["users"].initial = self.company.managed_by.all()
+        self.fields["users"].initial = self.company.managed_by.all().order_by("first_name", "last_name")
 
     def save(self):
         for operator in self.cleaned_data["users"]:

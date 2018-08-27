@@ -55,9 +55,9 @@ class MaintenanceUserTestCase(TestCase):
     def test_get_operator_by_primary_key(self):
         self.assertEqual(0, MaintenanceUser.objects.all().count())
         user = MaintenanceUser.objects._create_user(
-            "gordon.freeman@blackmesa.com", "azerty", True, False, first_name="Gordon", last_name="Freeman"
+            "gordon.freeman@blackmesa.com", "azerty", True, False, first_name="Gordon", last_name="Freeman", pk=42
         )
-        self.assertEqual(user, MaintenanceUser.objects.get_by_primary_key(1))
+        self.assertEqual(user, MaintenanceUser.objects.get_by_primary_key(42))
 
     def test_get_admin_users_queryset(self):
         user = AdminUserFactory()

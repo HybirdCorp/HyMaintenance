@@ -68,10 +68,12 @@ class CreditCreateViewTestCase(TestCase):
     def test_admin_can_post_form_to_create_a_project(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.post(self.form_url, {"hours_number": 16, "contract": 1}, follow=True)
+        response = self.client.post(self.form_url, {"hours_number": 16, "contract": self.c1.pk}, follow=True)
 
         self.assertRedirects(
             response, reverse("high_ui:project_details", kwargs={"company_name": self.company.slug_name})
         )
 
-        self.assertEqual(16, MaintenanceCredit.objects.filter(contract=1, company=self.company).first().hours_number)
+        self.assertEqual(
+            16, MaintenanceCredit.objects.filter(contract=self.c1.pk, company=self.company).first().hours_number
+        )
