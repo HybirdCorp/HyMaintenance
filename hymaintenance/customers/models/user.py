@@ -27,7 +27,7 @@ class MaintenanceUserManager(BaseUserManager):
         Creates and saves a User with the given email and password.
         """
         if not email:
-            raise ValueError(_("The given email must be set"))
+            raise ValueError(_("The given email must be set."))
         email = self.normalize_email(email)
         user = self.model(email=email, is_staff=is_staff, is_active=True, is_superuser=is_superuser, **extra_fields)
         user.set_password(password)
@@ -70,28 +70,30 @@ class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
     created = models.DateTimeField(_("Creation date"), auto_now_add=True)
     modified = models.DateTimeField(_("Last modification date"), auto_now=True)
 
-    first_name = models.CharField(_("first name"), max_length=50, blank=True)
-    last_name = models.CharField(_("last name"), max_length=50, blank=True)
+    first_name = models.CharField(_("First name"), max_length=50, blank=True)
+    last_name = models.CharField(_("Last name"), max_length=50, blank=True)
     email = LowerCaseEmailField(
-        _("email address"),
+        _("Email address"),
         unique=True,
         db_index=True,
-        error_messages={"unique": _("A user with that username already exists.")},
+        error_messages={"unique": _("A user with that email already exists.")},
     )
     phone = models.CharField(_("phone number"), max_length=20, blank=True, null=True)
 
     is_staff = models.BooleanField(
-        _("staff status"), default=False, help_text=_("Designates whether the user can log into this admin " "site.")
+        _("Staff"), default=False, help_text=_("Designates whether the user can log into this admin site.")
     )
     is_active = models.BooleanField(
-        _("active"),
+        _("Active"),
         default=True,
         help_text=_(
-            "Designates whether this user should be treated as " "active. Unselect this instead of deleting accounts."
+            "Designates whether this user should be treated as active. Unselect this instead of deleting accounts."
         ),
     )
 
-    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.PROTECT)
+    company = models.ForeignKey(
+        Company, verbose_name=_("User's company"), null=True, blank=True, on_delete=models.PROTECT
+    )
 
     operator_for = models.ManyToManyField(
         Company, blank=True, verbose_name=_("Managed Companies"), related_name="managed_by"

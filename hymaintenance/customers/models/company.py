@@ -1,14 +1,20 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+from django.utils.translation import ugettext_lazy as _
 
 
 class Company(models.Model):
-    name = models.CharField("name", max_length=255)
+    name = models.CharField(_("Name"), max_length=255)
     slug_name = models.SlugField(editable=False, unique=True, max_length=255)
     issues_counter = models.PositiveIntegerField(default=0)
     contact = models.ForeignKey(
-        to="customers.MaintenanceUser", null=True, blank=True, on_delete=models.PROTECT, related_name="contact_of"
+        to="customers.MaintenanceUser",
+        verbose_name=_("Contact"),
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="contact_of",
     )
 
     __original_name = None

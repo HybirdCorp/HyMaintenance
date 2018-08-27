@@ -176,7 +176,7 @@ class OperatorUserUnarchiveForm(forms.Form):
 
 class MaintenanceUserProfileUpdateForm(MaintenanceUserModelForm):
     confirm_password = forms.CharField(
-        label="Confirmer le mot de passe", strip=False, widget=forms.PasswordInput, required=True
+        label=_("Confirm password"), strip=False, widget=forms.PasswordInput, required=True
     )
 
     class Meta:
@@ -191,7 +191,7 @@ class MaintenanceUserProfileUpdateForm(MaintenanceUserModelForm):
 
 class StaffUserProfileUpdateForm(MaintenanceUserProfileUpdateForm):
     confirm_password = forms.CharField(
-        label="Confirmer le mot de passe", strip=False, widget=forms.PasswordInput, required=True
+        label=_("Confirm password"), strip=False, widget=forms.PasswordInput, required=True
     )
 
     class Meta:
