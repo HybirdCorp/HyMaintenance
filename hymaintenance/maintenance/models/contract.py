@@ -28,10 +28,10 @@ class MaintenanceContract(models.Model):
     counter_name = models.CharField(_("Name of counter"), max_length=255, default="")
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT, related_name="contracts")
     maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT, related_name="contracts")
-    visible = models.BooleanField(_("Visible to customer user"), default=True)
+    visible = models.BooleanField(_("Visible to manager"), default=True)
     disabled = models.BooleanField(_("Disable the contract"), default=False)
     start = models.DateField(_("Start Date"), default=datetime.date.today)
-    number_hours = models.PositiveIntegerField("Number of Hours by contract", default=0)
+    number_hours = models.PositiveIntegerField(_("Credited hours"), default=0)
     total_type = models.IntegerField(_("Counter type"), choices=TYPE_CHOICES, default=AVAILABLE_TOTAL_TIME)
 
     objects = MaintenanceContractQuerySet.as_manager()

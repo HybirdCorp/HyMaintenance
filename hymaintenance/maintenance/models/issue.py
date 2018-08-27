@@ -40,7 +40,7 @@ class MaintenanceIssue(models.Model):
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
     consumer_who_ask = models.ForeignKey(
         MaintenanceConsumer,
-        verbose_name="Who ask the question ?",
+        verbose_name=_("Author"),
         null=True,
         blank=True,
         related_name="consumers_who_asked",
@@ -49,30 +49,40 @@ class MaintenanceIssue(models.Model):
 
     user_who_fix = models.ForeignKey(
         MaintenanceUser,
-        verbose_name="Who fix the issue ? ",
+        verbose_name=_("Operator"),
         null=True,
         blank=True,
         related_name="users_who_fixed",
         on_delete=models.PROTECT,
     )
     incoming_channel = models.ForeignKey(
-        IncomingChannel, verbose_name="Incoming Channel", null=True, blank=True, on_delete=models.PROTECT
+        IncomingChannel, verbose_name=_("Incoming Channel"), null=True, blank=True, on_delete=models.PROTECT
     )
 
     subject = models.CharField(_("Subject"), max_length=500, default="une question")
     date = models.DateField(_("Issue Date"))
-    contract = models.ForeignKey(to="maintenance.MaintenanceContract", on_delete=models.PROTECT)
-    description = models.TextField(null=True, blank=True)
+    contract = models.ForeignKey(
+        to="maintenance.MaintenanceContract", verbose_name=_("Type of activity"), on_delete=models.PROTECT
+    )
+    description = models.TextField(_("Details"), null=True, blank=True)
 
-    number_minutes = models.PositiveIntegerField(default=0, blank=True)
-    resolution_date = models.DateTimeField(null=True, blank=True)
-    shipping_date = models.DateTimeField(null=True, blank=True)
-    answer = models.TextField(null=True, blank=True)
+    number_minutes = models.PositiveIntegerField(_("Time spent"), default=0, blank=True)
+    resolution_date = models.DateTimeField(_("Resolution date"), null=True, blank=True)
+    shipping_date = models.DateTimeField(_("Delivery date"), null=True, blank=True)
+    answer = models.TextField(_("Comments"), null=True, blank=True)
     context_description_file = models.FileField(
-        null=True, max_length=200, storage=MaintenanceIssueAttachmentStorage(), upload_to=_get_context_file_path
+        _("Attachment"),
+        null=True,
+        max_length=200,
+        storage=MaintenanceIssueAttachmentStorage(),
+        upload_to=_get_context_file_path,
     )
     resolution_description_file = models.FileField(
-        null=True, max_length=200, storage=MaintenanceIssueAttachmentStorage(), upload_to=_get_resolution_file_path
+        _("Attachment"),
+        null=True,
+        max_length=200,
+        storage=MaintenanceIssueAttachmentStorage(),
+        upload_to=_get_resolution_file_path,
     )
 
     fields_for_form = (
@@ -96,11 +106,11 @@ class MaintenanceIssue(models.Model):
         unique_together = [["company_issue_number", "company"]]
 
     def __str__(self):
-        return "Date : %s, Subject :%s For : %s , Type :%s " % (
-            self.date.strftime("%d/%m/%Y at %H:%M"),
-            self.subject,
-            self.company,
-            self.contract,
+        return _("Date: {date}, Subject: {subject}, For: {company} , Type: {contract} ").format(
+            date=self.date.strftime(str(_("%m/%d/%Y at %H:%M"))),
+            subject=self.subject,
+            company=self.company,
+            contract=self.contract,
         )
 
     def get_counter_name(self):

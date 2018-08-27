@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.widgets import ClearableFileInput
+from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
 
@@ -47,7 +48,7 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
     def clean_duration_type(self):
         duration_type = self.cleaned_data["duration_type"]
         if duration_type not in ["minutes", "hours"]:
-            self.add_error("duration", "Invalid duration type: '%s'" % duration_type)
+            self.add_error("duration", _("Invalid duration type: '%s'") % duration_type)
         return duration_type
 
     def save(self, commit=True):

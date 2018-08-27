@@ -211,7 +211,7 @@ class ProjectCreateFormTestCase(TestCase):
 
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
-        self.assertEqual(form.errors["company_name"].as_text(), "* " + str(_("This company already exists")))
+        self.assertEqual(form.errors["company_name"].as_text(), "* " + str(_("This company already exists.")))
 
     def test_when_i_bound_a_create_form_with_under_min_number_hours_i_have_an_error(self):
         dict_for_post = self.__get_dict_for_post()
@@ -402,7 +402,7 @@ class ProjectUpdateFormTestCase(TestCase):
 
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
-        self.assertEqual(form.errors["company_name"].as_text(), "* " + str(_("This company already exists")))
+        self.assertEqual(form.errors["company_name"].as_text(), "* " + str(_("This company already exists.")))
 
     def test_when_i_bound_a_update_form_with_under_min_number_hours_i_have_an_error(self):
         dict_for_post = self.__get_dict_for_post()

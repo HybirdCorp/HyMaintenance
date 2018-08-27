@@ -54,7 +54,7 @@ class ProjectCreateForm(ProjectForm):
     def clean_company_name(self):
         company_name = self.cleaned_data["company_name"]
         if Company.objects.filter(name=company_name).exists():
-            raise forms.ValidationError(_("This company already exists"))
+            raise forms.ValidationError(_("This company already exists."))
         return company_name
 
     def create_company_and_contracts(self, operator=None):
@@ -159,7 +159,7 @@ class ProjectUpdateForm(ProjectForm):
     def clean_company_name(self):
         company_name = self.cleaned_data["company_name"]
         if Company.objects.filter(name=company_name).exclude(id=self.company.id).exists():
-            raise forms.ValidationError(_("This company already exists"))
+            raise forms.ValidationError(_("This company already exists."))
         return company_name
 
     def update_contract(self, index, contract):

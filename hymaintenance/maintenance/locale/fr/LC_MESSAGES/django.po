@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-15 16:53+0200\n"
+"POT-Creation-Date: 2018-08-27 16:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: maintenance/forms/issue.py:50 maintenance/tests/forms/test_issue_forms.py:96
+#: maintenance/tests/forms/test_issue_forms.py:308
+#, python-format
+msgid "Invalid duration type: '%s'"
+msgstr "Unité invalide: '%s'"
+
 #: maintenance/forms/project.py:57 maintenance/forms/project.py:162
 #: maintenance/tests/forms/test_project_forms.py:214
 #: maintenance/tests/forms/test_project_forms.py:405
-msgid "This company already exists"
-msgstr "Cette société existe déjà"
+msgid "This company already exists."
+msgstr "Cette société existe déjà."
 
 #: maintenance/migrations/0010_auto_20180315_0012.py:17
 #: maintenance/migrations/0010_auto_20180315_0012.py:19
@@ -38,9 +44,9 @@ msgstr "Support"
 msgid "Corrective"
 msgstr "Corrective"
 
-#: maintenance/models/consumer.py:15
-msgid "Consumer's Name"
-msgstr "Nom de l'utilisateur de maintenance"
+#: maintenance/models/consumer.py:15 maintenance/models/other_models.py:8
+msgid "Name"
+msgstr "Nom"
 
 #: maintenance/models/contract.py:24
 msgid "Available total time"
@@ -60,7 +66,7 @@ msgid "Company"
 msgstr "Société"
 
 #: maintenance/models/contract.py:31 maintenance/models/other_models.py:9
-msgid "Visible to customer user"
+msgid "Visible to manager"
 msgstr "Visible pour les managers"
 
 #: maintenance/models/contract.py:32
@@ -71,17 +77,41 @@ msgstr "Désactive le contrat"
 msgid "Start Date"
 msgstr "Date de début"
 
+#: maintenance/models/contract.py:34
+msgid "Credited hours"
+msgstr "Heures créditées"
+
 #: maintenance/models/contract.py:35
 msgid "Counter type"
 msgstr "Type de compteur"
 
 #: maintenance/models/credit.py:13
-msgid "Date of Action"
-msgstr "Date de l'action"
+msgid "Effective date"
+msgstr "Date effective"
+
+#: maintenance/models/credit.py:14
+msgid "Contract"
+msgstr "Contrat"
+
+#: maintenance/models/credit.py:15
+msgid "Hours number"
+msgstr "Nombre d'heures"
 
 #: maintenance/models/issue.py:39
 msgid "Issue number"
-msgstr "Date du problème"
+msgstr "Numéro de demande"
+
+#: maintenance/models/issue.py:43
+msgid "Author"
+msgstr "Auteur"
+
+#: maintenance/models/issue.py:52
+msgid "Operator"
+msgstr "Intervenant"
+
+#: maintenance/models/issue.py:59
+msgid "Incoming Channel"
+msgstr "Canal d'entrée des demandes"
 
 #: maintenance/models/issue.py:62
 msgid "Subject"
@@ -89,11 +119,43 @@ msgstr "Sujet"
 
 #: maintenance/models/issue.py:63
 msgid "Issue Date"
-msgstr "Date du problème"
+msgstr "Demande faite le"
 
-#: maintenance/models/other_models.py:8
-msgid "Name of Type"
-msgstr "Nom du Type"
+#: maintenance/models/issue.py:64
+msgid "Type of activity"
+msgstr "Type de l'activité"
+
+#: maintenance/models/issue.py:65
+msgid "Details"
+msgstr "Détails"
+
+#: maintenance/models/issue.py:67
+msgid "Time spent"
+msgstr "Temps passé"
+
+#: maintenance/models/issue.py:68
+msgid "Resolution date"
+msgstr "Demande résolue le"
+
+#: maintenance/models/issue.py:69
+msgid "Delivery date"
+msgstr "Livraison le"
+
+#: maintenance/models/issue.py:70
+msgid "Comments"
+msgstr "Commentaire"
+
+#: maintenance/models/issue.py:71 maintenance/models/issue.py:74
+msgid "Attachment"
+msgstr "Pièce jointe"
+
+#: maintenance/models/issue.py:99
+msgid "Date: {date}, Subject: {subject}, For: {company} , Type: {contract} "
+msgstr "Date : {date}, sujet : {subject}, for : {company}, type : {contract} "
+
+#: maintenance/models/issue.py:100
+msgid "%m/%d/%Y at %H:%M"
+msgstr "%d/%m/%Y à %H:%M"
 
 #: maintenance/models/other_models.py:12
 msgid "Maintenance's Type"
@@ -112,34 +174,41 @@ msgid "Maintenance's Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
 #: maintenance/tests/forms/test_credit_forms.py:20
-#: maintenance/tests/forms/test_issue_forms.py:71
-#: maintenance/tests/forms/test_issue_forms.py:284
-#: maintenance/tests/forms/test_other_models_forms.py:40
+#: maintenance/tests/forms/test_issue_forms.py:72
+#: maintenance/tests/forms/test_issue_forms.py:285
+#: maintenance/tests/forms/test_other_models_forms.py:49
 #: maintenance/tests/forms/test_project_forms.py:65
 #: maintenance/tests/forms/test_project_forms.py:280
 msgid "This field is required."
 msgstr "Ce champs est obligatoire."
 
-#: maintenance/tests/forms/test_issue_forms.py:95
-#: maintenance/tests/forms/test_issue_forms.py:306
-#, python-format
-msgid "Invalid duration type: '%s'"
-msgstr "Unité invalide: '%s'"
-
-#: maintenance/tests/forms/test_issue_forms.py:109
-#: maintenance/tests/forms/test_issue_forms.py:319
+#: maintenance/tests/forms/test_issue_forms.py:110
+#: maintenance/tests/forms/test_issue_forms.py:321
 #: maintenance/tests/forms/test_project_forms.py:223
 #: maintenance/tests/forms/test_project_forms.py:414
 #, python-format
 msgid "Ensure this value is greater than or equal to %(limit_value)s."
-msgstr "Assurez-vous que cette valeur est plus grande ou égale à %(limit_value)s."
+msgstr ""
+"Assurez-vous que cette valeur est plus grande ou égale à %(limit_value)s."
 
-#: maintenance/tests/forms/test_issue_forms.py:122
-#: maintenance/tests/forms/test_issue_forms.py:332
+#: maintenance/tests/forms/test_issue_forms.py:123
+#: maintenance/tests/forms/test_issue_forms.py:334
 #: maintenance/tests/forms/test_project_forms.py:233
 #: maintenance/tests/forms/test_project_forms.py:424
 msgid "Enter a whole number."
 msgstr "Entrez un nombre entier."
+
+#~ msgid "Visible to customer user"
+#~ msgstr "Visible pour les managers"
+
+#~ msgid "Consumer's Name"
+#~ msgstr "Nom de l'utilisateur de maintenance"
+
+#~ msgid "Date of Action"
+#~ msgstr "Date de l'action"
+
+#~ msgid "Name of Type"
+#~ msgstr "Nom du Type"
 
 #~ msgid "CSS class for HTML"
 #~ msgstr "Class CSS pour le HTML"
