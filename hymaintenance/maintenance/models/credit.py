@@ -10,9 +10,11 @@ from .utils import get_counter_name
 
 class MaintenanceCredit(models.Model):
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
-    date = models.DateField(_("Date of Action"), default=datetime.date.today)
-    contract = models.ForeignKey(to="maintenance.MaintenanceContract", on_delete=models.PROTECT)
-    hours_number = models.PositiveIntegerField(u"Hours number", default=0)
+    date = models.DateField(_("Effective date"), default=datetime.date.today)
+    contract = models.ForeignKey(
+        to="maintenance.MaintenanceContract", verbose_name=_("Contract"), on_delete=models.PROTECT
+    )
+    hours_number = models.PositiveIntegerField(_("Hours number"), default=0)
 
     def __str__(self):
         return "%s, the %s for %s and %s hours" % (

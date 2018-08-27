@@ -5,8 +5,8 @@ from django.utils.translation import ugettext_lazy as _
 class MaintenanceType(models.Model):
     CSS_CLASSES = ("type-maintenance", "type-support", "type-correction")
 
-    name = models.CharField(_("Name of Type"), max_length=255)
-    default_visibility = models.BooleanField(_("Visible to customer user"), default=True)
+    name = models.CharField(_("Name"), max_length=255)
+    default_visibility = models.BooleanField(_("Visible to manager"), default=True)
 
     class Meta:
         verbose_name = _("Maintenance's Type")
