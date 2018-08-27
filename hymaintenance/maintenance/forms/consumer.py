@@ -24,7 +24,9 @@ class MaintenanceConsumersUpdateForm(forms.Form):
         self.company = kwargs.pop("company")
         super().__init__(*args, **kwargs)
         self.fields["users"].queryset = MaintenanceConsumer.objects.filter(company=self.company)
-        self.fields["users"].initial = MaintenanceConsumer.objects.filter(company=self.company, is_used=True)
+        self.fields["users"].initial = MaintenanceConsumer.objects.filter(company=self.company, is_used=True).order_by(
+            "name"
+        )
 
     def save(self):
         for consumer in self.cleaned_data["users"].filter(is_used=False):

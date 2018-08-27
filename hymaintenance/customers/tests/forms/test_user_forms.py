@@ -184,8 +184,8 @@ class ManagerUsersUpdateFormTestCase(TestCase):
     def setUp(self):
         self.company = CompanyFactory()
         self.m2 = ManagerUserFactory(is_active=False, company=self.company)
-        self.m1 = ManagerUserFactory(company=self.company)
-        self.m3 = ManagerUserFactory(company=self.company)
+        self.m1 = ManagerUserFactory(company=self.company, first_name="Chell")
+        self.m3 = ManagerUserFactory(company=self.company, first_name="Glados")
         self.m4 = ManagerUserFactory(is_active=False, company=self.company)
 
     def test_update_form_initial_values(self):
@@ -206,24 +206,24 @@ class OperatorUsersUpdateFormTestCase(TestCase):
     def setUp(self):
         self.company = CompanyFactory()
 
-        self.op1 = OperatorUserFactory(is_active=True)
+        self.op1 = OperatorUserFactory(is_active=True, first_name="Gordon")
         self.op1.operator_for.add(self.company)
-        self.op2 = OperatorUserFactory(is_active=True)
+        self.op2 = OperatorUserFactory(is_active=True, first_name="Chell")
         self.op2.operator_for.add(self.company)
 
-        self.op3 = OperatorUserFactory(is_active=True)
-        self.op4 = OperatorUserFactory(is_active=True)
+        self.op3 = OperatorUserFactory(is_active=True, first_name="Glados")
+        self.op4 = OperatorUserFactory(is_active=True, first_name="Wheatley")
 
     def test_update_form_initial_values(self):
         form = OperatorUsersUpdateForm(company=self.company)
-        self.assertEqual(list(form.fields["users"].initial), [self.op1, self.op2])
+        self.assertEqual(list(form.fields["users"].initial), [self.op2, self.op1])
 
     def test_update_form(self):
-        self.assertEqual(list(self.company.managed_by.all()), [self.op1, self.op2])
+        self.assertEqual(list(self.company.managed_by.all().order_by("first_name")), [self.op2, self.op1])
         form = OperatorUsersUpdateForm(company=self.company, data={"users": [self.op1, self.op3]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
-        self.assertEqual(list(self.company.managed_by.all()), [self.op1, self.op3])
+        self.assertEqual(list(self.company.managed_by.all().order_by("first_name")), [self.op3, self.op1])
 
 
 class MaintenanceUserProfileUpdateFormTestCase(TestCase):
