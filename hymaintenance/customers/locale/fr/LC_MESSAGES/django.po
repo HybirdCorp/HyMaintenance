@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-15 16:53+0200\n"
+"POT-Creation-Date: 2018-08-27 14:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,10 +18,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: customers/admin.py:23 customers/forms.py:33
-#: customers/tests/forms/test_user_forms.py:42
+#: customers/admin.py:23 customers/forms.py:30
+#: customers/tests/forms/test_user_forms.py:51
 msgid "The two password fields didn't match."
-msgstr "Les deux champs mots de passe ne correspondent pas."
+msgstr "Les deux champs mot de passe ne correspondent pas."
 
 #: customers/admin.py:24 customers/admin.py:56
 msgid "Password"
@@ -52,19 +52,19 @@ msgstr "Permissions"
 msgid "Personal info"
 msgstr "Informations personnelles"
 
-#: customers/forms.py:35
-#, fuzzy
-#| msgid "Password"
+#: customers/forms.py:32
 msgid "New password"
-msgstr "Mot de passe"
+msgstr "Nouveau mot de passe"
 
-#: customers/forms.py:42
-#, fuzzy
-#| msgid "Password confirmation"
+#: customers/forms.py:39
 msgid "New password confirmation"
-msgstr "Confirmation mot de passe"
+msgstr "Confirmation du nouveau mot de passe"
 
-#: customers/forms.py:185 customers/tests/forms/test_user_forms.py:196
+#: customers/forms.py:179 customers/forms.py:194
+msgid "Confirm password"
+msgstr "Confirmez le mot de passe"
+
+#: customers/forms.py:189 customers/tests/forms/test_user_forms.py:254
 msgid "Invalid password."
 msgstr "Mot de passe invalide."
 
@@ -102,51 +102,60 @@ msgstr "Il existe déjà un utilisateur administrateur."
 msgid "There are already {} admin users."
 msgstr "Il existe déjà {} utilisateurs administrateurs."
 
-#: customers/models/user.py:29
-msgid "The given email must be set"
+#: customers/models/company.py:8
+#| msgid "last name"
+msgid "Name"
+msgstr "Nom"
+
+#: customers/models/company.py:12
+msgid "Contact"
+msgstr "Contact"
+
+#: customers/models/user.py:30
+msgid "The given email must be set."
 msgstr "L'email doit être renseigné."
 
-#: customers/models/user.py:59
+#: customers/models/user.py:70
 msgid "Creation date"
 msgstr "Date de création"
 
-#: customers/models/user.py:60
+#: customers/models/user.py:71
 msgid "Last modification date"
 msgstr "Date de dernière modification"
 
-#: customers/models/user.py:62
-msgid "first name"
+#: customers/models/user.py:73
+msgid "First name"
 msgstr "Prénom"
 
-#: customers/models/user.py:63
-msgid "last name"
+#: customers/models/user.py:74
+msgid "Last name"
 msgstr "Nom de famille"
 
-#: customers/models/user.py:65
-msgid "email address"
+#: customers/models/user.py:76
+msgid "Email address"
 msgstr "Adresse e-mail"
 
-#: customers/models/user.py:68
-msgid "A user with that username already exists."
+#: customers/models/user.py:79
+msgid "A user with that email already exists."
 msgstr "Un utilisateur avec ce login existe déjà"
 
-#: customers/models/user.py:70
+#: customers/models/user.py:81
 msgid "phone number"
 msgstr "Numéro de téléphone"
 
-#: customers/models/user.py:73
-msgid "staff status"
-msgstr "Status Staff"
+#: customers/models/user.py:84
+msgid "Staff"
+msgstr "Personnel"
 
-#: customers/models/user.py:73
+#: customers/models/user.py:84
 msgid "Designates whether the user can log into this admin site."
-msgstr "Autorise l'utilisateur à accéder au tableau de bord."
+msgstr "Renseigne si l'utilisateur peut accéder au tableau de bord."
 
-#: customers/models/user.py:76
-msgid "active"
+#: customers/models/user.py:87
+msgid "Active"
 msgstr "Actif"
 
-#: customers/models/user.py:79
+#: customers/models/user.py:90
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
@@ -154,15 +163,19 @@ msgstr ""
 "Renseigne si l'utilisateur est actif. Décochez si vous voulez que "
 "l'utilisateursoit archivé."
 
-#: customers/models/user.py:86
+#: customers/models/user.py:94
+msgid "User's company"
+msgstr "Société de l'utilisateur"
+
+#: customers/models/user.py:97
 msgid "Managed Companies"
 msgstr "Sociétés dont l'utilisateur est opérateur"
 
-#: customers/tests/forms/test_user_forms.py:34
-#: customers/tests/forms/test_user_forms.py:177
+#: customers/tests/forms/test_user_forms.py:43
+#: customers/tests/forms/test_user_forms.py:235
 msgid "This field is required."
 msgstr "Ce champs est obligatoire."
 
 #: customers/tests/test_commands.py:22
 msgid "Successfully create an admin user."
-msgstr "Il existe déjà un utilisateur administrateur."
+msgstr "L'utilisateur administrateur a bien été créé."
