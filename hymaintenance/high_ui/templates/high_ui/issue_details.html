@@ -1,9 +1,9 @@
 {% load i18n print_fields print_files %}
 
-<!DOCTYPE html>
+<ns "" %}!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; {{object.company.name}}, demande de {{object.get_counter_name}} n° {{object.id}}</title>
+<title>Maintenance Hybird &mdash; {{object.company.name}}, {% trans "issue of" %} {{object.get_counter_name}} {% trans "#" %}{{object.id}}</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -13,74 +13,74 @@
     {% include "high_ui/issue_details_header.html" %}
     <div class="content-container">
         <div class="home-link-header {{object.contract.maintenance_type.css_class}}">
-            <a href="{% url 'high_ui:dashboard' %}" title="Retour à l'accueil">Accueil</a> &nbsp;/&nbsp;
-            <span>Demande n°{{object.company_issue_number}}</span> &nbsp;
+            <a href="{% url 'high_ui:dashboard' %}" title="{% trans "Return to dashboard" %}">Accueil</a> &nbsp;/&nbsp;
+            <span>{% trans "Issue #" %}{{object.company_issue_number}}</span> &nbsp;
             <div class="dashboard-item dashboard-button">
-                <a href="{% url 'high_ui:project-update_issue' company_issue_number=object.company_issue_number company_name=object.company.slug_name %}">Modifier</a>
+                <a href="{% url 'high_ui:project-update_issue' company_issue_number=object.company_issue_number company_name=object.company.slug_name %}">{% trans "Modify" %}</a>
             </div>
          </div>
         <div class="content">
             <div class="container details-container">
-                <div class="container-title">Demande n° {{object.company_issue_number}} &mdash; {{object.subject}}</div>
+                <div class="container-title">{% trans "Issue #" %} {{object.company_issue_number}} &mdash; {{object.subject}}</div>
                 <div class="property-container">
-                    <span class="property-key">Auteur</span>
+                    <span class="property-key">{% trans "Author" %}</span>
                     <span class="property-value">{{object.who_ask}}</span>
                 </div>
                 <div class="property-container">
-                    <span class="property-key">Date</span>
+                    <span class="property-key">{% trans "Date" %}</span>
                     <span class="property-value">{{object.date|date:"d/m/Y"}}</span>
                 </div>
                 {% if object.incoming_channel %}
                 <div class="property-container">
-                    <span class="property-key">Canal</span>
+                    <span class="property-key">{% trans "Channel" %}</span>
                     <span class="property-value">{{object.incoming_channel}}</span>
                 </div>
                 {% endif %}
                 <div class="property-container property-multiline">
-                    <span class="property-key">Détails</span>
+                    <span class="property-key">{% trans "Details" %}</span>
                     <span class="property-value">{{object.description|linebreaksbr}}</span>
                 </div>
                 {% if object.context_description_file %}
                 <div class="property-container">
-                    <span class="property-key">Pièce jointe</span>
+                    <span class="property-key">{% trans "Attachment" %}</span>
                     <a class="property-value" href="{{object.context_description_file.url}}" target="_blank">{{object.context_description_file|file_name}}</a>
                 </div>
                 {% endif %}
             </div>
 
             <div class="container resolution-container {{object.contract.maintenance_type.css_class}}">
-                <div class="container-title">Résolution</div>
+                <div class="container-title">{% trans "Resolution" %}</div>
                 <div class="property-container">
-                    <span class="property-key">Intervenant</span>
+                    <span class="property-key">{% trans "Operator" %}</span>
                     <span class="property-value">{{object.user_who_fix.first_name}} {{object.user_who_fix.last_name}}</span>
                 </div>
                 <div class="property-container">
-                    <span class="property-key">Activité</span>
+                    <span class="property-key">{% trans "Activity" %}</span>
                     <span class="property-value type-tag">{{object.get_counter_name}}</span>
                 </div>
                 <div class="property-container">
-                    <span class="property-key">Temps passé</span>
+                    <span class="property-key">{% trans "Time spent" %}</span>
                     <span class="property-value duration">{% pretty_print_minutes object.number_minutes use_long_minute_format=True %}</span>
                 </div>
                 {% if object.resolution_date %}
                 <div class="property-container">
-                    <span class="property-key">Résolution</span>
+                    <span class="property-key">{% trans "Resolution" %}</span>
                     <span class="property-value">{{object.resolution_date|date:"d/m/Y à H\hi"}}</span>
                 </div>
                 {% endif %}
                 {% if object.shipping_date %}
                 <div class="property-container">
-                    <span class="property-key">Livraison</span>
+                    <span class="property-key">{% trans "Delivery" %}</span>
                     <span class="property-value">{{object.shipping_date|date:"d/m/Y à H\hi"}}</span>
                 </div>
                 {% endif %}
                 <div class="property-container property-multiline">
-                    <span class="property-key">Commentaire</span>
+                    <span class="property-key">{% trans "Comments" %}</span>
                     <span class="property-value">{{object.answer|linebreaksbr}}</span>
                 </div>
                 {% if object.resolution_description_file %}
                 <div class="property-container">
-                    <span class="property-key">Pièce jointe</span>
+                    <span class="property-key">{% trans "Attachment" %}</span>
                     <a class="property-value" href="{{object.resolution_description_file.url}}" target="_blank">{{object.resolution_description_file|file_name}}</a>
                 </div>
                 {% endif %}

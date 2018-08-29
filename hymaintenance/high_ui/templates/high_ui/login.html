@@ -457,12 +457,12 @@
             <p class="errornote">{% if error_message %}{{error_message}}{% endif %}</p>
             <div id="content-main">
                 <div id="branding">
-                    Se connecter à <span class="main-label">hymaintenance</span>
+                    {% trans "Login to" %} <span class="main-label">HyMaintenance</span>
                 </div>
                 <form {% comment %}action="{{app_path}}"{% endcomment %} method="post" id="login-form">
                     {% csrf_token %}
                     <div class="form-row">
-                        <label for="id_username" autofocus>{% trans 'Username' %}</label>{{form.username}}
+                        <label for="id_username" autofocus>{% trans 'Email' %}</label>{{form.username}}
                     </div>
                     <div>{{form.errors.username}}</div>
                     <div class="form-row">
@@ -471,7 +471,7 @@
                     </div>
                     <div>{{form.errors.password}}</div>
                     <div class="submit-row">
-                        <button type="submit">{% trans 'Log in' %}</button>
+                        <button type="submit">{% trans 'Login' %}</button>
                     </div>
                     <div>{{form.non_field_errors}}</div>
                 </form>

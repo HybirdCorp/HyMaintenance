@@ -2,7 +2,7 @@
 <div class="dashboard {% if contracts %}{{contracts.0.maintenance_type.css_class}}{% else %}type-maintenance{% endif %}">
     <div class="dashboard-item dashboard-account">
         <span class="dashboard-title">{% trans "Account" %}</span>
-        <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="Retour à l'accueil">{{company.name}}</a></span>
+        <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="{% trans "Return to dashboard" %}">{{company.name}}</a></span>
     </div>
 
     {% for contract in contracts.filter_enabled %}
@@ -13,7 +13,9 @@
     {% endfor %}
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
-            <a href='{% url 'high_ui:project-create_credit' company_name=company.slug_name %}'>Commander des heures</a>
+            {% if request.user.is_staff %}
+            <a href='{% url 'high_ui:project-create_credit' company_name=company.slug_name %}'>{% trans "Add hours" %}</a>
+            {% endif %}
         </div>
     </div>
 
@@ -29,7 +31,7 @@
     </div>
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
-            <a href="/logout" title="Quitter l'application">{% trans "Disconnect" %}</a>
+            <a href="/logout" title="{% trans "Quit the application" %}">{% trans "Logout" %}</a>
         </div>
     </div>
 </div>

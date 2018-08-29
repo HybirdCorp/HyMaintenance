@@ -30,7 +30,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.company_name.id_for_label}}">Compte</label>
+                            <label for="{{form.company_name.id_for_label}}">{{form.company_name.label}}</label>
                             {{form.company_name}}
 
                             {% if form.company_name.errors %}
@@ -46,7 +46,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.contact.id_for_label}}">Contact</label>
+                            <label for="{{form.contact.id_for_label}}">{{form.contact.label}}</label>
                             {{form.contact}}
 
                             {% if form.contact.errors %}
@@ -61,8 +61,8 @@
 
                     <div class="form-group activation-active counter-total">
                         <div class="group-title-container">
-                            <div class="group-title">Compteur {% block form_counter_name_1 %}{% endblock %}</div>
-                            <a href="#" class="show-more" title="Afficher plus de détails pour ce compteur">Afficher plus de détails</a>
+                            <div class="group-title">{% trans "Counter" %} {% block form_counter_name_1 %}{% endblock %}</div>
+                            <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
                         </div>
 
                         <div class="form-row row-activation-type {% if form.contract1_visible.errors %}form-error{% endif %}">
@@ -70,11 +70,11 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-			    <label for="{{form.contract1_visible.id_for_label}}">Compteur</label>
+			    <label for="{{form.contract1_visible.id_for_label}}">{{form.contract1_visible.label}}</label>
                             <section class="segmented-selector {{maintenance_types.0.css_class}}">
-                                <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">Visible à tous</a>
-                                <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">Invisible aux clients</a>
-                                <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">Inactif</a>
+                                <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">{% trans "Visible to everyone" %}</a>
+                                <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">{% trans "Invisible to managers" %}</a>
+                                <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">{% trans "Disabled" %}</a>
 				{{form.contract1_visible}}
                             </section>
 
@@ -87,9 +87,9 @@
                             {% endfor %}
                         </div>
                         <div class="help help-activation">
-                            <span class='activation-active'>Ce compteur sera <em>visible par les managers</em> du projet, et <em>utilisable par les intervenants Hybird</em> dans les tableaux de bord et pour enregistrer des demandes.</span>
-                            <span class='activation-hidden'>Ce compteur sera <em>invisible aux managers</em>, mais <em>utilisable par les intervenants Hybird</em> dans les tableaux de bord et pour enregistrer des demandes.</span>
-                            <span class='activation-inactive'>Ce compteur sera <em>désactivé</em> pour ce projet.</span>
+                            <span class='activation-active'>{% trans "This counter will be <em>visible for managers</em> of the project, and <em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
+                            <span class='activation-hidden'>{% trans "This counter will be <em>invisible for managers, but </em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
+                            <span class='activation-inactive'>{% trans "This counter will be <em>disabled</em> for the project" %}</span>
                         </div>
 
                         <div class="form-row row-counter-type {% if form.contract1_total_type.errors %}form-error{% endif %}">
@@ -97,10 +97,10 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-			    <label for="{{form.contract1_total_type.id_for_label}}">Type de compteur</label>
+			    <label for="{{form.contract1_total_type.id_for_label}}">{{form.contract1_total_type.label}}</label>
                             <section class="segmented-selector {{maintenance_types.0.css_class}}">
-                                <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">Total disponible</a>
-                                <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">Total du temps passé</a>
+                                <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">{% trans "Available total time" %}</a>
+                                <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">{% trans "Consumed total time" %}</a>
 				{{form.contract1_total_type}}
                             </section>
                             {% if form.contract1_total_type.errors %}
@@ -117,7 +117,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-			    <label for="{{form.contract1_number_hours.id_for_label}}">Heures créditées *</label>
+			    <label for="{{form.contract1_number_hours.id_for_label}}">{{form.contract1_number_hours.label}} *</label>
 			    {{form.contract1_number_hours}}
 
                             {% if form.contract1_number_hours.errors %}
@@ -130,8 +130,8 @@
                         </div>
 
                         <div class="help help-credit">
-                            <span class="counter-total">Ce compteur affichera le <em>total du temps passé</em> sur les demandes enregistrées par les intervenants Hybird.</span>
-                            <span class="counter-credit">Ce compteur affichera le <em>temps restant disponible</em> sur les heures <em>de {{maintenance_types.0.name}} créditées</em>, et qui sera consommé par les intervenants Hybird en enregistrant des demandes.</span>
+                            <span class="counter-total">{% trans "This counter will display the <em>consumed total time</em> by the registered issues by Hybird's operators" %}</span>
+                            <span class="counter-credit">{% trans "This compteur will display the <em>available total time</em> on" %} {{maintenance_types.0.name}} {% trans "credited hours, that will be consumed by Hybird's operators by register an issues." %}</span>
                         </div>
 
                         <div class="show-more-container">
@@ -140,7 +140,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{form.contract1_counter_name.id_for_label}}">Nom du compteur</label>
+                                <label for="{{form.contract1_counter_name.id_for_label}}">{{form.contract1_counter_name.label}}</label>
                                 {{form.contract1_counter_name}}
 
                                 {% if form.contract1_counter_name.errors %}
@@ -151,10 +151,10 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">Ce compteur peut être renommé pour remplacer son nom par défaut de <em>{{maintenance_types.0.name}}</em>.</div>
+                            <div class="help">{% trans "This counter can be renamed to replace the" %} <em>{{maintenance_types.0.name}}</em>{% trans "default name" %}</div>
 
                             <div class="form-row {% if form.contract1_date.errors %}form-error{% endif %}">
-                                <label for="{{form.contract1_date.id_for_label}}">Date de début</label>
+                                <label for="{{form.contract1_date.id_for_label}}">{{form.contract1_date.label}}</label>
                                 {{form.contract1_date}}
 
                                 {% if form.contract1_date.errors %}
@@ -165,14 +165,14 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">La date à laquelle ce contrat débute.</div>
+                            <div class="help">{% trans "Date when the contract begin." %}</div>
                         </div>
                     </div>
 
                     <div class="form-group activation-active counter-total">
                         <div class="group-title-container">
-                            <div class="group-title">Compteur {% block form_counter_name_2 %}{% endblock %}</div>
-                            <a href="#" class="show-more" title="Afficher plus de détails pour ce compteur">Afficher plus de détails</a>
+                            <div class="group-title">{% trans "Counter" %} {% block form_counter_name_2 %}{% endblock %}</div>
+                            <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
                         </div>
 
                         <div class="form-row row-activation-type {% if form.contract2_visible.errors %}form-error{% endif %}">
@@ -180,11 +180,11 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-			    <label for="{{form.contract2_visible.id_for_label}}">Compteur</label>
-                            <section class="segmented-selector {{maintenance_types.1.css_class}}">
-                                <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">Visible à tous</a>
-                                <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">Invisible aux clients</a>
-                                <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">Inactif</a>
+			    <label for="{{form.contract2_visible.id_for_label}}">{{form.contract2_visible.label}}</label>
+                            <section class="segmented-selector {{maintenance_types.0.css_class}}">
+                                <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">{% trans "Visible to everyone" %}</a>
+                                <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">{% trans "Invisible to managers" %}</a>
+                                <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">{% trans "Disabled" %}</a>
 				{{form.contract2_visible}}
                             </section>
 
@@ -197,9 +197,9 @@
                             {% endfor %}
                         </div>
                         <div class="help help-activation">
-                            <span class='activation-active'>Ce compteur sera <em>visible par les managers</em> du projet, et <em>utilisable par les intervenants Hybird</em> dans les tableaux de bord et pour enregistrer des demandes.</span>
-                            <span class='activation-hidden'>Ce compteur sera <em>invisible aux managers</em>, mais <em>utilisable par les intervenants Hybird</em> dans les tableaux de bord et pour enregistrer des demandes.</span>
-                            <span class='activation-inactive'>Ce compteur sera <em>désactivé</em> pour ce projet.</span>
+                            <span class='activation-active'>{% trans "This counter will be <em>visible for managers</em> of the project, and <em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
+                            <span class='activation-hidden'>{% trans "This counter will be <em>invisible for managers, but </em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
+                            <span class='activation-inactive'>{% trans "This counter will be <em>disabled</em> for the project" %}</span>
                         </div>
 
                         <div class="form-row row-counter-type {% if form.contract2_total_type.errors %}form-error{% endif %}">
@@ -207,10 +207,10 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-			    <label for="{{form.contract2_total_type.id_for_label}}">Type de compteur</label>
+			    <label for="{{form.contract2_total_type.id_for_label}}">{{form.contract2_total_type.label}}</label>
                             <section class="segmented-selector {{maintenance_types.1.css_class}}">
-                                <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">Total disponible</a>
-                                <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">Total du temps passé</a>
+                                <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">{% trans "Available total time" %}</a>
+                                <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">{% trans "Consumed total time" %}</a>
 				{{form.contract2_total_type}}
                             </section>
                             {% if form.contract2_total_type.errors %}
@@ -227,7 +227,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-			    <label for="{{form.contract2_number_hours.id_for_label}}">Heures créditées *</label>
+			    <label for="{{form.contract2_number_hours.id_for_label}}">{{form.contract2_number_hours.label}} *</label>
 			    {{form.contract2_number_hours}}
 
                             {% if form.contract2_number_hours.errors %}
@@ -240,8 +240,8 @@
                         </div>
 
                         <div class="help help-credit">
-                            <span class="counter-total">Ce compteur affichera le <em>total du temps passé</em> sur les demandes enregistrées par les intervenants Hybird.</span>
-                            <span class="counter-credit">Ce compteur affichera le <em>temps restant disponible</em> sur les heures <em>de {{maintenance_types.1.name}} créditées</em>, et qui sera consommé par les intervenants Hybird en enregistrant des demandes.</span>
+                            <span class="counter-total">{% trans "This counter will display the <em>consumed total time</em> by the registered issues by Hybird's operators" %}</span>
+                            <span class="counter-credit">{% trans "This compteur will display the <em>available total time</em> on" %} {{maintenance_types.1.name}} {% trans "credited hours, that will be consumed by Hybird's operators by register an issues." %}</span>
                         </div>
 
                         <div class="show-more-container">
@@ -250,7 +250,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{form.contract2_counter_name.id_for_label}}">Nom du compteur</label>
+                                <label for="{{form.contract2_counter_name.id_for_label}}">{{form.contract2_counter_name.label}}</label>
                                 {{form.contract2_counter_name}}
 
                                 {% if form.contract2_counter_name.errors %}
@@ -261,10 +261,10 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">Ce compteur peut être renommé pour remplacer son nom par défaut de <em>{{maintenance_types.0.name}}</em>.</div>
+                            <div class="help">{% trans "This counter can be renamed to replace the" %} <em>{{maintenance_types.1.name}}</em>{% trans "default name" %}</div>
 
                             <div class="form-row {% if form.contract2_date.errors %}form-error{% endif %}">
-                                <label for="{{form.contract2_date.id_for_label}}">Date de début</label>
+                                <label for="{{form.contract2_date.id_for_label}}">{{form.contract2_date.label}}</label>
                                 {{form.contract2_date}}
 
                                 {% if form.contract2_date.errors %}
@@ -275,14 +275,14 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">La date à laquelle ce contrat débute.</div>
+                            <div class="help">{% trans "Date when the contract begin." %}</div>
                         </div>
                     </div>
 
                     <div class="form-group activation-active counter-total">
                         <div class="group-title-container">
-                            <div class="group-title">Compteur {% block form_counter_name_3 %}{% endblock %}</div>
-                            <a href="#" class="show-more" title="Afficher plus de détails pour ce compteur">Afficher plus de détails</a>
+                            <div class="group-title">{% trans "Counter" %} {% block form_counter_name_3 %}{% endblock %}</div>
+                            <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
                         </div>
 
                         <div class="form-row row-activation-type {% if form.contract3_visible.errors %}form-error{% endif %}">
@@ -290,11 +290,11 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-			    <label for="{{form.contract3_visible.id_for_label}}">Compteur</label>
+			    <label for="{{form.contract3_visible.id_for_label}}">{{form.contract3_visible.label}}</label>
                             <section class="segmented-selector {{maintenance_types.2.css_class}}">
-                                <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">Visible à tous</a>
-                                <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">Invisible aux clients</a>
-                                <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">Inactif</a>
+                                <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">{% trans "Visible to everyone" %}</a>
+                                <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">{% trans "Invisible to managers" %}</a>
+                                <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">{% trans "Disabled" %}</a>
 				{{form.contract3_visible}}
                             </section>
 
@@ -307,9 +307,9 @@
                             {% endfor %}
                         </div>
                         <div class="help help-activation">
-                            <span class='activation-active'>Ce compteur sera <em>visible par les managers</em> du projet, et <em>utilisable par les intervenants Hybird</em> dans les tableaux de bord et pour enregistrer des demandes.</span>
-                            <span class='activation-hidden'>Ce compteur sera <em>invisible aux managers</em>, mais <em>utilisable par les intervenants Hybird</em> dans les tableaux de bord et pour enregistrer des demandes.</span>
-                            <span class='activation-inactive'>Ce compteur sera <em>désactivé</em> pour ce projet.</span>
+                            <span class='activation-active'>{% trans "This counter will be <em>visible for managers</em> of the project, and <em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
+                            <span class='activation-hidden'>{% trans "This counter will be <em>invisible for managers, but </em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
+                            <span class='activation-inactive'>{% trans "This counter will be <em>disabled</em> for the project" %}</span>
                         </div>
 
                         <div class="form-row row-counter-type {% if form.contract3_total_type.errors %}form-error{% endif %}">
@@ -317,10 +317,10 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-			    <label for="{{form.contract3_total_type.id_for_label}}">Type de compteur</label>
+			    <label for="{{form.contract3_total_type.id_for_label}}">{{form.contract3_total_type.label}}</label>
                             <section class="segmented-selector {{maintenance_types.2.css_class}}">
-                                <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">Total disponible</a>
-                                <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">Total du temps passé</a>
+                                <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">{% trans "Available total time" %}</a>
+                                <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">{% trans "Consumed total time" %}</a>
 				{{form.contract3_total_type}}
                             </section>
                             {% if form.contract3_total_type.errors %}
@@ -337,7 +337,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-			    <label for="{{form.contract3_number_hours.id_for_label}}">Heures créditées *</label>
+			    <label for="{{form.contract3_number_hours.id_for_label}}">{{form.contract3_number_hours.label}} *</label>
 			    {{form.contract3_number_hours}}
 
                             {% if form.contract3_number_hours.errors %}
@@ -350,8 +350,8 @@
                         </div>
 
                         <div class="help help-credit">
-                            <span class="counter-total">Ce compteur affichera le <em>total du temps passé</em> sur les demandes enregistrées par les intervenants Hybird.</span>
-                            <span class="counter-credit">Ce compteur affichera le <em>temps restant disponible</em> sur les heures <em>de {{maintenance_types.2.name}} créditées</em>, et qui sera consommé par les intervenants Hybird en enregistrant des demandes.</span>
+                            <span class="counter-total">{% trans "This counter will display the <em>consumed total time</em> by the registered issues by Hybird's operators" %}</span>
+                            <span class="counter-credit">{% trans "This compteur will display the <em>available total time</em> on" %} {{maintenance_types.2.name}} {% trans "credited hours, that will be consumed by Hybird's operators by register an issues." %}</span>
                         </div>
 
                         <div class="show-more-container">
@@ -360,7 +360,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{form.contract3_counter_name.id_for_label}}">Nom du compteur</label>
+                                <label for="{{form.contract3_counter_name.id_for_label}}">{{form.contract3_counter_name.label}}</label>
                                 {{form.contract3_counter_name}}
 
                                 {% if form.contract3_counter_name.errors %}
@@ -371,10 +371,10 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">Ce compteur peut être renommé pour remplacer son nom par défaut de <em>{{maintenance_types.0.name}}</em>.</div>
+                            <div class="help">{% trans "This counter can be renamed to replace the" %} <em>{{maintenance_types.2.name}}</em>{% trans "default name" %}</div>
 
                             <div class="form-row {% if form.contract3_date.errors %}form-error{% endif %}">
-                                <label for="{{form.contract3_date.id_for_label}}">Date de début</label>
+                                <label for="{{form.contract3_date.id_for_label}}">{{form.contract3_date.label}}</label>
                                 {{form.contract3_date}}
 
                                 {% if form.contract3_date.errors %}
@@ -385,7 +385,7 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">La date à laquelle ce contrat débute.</div>
+                            <div class="help">{% trans "Date when the contract begin." %}</div>
                         </div>
                     </div>
 

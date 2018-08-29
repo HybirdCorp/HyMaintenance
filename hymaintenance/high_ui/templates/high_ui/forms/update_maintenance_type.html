@@ -1,7 +1,8 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; Modifier les compteurs par défaut</title> {# TMP #}
+<title>Maintenance Hybird &mdash; {% trans "Modify default counters" %}</title> {# TMP #}
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -21,14 +22,14 @@
                 <div class="form-content">
                     <div class="form-group">
                         <div class="group-title-container">
-                            <div class="group-title">Compteurs par défaut</div>
+                            <div class="group-title">{% trans "Default counters" %}</div>
                         </div>
                         <div class="form-row {% if form.maintenance_type1_name.errors %}form-error{% endif %}">
                             {% if form.maintenance_type1_name.errors %}
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.maintenance_type1_name.id_for_label}}">Compteur vert</label>
+                            <label for="{{form.maintenance_type1_name.id_for_label}}">{% trans "Green counter" %}</label>
                             {{form.maintenance_type1_name}}
 
                             {% if form.maintenance_type1_name.errors %}
@@ -44,7 +45,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.maintenance_type2_name.id_for_label}}">Compteur bleu</label>
+                            <label for="{{form.maintenance_type2_name.id_for_label}}">{% trans "Blue counter" %}</label>
                             {{form.maintenance_type2_name}}
 
                             {% if form.maintenance_type2_name.errors %}
@@ -60,7 +61,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.maintenance_type3_name.id_for_label}}">Compteur gris</label>
+                            <label for="{{form.maintenance_type3_name.id_for_label}}">{% trans "Grey counter" %}</label>
                             {{form.maintenance_type3_name}}
 
                             {% if form.maintenance_type3_name.errors %}
@@ -83,8 +84,8 @@
                     {% endif %}
 
                     <div class="form-footer">
-                        <button type="submit">Modifier les compteurs</button>
-                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+                        <button type="submit">{% trans "Modify counters" %}</button>
+                        <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
                     </div>
                 </div>
             </form>

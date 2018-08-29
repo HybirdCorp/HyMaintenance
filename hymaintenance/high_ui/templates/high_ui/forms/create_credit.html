@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; {{company.name}} ajouter des crédits</title>
+<title>Maintenance Hybird &mdash; {% blocktrans %}Add credits for {{company.name}}{% endblocktrans %}</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -20,32 +20,32 @@
                 <div class="form-content auto-min-height">
                     <div class="form-group">
                         <div class="group-title-container">
-                            <div class="group-title">Ajouter des heures</div>
-                            <label>Compte client</label>
+                            <div class="group-title">{% trans "Add hours" %}</div>
+                            <label>{% trans "Client account" %}</label>
                             <span>{{company}}</span>
                         </div>
 
                         <div class="form-row">
-                            <label for="{{form.hours_number.id_for_label}}">Quantité</label>
+                            <label for="{{form.hours_number.id_for_label}}">{{form.hours_number.label}}</label>
                             <section class="segmented-selector {{default_activity_type}} selector-hours_number">
                                 {% for hours_number in hours_numbers %}
                                 <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
                                    data-selector-key="{{hours_number}}"
                                    data-selector-value="{{hours_number}}"
-                                   title="Ajout de {{hours_number}}">{{hours_number}}h</a>
+                                   title="{% blocktrans %}Add {{hours_number}}h{% endblocktrans %}">{{hours_number}}h</a>
                                 {% endfor %}
                                 {{form.hours_number}}
                             </section>
                         </div>
 
                         <div class="form-row">
-                            <label for="{{form.maintenance_type.id_for_label}}">Type de l'activité</label>
+                            <label for="{{form.contract.id_for_label}}">{{form.contract.label}}</label>
                             <section class="segmented-selector {{default_activity_type}} selector-activity-type">
                                 {% for contract in available_time_contracts %}
                                 <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
                                    data-selector-key="{{contract.maintenance_type.css_class}}"
                                    data-selector-value="{{contract.maintenance_type.pk}}"
-                                   title="Activité de type '{{contract.get_counter_name}}'">{{contract.get_counter_name}}</a>
+                                   title="{% blocktrans %}{{contract.get_counter_name}}-type activity{% endblocktrans %}">{{contract.get_counter_name}}</a>
                                 {% endfor %}
                                 {{form.contract}}
                             </section>
@@ -61,8 +61,8 @@
                     {% endif %}
 
                     <div class="form-footer">
-                        <button type="submit">Ajouter des crédits</button>
-                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas ajouter</a></span>
+                        <button type="submit">{% trans "Add hours" %}</button>
+                        <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't add" %}</a></span>
                     </div>
                 </div>
             </form>
