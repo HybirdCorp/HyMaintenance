@@ -11,8 +11,8 @@
 </div>
 <div class='footer footer-bg{% random_background %}'>
     <div class='footer-baseline'>
-        <strong><a href='https://hymaintenance.hybird.org'>HyMaintenance</a></strong> est un logiciel libre, développé en France depuis 2017, par <strong><a href='http://hybird.org'>Hybird</a></strong>
-        <span class='footer-baseline-version'>— Version 1.0</span>
+        <strong><a href='https://hymaintenance.hybird.org'>HyMaintenance</a></strong> {% trans "is a FOSS, developed in France since 2017, by" %} <strong><a href='http://hybird.org'>Hybird</a></strong>
+        <span class='footer-baseline-version'>— {% trans "Version" %} 1.0</span>
     </div>
 
     <div class='footer-columns clearfix'>
@@ -20,9 +20,9 @@
             <div class='column-content'>
                 <span class='footer-column-title'>HyMaintenance</span>
                 <ul>
-                    <li><a href=''>Documentation</a></li>
-                    <li><a href=''>Support Reamaze</a></li>
-                    <li><a href='https://github.com/HybirdCorp/HyMaintenance'>Code source</a></li>
+                    <li><a href=''>{% trans "Documentation" %}</a></li>
+                    <li><a href=''>{% trans "Reamaze support" %}</a></li>
+                    <li><a href='https://github.com/HybirdCorp/HyMaintenance'>{% trans "Source code" %}</a></li>
                     <li class='creme-site'>— <a href='https://hymaintenance.hybird.org'>hymaintenance.hybird.org</a></li>
                 </ul>
             </div>
@@ -30,7 +30,7 @@
         {% if show_menu_client %}
         <div class='footer-column footer-column-client'>
             <div class='column-content'>
-                <span class='footer-column-title'>Votre contact</span>
+                <span class='footer-column-title'>{% trans "Your contact" %}</span>
                 <ul>
                     {% if company %}
                     <li>{{company.contact.first_name}} {{company.contact.last_name}}</li>
@@ -49,7 +49,13 @@
                     {% endif %}
                 </ul>
                 <br/>
-                <span class='footer-column-title'>Prestations {% if company %}{{company.name}}{% endif %}</span>
+                <span class='footer-column-title'>
+                {% if company %}
+                    {% blocktrans %}{{company}} Prestations{% endblocktrans %}
+                {% else %}
+                    {% trans "Prestations" %}
+                {% endif %}
+                </span>
                 <ul>
                     <li>
                     {% for contract in company.contracts.all %}
@@ -64,11 +70,11 @@
         {% else %}
         <div class='footer-column footer-column-client'>
             <div class='column-content'>
-                <span class='footer-column-title'>Maintenance, support, corrections, ...</span>
+                <span class='footer-column-title'>{% trans "Maintenance, support, corrections, ..." %}</span>
                 <ul>
-                    <li>Gestion des prestations au temps passé, ou par consommation d'heures créditées</li>
-                    <li>Crédits commandables dans l'application</li>
-                    <li>Types de prestations par projet</li>
+                    <li>{% trans "Prestation management by consumed time or by available credited hours" %}</li>
+                    <li>{% trans "Order credits in the application" %}</li>
+                    <li>{% trans "Prestation types by project" %}</li>
                 </ul>
             </div>
         </div>

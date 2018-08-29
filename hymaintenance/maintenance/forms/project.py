@@ -16,25 +16,34 @@ INACTIF_CONTRACT_INPUT = -1
 # TODO: limit the "user_who_fix" choices to valid MaintenanceUsers
 # TODO: similarly, limit the consumer_who_ask MaintenanceConsumer to the current company ones
 class ProjectForm(forms.Form):
-    company_name = forms.CharField(max_length=255, required=True)
+    company_name = forms.CharField(label=_("Company"), max_length=255, required=True)
     contact = forms.ModelChoiceField(
-        required=False, widget=forms.Select, queryset=MaintenanceUser.objects.get_active_operator_users_queryset()
+        label=_("Contact"),
+        required=False,
+        widget=forms.Select,
+        queryset=MaintenanceUser.objects.get_active_operator_users_queryset(),
     )
-    contract1_counter_name = forms.CharField(max_length=255, required=True)
-    contract2_counter_name = forms.CharField(max_length=255, required=True)
-    contract3_counter_name = forms.CharField(max_length=255, required=True)
-    contract1_date = forms.DateField(initial=datetime.date.today, required=True)
-    contract2_date = forms.DateField(initial=datetime.date.today, required=True)
-    contract3_date = forms.DateField(initial=datetime.date.today, required=True)
-    contract1_visible = forms.IntegerField(widget=forms.HiddenInput())
-    contract2_visible = forms.IntegerField(widget=forms.HiddenInput())
-    contract3_visible = forms.IntegerField(widget=forms.HiddenInput())
-    contract1_total_type = forms.IntegerField(widget=forms.HiddenInput())
-    contract2_total_type = forms.IntegerField(widget=forms.HiddenInput())
-    contract3_total_type = forms.IntegerField(widget=forms.HiddenInput())
-    contract1_number_hours = forms.IntegerField(min_value=0, initial=0, widget=forms.TextInput())
-    contract2_number_hours = forms.IntegerField(min_value=0, initial=0, widget=forms.TextInput())
-    contract3_number_hours = forms.IntegerField(min_value=0, initial=0, widget=forms.TextInput())
+    contract1_counter_name = forms.CharField(label=_("Counter name"), max_length=255, required=True)
+    contract2_counter_name = forms.CharField(label=_("Counter name"), max_length=255, required=True)
+    contract3_counter_name = forms.CharField(label=_("Counter name"), max_length=255, required=True)
+    contract1_date = forms.DateField(label=_("Start Date"), initial=datetime.date.today, required=True)
+    contract2_date = forms.DateField(label=_("Start Date"), initial=datetime.date.today, required=True)
+    contract3_date = forms.DateField(label=_("Start Date"), initial=datetime.date.today, required=True)
+    contract1_visible = forms.IntegerField(label=_("Counter"), widget=forms.HiddenInput())
+    contract2_visible = forms.IntegerField(label=_("Counter"), widget=forms.HiddenInput())
+    contract3_visible = forms.IntegerField(label=_("Counter"), widget=forms.HiddenInput())
+    contract1_total_type = forms.IntegerField(label=_("Counter type"), widget=forms.HiddenInput())
+    contract2_total_type = forms.IntegerField(label=_("Counter type"), widget=forms.HiddenInput())
+    contract3_total_type = forms.IntegerField(label=_("Counter type"), widget=forms.HiddenInput())
+    contract1_number_hours = forms.IntegerField(
+        label=_("Credited hours"), min_value=0, initial=0, widget=forms.TextInput()
+    )
+    contract2_number_hours = forms.IntegerField(
+        label=_("Credited hours"), min_value=0, initial=0, widget=forms.TextInput()
+    )
+    contract3_number_hours = forms.IntegerField(
+        label=_("Credited hours"), min_value=0, initial=0, widget=forms.TextInput()
+    )
 
 
 class ProjectCreateForm(ProjectForm):

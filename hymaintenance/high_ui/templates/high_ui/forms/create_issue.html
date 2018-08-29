@@ -1,7 +1,8 @@
 {% extends 'high_ui/forms/base_issue.html' %}
+{% load i18n %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; Nouvelle demande {{company.name}}</title> {# TMP #}
+<title>Maintenance Hybird &mdash; {% blocktrans %}{{company}} new issue{% endblocktrans %}</title> {# TMP #}
 {% endblock %}
 
 {% block header %}
@@ -9,12 +10,12 @@
 {% endblock %}
 
 {% block form_title %}
-<div class="group-title">Nouvelle demande</div>
-<label>Compte client</label>
+<div class="group-title">{% trans "New issue" %}</div>
+<label>{% trans "Client account" %}</label>
 <span>{{company.name}}</span>
 {% endblock %}
 
 {% block form_footer %}
-<button type="submit">Sauvegarder la demande</button>
-<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas sauvegarder</a></span>
+<button type="submit">{% trans "Save issue" %}</button>
+<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't save" %}</a></span>
 {% endblock %}

@@ -1,7 +1,8 @@
 {% extends 'high_ui/forms/update_user.html' %}
+{% load i18n %} 
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; {{object.company.name}}, modification de l'intervenant </title> {# TMP #}
+<title>Maintenance Hybird &mdash; {% trans "Modify operator of" %} {{object.company.name}}</title> {# TMP #}
 {% endblock %}
 
 {% block header %}
@@ -9,25 +10,25 @@
 {% endblock %}
 
 {% block form_title %}
-<div class="group-title">Modification de l'intervenant</div>
-<label>Compte client</label>
+<div class="group-title">{% trans "Modification of this operator" %}</div>
+<label>{% trans "Client account" %}</label>
 <span>{{company}}</span>
 {% endblock %}
 
 {% block profile_form_title %}
-<div class="group-title" title="Afficher/cacher le formulaire de modification de profil">Modifier le profil</div>
+<div class="group-title" title="{% trans "Display/hide the profil modification form" %}">{% trans "Modify profile" %}</div>
 {% endblock %}
 
 {% block profile_form_footer %}
-<button type="submit">Modifier les informations</button>
-<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+<button type="submit">{% trans "Modify this informations" %}</button>
+<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
 {% endblock %}
 
 {% block password_form_title %}
-<div class="group-title" title="Afficher/cacher le formulaire de modification de mot de passe">Modifier le mot de passe</div>
+<div class="group-title" title="{% trans "Display/hide the profil modification form" %}">{% trans "Modify password" %}</div>
 {% endblock %}
 
 {% block password_form_footer %}
-<button type="submit">Modifier le mot de passe</button>
-<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+<button type="submit">{% trans "Modify password" %}</button>
+<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
 {% endblock %}

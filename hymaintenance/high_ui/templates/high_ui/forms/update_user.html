@@ -36,7 +36,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{profile_form.first_name.id_for_label}}">Prénom *</label>
+                                <label for="{{profile_form.first_name.id_for_label}}">{{profile_form.first_name.label}} *</label>
                                 {{profile_form.first_name}}
 
                                 {% if profile_form.first_name.errors %}
@@ -53,7 +53,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{profile_form.last_name.id_for_label}}">Nom *</label>
+                                <label for="{{profile_form.last_name.id_for_label}}">{{profile_form.last_name.label}} *</label>
                                 {{profile_form.last_name}}
 
                                 {% if profile_form.last_name.errors %}
@@ -70,7 +70,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{profile_form.email.id_for_label}}">E-mail *</label>
+                                <label for="{{profile_form.email.id_for_label}}">{{profile_form.email.label}} *</label>
                                 {{profile_form.email}}
 
                                 {% if profile_form.email.errors %}
@@ -87,7 +87,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
                             
-                                <label for="{{profile_form.phone.id_for_label}}">Téléphone</label>
+                                <label for="{{profile_form.phone.id_for_label}}">{{profile_form.phone.label}}</label>
                                 {{profile_form.phone}}
                             
                                 {% if profile_form.phone.errors %}
@@ -106,7 +106,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{profile_form.confirm_password.id_for_label}}">Votre mot de passe pour valider les modifications *</label>
+                                <label for="{{profile_form.confirm_password.id_for_label}}">{{profile_form.confirm_password.label}} *</label>
                                 {{profile_form.confirm_password}}
 
                                 {% if profile_form.confirm_password.errors %}
@@ -129,7 +129,7 @@
                         {% endif %}
                         {% if profile_form_success %}
                         <div class="form-row form-success">
-                            <p><i>Les modifications ont bien été prises en compte!</i></p>
+                            <p><i>{% trans "Modifications have been registered!" %}</i></p>
                         </div>
                         {% endif %}
                     </div>
@@ -153,7 +153,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{password_form.old_password.id_for_label}}">Mot de passe actuel*</label>
+                                <label for="{{password_form.old_password.id_for_label}}">{{password_form.old_password.label}} *</label>
                                 {{password_form.old_password}}
 
                                 {% if password_form.old_password.errors %}
@@ -171,7 +171,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{password_form.new_password1.id_for_label}}">Nouveau mot de passe *</label>
+                                <label for="{{password_form.new_password1.id_for_label}}">{{password_form.new_password1.label}} *</label>
                                 {{password_form.new_password1}}
 
                                 {% if password_form.new_password1.errors %}
@@ -188,7 +188,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{password_form.new_password2.id_for_label}}">Confirmation nouveau mot de passe *</label>
+                                <label for="{{password_form.new_password2.id_for_label}}">{{password_form.new_password2.label}} *</label>
                                 {{password_form.new_password2}}
 
                                 {% if password_form.new_password2.errors %}
@@ -210,7 +210,7 @@
                         {% endif %}
                         {% if password_form_success %}
                             <div class="form-row form-success">
-                                <p><i>Les modifications ont bien été prises en compte!</i></p>
+                                <p><i>Modifications have been registered!</i></p>
                             </div>
                         {% endif %}
                     </div>

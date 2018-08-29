@@ -1,25 +1,26 @@
 {% extends 'high_ui/forms/update_list_base.html' %}
+{% load i18n %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; Modifier la liste des managers de {{company.name}}</title> {# TMP #}
+<title>Maintenance Hybird &mdash; {% trans "Modify manager list of" %} {{company.name}}</title> {# TMP #}
 {% endblock %}
 
 {% block form_title %}
-<div class="group-title">Modifier la liste des managers</div>
+<div class="group-title">{% trans "Modify manager list" %}</div>
 {% endblock %}
 
 {% block form_details %}
-Sélectionner les managers pour ce projet, parmi les {{company.maintenanceuser_set.get_manager_users_queryset.count}} existants:
+{% blocktrans %}Select the managers of this project, among the {{company.maintenanceuser_set.get_manager_users_queryset.count}} already existing:{% endblocktrans %}
 {% endblock %}
 
 {% block item_label %}
 <a href='{% url 'high_ui:project-update_manager' company_name=company.slug_name pk=user.data.value %}'>
-<div class="item-name">{{user.data.label}} {% if user.data.selected %}<span class="typography dash">&mdash;</span> manager du projet</div>{% endif %}
+<div class="item-name">{{user.data.label}} {% if user.data.selected %}<span class="typography dash">&mdash;</span> {% trans "manager of this project" %}</div>{% endif %}
 <div class="item-description">{{user.data.label.email}}</div>
 </a>
 {% endblock %}
 
 {% block form_footer %}
-<button type="submit">Modifier la liste des managers</button>
-<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+<button type="submit">{% trans "Modify manager list" %}</button>
+<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
 {% endblock %}

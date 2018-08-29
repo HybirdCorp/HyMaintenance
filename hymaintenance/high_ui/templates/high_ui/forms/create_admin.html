@@ -1,7 +1,8 @@
 {% extends 'high_ui/forms/create_user.html' %}
+{% load i18n %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; Nouvel admin</title>
+<title>Maintenance Hybird &mdash; {% trans "New admin" %}</title>
 {% endblock %}
 
 {% block header %}
@@ -9,10 +10,10 @@
 {% endblock %}
 
 {% block form_title %}
-<div class="group-title">Nouvel admin</div>
+<div class="group-title">{% trans "New admin" %}</div>
 {% endblock %}
 
 {% block form_footer %}
-<button type="submit">Ajouter cet admin</button>
-<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas ajouter</a></span>
+<button type="submit">{% trans "Add this admin" %}</button>
+<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't add" %}</a></span>
 {% endblock %}

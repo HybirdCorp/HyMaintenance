@@ -12,9 +12,9 @@ class MaintenanceCredit(models.Model):
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT)
     date = models.DateField(_("Effective date"), default=datetime.date.today)
     contract = models.ForeignKey(
-        to="maintenance.MaintenanceContract", verbose_name=_("Contract"), on_delete=models.PROTECT
+        to="maintenance.MaintenanceContract", verbose_name=_("Activity type"), on_delete=models.PROTECT
     )
-    hours_number = models.PositiveIntegerField(_("Hours number"), default=0)
+    hours_number = models.PositiveIntegerField(_("Quantity"), default=0)
 
     def __str__(self):
         return "%s, the %s for %s and %s hours" % (

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-27 16:23+0200\n"
+"POT-Creation-Date: 2018-08-28 17:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,185 +18,205 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: maintenance/forms/issue.py:50 maintenance/tests/forms/test_issue_forms.py:96
-#: maintenance/tests/forms/test_issue_forms.py:308
+#: forms/issue.py:51 tests/forms/test_issue_forms.py:96
+#: tests/forms/test_issue_forms.py:308
 #, python-format
 msgid "Invalid duration type: '%s'"
 msgstr "Unité invalide: '%s'"
 
-#: maintenance/forms/project.py:57 maintenance/forms/project.py:162
-#: maintenance/tests/forms/test_project_forms.py:214
-#: maintenance/tests/forms/test_project_forms.py:405
-msgid "This company already exists."
-msgstr "Cette société existe déjà."
-
-#: maintenance/migrations/0010_auto_20180315_0012.py:17
-#: maintenance/migrations/0010_auto_20180315_0012.py:19
-msgid "Maintenance"
-msgstr "Maintenance"
-
-#: maintenance/migrations/0010_auto_20180315_0012.py:23
-msgid "Support"
-msgstr "Support"
-
-#: maintenance/migrations/0010_auto_20180315_0012.py:28
-#: maintenance/migrations/0010_auto_20180315_0012.py:30
-msgid "Corrective"
-msgstr "Corrective"
-
-#: maintenance/models/consumer.py:15 maintenance/models/other_models.py:8
-msgid "Name"
-msgstr "Nom"
-
-#: maintenance/models/contract.py:24
-msgid "Available total time"
-msgstr "Total du temps disponible"
-
-#: maintenance/models/contract.py:25
-msgid "Consummed total time"
-msgstr "Total du temps consommé"
-
-#: maintenance/models/contract.py:28
-msgid "Name of counter"
-msgstr "Nom du compteur"
-
-#: maintenance/models/contract.py:29 maintenance/models/credit.py:12
-#: maintenance/models/issue.py:40
+#: forms/project.py:19 models/contract.py:29 models/credit.py:12
+#: models/issue.py:40
 msgid "Company"
 msgstr "Société"
 
-#: maintenance/models/contract.py:31 maintenance/models/other_models.py:9
-msgid "Visible to manager"
-msgstr "Visible pour les managers"
+#: forms/project.py:20
+msgid "Contact"
+msgstr "Contact"
 
-#: maintenance/models/contract.py:32
-msgid "Disable the contract"
-msgstr "Désactive le contrat"
+#: forms/project.py:23 forms/project.py:24 forms/project.py:25
+msgid "Counter name"
+msgstr "Nom du compteur"
 
-#: maintenance/models/contract.py:33
+#: forms/project.py:26 forms/project.py:27 forms/project.py:28
+#: models/contract.py:33
 msgid "Start Date"
 msgstr "Date de début"
 
-#: maintenance/models/contract.py:34
-msgid "Credited hours"
-msgstr "Heures créditées"
+#: forms/project.py:29 forms/project.py:30 forms/project.py:31
+msgid "Counter"
+msgstr "Compteur"
 
-#: maintenance/models/contract.py:35
+#: forms/project.py:32 forms/project.py:33 forms/project.py:34
+#: models/contract.py:35
 msgid "Counter type"
 msgstr "Type de compteur"
 
-#: maintenance/models/credit.py:13
+#: forms/project.py:35 forms/project.py:36 forms/project.py:37
+#: models/contract.py:34
+msgid "Credited hours"
+msgstr "Heures créditées"
+
+#: forms/project.py:57 forms/project.py:162
+#: tests/forms/test_project_forms.py:214 tests/forms/test_project_forms.py:405
+msgid "This company already exists."
+msgstr "Cette société existe déjà."
+
+#: migrations/0010_auto_20180315_0012.py:17
+#: migrations/0010_auto_20180315_0012.py:19
+msgid "Maintenance"
+msgstr "Maintenance"
+
+#: migrations/0010_auto_20180315_0012.py:23
+msgid "Support"
+msgstr "Support"
+
+#: migrations/0010_auto_20180315_0012.py:28
+#: migrations/0010_auto_20180315_0012.py:30
+msgid "Corrective"
+msgstr "Corrective"
+
+#: models/consumer.py:15 models/other_models.py:8
+msgid "Name"
+msgstr "Nom"
+
+#: models/contract.py:24
+msgid "Available total time"
+msgstr "Total disponible"
+
+#: models/contract.py:25
+msgid "Consummed total time"
+msgstr "Total du temps consommé"
+
+#: models/contract.py:28
+msgid "Name of counter"
+msgstr "Nom du compteur"
+
+#: models/contract.py:31 models/other_models.py:9
+msgid "Visible to manager"
+msgstr "Visible pour les managers"
+
+#: models/contract.py:32
+msgid "Disable the contract"
+msgstr "Désactive le contrat"
+
+#: models/credit.py:13
 msgid "Effective date"
 msgstr "Date effective"
 
-#: maintenance/models/credit.py:14
-msgid "Contract"
-msgstr "Contrat"
+#: models/credit.py:15
+msgid "Activity type"
+msgstr "Type de l'activité"
 
-#: maintenance/models/credit.py:15
-msgid "Hours number"
-msgstr "Nombre d'heures"
+#: models/credit.py:17
+msgid "Quantity"
+msgstr "Quantité"
 
-#: maintenance/models/issue.py:39
+#: models/issue.py:39
 msgid "Issue number"
 msgstr "Numéro de demande"
 
-#: maintenance/models/issue.py:43
+#: models/issue.py:43
 msgid "Author"
 msgstr "Auteur"
 
-#: maintenance/models/issue.py:52
+#: models/issue.py:52
 msgid "Operator"
 msgstr "Intervenant"
 
-#: maintenance/models/issue.py:59
+#: models/issue.py:59
 msgid "Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
-#: maintenance/models/issue.py:62
+#: models/issue.py:62
 msgid "Subject"
 msgstr "Sujet"
 
-#: maintenance/models/issue.py:63
+#: models/issue.py:63
 msgid "Issue Date"
 msgstr "Demande faite le"
 
-#: maintenance/models/issue.py:64
+#: models/issue.py:65
 msgid "Type of activity"
 msgstr "Type de l'activité"
 
-#: maintenance/models/issue.py:65
+#: models/issue.py:67
 msgid "Details"
 msgstr "Détails"
 
-#: maintenance/models/issue.py:67
+#: models/issue.py:69
 msgid "Time spent"
 msgstr "Temps passé"
 
-#: maintenance/models/issue.py:68
+#: models/issue.py:70
 msgid "Resolution date"
 msgstr "Demande résolue le"
 
-#: maintenance/models/issue.py:69
+#: models/issue.py:71
 msgid "Delivery date"
 msgstr "Livraison le"
 
-#: maintenance/models/issue.py:70
+#: models/issue.py:72
 msgid "Comments"
 msgstr "Commentaire"
 
-#: maintenance/models/issue.py:71 maintenance/models/issue.py:74
+#: models/issue.py:74 models/issue.py:81
 msgid "Attachment"
 msgstr "Pièce jointe"
 
-#: maintenance/models/issue.py:99
+#: models/issue.py:109
+#, python-brace-format
 msgid "Date: {date}, Subject: {subject}, For: {company} , Type: {contract} "
 msgstr "Date : {date}, sujet : {subject}, for : {company}, type : {contract} "
 
-#: maintenance/models/issue.py:100
+#: models/issue.py:110
 msgid "%m/%d/%Y at %H:%M"
 msgstr "%d/%m/%Y à %H:%M"
 
-#: maintenance/models/other_models.py:12
+#: models/other_models.py:12
 msgid "Maintenance's Type"
 msgstr "Type de la maintenance"
 
-#: maintenance/models/other_models.py:13
+#: models/other_models.py:13
 msgid "Maintenance's Types"
 msgstr "Types des maintenances"
 
-#: maintenance/models/other_models.py:23
+#: models/other_models.py:23
 msgid "Name of Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
-#: maintenance/models/other_models.py:26 maintenance/models/other_models.py:27
+#: models/other_models.py:26 models/other_models.py:27
 msgid "Maintenance's Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
-#: maintenance/tests/forms/test_credit_forms.py:20
-#: maintenance/tests/forms/test_issue_forms.py:72
-#: maintenance/tests/forms/test_issue_forms.py:285
-#: maintenance/tests/forms/test_other_models_forms.py:49
-#: maintenance/tests/forms/test_project_forms.py:65
-#: maintenance/tests/forms/test_project_forms.py:280
+#: tests/forms/test_credit_forms.py:20 tests/forms/test_issue_forms.py:72
+#: tests/forms/test_issue_forms.py:285
+#: tests/forms/test_other_models_forms.py:49
+#: tests/forms/test_project_forms.py:65 tests/forms/test_project_forms.py:280
 msgid "This field is required."
 msgstr "Ce champs est obligatoire."
 
-#: maintenance/tests/forms/test_issue_forms.py:110
-#: maintenance/tests/forms/test_issue_forms.py:321
-#: maintenance/tests/forms/test_project_forms.py:223
-#: maintenance/tests/forms/test_project_forms.py:414
+#: tests/forms/test_issue_forms.py:110 tests/forms/test_issue_forms.py:321
+#: tests/forms/test_project_forms.py:223 tests/forms/test_project_forms.py:414
 #, python-format
 msgid "Ensure this value is greater than or equal to %(limit_value)s."
 msgstr ""
 "Assurez-vous que cette valeur est plus grande ou égale à %(limit_value)s."
 
-#: maintenance/tests/forms/test_issue_forms.py:123
-#: maintenance/tests/forms/test_issue_forms.py:334
-#: maintenance/tests/forms/test_project_forms.py:233
-#: maintenance/tests/forms/test_project_forms.py:424
+#: tests/forms/test_issue_forms.py:123 tests/forms/test_issue_forms.py:334
+#: tests/forms/test_project_forms.py:233 tests/forms/test_project_forms.py:424
 msgid "Enter a whole number."
 msgstr "Entrez un nombre entier."
+
+#, fuzzy
+#~| msgid "Type of activity"
+#~ msgid "Type de l'activité"
+#~ msgstr "Type de l'activité"
+
+#~ msgid "Contract"
+#~ msgstr "Contrat"
+
+#~ msgid "Hours number"
+#~ msgstr "Nombre d'heures"
 
 #~ msgid "Visible to customer user"
 #~ msgstr "Visible pour les managers"

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; Modifier la liste des intervenants</title> {# TMP #}
+<title>Maintenance Hybird &mdash; {% trans "Modify operator list" %}</title> {# TMP #}
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -19,7 +19,7 @@
             <div class="form-content">
                 <div class="form-intro">
                     <div class="group-title-container">
-                        <div class="group-title">Modifier la liste des intervenants Hybird</div>
+                        <div class="group-title">{% trans "Modify operator list of Hybird" %}</div>
                     </div>
                 </div>
                 {% if active_operators_number %}
@@ -27,14 +27,14 @@
                     {% csrf_token %}
                     <div class="form-group archive-group form-group-collapsable">
                         <div class="group-title-container">
-                            <div class="group-title" title="Afficher/cacher la liste des intervenants actifs">Archiver des intervenants</div>
+                            <div class="group-title" title="{% trans "Display/hide active-intervenant list" %}">{% trans "Archive operator" %}</div>
                         </div>
 
                         <div class="form-group-collapsable-content">
                             {% if active_operators_number > 1%}
-                            <span class="list-intro">Sélectionner les intervenants que vous voulez rendre inactifs, parmi les {{active_operators_number}} intervenants Hybird actuellement actifs&nbsp;:</span>
+                            <span class="list-intro">{% blocktrans %}Select operators that you want to be inactive, among the {{active_operators_number}} active Hybird's operators:{% endblocktrans %}</span>
                             {% else %}
-                            <span class="list-intro">Sélectionner l'unique intervenant actif Hybird pour le rendre inactif&nbsp;:</span>
+                            <span class="list-intro">{% blocktrans %}Select the single Hybird's active operator to turn them archived:{% endblocktrans %}</span>
                             {% endif %}
                             <ul class="checkbox-list">
                             {% for value, label in archive_form.active_operators.field.choices %}
@@ -46,7 +46,7 @@
                                             <div class="item-name">
                                                 {{label}}
                                             </div>
-                                            <div class="item-description">Intervenant <span class="typography dash">&mdash;</span> {{value|print_operator_projects}}</div>
+                                            <div class="item-description">{% trans "Operator" %} <span class="typography dash">&mdash;</span> {{value|print_operator_projects}}</div>
                                             </a>
                                         </div>
                                     </label>
@@ -56,8 +56,8 @@
                         </div>
                     </div>
                     <div class="form-footer">
-                        <button type="submit">Archiver ces intervenants</button>
-                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne rien changer</a></span>
+                        <button type="submit">{% trans "Archive this operators" %}</button>
+                        <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Change nothing" %}</a></span>
                     </div>
                 </form>
                 {% endif %}
@@ -66,14 +66,14 @@
                     {% csrf_token %}
                     <div class="form-group reactivate-form form-group-collapsable form-group-collapsed">
                         <div class="group-title-container">
-                            <div class="group-title" title="Afficher/cacher la liste des intervenants archivés">Réactiver des intervenants archivés</div>
+                            <div class="group-title" title="Afficher/cacher la liste des intervenants archivés">{% trans "Reactive archived operators" %}</div>
                         </div>
 
                         <div class="form-group-collapsable-content">
                             {% if archived_operators_number > 1%}
-                            <span class="list-intro">Sélectionner les intervenants que vous voulez rendre actifs, parmi les {{archived_operators_number}} intervenants Hybird actuellement archivés&nbsp;:</span>
+                            <span class="list-intro">{% blocktrans %}Select operators that you want to be active, among the {{archived_operators_number}} archived Hybird's operators:{% endblocktrans %}</span>
                             {% else %}
-                            <span class="list-intro">Sélectionner l'unique intervenant archivé Hybird pour le rendre actif&nbsp;:</span>
+                            <span class="list-intro">{% blocktrans %}Select the single Hybird's archived operator to turn them active:{% endblocktrans %}</span>
                             {% endif %}
                             <ul class="checkbox-list">
                             {% for value, label in unarchive_form.inactive_operators.field.choices %}
@@ -84,7 +84,7 @@
                                             <div class="item-name">
                                                 {{label}}
                                             </div>
-                                            <div class="item-description">Intervenant <span class="typography dash">&mdash;</span> {{value|print_operator_projects}}</div>
+                                            <div class="item-description">Operator <span class="typography dash">&mdash;</span> {{value|print_operator_projects}}</div>
                                         </div>
                                     </label>
                                 </li>
@@ -93,8 +93,8 @@
                         </div>
                     </div>
                     <div class="form-footer">
-                        <button type="submit">Activer ces intervenants</button>
-                        <span class="cancel">ou <a href="#" onclick="window.history.back()">Ne rien changer</a></span>
+                        <button type="submit">{% trans "Enable operators" %}</button>
+                        <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Change nothing" %}</a></span>
                     </div>
                 </form>
                 {% endif %}

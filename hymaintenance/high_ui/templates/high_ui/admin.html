@@ -1,7 +1,8 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; Tableau de bord Hybird</title> {# TMP #}
+<title>Maintenance Hybird &mdash; {% trans "Administration dashboard" %}</title> {# TMP #}
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -15,17 +16,17 @@
     <div class="content-container">
         <div class="content">
             <div class="container details-container">
-                <div class="container-title">Création d'un administrateur</div>
+                <div class="container-title">{% trans "Create an administrator" %}</div>
                 <div class="dashboard-item dashboard-button">
                     <div class="dashboard-value">
-                        <a href="{% url 'high_ui:create_admin' %}" title="Créer un administrateur">Créer un administrateur</a>
+                        <a href="{% url 'high_ui:create_admin' %}" title="{% trans "Create an administrator" %}">{% trans "Create an administrator" %}</a>
                     </div>
                 </div>
             </div>
             <div class="container details-container">
-                <div class="container-title">Modification des administrateurs</div>
+                <div class="container-title">{% trans "Update administrators" %}</div>
                 {% if admins %}
-                <span>Liste des administrateurs. Cliquez sur un administrateur pour pouvoir le modifier.</span>
+                <span>{% trans "Administrator list. Click on a administrator to update them." %}</span>
                 <ul>
                 {% for admin in admins %}
                     <li><a href='{% url 'high_ui:update_admin' pk=admin.pk %}'>{{admin.first_name}} {{admin.last_name}}</a></li>
@@ -34,18 +35,18 @@
                 {% endif %}
             </div>
             <div class="container details-container">
-                <div class="container-title">Gestion des alertes par emails</div>
+                <div class="container-title">{% trans "Manage email alerts" %}</div>
                 <div class="dashboard-item dashboard-button">
                     <div class="dashboard-value">
-                        <a href="#" title="Gérer la gestion des alertes emails">Alerte emails</a>
+                        <a href="#" title="{% trans "Manage email alerts" %}">{% trans "Email alerts" %}</a>
                     </div>
                 </div>
             </div>
             <div class="container details-container">
-                <div class="container-title">Gestion des types de contract par défaut</div>
+                <div class="container-title">{% trans "Manage default contract types" %}</div>
                 <div class="dashboard-item dashboard-button">
                     <div class="dashboard-value">
-                        <a href="{% url 'high_ui:update_maintenance_types' %}" title="Modifier le nom par défaut des types de contract">Modifier contracts par défaut</a>
+                        <a href="{% url 'high_ui:update_maintenance_types' %}" title="{% trans "Modify default name of contract types" %}">{% trans "Modify default contract type" %}</a>
                     </div>
                 </div>
             </div>

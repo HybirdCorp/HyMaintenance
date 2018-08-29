@@ -1,25 +1,26 @@
 {% extends 'high_ui/forms/update_list_base.html' %}
+{% load i18n %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; Modifier la liste des intervenants de {{company.name}}</title> {# TMP #}
+<title>Maintenance Hybird &mdash; {% trans "Modify operator list of" %} {{company.name}}</title> {# TMP #}
 {% endblock %}
 
 {% block form_title %}
-<div class="group-title">Modifier la liste des intervenants</div>
+<div class="group-title">{% trans "Modify operator list" %}</div>
 {% endblock %}
 
 {% block form_details %}
-Sélectionner les intervenants pour ce projet, parmi les {{operators_number}} existants:
+{% blocktrans %}Select the operators of this project, among the {{operators_number}} already existing:{% endblocktrans %}
 {% endblock %}
 
 {% block item_label %}
 <a href='{% url 'high_ui:project-update_operator' company_name=company.slug_name pk=user.data.value %}'>
-<div class="item-name">{{user.data.label}} {% if user.data.selected %}<span class="typography dash">&mdash;</span> intervenant du projet</div>{% endif %}
+<div class="item-name">{{user.data.label}} {% if user.data.selected %}<span class="typography dash">&mdash;</span> {% trans "operator of this project" %}</div>{% endif %}
 <div class="item-description">{{user.data.label.email}}</div>
 </a>
 {% endblock %}
 
 {% block form_footer %}
-<button type="submit">Modifier la liste des intervenants</button>
-<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+<button type="submit">{% trans "Modify operator list" %}</button>
+<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
 {% endblock %}

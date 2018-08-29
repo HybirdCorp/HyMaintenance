@@ -3,10 +3,10 @@
     <div class="dashboard-item dashboard-account">
 		{% if request.user.is_staff %}
         <span class="dashboard-title">{% trans "Tableau de bord" %}</span>
-        <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="Retour à l'accueil">Hybird</a></span> {# TMP: names and urls are hardcoded until "maintenance providers" are added #}
+        <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="{% trans "Return to dashboard" %}">Hybird</a></span> {# TMP: names and urls are hardcoded until "maintenance providers" are added #}
 		{% else %}
         <span class="dashboard-title">{% trans "Account" %}</span>
-        <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="Retour à l'accueil">{{request.user.company}}</a></span>
+        <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="{% trans "Return to dashboard" %}">{{request.user.company}}</a></span>
 		{% endif %}
     </div>
 
@@ -16,7 +16,7 @@
     </div>
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
-            <a href="/logout" title="Quitter l'application">{% trans "Disconnect" %}</a>
+            <a href="/logout" title="{% trans "Quit the application" %}">{% trans "Logout" %}</a>
         </div>
     </div>
 </div>

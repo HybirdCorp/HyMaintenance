@@ -1,7 +1,8 @@
 {% extends 'high_ui/forms/base_project.html' %}
+{% load i18n %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; Modifier le projet {{object.company.name}}</title> {# TMP #}
+<title>Maintenance Hybird &mdash; {% blocktrans %}Modify {{company}} project{% endblocktrans %}</title> {# TMP #}
 {% endblock %}
 
 {% block header %}
@@ -9,7 +10,7 @@
 {% endblock %}
 
 {% block form_title %}
-<div class="group-title">Projet de la société {{company.name}}</div>
+<div class="group-title">{% blocktrans %}Project of the {{company}} society {% endblocktrans %}</div>
 {% endblock %}
 
 {% block form_counter_name_1 %}
@@ -25,6 +26,6 @@
 {% endblock %}
 
 {% block form_footer %}
-<button type="submit">Modifier le projet</button>
-<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+<button type="submit">{% trans "Modify this project" %}</button>
+<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
 {% endblock %}

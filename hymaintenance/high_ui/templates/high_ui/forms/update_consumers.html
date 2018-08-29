@@ -1,24 +1,25 @@
 {% extends 'high_ui/forms/update_list_base.html' %}
+{% load i18n %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; Modifier la liste des salariés de {{company.name}}</title> {# TMP #}
+<title>Maintenance Hybird &mdash; {% trans "Modify employee list of" %} {{company.name}}</title> {# TMP #}
 {% endblock %}
 
 {% block form_title %}
-<div class="group-title">Modifier la liste des salariés</div>
+<div class="group-title">{% trans "Modify employee list" %}</div>
 {% endblock %}
 
 {% block form_details %}
-Sélectionner les salariés pour ce projet, parmi les {{ company.maintenanceconsumer_set.all.count }} existants:
+{% blocktrans %}Select the consumers of this project, among the {{company.maintenanceconsumer_set.all.count}} already existing:{% endblocktrans %}
 {% endblock %}
 
 {% block item_label %}
 <a href='{% url 'high_ui:project-update_consumer' company_name=company.slug_name pk=user.data.value %}'>
-<div class="item-name">{{user.data.label}} {% if user.data.selected %}<span class="typography dash">&mdash;</span> salarié du projet</div>{% endif %}
+<div class="item-name">{{user.data.label}} {% if user.data.selected %}<span class="typography dash">&mdash;</span> {% trans "employee of this project" %}</div>{% endif %}
 </a>
 {% endblock %}
 
 {% block form_footer %}
-<button type="submit">Modifier la liste des salariés</button>
-<span class="cancel">ou <a href="#" onclick="window.history.back()">Ne pas modifier</a></span>
+<button type="submit">{% trans "Modify employee list" %}</button>
+<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
 {% endblock %}

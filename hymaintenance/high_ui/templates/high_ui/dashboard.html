@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; Tableau de bord Hybird</title> {# TMP #}
+<title>Maintenance Hybird &mdash; {% trans "Hybird Dashboard" %}</title> {# TMP #}
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -17,12 +17,12 @@
             <div class='dashboard-container'>
                 <div class="dashboard type-project">
                     <div class="dashboard-item dashboard-account">
-                        <span class="dashboard-title">Compte</span>
-                        <span class="dashboard-value"><a href="{{company.get_absolute_url}}" title="Accéder aux détails {{company}}">{{company}}</a></span>
+                        <span class="dashboard-title">{% trans "Account" %}</span>
+                        <span class="dashboard-value"><a href="{{company.get_absolute_url}}" title="{% trans "Access to {{company}} details" %}">{{company}}</a></span>
                     </div>
                     <div class="dashboard-item dashboard-button">
                         <div class="dashboard-value">
-                            <a href="{% url 'high_ui:update_project' company_name=company.slug_name %}">Modifier</a> {# TMP #}
+                            <a href="{% url 'high_ui:update_project' company_name=company.slug_name %}">{% trans "Modify" %}</a> {# TMP #}
                         </div>
                     </div>
                     <div style="flex: 1"></div>
@@ -34,7 +34,7 @@
                     {% endfor %}
                     <div class="dashboard-item dashboard-button">
                         <div class="dashboard-value">
-                            <a href="{% url 'high_ui:project-create_issue' company_name=company.slug_name %}">Enregistrer une demande</a>
+                            <a href="{% url 'high_ui:project-create_issue' company_name=company.slug_name %}">{% trans "Register an issue" %}</a>
                         </div>
                     </div>
                 </div>
@@ -43,17 +43,17 @@
                     <div class="project-user-list">
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
-                                <span class="dashboard-title">Intervenants</span>
+                                <span class="dashboard-title">{% trans "Operators" %}</span>
                                 <span class="dashboard-value">{{company.managed_by.get_active_operator_users_queryset.count}}</span>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:project-create_operator' company_name=company.slug_name %}" title="Créer un nouvel intervenant et l'ajouter à ce projet">Nouveau</a>
+                                    <a href="{% url 'high_ui:project-create_operator' company_name=company.slug_name %}" title="{% trans "Create a new operator and add them at the project" %}">{% trans "New" context "ms" %}</a>
                                 </div>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:project-update_operators' company_name=company.slug_name %}" title="Modifier la liste des intervenants de ce projet">Modifier la liste</a>
+                                    <a href="{% url 'high_ui:project-update_operators' company_name=company.slug_name %}" title="{% trans "Modify the project operator list" %}">{% trans "Modify the list" %}</a>
                                 </div>
                             </div>
                         </div>
@@ -68,17 +68,17 @@
                         {% with company.maintenanceuser_set.get_active_manager_users_queryset as managers %}
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
-                                <span class="dashboard-title">Managers</span>
+                                <span class="dashboard-title">{% trans "Managers" %}</span>
                                 <span class="dashboard-value">{{managers.count}}</span>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:project-create_manager' company_name=company.slug_name %}" title="Créer un nouveau manager et l'ajouter à ce projet">Nouveau</a>
+                                    <a href="{% url 'high_ui:project-create_manager' company_name=company.slug_name %}" title="{% trans "Create a new manager and add them to the project" %}">{% trans "New" context "ms" %}</a>
                                 </div>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:project-update_managers' company_name=company.slug_name %}" title="Modifier la liste des managers de ce projet">Modifier la liste</a>
+                                    <a href="{% url 'high_ui:project-update_managers' company_name=company.slug_name %}" title="{% trans "Modify the project manager list" %}">{% trans "Modify the list" %}</a>
                                 </div>
                             </div>
                         </div>
@@ -94,17 +94,17 @@
                         {% with company.maintenanceconsumer_set.get_used_consumers as consumers %}
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
-                                <span class="dashboard-title">Salariés</span>
+                                <span class="dashboard-title">{% trans "Employees" %}</span>
                                 <span class="dashboard-value">{{consumers.count}}</span>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:project-create_consumer' company_name=company.slug_name %}" title="Créer un nouveau salarié et l'ajouter à ce projet">Nouveau</a>
+                                    <a href="{% url 'high_ui:project-create_consumer' company_name=company.slug_name %}" title="{% trans "Create a new employee and add them to the project" %}">{% trans "New" context "ms" %}</a>
                                 </div>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
-                                    <a href="{% url 'high_ui:project-update_consumers' company_name=company.slug_name %}" title="Modifier la liste des salariés de ce projet">Modifier la liste</a>
+                                    <a href="{% url 'high_ui:project-update_consumers' company_name=company.slug_name %}" title="{% trans "Modify the project salary list" %}">{% trans "Modify the list" %}</a>
                                 </div>
                             </div>
                         </div>

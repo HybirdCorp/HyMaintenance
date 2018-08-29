@@ -35,7 +35,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.consumer_who_ask.id_for_label}}">Auteur</label>
+                            <label for="{{form.consumer_who_ask.id_for_label}}">{{form.consumer_who_ask.label}}</label>
                             <select name="{{form.consumer_who_ask.name}}" id="{{form.consumer_who_ask.id_for_label}}">
                             {% for value, label in form.consumer_who_ask.field.choices %}
                                 <option value="{{value}}" {{value|hide_disabled_consumer}} {% if form.consumer_who_ask.field.value == value %} selected{% endif %}>{{label}}</option>
@@ -53,7 +53,7 @@
                         <div class="form-row">
                             <label></label>
                             <input type="checkbox" name="disabled_consumers" onclick="toggleDisabledUsers(this, '.disabled_consumer');">
-                            <span>Proposer les salariés désactivés</span>
+                            <span> {% trans "Display disable employees" %}</span>
                         </div>
 
                         <div class="form-row {% if form.date.errors %}form-error{% endif %}">
@@ -61,7 +61,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.date.id_for_label}}">Demande faite le *</label>
+                            <label for="{{form.date.id_for_label}}">{{form.date.label}} *</label>
                             {{form.date}}
 
                             {% if form.date.errors %}
@@ -79,11 +79,11 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.incoming_channel.id_for_label}}">Canal</label>
+                            <label for="{{form.incoming_channel.id_for_label}}">{{form.incoming_channel.label}}</label>
                             <section class="segmented-selector type-maintenance selector-canal">
                                 {% for channel in channels %}
                                 <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
-                                   data-selector-value="{{channel.pk}}" title="Demande reçue par {{channel.name}}">{{channel.name}}</a>
+                                   data-selector-value="{{channel.pk}}" title="{% trans "Issue received by" %} {{channel.name}}">{{channel.name}}</a>
                                 {% endfor %}
                                 {{form.incoming_channel}}
                             </section>
@@ -103,7 +103,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.subject.id_for_label}}">Titre *</label>
+                            <label for="{{form.subject.id_for_label}}">{{form.subject.label}} *</label>
                             {{form.subject}}
 
                             {% if form.subject.errors %}
@@ -120,7 +120,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.description.id_for_label}}">Détails</label>
+                            <label for="{{form.description.id_for_label}}">{{form.description.label}}</label>
                             {{form.description}}
 
                             {% if form.description.errors %}
@@ -137,7 +137,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.context_description_file.id_for_label}}">Pièce jointe</label>
+                            <label for="{{form.context_description_file.id_for_label}}">{{form.context_description_file.label}}</label>
                             {{form.context_description_file}}
 
                             {% if form.context_description_file.errors %}
@@ -152,7 +152,7 @@
 
                     <div class="form-group">
                         <div class="group-title-container">
-                            <div class="group-title">Résolution</div>
+                            <div class="group-title">{% trans "Resolution" %}</div>
                         </div>
 
                         <div class="form-row {% if form.user_who_fix.errors %}form-error{% endif %}">
@@ -160,7 +160,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.user_who_fix.id_for_label}}">Intervenant</label>
+                            <label for="{{form.user_who_fix.id_for_label}}">{{form.user_who_fix.label}}</label>
                             <select name="{{form.user_who_fix.name}}" id="{{form.user_who_fix.id_for_label}}">
                             {% for value, label in form.user_who_fix.field.choices %}
                                 <option value="{{value}}" {{value|hide_disabled_operator}} {% if form.user_who_fix.field.value == value %} selected{% endif %}>{{label}}</option>
@@ -178,17 +178,17 @@
                         <div class="form-row">
                             <label></label>
                             <input type="checkbox" name="disabled_operators" onclick="toggleDisabledUsers(this, '.disabled_operator');">
-                            <span>Proposer les intervenants désactivés</span>
+                            <span> {% trans "Display disable operators" %}</span>
                         </div>
 
                         <div class="form-row">
-                            <label for="{{form.maintenance_type.id_for_label}}">Type de l'activité</label>
+                            <label for="{{form.maintenance_type.id_for_label}}">{{form.contract.label}}</label>
                             <section class="segmented-selector {{default_activity_type}} selector-activity-type">
                                 {% for contract in contracts %}
                                 <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
                                    data-selector-key="{{contract.maintenance_type.css_class}}"
                                    data-selector-value="{{contract.pk}}"
-                                   title="Activité de type '{{contract.get_counter_name}}'">{{contract.get_counter_name}}</a>
+                                   title="{% blocktrans %}'{{contract.get_counter_name}}'-type activity{% endblocktrans %}">{{contract.get_counter_name}}</a>
                                 {% endfor %}
                                 {{form.contract}}
                             </section>
@@ -199,12 +199,12 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.duration.id_for_label}}">Temps passé *</label>
+                            <label for="{{form.duration.id_for_label}}">{{form.duration.label}} *</label>
                             <div class="form-value">
                                 {{form.duration}}
                                 <section class="segmented-selector {{default_activity_type}} selector-duration-type">
-                                    <a href="" class="active" data-selector-value="minutes">minutes</a>
-                                    <a href="" class="inactive" data-selector-value="hours">heures</a>
+                                    <a href="" class="active" data-selector-value="minutes">{% trans "minutes" %}</a>
+                                    <a href="" class="inactive" data-selector-value="hours">{% trans "hours" %}</a>
                                     {{form.duration_type}}
                                 </section>
                             </div>
@@ -223,7 +223,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.resolution_date.id_for_label}}">Demande résolue le</label>
+                            <label for="{{form.resolution_date.id_for_label}}">{{form.resolution_date.label}}</label>
                             {{form.resolution_date}}
 
                             {% if form.resolution_date.errors %}
@@ -240,7 +240,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.shipping_date.id_for_label}}">Livraison le</label>
+                            <label for="{{form.shipping_date.id_for_label}}">{{form.shipping_date.label}}</label>
                             {{form.shipping_date}}
 
                             {% if form.shipping_date.errors %}
@@ -257,7 +257,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.answer.id_for_label}}">Commentaire</label>
+                            <label for="{{form.answer.id_for_label}}">{{form.answer.label}}</label>
                             {{form.answer}}
 
                             {% if form.answer.errors %}
@@ -274,7 +274,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.resolution_description_file.id_for_label}}">Pièce jointe</label>
+                            <label for="{{form.resolution_description_file.id_for_label}}">{{form.resolution_description_file.label}}</label>
                             {{form.resolution_description_file}}
 
                             {% if form.resolution_description_file.errors %}

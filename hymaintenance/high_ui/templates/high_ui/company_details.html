@@ -34,10 +34,10 @@
                                 {% else %}
                                 <td class="summary-type {{contract.maintenance_type.css_class}}">
                                     {%if consumed != 0 %}
-                                    <span class="duration">{% pretty_print_minutes consumed %}</span> {% trans "consumed" %}<br/>
+                                    <span class="duration">{% pretty_print_minutes consumed %}</span> {% trans "consumed" context "fp" %}<br/>
                                     {% endif %}
                                     {%if credited != 0 %}
-                                    <span class="duration">{{credited}}h</span> {% trans "credited" %}
+                                    <span class="duration">{{credited}}h</span> {% trans "credited" context "fp" %}
                                     {% endif %}
                                 </td>
                                 {% endif %}
@@ -54,12 +54,12 @@
                 <div class="history-month">
                     <div class="dashboard">
                         <div class="dashboard-item">
-                            <span class="dashboard-title">Mois</span>
+                            <span class="dashboard-title">{% trans "Months" %}</span>
                             <span class="dashboard-value">{{month|date:"F Y"}}</span>
                         </div>
 
                         <div class="dashboard-item history-month-issues">
-                            <span class="dashboard-title">demandes</span>
+                            <span class="dashboard-title">{% trans "Issues" %}</span>
                             <span class="dashboard-value">
                                 {% if issues_count == 0 %} &mdash; {% else %} {{ issues_count }} {% endif %}
                             </span>
