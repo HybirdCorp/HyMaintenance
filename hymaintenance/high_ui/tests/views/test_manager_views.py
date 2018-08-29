@@ -9,6 +9,8 @@ from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 
+from ..utils import SetDjangoLanguage
+
 
 class CreateManagerTestCase(TestCase):
     @classmethod
@@ -122,23 +124,24 @@ class UpdateManagerTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_update_manager_profile_with_form(self):
-        first_name = "Barney"
-        last_name = "Calhoun"
-        email = "barney.calhoun@blackmesa.com"
+        with SetDjangoLanguage("en"):
+            first_name = "Barney"
+            last_name = "Calhoun"
+            email = "barney.calhoun@blackmesa.com"
 
-        self.client.login(username=self.admin.email, password="azerty")
-        response = self.client.post(
-            self.form_url,
-            {"first_name": first_name, "last_name": last_name, "email": email, "form-mod": "profile"},
-            follow=True,
-        )
+            self.client.login(username=self.admin.email, password="azerty")
+            response = self.client.post(
+                self.form_url,
+                {"first_name": first_name, "last_name": last_name, "email": email, "form-mod": "profile"},
+                follow=True,
+            )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
-        managers = MaintenanceUser.objects.filter(
-            email=email, first_name=first_name, last_name=last_name, company=self.company, pk=self.manager.pk
-        )
-        self.assertEqual(1, managers.count())
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, _("Modifications have been registered!"))
+            managers = MaintenanceUser.objects.filter(
+                email=email, first_name=first_name, last_name=last_name, company=self.company, pk=self.manager.pk
+            )
+            self.assertEqual(1, managers.count())
 
     def test_errors_on_update_manager_profile(self):
         self.client.login(username=self.admin.email, password="azerty")
@@ -148,16 +151,19 @@ class UpdateManagerTestCase(TestCase):
         self.assertContains(response, "form-error")
 
     def test_update_manager_password_with_form(self):
-        password = "my safe password"
+        with SetDjangoLanguage("en"):
+            password = "my safe password"
 
-        self.client.login(username=self.admin.email, password="azerty")
-        response = self.client.post(
-            self.form_url, {"new_password1": password, "new_password2": password, "form-mod": "password"}, follow=True
-        )
+            self.client.login(username=self.admin.email, password="azerty")
+            response = self.client.post(
+                self.form_url,
+                {"new_password1": password, "new_password2": password, "form-mod": "password"},
+                follow=True,
+            )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
-        self.assertTrue(MaintenanceUser.objects.get(pk=self.manager.pk).check_password(password))
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, _("Modifications have been registered!"))
+            self.assertTrue(MaintenanceUser.objects.get(pk=self.manager.pk).check_password(password))
 
     def test_errors_on_update_manager_password(self):
         self.client.login(username=self.admin.email, password="azerty")

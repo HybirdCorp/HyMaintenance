@@ -11,6 +11,7 @@ from customers.tests.factories import OperatorUserFactory
 
 from ...views.users import OperatorUsersUpdateView
 from ...views.users import OperatorUsersUpdateViewWithCompany
+from ..utils import SetDjangoLanguage
 
 
 class CreateOperatorTestCase(TestCase):
@@ -166,35 +167,39 @@ class UpdateOperatorWithCompanyTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_update_operator_profile_with_form(self):
-        first_name = "Barney"
-        last_name = "Calhoun"
-        email = "barney.calhoun@blackmesa.com"
+        with SetDjangoLanguage("en"):
+            first_name = "Barney"
+            last_name = "Calhoun"
+            email = "barney.calhoun@blackmesa.com"
 
-        self.client.login(username=self.admin.email, password="azerty")
-        response = self.client.post(
-            self.form_url,
-            {"first_name": first_name, "last_name": last_name, "email": email, "form-mod": "profile"},
-            follow=True,
-        )
+            self.client.login(username=self.admin.email, password="azerty")
+            response = self.client.post(
+                self.form_url,
+                {"first_name": first_name, "last_name": last_name, "email": email, "form-mod": "profile"},
+                follow=True,
+            )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
-        operators = MaintenanceUser.objects.filter(
-            email=email, first_name=first_name, last_name=last_name, pk=self.operator.pk
-        )
-        self.assertEqual(1, operators.count())
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, _("Modifications have been registered!"))
+            operators = MaintenanceUser.objects.filter(
+                email=email, first_name=first_name, last_name=last_name, pk=self.operator.pk
+            )
+            self.assertEqual(1, operators.count())
 
     def test_update_operator_password_with_form(self):
-        password = "my safe password"
+        with SetDjangoLanguage("en"):
+            password = "my safe password"
 
-        self.client.login(username=self.admin.email, password="azerty")
-        response = self.client.post(
-            self.form_url, {"new_password1": password, "new_password2": password, "form-mod": "password"}, follow=True
-        )
+            self.client.login(username=self.admin.email, password="azerty")
+            response = self.client.post(
+                self.form_url,
+                {"new_password1": password, "new_password2": password, "form-mod": "password"},
+                follow=True,
+            )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
-        self.assertTrue(MaintenanceUser.objects.get(pk=self.operator.pk).check_password(password))
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, _("Modifications have been registered!"))
+            self.assertTrue(MaintenanceUser.objects.get(pk=self.operator.pk).check_password(password))
 
 
 class UpdateOperatorTestCase(TestCase):
@@ -233,35 +238,39 @@ class UpdateOperatorTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_update_operator_profile_with_form(self):
-        first_name = "Barney"
-        last_name = "Calhoun"
-        email = "barney.calhoun@blackmesa.com"
+        with SetDjangoLanguage("en"):
+            first_name = "Barney"
+            last_name = "Calhoun"
+            email = "barney.calhoun@blackmesa.com"
 
-        self.client.login(username=self.admin.email, password="azerty")
-        response = self.client.post(
-            self.form_url,
-            {"first_name": first_name, "last_name": last_name, "email": email, "form-mod": "profile"},
-            follow=True,
-        )
+            self.client.login(username=self.admin.email, password="azerty")
+            response = self.client.post(
+                self.form_url,
+                {"first_name": first_name, "last_name": last_name, "email": email, "form-mod": "profile"},
+                follow=True,
+            )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
-        operators = MaintenanceUser.objects.filter(
-            email=email, first_name=first_name, last_name=last_name, pk=self.operator.pk
-        )
-        self.assertEqual(1, operators.count())
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, _("Modifications have been registered!"))
+            operators = MaintenanceUser.objects.filter(
+                email=email, first_name=first_name, last_name=last_name, pk=self.operator.pk
+            )
+            self.assertEqual(1, operators.count())
 
     def test_update_operator_password_with_form(self):
-        password = "my safe password"
+        with SetDjangoLanguage("en"):
+            password = "my safe password"
 
-        self.client.login(username=self.admin.email, password="azerty")
-        response = self.client.post(
-            self.form_url, {"new_password1": password, "new_password2": password, "form-mod": "password"}, follow=True
-        )
+            self.client.login(username=self.admin.email, password="azerty")
+            response = self.client.post(
+                self.form_url,
+                {"new_password1": password, "new_password2": password, "form-mod": "password"},
+                follow=True,
+            )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _("Les modifications ont bien été prises en compte!"))
-        self.assertTrue(MaintenanceUser.objects.get(pk=self.operator.pk).check_password(password))
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, _("Modifications have been registered!"))
+            self.assertTrue(MaintenanceUser.objects.get(pk=self.operator.pk).check_password(password))
 
 
 class UpdateOperatorUsersTestCase(TestCase):
