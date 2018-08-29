@@ -7,6 +7,8 @@ from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 
+from ..utils import SetDjangoLanguage
+
 
 class UpdateAccountTestCase(TestCase):
     @classmethod
@@ -91,18 +93,24 @@ class UpdateAccountTestCase(TestCase):
         self.assertContains(response, "form-error")
 
     def test_update_password_form(self):
-        password = "qwertyuiop"
-        self.client.login(username=self.admin.email, password="azerty")
-        response = self.client.post(
-            self.form_url,
-            {"old_password": "azerty", "new_password1": password, "new_password2": password, "form-mod": "password"},
-            follow=True,
-        )
+        with SetDjangoLanguage("en"):
+            password = "qwertyuiop"
+            self.client.login(username=self.admin.email, password="azerty")
+            response = self.client.post(
+                self.form_url,
+                {
+                    "old_password": "azerty",
+                    "new_password1": password,
+                    "new_password2": password,
+                    "form-mod": "password",
+                },
+                follow=True,
+            )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _("Modifications have been registered!"))
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, _("Modifications have been registered!"))
 
-        self.assertTrue(MaintenanceUser.objects.get(pk=self.admin.pk).check_password(password))
+            self.assertTrue(MaintenanceUser.objects.get(pk=self.admin.pk).check_password(password))
 
     def test_update_wrong_keyword_form(self):
         password = "qwertyuiop"

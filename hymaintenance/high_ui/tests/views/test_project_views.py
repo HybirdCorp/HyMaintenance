@@ -4,6 +4,7 @@ from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
 from django.utils.timezone import now
+from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
 from customers.tests.factories import AdminUserFactory
@@ -268,7 +269,7 @@ class ProjectDetailsViewTestCase(TestCase):
         response = self.client.get(self.form_url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Commander des heures")
+        self.assertContains(response, _("Add hours"))
 
     def test_display_extra_credit(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
