@@ -85,14 +85,14 @@ class ProjectCreateFormTestCase(TestCase):
             },
         )
 
-    def test_valid_form_create_a_company(self):
+    def test_form_not_valid_when_no_contract(self):
         dict_for_post = self.__get_dict_for_post()
         form = ProjectCreateForm(data=dict_for_post)
         is_valid = form.is_valid()
         form.create_company_and_contracts()
 
-        self.assertTrue(is_valid)
-        self.assertEqual(1, Company.objects.all().count())
+        self.assertFalse(is_valid)
+        self.assertDictEqual(form.errors, {'__all__': [_("You have to create at least one contract on the project.")]})
 
     def test_valid_form_create_a_support_contract(self):
         dict_for_post = self.__get_dict_for_post()
@@ -128,6 +128,9 @@ class ProjectCreateFormTestCase(TestCase):
 
     def test_valid_form_create_contracts_counter_name(self):
         dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contract1_visible"] = 1
+        dict_for_post["contract2_visible"] = 1
+        dict_for_post["contract3_visible"] = 1
         dict_for_post["contract1_counter_name"] = "Reduice"
         dict_for_post["contract2_counter_name"] = "Reuse"
         dict_for_post["contract3_counter_name"] = "Recycle"
@@ -237,6 +240,7 @@ class ProjectCreateFormTestCase(TestCase):
         operator = OperatorUserFactory(first_name="Chell")
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["contact"] = operator.pk
+        dict_for_post["contract1_visible"] = 1
 
         form = ProjectCreateForm(data=dict_for_post)
         is_valid = form.is_valid()
