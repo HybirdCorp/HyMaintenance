@@ -30,6 +30,7 @@ from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedOperatorTestMixin
 from .base import ViewWithCompany
 from .base import get_context_data_dashboard_header
+from .base import get_context_data_footer
 
 
 class ConsumerCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
@@ -168,6 +169,12 @@ class AdminUserCreateView(IsAdminTestMixin, CreateView):
     form_class = AdminUserCreateForm
     template_name = "high_ui/forms/create_admin.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_data_footer())
+        return context
+
     def get_success_url(self):
         return reverse("high_ui:admin")
 
@@ -181,6 +188,7 @@ class AdminUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_data_footer())
         return context
 
     def get_queryset(self):
@@ -190,6 +198,12 @@ class AdminUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
 class OperatorUserCreateView(IsAdminTestMixin, CreateView):
     form_class = OperatorUserCreateForm
     template_name = "high_ui/forms/create_operator.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_data_footer())
+        return context
 
     def get_success_url(self):
         return reverse("high_ui:dashboard")
@@ -217,6 +231,7 @@ class OperatorUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_data_footer())
         return context
 
     def get_queryset(self):
@@ -259,6 +274,7 @@ class OperatorUsersUpdateView(IsAdminTestMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_data_footer())
         context["archive_form"] = OperatorUserArchiveForm()
         context["unarchive_form"] = OperatorUserUnarchiveForm()
         context["active_operators_number"] = MaintenanceUser.objects.get_active_operator_users_queryset().count()
@@ -288,6 +304,11 @@ class OperatorUsersUnarchiveView(IsAdminTestMixin, FormView):
 
 class UserUpdateView(LoginRequiredMixin, TemplateView):
     template_name = "high_ui/forms/update_profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_data_footer())
+        return context
 
     def get_object(self):
         return self.request.user
