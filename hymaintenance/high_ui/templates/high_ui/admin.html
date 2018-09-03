@@ -16,6 +16,14 @@
     <div class="content-container">
         <div class="content">
             <div class="container details-container">
+                <div class="container-title">{% blocktrans with name=general_info.name %}Update {{name}}'s general information{% endblocktrans %}</div>
+                <div class="dashboard-item dashboard-button">
+                    <div class="dashboard-value">
+                        <a href="{% url 'high_ui:update_infos' %}" title="{% trans "Update general information" %}">{% trans "Update general information" %}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="container details-container">
                 <div class="container-title">{% trans "Create an administrator" %}</div>
                 <div class="dashboard-item dashboard-button">
                     <div class="dashboard-value">
