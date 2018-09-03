@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; {% blocktrans %}Add credits for {{company.name}}{% endblocktrans %}</title>
+<title>Maintenance {{general_info.name}} &mdash; {% blocktrans with name=company.name %}Add credits for {{name}}{% endblocktrans %}</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -45,7 +45,7 @@
                                 <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
                                    data-selector-key="{{contract.maintenance_type.css_class}}"
                                    data-selector-value="{{contract.maintenance_type.pk}}"
-                                   title="{% blocktrans %}{{contract.get_counter_name}}-type activity{% endblocktrans %}">{{contract.get_counter_name}}</a>
+                                   title="{% blocktrans with mtype=contract.get_counter_name %}{{mtype}}-type activity{% endblocktrans %}">{{contract.get_counter_name}}</a>
                                 {% endfor %}
                                 {{form.contract}}
                             </section>

@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; {% trans "Modify employee list of" %} {{company.name}}</title> {# TMP #}
+<title>Maintenance {{general_info.name}} &mdash; {% trans "Modify employee list of" %} {{company.name}}</title> {# TMP #}
 {% endblock %}
 
 {% block form_title %}
@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block form_details %}
-{% blocktrans %}Select the consumers of this project, among the {{company.maintenanceconsumer_set.all.count}} already existing:{% endblocktrans %}
+{% blocktrans with nb=company.maintenanceconsumer_set.all.count %}Select the consumers of this project, among the {{nb}} already existing:{% endblocktrans %}
 {% endblock %}
 
 {% block item_label %}

@@ -188,7 +188,7 @@
                                 <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
                                    data-selector-key="{{contract.maintenance_type.css_class}}"
                                    data-selector-value="{{contract.pk}}"
-                                   title="{% blocktrans %}'{{contract.get_counter_name}}'-type activity{% endblocktrans %}">{{contract.get_counter_name}}</a>
+                                   title="{% blocktrans with mtype=contract.get_counter_name %}'{{mtype}}'-type activity{% endblocktrans %}">{{contract.get_counter_name}}</a>
                                 {% endfor %}
                                 {{form.contract}}
                             </section>

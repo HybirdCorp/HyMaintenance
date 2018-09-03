@@ -23,7 +23,7 @@
     </div>
     <div class="dashboard-item dashboard-user">
     {% endif %}
-	<span class="dashboard-title">{% if request.user.is_staff %}Hybird{% else %}{{request.user.company}}{% endif %}</span>
+	<span class="dashboard-title">{% if request.user.is_staff %}{{general_info.name}}{% else %}{{request.user.company}}{% endif %}</span>
         <span class="dashboard-value"><a href='{% url 'high_ui:update_user' %}'>{% pretty_print_name request.user.first_name request.user.last_name %}</a></span>
     </div>
     <div class="dashboard-item dashboard-button">
