@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block page_title %}
-<title>Maintenance Hybird &mdash; {% blocktrans with company=object.company.name counter=object.get_counter_name number=object.company_issue_number %}Modification of {{company}} {{counter}} issue #{{number}}{% endblocktrans %}</title> {# TMP #}
+<title>Maintenance {{general_info.name}} &mdash; {% blocktrans with company=object.company.name counter=object.get_counter_name number=object.company_issue_number %}Modification of {{company}} {{counter}} issue #{{number}}{% endblocktrans %}</title> {# TMP #}
 {% endblock %}
 
 {% block header %}

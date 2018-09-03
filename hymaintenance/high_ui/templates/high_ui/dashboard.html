@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; {% trans "Hybird Dashboard" %}</title> {# TMP #}
+<title>Maintenance {{general_info.name}} &mdash; {% blocktrans with name=general_info.name %}{{name}} Dashboard{% endblocktrans %}</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -18,7 +18,7 @@
                 <div class="dashboard type-project">
                     <div class="dashboard-item dashboard-account">
                         <span class="dashboard-title">{% trans "Account" %}</span>
-                        <span class="dashboard-value"><a href="{{company.get_absolute_url}}" title="{% trans "Access to {{company}} details" %}">{{company}}</a></span>
+                        <span class="dashboard-value"><a href="{{company.get_absolute_url}}" title="{% blocktrans %}Access to {{company}} details{% endblocktrans %}">{{company}}</a></span>
                     </div>
                     <div class="dashboard-item dashboard-button">
                         <div class="dashboard-value">

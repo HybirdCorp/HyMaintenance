@@ -87,8 +87,9 @@
                             {% endfor %}
                         </div>
                         <div class="help help-activation">
-                            <span class='activation-active'>{% trans "This counter will be <em>visible for managers</em> of the project, and <em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
-                            <span class='activation-hidden'>{% trans "This counter will be <em>invisible for managers, but </em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
+                            <span class='activation-active'>{% blocktrans with name=general_info.name %}This counter will be <em>visible for managers</em> of the project, and <em>usable by {{name}}'s operators</em> on the dashboard and for register new issues. {% endblocktrans %}</span>
+
+                            <span class='activation-hidden'>{% blocktrans with name=general_info.name %}This counter will be <em>invisible for managers, but </em>usable by {{name}}'s operators</em> on the dashboard and for register new issues.{% endblocktrans %}</span>
                             <span class='activation-inactive'>{% trans "This counter will be <em>disabled</em> for the project" %}</span>
                         </div>
 
@@ -130,8 +131,8 @@
                         </div>
 
                         <div class="help help-credit">
-                            <span class="counter-total">{% trans "This counter will display the <em>consumed total time</em> by the registered issues by Hybird's operators" %}</span>
-                            <span class="counter-credit">{% trans "This compteur will display the <em>available total time</em> on" %} {{maintenance_types.0.name}} {% trans "credited hours, that will be consumed by Hybird's operators by register an issues." %}</span>
+                            <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
+                            <span class="counter-credit">{% blocktrans with name=general_info.name mtype=maintenance_types.0.name %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
 
                         <div class="show-more-container">
@@ -197,8 +198,9 @@
                             {% endfor %}
                         </div>
                         <div class="help help-activation">
-                            <span class='activation-active'>{% trans "This counter will be <em>visible for managers</em> of the project, and <em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
-                            <span class='activation-hidden'>{% trans "This counter will be <em>invisible for managers, but </em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
+                            <span class='activation-active'>{% blocktrans with name=general_info.name %}This counter will be <em>visible for managers</em> of the project, and <em>usable by {{name}}'s operators</em> on the dashboard and for register new issues. {% endblocktrans %}</span>
+
+                            <span class='activation-hidden'>{% blocktrans with name=general_info.name %}This counter will be <em>invisible for managers, but </em>usable by {{name}}'s operators</em> on the dashboard and for register new issues.{% endblocktrans %}</span>
                             <span class='activation-inactive'>{% trans "This counter will be <em>disabled</em> for the project" %}</span>
                         </div>
 
@@ -240,8 +242,8 @@
                         </div>
 
                         <div class="help help-credit">
-                            <span class="counter-total">{% trans "This counter will display the <em>consumed total time</em> by the registered issues by Hybird's operators" %}</span>
-                            <span class="counter-credit">{% trans "This compteur will display the <em>available total time</em> on" %} {{maintenance_types.1.name}} {% trans "credited hours, that will be consumed by Hybird's operators by register an issues." %}</span>
+                            <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
+                            <span class="counter-credit">{% blocktrans with name=general_info.name mtype=maintenance_types.1.name %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
 
                         <div class="show-more-container">
@@ -307,8 +309,9 @@
                             {% endfor %}
                         </div>
                         <div class="help help-activation">
-                            <span class='activation-active'>{% trans "This counter will be <em>visible for managers</em> of the project, and <em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
-                            <span class='activation-hidden'>{% trans "This counter will be <em>invisible for managers, but </em>usable by Hybird's operators</em> on the dashboard and for register new issues." %}</span>
+                            <span class='activation-active'>{% blocktrans with name=general_info.name %}This counter will be <em>visible for managers</em> of the project, and <em>usable by {{name}}'s operators</em> on the dashboard and for register new issues. {% endblocktrans %}</span>
+
+                            <span class='activation-hidden'>{% blocktrans with name=general_info.name %}This counter will be <em>invisible for managers, but </em>usable by {{name}}'s operators</em> on the dashboard and for register new issues.{% endblocktrans %}</span>
                             <span class='activation-inactive'>{% trans "This counter will be <em>disabled</em> for the project" %}</span>
                         </div>
 
@@ -350,8 +353,8 @@
                         </div>
 
                         <div class="help help-credit">
-                            <span class="counter-total">{% trans "This counter will display the <em>consumed total time</em> by the registered issues by Hybird's operators" %}</span>
-                            <span class="counter-credit">{% trans "This compteur will display the <em>available total time</em> on" %} {{maintenance_types.2.name}} {% trans "credited hours, that will be consumed by Hybird's operators by register an issues." %}</span>
+                            <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
+                            <span class="counter-credit">{% blocktrans with name=general_info.name mtype=maintenance_types.2.name %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
 
                         <div class="show-more-container">

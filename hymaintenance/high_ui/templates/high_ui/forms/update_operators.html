@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Maintenance Hybird &mdash; {% trans "Modify operator list" %}</title> {# TMP #}
+<title>Maintenance {{general_info.name}} &mdash; {% trans "Modify operator list" %}</title> {# TMP #}
 <meta charset="utf-8" />
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
@@ -19,7 +19,7 @@
             <div class="form-content">
                 <div class="form-intro">
                     <div class="group-title-container">
-                        <div class="group-title">{% trans "Modify operator list of Hybird" %}</div>
+                        <div class="group-title">{% blocktrans with name=general_info.name %}Modify operator list of {{name}}{% endblocktrans %}</div>
                     </div>
                 </div>
                 {% if active_operators_number %}
@@ -32,9 +32,9 @@
 
                         <div class="form-group-collapsable-content">
                             {% if active_operators_number > 1%}
-                            <span class="list-intro">{% blocktrans %}Select operators that you want to be inactive, among the {{active_operators_number}} active Hybird's operators:{% endblocktrans %}</span>
+                            <span class="list-intro">{% blocktrans with name=general_info.name %}Select operators that you want to be inactive, among the {{active_operators_number}} active {{name}}'s operators:{% endblocktrans %}</span>
                             {% else %}
-                            <span class="list-intro">{% blocktrans %}Select the single Hybird's active operator to turn them archived:{% endblocktrans %}</span>
+                            <span class="list-intro">{% blocktrans with name=general_info.name %}Select the single {{name}}'s active operator to turn them archived:{% endblocktrans %}</span>
                             {% endif %}
                             <ul class="checkbox-list">
                             {% for value, label in archive_form.active_operators.field.choices %}
@@ -71,9 +71,9 @@
 
                         <div class="form-group-collapsable-content">
                             {% if archived_operators_number > 1%}
-                            <span class="list-intro">{% blocktrans %}Select operators that you want to be active, among the {{archived_operators_number}} archived Hybird's operators:{% endblocktrans %}</span>
+                            <span class="list-intro">{% blocktrans with name=general_info.name %}Select operators that you want to be active, among the {{archived_operators_number}} archived {{name}}'s operators:{% endblocktrans %}</span>
                             {% else %}
-                            <span class="list-intro">{% blocktrans %}Select the single Hybird's archived operator to turn them active:{% endblocktrans %}</span>
+                            <span class="list-intro">{% blocktrans with name=general_info.name %}Select the single {{name}}'s archived operator to turn them active:{% endblocktrans %}</span>
                             {% endif %}
                             <ul class="checkbox-list">
                             {% for value, label in unarchive_form.inactive_operators.field.choices %}
