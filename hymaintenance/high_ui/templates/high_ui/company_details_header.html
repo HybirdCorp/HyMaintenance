@@ -13,7 +13,7 @@
     {% endfor %}
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
-            {% if request.user.is_staff %}
+            {% if request.user.is_staff and add_credits %}
             <a href='{% url 'high_ui:project-create_credit' company_name=company.slug_name %}'>{% trans "Add hours" %}</a>
             {% endif %}
         </div>
