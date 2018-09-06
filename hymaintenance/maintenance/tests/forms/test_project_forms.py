@@ -92,7 +92,7 @@ class ProjectCreateFormTestCase(TestCase):
         form.create_company_and_contracts()
 
         self.assertFalse(is_valid)
-        self.assertDictEqual(form.errors, {'__all__': [_("You have to create at least one contract on the project.")]})
+        self.assertDictEqual(form.errors, {"__all__": [_("You have to create at least one contract on the project.")]})
 
     def test_valid_form_create_a_support_contract(self):
         dict_for_post = self.__get_dict_for_post()
