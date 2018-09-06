@@ -215,11 +215,10 @@ class ProjectUpdateViewTestCase(TestCase):
 
 
 class ProjectDetailsViewTestCase(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.company, cls.contract, _, _ = create_project()
-        cls.form_url = reverse("high_ui:project_details", args=[cls.company.slug_name])
-        cls.login_url = reverse("login") + "?next=" + cls.form_url
+    def setUp(self):
+        self.company, self.contract1, self.contract2, self.contract3 = create_project()
+        self.form_url = reverse("high_ui:project_details", args=[self.company.slug_name])
+        self.login_url = reverse("login") + "?next=" + self.form_url
 
     def test_manager_can_seen_his_company(self):
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
@@ -262,8 +261,22 @@ class ProjectDetailsViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_display_extra_credit(self):
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        self.contract1.total_type = AVAILABLE_TOTAL_TIME
+        self.contract1.save()
+        MaintenanceCreditFactory(contract=self.contract1, company=self.company, hours_number=10, date=now().date())
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<td class="history-item-duration duration">+10h</td>')
+
     def test_add_credit_button(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        self.contract1.total_type = AVAILABLE_TOTAL_TIME
+        self.contract1.save()
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
@@ -271,15 +284,20 @@ class ProjectDetailsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _("Add hours"))
 
-    def test_display_extra_credit(self):
+    def test_no_add_credit_button(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        MaintenanceCreditFactory(contract=self.contract, company=self.company, hours_number=10, date=now().date())
+        self.contract1.total_type = CONSUMMED_TOTAL_TIME
+        self.contract1.save()
+        self.contract2.total_type = CONSUMMED_TOTAL_TIME
+        self.contract2.save()
+        self.contract3.total_type = CONSUMMED_TOTAL_TIME
+        self.contract3.save()
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<td class="history-item-duration duration">+10h</td>')
+        self.assertNotContains(response, _("Add hours"))
 
 
 class MonthDisplayInFrenchTestCase(TestCase):
