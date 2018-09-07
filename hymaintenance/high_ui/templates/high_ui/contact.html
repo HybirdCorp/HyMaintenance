@@ -1,0 +1,67 @@
+{% load i18n print_fields %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance {{general_info.name}} &mdash; {{company.name}} {% trans "buy credits" %}</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+</head>
+<body>
+    {% include "high_ui/company_details_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <div class="form-content auto-min-height">
+                <div class="form-group">
+                    <div class="group-title-container">
+                        <div class="group-title">{% trans "Buy some credits" %}</div>
+                        <label>{% trans "Client account" %}</label>
+                        <span>{{company}}</span>
+                    </div>
+                    <div>{% trans "if you want to buy some credits, please contact :" %}
+                        {% if company.contact %}
+                        <ul style="list-style: none;">
+                            <li>{{company.contact.first_name}} {{company.contact.last_name}}</li>
+                            <li class="hybird-contact">
+                                <svg class="icon icon-email" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
+                                <a href="mailto:{{company.contact.email}}?subject=Contact {{general_info.name}} Maintenance&amp;body=%0d%0aEnvoyé depuis url.com">{{company.contact.email}}</a>
+                            </li>
+                            {% if company.contact.phone %}
+                            <li class="hybird-phone">
+                                <svg class="icon icon-telephone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg>
+                            {{company.contact.phone}}
+                            </li>
+                            {% endif %}
+                        </ul>
+                        {% else %}
+                        <ul style="list-style: none;">
+                            <li>{{general_info.name}}</li>
+                            {% if general_info.email %}
+                            <li class="hybird-contact">
+                                <svg class="icon icon-email" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
+                                <a href="mailto:{{general_info.email}}?subject=Contact {{general_info.name}} Maintenance&amp;body=%0d%0aEnvoyé depuis url.com">{{general_info.email}}</a>
+                            </li>
+                            </li>
+                            {% endif %}
+                            {% if general_info.phone %}
+                            <li class="hybird-phone">
+                                <svg class="icon icon-telephone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg>
+                            {{general_info.phone}}
+                            </li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <a href="{% url 'high_ui:project_details' company_name=company.slug_name %} ">{% trans "Back to the homepage" %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+</body>
+</html>

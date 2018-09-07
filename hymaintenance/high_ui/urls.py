@@ -3,6 +3,7 @@
 from django.urls import path
 
 from .views.admin import AdminView
+from .views.contact import ContactView
 from .views.credit import CreditCreateView
 from .views.dashboard import DashboardView
 from .views.general_information import GeneralInformationUpdateView
@@ -38,6 +39,7 @@ urlpatterns = [
     path(r"", DashboardView.as_view(), name="dashboard"),
     path(r"admin/", AdminView.as_view(), name="admin"),
     path(r"infos/update/", GeneralInformationUpdateView.as_view(), name="update_infos"),
+    path(r"projects/<slug:company_name>/contact", ContactView.as_view(), name="project-contact"),
     path(r"counters/", MaintenanceTypeUpdateView.as_view(), name="update_maintenance_types"),
     path(r"projects/<slug:company_name>/", ProjectDetailsView.as_view(), name="project_details"),
     path(r"projects/", ProjectCreateView.as_view(), name="create_project"),

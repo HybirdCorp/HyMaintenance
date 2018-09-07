@@ -15,6 +15,8 @@
         <div class="dashboard-value">
             {% if request.user.is_staff and add_credits %}
             <a href='{% url 'high_ui:project-create_credit' company_name=company.slug_name %}'>{% trans "Add hours" %}</a>
+            {% else %}
+            <a href='{% url 'high_ui:project-contact' company_name=company.slug_name %}'>{% trans "Buy hours" %}</a>
             {% endif %}
         </div>
     </div>
