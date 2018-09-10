@@ -1,0 +1,32 @@
+{% extends "auth/base.html" %}
+{% load i18n %}
+
+{% block page_title %}
+<title>Maintenance {{general_info.name}} &mdash; {% trans 'Log in' %}</title>
+{% endblock %}
+
+{% block content_title %}
+{% trans "Login to" %} <span class="main-label">HyMaintenance</span>
+{% endblock %}
+
+{% block content %}
+<form {% comment %}action="{{app_path}}"{% endcomment %} method="post" id="login-form">
+    {% csrf_token %}
+    <div class="form-row">
+        <label for="id_username" autofocus>{% trans 'Email' %}</label>{{form.username}}
+    </div>
+    <div>{{form.errors.username}}</div>
+    <div class="form-row">
+        <label for="id_password">{% trans 'Password' %}</label>{{form.password}}
+        <input type="hidden" name="this_is_the_login_form" value="1" />
+    </div>
+    <div class="password-reset-link">
+        <a href="{% url 'password_reset' %}">{% trans 'Forgotten your password or username?' %}</a>
+    </div>
+    <div>{{form.errors.password}}</div>
+    <div class="submit-row">
+        <button type="submit">{% trans 'Login' %}</button>
+    </div>
+    <div>{{form.non_field_errors}}</div>
+</form>
+{% endblock %}
