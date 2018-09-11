@@ -77,7 +77,8 @@ class MaintenanceUserTestCase(TestCase):
         operator = OperatorUserFactory(is_active=True)
         OperatorUserFactory(is_active=False)
         ManagerUserFactory()
-        self.assertEqual([admin, operator], list(MaintenanceUser.objects.get_active_operator_users_queryset()))
+        self.assertIn(admin, list(MaintenanceUser.objects.get_active_operator_users_queryset()))
+        self.assertIn(operator, list(MaintenanceUser.objects.get_active_operator_users_queryset()))
 
     def test_get_manager_users_queryset(self):
         AdminUserFactory()
