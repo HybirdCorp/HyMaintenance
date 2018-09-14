@@ -11,8 +11,8 @@
 <script src="/static/js/segmented-selector.js"></script>
 </head>
 <body>
+{% with default_activity_type=available_time_contracts.0.maintenance_type.css_class|default:"type-maintenance" %}
 {% include "high_ui/company_details_header.html" %}
-{% with default_activity_type=contracts.0.maintenance_type.css_class|default:"type-maintenance" %}
     <div class="content-container">
         <div class="content">
             <form action="" method="post">
@@ -44,7 +44,7 @@
                                 {% for contract in available_time_contracts %}
                                 <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
                                    data-selector-key="{{contract.maintenance_type.css_class}}"
-                                   data-selector-value="{{contract.maintenance_type.pk}}"
+                                   data-selector-value="{{contract.id}}"
                                    title="{% blocktrans with mtype=contract.get_counter_name %}{{mtype}}-type activity{% endblocktrans %}">{{contract.get_counter_name}}</a>
                                 {% endfor %}
                                 {{form.contract}}
