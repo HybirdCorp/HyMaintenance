@@ -10,6 +10,7 @@ from django.core.files import File
 from django.test import TestCase
 from django.urls import reverse
 from django.utils.timezone import now
+from django.utils.translation import ugettext_lazy as _
 
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
@@ -334,3 +335,27 @@ class IssueDetailViewTestCase(TestCase):
 
             self.assertContains(response, test_file_name)
             self.assertContains(response, urljoin(settings.MEDIA_URL, self.issue.resolution_description_file.name))
+
+    def test_admin_can_see_modify_issue_button(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+        response = self.client.get(self.view_url)
+
+        self.assertContains(response, _("Modify"))
+
+    def test_operator_can_see_modify_issue_button(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.view_url)
+
+        self.assertContains(response, _("Modify"))
+
+    def test_manager_cannot_see_modify_issue_button(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.view_url)
+
+        self.assertNotContains(response, _("Modify"))
