@@ -81,6 +81,16 @@ class IssueCreateFormTestCase(TestCase):
             },
         )
 
+    def test_create_form_user_who_fixes_initial_values(self):
+        operator = OperatorUserFactory(first_name="Chell", is_active=True)
+        operator2 = OperatorUserFactory(first_name="NotChell", is_active=False)
+        operator.operator_for.add(self.company)
+        operator2.operator_for.add(self.company)
+        form = MaintenanceIssueCreateForm(company=self.company, data={})
+        ids = (ids for ids, name in form.fields["user_who_fix"].choices)
+        self.assertIn(operator.id, ids)
+        self.assertNotIn(operator2.id, ids)
+
     def test_when_i_bound_a_create_form_with_invalid_duration_type_i_have_an_error(self):
         with SetDjangoLanguage("en"):
             subject = "subject of the issue"
