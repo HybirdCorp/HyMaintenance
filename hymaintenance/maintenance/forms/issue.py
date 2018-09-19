@@ -41,7 +41,7 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
         super(MaintenanceIssueCreateForm, self).__init__(*args, **kwargs)
 
         self.fields["consumer_who_ask"].queryset = self.company.maintenanceconsumer_set.all()
-        self.fields["user_who_fix"].choices = self.company.get_operators_choices()
+        self.fields["user_who_fix"].choices = self.company.get_active_operators_choices()
         self.fields["context_description_file"].required = False
         self.fields["resolution_description_file"].required = False
 

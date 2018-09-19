@@ -251,6 +251,23 @@ class ProjectCreateFormTestCase(TestCase):
         self.assertEqual(1, companies.count())
         self.assertEqual(operator, companies.first().contact)
 
+    def test_create_project_when_there_are_archived_operators(self):
+        operator = OperatorUserFactory(first_name="Chell", is_active=True)
+        operator2 = OperatorUserFactory(first_name="NotChell", is_active=False)
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contract1_visible"] = 1
+
+        form = ProjectCreateForm(data=dict_for_post)
+        is_valid = form.is_valid()
+        form.create_company_and_contracts()
+
+        self.assertTrue(is_valid)
+        companies = Company.objects.all()
+        self.assertEqual(1, companies.count())
+        operators = companies.first().managed_by.all()
+        self.assertIn(operator, operators)
+        self.assertNotIn(operator2, operators)
+
 
 class ProjectUpdateFormTestCase(TestCase):
     @classmethod
