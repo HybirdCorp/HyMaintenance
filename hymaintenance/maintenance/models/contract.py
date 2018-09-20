@@ -33,6 +33,11 @@ class MaintenanceContract(models.Model):
     start = models.DateField(_("Start Date"), default=datetime.date.today)
     number_hours = models.PositiveIntegerField(_("Credited hours"), default=0)
     total_type = models.IntegerField(_("Counter type"), choices=TYPE_CHOICES, default=AVAILABLE_TOTAL_TIME)
+    email_alert = models.BooleanField(_("Email alert"), default=False)
+    number_hours_min = models.IntegerField(_("Credited hours Threshold"), default=0)
+    recipient = models.ForeignKey(
+        to="customers.MaintenanceUser", on_delete=models.PROTECT, related_name="referent_for", null=True, blank=True
+    )
 
     objects = MaintenanceContractQuerySet.as_manager()
 
