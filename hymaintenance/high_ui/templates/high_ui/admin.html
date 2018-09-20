@@ -10,51 +10,124 @@
 <link rel="stylesheet" href="/static/css/create.css" />
 <link rel="stylesheet" href="/static/css/edit-list.css" />
 <link rel="stylesheet" href="/static/css/edit-operators.css" />
+<link rel="stylesheet" href="/static/css/dashboard.css" />
 </head>
 <body>
     {% include "high_ui/dashboard_header.html" %}
     <div class="content-container">
         <div class="content">
-            <div class="container details-container">
-                <div class="container-title">{% blocktrans with name=general_info.name %}Update {{name}}'s general information{% endblocktrans %}</div>
-                <div class="dashboard-item dashboard-button">
-                    <div class="dashboard-value">
-                        <a href="{% url 'high_ui:update_infos' %}" title="{% trans "Update general information" %}">{% trans "Update general information" %}</a>
+            <div class='dashboard-container'>
+                <div class="dashboard type-project">
+                    <div class="dashboard-item dashboard-account">
+                        <span class="dashboard-value">{% trans "Settings" %}</span>
+                    </div>
+                </div>
+                <div class="project-details">
+                    <div class="project-user-list">
+                        <div class="dashboard">
+                            <div class="dashboard-item project-detail">
+                                <span class="dashboard-title">{% blocktrans with name=general_info.name %}{{name}}'s general information{% endblocktrans %}</span>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{% url 'high_ui:update_infos' %}" title="{% trans "Update general information" %}">{% trans "Modify" %}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-users">
+                            <div>{{general_info.name}}</div>
+                            <div>{{general_info.website}}</div>
+                            <div><svg class="icon icon-telephone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg>{{general_info.phone}}</div>
+                            <div><svg class="icon icon-email" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>{{general_info.email}}</div>
+                            <div>{{general_info.address|linebreaks}}</div>
+                        </div>
+                    </div>
+                    <div class="project-user-list">
+                        <div class="dashboard">
+                            <div class="dashboard-item project-detail">
+                                <span class="dashboard-title">{% trans "Default contract type" %}</span>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{% url 'high_ui:update_maintenance_types' %}" title="{% trans "Modify default name of contract types" %}">{% trans "Modify" %}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-users">
+                            {% for maintenance_type in maintenance_types %}
+                            <div>{{maintenance_type.name}}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="project-user-list">
+                        <div class="dashboard">
+                            <div class="dashboard-item project-detail">
+                                <span class="dashboard-title">{% trans "Email alerts" %}</span>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="#" title="{% trans "Manage email alerts" %}">{% trans "Modify" %}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-users">
+                            <div>{% trans "Incomming feature" %}</div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="container details-container">
-                <div class="container-title">{% trans "Create an administrator" %}</div>
-                <div class="dashboard-item dashboard-button">
-                    <div class="dashboard-value">
-                        <a href="{% url 'high_ui:create_admin' %}" title="{% trans "Create an administrator" %}">{% trans "Create an administrator" %}</a>
+            <div class='dashboard-container'>
+                <div class="dashboard type-project">
+                    <div class="dashboard-item dashboard-account">
+                        <span class="dashboard-value">{% blocktrans with name=general_info.name %}{{name}}'s users{% endblocktrans %}</span>
                     </div>
                 </div>
-            </div>
-            <div class="container details-container">
-                <div class="container-title">{% trans "Update administrators" %}</div>
-                {% if admins %}
-                <span>{% trans "Administrator list. Click on a administrator to update them." %}</span>
-                <ul>
-                {% for admin in admins %}
-                    <li><a href='{% url 'high_ui:update_admin' pk=admin.pk %}'>{{admin.first_name}} {{admin.last_name}}</a></li>
-                {% endfor %}
-                </ul>
-                {% endif %}
-            </div>
-            <div class="container details-container">
-                <div class="container-title">{% trans "Manage email alerts" %}</div>
-                <div class="dashboard-item dashboard-button">
-                    <div class="dashboard-value">
-                        <a href="#" title="{% trans "Manage email alerts" %}">{% trans "Email alerts" %}</a>
+                <div class="project-details">
+                    <div class="project-user-list">
+                        <div class="dashboard">
+                            <div class="dashboard-item project-detail">
+                                <span class="dashboard-title">{% trans "Operators" %}</span>
+                                <span class="dashboard-value">{{operators_number}}</span>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{% url 'high_ui:create_operator' %}" title="{% trans "Create a new operator" %}">{% trans "New" context "ms" %}</a>
+                                </div>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{% url 'high_ui:update_operators' %}" title="{% trans "Modify the operator list" %}">{% trans "Modify the list" %}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-users">
+                            {% for operator in operators %}
+                            <div><a href='{% url 'high_ui:update_operator' pk=operator.pk %}'>{{operator.get_full_name}}</a></div>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="container details-container">
-                <div class="container-title">{% trans "Manage default contract types" %}</div>
-                <div class="dashboard-item dashboard-button">
-                    <div class="dashboard-value">
-                        <a href="{% url 'high_ui:update_maintenance_types' %}" title="{% trans "Modify default name of contract types" %}">{% trans "Modify default contract type" %}</a>
+                    <div class="project-user-list">
+                        <div class="dashboard">
+                            <div class="dashboard-item project-detail">
+                                <span class="dashboard-title">{% trans "Administrators" %}</span>
+                                <span class="dashboard-value">{{admins.count}}</span>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{% url 'high_ui:create_admin' %}" title="{% trans "Create a new administrator" %}">{% trans "New" context "ms" %}</a>
+                                </div>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="#" title="{% trans "Modify the administrator list" %}">{% trans "Modify the list" %}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-users">
+                            {% for admin in admins %}
+                            <div><a href='{% url 'high_ui:update_admin' pk=admin.pk %}'>{{admin.get_full_name}}</a></div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
