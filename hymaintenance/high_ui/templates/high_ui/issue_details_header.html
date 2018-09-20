@@ -14,7 +14,7 @@
     </div>
     <div class="dashboard-item">
         <span class="dashboard-title">{% trans "Time spent" %}</span>
-        <span class="dashboard-value">{% pretty_print_minutes object.number_minutes use_long_minute_format=True %}</span>
+        <span class="dashboard-value">{% pretty_print_minutes_tag object.number_minutes use_long_minute_format=True %}</span>
     </div>
     <div class="dashboard-item dashboard-contact">
     {% if not request.user.is_staff %}

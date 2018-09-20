@@ -62,7 +62,7 @@
                 </div>
                 <div class="property-container">
                     <span class="property-key">{% trans "Time spent" %}</span>
-                    <span class="property-value duration">{% pretty_print_minutes object.number_minutes use_long_minute_format=True %}</span>
+                    <span class="property-value duration">{% pretty_print_minutes_tag object.number_minutes use_long_minute_format=True %}</span>
                 </div>
                 {% if object.resolution_date %}
                 <div class="property-container">
