@@ -122,6 +122,10 @@
     color: #666;
 }
 
+.project-users div a {
+    color: #666;
+}
+
 .project-users div:last-child {
     margin-bottom: 8px;
 }
