@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-17 10:29+0200\n"
+"POT-Creation-Date: 2018-09-20 11:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -148,52 +148,96 @@ msgstr "Modifier mon mot de passe"
 msgid "Administration dashboard"
 msgstr "Tableau de bord administrateur"
 
-#: high_ui/templates/high_ui/admin.html:19
-#, python-format
-msgid "Update %(name)s's general information"
-msgstr "Mettre à jour les informations générales de %(name)s"
-
 #: high_ui/templates/high_ui/admin.html:22
-#, fuzzy
-#| msgid "Your personnal informations"
+msgid "Settings"
+msgstr "Paramètres"
+
+#: high_ui/templates/high_ui/admin.html:29
+msgid "%(name)s's general information"
+msgstr "Informations générales de %(name)s"
+
+#: high_ui/templates/high_ui/admin.html:33
 msgid "Update general information"
-msgstr "Vos informations personnelles"
+msgstr "Mettre à jour les informations générales"
 
-#: high_ui/templates/high_ui/admin.html:27
-#: high_ui/templates/high_ui/admin.html:30
-msgid "Create an administrator"
-msgstr "Créer un administrateur"
+#: high_ui/templates/high_ui/admin.html:33
+#: high_ui/templates/high_ui/admin.html:52
+#: high_ui/templates/high_ui/admin.html:69
+#: high_ui/templates/high_ui/dashboard.html:25
+#: high_ui/templates/high_ui/issue_details.html:20
+#: high_ui/tests/views/test_issue_views.py:344
+#: high_ui/tests/views/test_issue_views.py:353
+#: high_ui/tests/views/test_issue_views.py:361
+msgid "Modify"
+msgstr "Modifier"
 
-#: high_ui/templates/high_ui/admin.html:35
-msgid "Update administrators"
-msgstr "Modifier la demande"
+#: high_ui/templates/high_ui/admin.html:48
+msgid "Default contract type"
+msgstr "Type de contrat par défaut"
 
-#: high_ui/templates/high_ui/admin.html:37
-msgid "Administrator list. Click on a administrator to update them."
-msgstr ""
-"Liste des administrateurs. Cliquez sur un administrateur pour pouvoir le "
-"modifier."
-
-#: high_ui/templates/high_ui/admin.html:46
-#: high_ui/templates/high_ui/admin.html:49
-msgid "Manage email alerts"
-msgstr "Gestion des alertes par emails"
-
-#: high_ui/templates/high_ui/admin.html:49
-msgid "Email alerts"
-msgstr "alertes par email"
-
-#: high_ui/templates/high_ui/admin.html:54
-msgid "Manage default contract types"
-msgstr "Gestion des types de contract par défaut"
-
-#: high_ui/templates/high_ui/admin.html:57
+#: high_ui/templates/high_ui/admin.html:52
 msgid "Modify default name of contract types"
 msgstr "Modifier les noms par défaut des types de contract"
 
-#: high_ui/templates/high_ui/admin.html:57
-msgid "Modify default contract type"
-msgstr "Modifier les types de contract par défaut"
+#: high_ui/templates/high_ui/admin.html:65
+msgid "Email alerts"
+msgstr "alertes par email"
+
+#: high_ui/templates/high_ui/admin.html:69
+msgid "Manage email alerts"
+msgstr "Gestion des alertes par emails"
+
+#: high_ui/templates/high_ui/admin.html:74
+msgid "Incomming feature"
+msgstr "Fonctionnalité à venir"
+
+#: high_ui/templates/high_ui/admin.html:82
+#, python-format
+msgid "%(name)s's users"
+msgstr "Utilisateurs de %(name)s"
+
+#: high_ui/templates/high_ui/admin.html:89
+#: high_ui/templates/high_ui/dashboard.html:46
+#: high_ui/templates/high_ui/dashboard_header.html:17
+msgid "Operators"
+msgstr "Intervenants"
+
+#: high_ui/templates/high_ui/admin.html:94
+msgid "Create a new operator"
+msgstr "Créer un nouvel intervenant"
+
+#: high_ui/templates/high_ui/admin.html:94
+#: high_ui/templates/high_ui/admin.html:117
+#: high_ui/templates/high_ui/dashboard.html:51
+#: high_ui/templates/high_ui/dashboard.html:76
+#: high_ui/templates/high_ui/dashboard.html:102
+msgctxt "ms"
+msgid "New"
+msgstr "Nouveau"
+
+#: high_ui/templates/high_ui/admin.html:99
+msgid "Modify the operator list"
+msgstr "Modifier la liste des intervenants"
+
+#: high_ui/templates/high_ui/admin.html:99
+#: high_ui/templates/high_ui/admin.html:122
+#: high_ui/templates/high_ui/dashboard.html:56
+#: high_ui/templates/high_ui/dashboard.html:81
+#: high_ui/templates/high_ui/dashboard.html:107
+msgid "Modify the list"
+msgstr "Modifier la liste"
+
+#: high_ui/templates/high_ui/admin.html:112
+msgid "Administrators"
+msgstr "Administrateurs"
+
+#: high_ui/templates/high_ui/admin.html:117
+msgid "Create a new administrator"
+msgstr "Créer un nouvel administrateur"
+
+#: high_ui/templates/high_ui/admin.html:122
+msgid "Modify the administrator list"
+msgstr "Modifier la liste des administrateurs"
 
 #: high_ui/templates/high_ui/company_details.html:20
 msgid "Summary"
@@ -306,40 +350,17 @@ msgstr "Tableau de bord %(name)s"
 msgid "Access to %(company)s details"
 msgstr "Accéder aux détails de %(company)s"
 
-#: high_ui/templates/high_ui/dashboard.html:25
-#: high_ui/templates/high_ui/issue_details.html:19
-msgid "Modify"
-msgstr "Modifier"
-
 #: high_ui/templates/high_ui/dashboard.html:37
 msgid "Register an issue"
 msgstr "Enregistrer une demande"
-
-#: high_ui/templates/high_ui/dashboard.html:46
-#: high_ui/templates/high_ui/dashboard_header.html:17
-msgid "Operators"
-msgstr "Intervenants"
 
 #: high_ui/templates/high_ui/dashboard.html:51
 msgid "Create a new operator and add them at the project"
 msgstr "Créer un nouvel intervenant et l'ajouter à ce projet"
 
-#: high_ui/templates/high_ui/dashboard.html:51
-#: high_ui/templates/high_ui/dashboard.html:76
-#: high_ui/templates/high_ui/dashboard.html:102
-msgctxt "ms"
-msgid "New"
-msgstr "Nouveau"
-
 #: high_ui/templates/high_ui/dashboard.html:56
 msgid "Modify the project operator list"
 msgstr "Modifier la liste des intervenants de ce projet"
-
-#: high_ui/templates/high_ui/dashboard.html:56
-#: high_ui/templates/high_ui/dashboard.html:81
-#: high_ui/templates/high_ui/dashboard.html:107
-msgid "Modify the list"
-msgstr "Modifier la liste"
 
 #: high_ui/templates/high_ui/dashboard.html:71
 msgid "Managers"
@@ -456,8 +477,8 @@ msgid "Issue received by"
 msgstr "Demande reçue par"
 
 #: high_ui/templates/high_ui/forms/base_issue.html:155
-#: high_ui/templates/high_ui/issue_details.html:52
-#: high_ui/templates/high_ui/issue_details.html:67
+#: high_ui/templates/high_ui/issue_details.html:54
+#: high_ui/templates/high_ui/issue_details.html:69
 msgid "Resolution"
 msgstr "Résolution"
 
@@ -868,6 +889,7 @@ msgid "Modify general information of"
 msgstr "Modifier les informations générales de"
 
 #: high_ui/templates/high_ui/forms/update_infos.html:21
+#, python-format
 msgid "Modification of %(name)s's general informations"
 msgstr "Modification des informations générales de %(name)s"
 
@@ -882,7 +904,7 @@ msgstr "Modification de la demande N°%(number)s en %(counter)s de %(company)s"
 
 #: high_ui/templates/high_ui/forms/update_issue.html:13
 #: high_ui/templates/high_ui/issue_details.html:17
-#: high_ui/templates/high_ui/issue_details.html:24
+#: high_ui/templates/high_ui/issue_details.html:26
 #: high_ui/templates/high_ui/issue_details_header.html:8
 msgid "Issue #"
 msgstr "Demandes N°"
@@ -976,7 +998,7 @@ msgstr ""
 "inactif&nbsp;:"
 
 #: high_ui/templates/high_ui/forms/update_operators.html:49
-#: high_ui/templates/high_ui/issue_details.html:54
+#: high_ui/templates/high_ui/issue_details.html:56
 msgid "Operator"
 msgstr "Intervenant"
 
@@ -994,9 +1016,7 @@ msgid "Reactive archived operators"
 msgstr "Réactiver des intervenants archivés"
 
 #: high_ui/templates/high_ui/forms/update_operators.html:74
-#| msgid ""
-#| "Select operators that you want to be active, among the "
-#| "%(archived_operators_number)s archived %(name)s's operators:"
+#, python-format
 msgid ""
 "Select operators that you want to be active, among the "
 "%(archived_operators_number)s archived %(name)s's operators:"
@@ -1075,42 +1095,42 @@ msgstr "demande de"
 msgid "#"
 msgstr "N°"
 
-#: high_ui/templates/high_ui/issue_details.html:26
+#: high_ui/templates/high_ui/issue_details.html:28
 msgid "Author"
 msgstr "Auteur"
 
-#: high_ui/templates/high_ui/issue_details.html:30
+#: high_ui/templates/high_ui/issue_details.html:32
 msgid "Date"
 msgstr "Date"
 
-#: high_ui/templates/high_ui/issue_details.html:35
+#: high_ui/templates/high_ui/issue_details.html:37
 msgid "Channel"
 msgstr "Canal"
 
-#: high_ui/templates/high_ui/issue_details.html:40
+#: high_ui/templates/high_ui/issue_details.html:42
 msgid "Details"
 msgstr "Détails"
 
-#: high_ui/templates/high_ui/issue_details.html:45
-#: high_ui/templates/high_ui/issue_details.html:83
+#: high_ui/templates/high_ui/issue_details.html:47
+#: high_ui/templates/high_ui/issue_details.html:85
 msgid "Attachment"
 msgstr "Pièce jointe"
 
-#: high_ui/templates/high_ui/issue_details.html:58
+#: high_ui/templates/high_ui/issue_details.html:60
 #: high_ui/templates/high_ui/issue_details_header.html:12
 msgid "Activity"
 msgstr "Activité"
 
-#: high_ui/templates/high_ui/issue_details.html:62
+#: high_ui/templates/high_ui/issue_details.html:64
 #: high_ui/templates/high_ui/issue_details_header.html:16
 msgid "Time spent"
 msgstr "Temps passé"
 
-#: high_ui/templates/high_ui/issue_details.html:73
+#: high_ui/templates/high_ui/issue_details.html:75
 msgid "Delivery"
 msgstr "Livraison"
 
-#: high_ui/templates/high_ui/issue_details.html:78
+#: high_ui/templates/high_ui/issue_details.html:80
 msgid "Comments"
 msgstr "Commentaires"
 
@@ -1143,6 +1163,17 @@ msgstr "Ajout de {duration} supplémentaires"
 #: high_ui/tests/views/test_admin_views.py:154
 msgid "Les modifications ont bien été prises en compte!"
 msgstr "Les modifications ont bien été prises en compte!"
+
+#~ msgid "Update administrators"
+#~ msgstr "Modifier la demande"
+
+#~ msgid "Administrator list. Click on a administrator to update them."
+#~ msgstr ""
+#~ "Liste des administrateurs. Cliquez sur un administrateur pour pouvoir le "
+#~ "modifier."
+
+#~ msgid "Modify default contract type"
+#~ msgstr "Modifier les types de contract par défaut"
 
 #~ msgid "Modify operator list of %(general_info.name)s"
 #~ msgstr "Modifier la liste des intervenants de %(general_info.name)s"
