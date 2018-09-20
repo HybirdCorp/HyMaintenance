@@ -3,6 +3,8 @@ from django.forms.widgets import ClearableFileInput
 from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
+from toolkit.email import is_number_hours_min_exceeded
+from toolkit.email import send_email_alert
 
 from ..models import MaintenanceIssue
 
@@ -59,7 +61,10 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
         number_minutes = duration_in_minutes(form_data["duration"], form_data["duration_type"])
         self.instance.number_minutes = number_minutes
 
-        return super().save(commit)
+        issue = super().save(commit)
+        if is_number_hours_min_exceeded(form_data["contract"]):
+            send_email_alert(form_data["contract"])
+        return issue
 
 
 class MaintenanceIssueUpdateForm(MaintenanceIssueCreateForm):
