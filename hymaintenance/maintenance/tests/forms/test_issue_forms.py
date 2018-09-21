@@ -11,15 +11,15 @@ from django.utils.translation import gettext as _
 
 from customers.tests.factories import OperatorUserFactory
 from high_ui.tests.utils import SetDjangoLanguage
-from maintenance.models import MaintenanceIssue
-from maintenance.tests.factories import IncomingChannelFactory
-from maintenance.tests.factories import MaintenanceConsumerFactory
-from maintenance.tests.factories import MaintenanceIssueFactory
-from maintenance.tests.factories import create_project
 
 from ...forms.issue import MaintenanceIssueCreateForm
 from ...forms.issue import MaintenanceIssueUpdateForm
 from ...forms.issue import duration_in_minutes
+from ...models import MaintenanceIssue
+from ..factories import IncomingChannelFactory
+from ..factories import MaintenanceConsumerFactory
+from ..factories import MaintenanceIssueFactory
+from ..factories import create_project
 
 
 def create_temporary_file(content=b"I am not empty", directory=None):
