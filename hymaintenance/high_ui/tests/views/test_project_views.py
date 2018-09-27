@@ -170,17 +170,23 @@ class ProjectUpdateViewTestCase(TestCase):
         contract1_visible = INACTIF_CONTRACT_INPUT
         contract1_total_type = 0
         contract1_number_hours = 0
+        contract1_email_alert = False
+        contract1_number_hours_min = 0
 
         # maintenance contract, not visible for manager,
         # available total time with 80 credited hours
         contract2_visible = 0  # FALSE
         contract2_total_type = AVAILABLE_TOTAL_TIME
         contract2_number_hours = 80
+        contract2_email_alert = True
+        contract2_number_hours_min = 20
 
         # correction contract, visible for manager, consummed total time
         contract3_visible = 1  # TRUE
         contract3_total_type = CONSUMMED_TOTAL_TIME
         contract3_number_hours = 0
+        contract3_email_alert = False
+        contract3_number_hours_min = 0
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
@@ -194,16 +200,22 @@ class ProjectUpdateViewTestCase(TestCase):
                 "contract1_number_hours": contract1_number_hours,
                 "contract1_counter_name": "Maintenance",
                 "contract1_date": datetime.date.today(),
+                "contract1_email_alert": contract1_email_alert,
+                "contract1_number_hours_min": contract1_number_hours_min,
                 "contract2_visible": contract2_visible,
                 "contract2_total_type": contract2_total_type,
                 "contract2_number_hours": contract2_number_hours,
                 "contract2_counter_name": "Support",
                 "contract2_date": datetime.date.today(),
+                "contract2_email_alert": contract2_email_alert,
+                "contract2_number_hours_min": contract2_number_hours_min,
                 "contract3_visible": contract3_visible,
                 "contract3_total_type": contract3_total_type,
                 "contract3_number_hours": contract3_number_hours,
                 "contract3_counter_name": "Corrective",
                 "contract3_date": datetime.date.today(),
+                "contract3_email_alert": contract3_email_alert,
+                "contract3_number_hours_min": contract3_number_hours_min,
             },
             follow=True,
         )

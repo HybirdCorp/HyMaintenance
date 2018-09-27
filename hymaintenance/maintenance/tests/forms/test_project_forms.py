@@ -283,16 +283,22 @@ class ProjectUpdateFormTestCase(TestCase):
             "contract1_number_hours": 0,
             "contract1_date": datetime.date.today(),
             "contract1_counter_name": "Maintenance",
+            "contract1_email_alert": False,
+            "contract1_number_hours_min": 0,
             "contract2_visible": INACTIF_CONTRACT_INPUT,
             "contract2_total_type": 0,
             "contract2_number_hours": 0,
             "contract2_date": datetime.date.today(),
             "contract2_counter_name": "Support",
+            "contract2_email_alert": False,
+            "contract2_number_hours_min": 0,
             "contract3_visible": INACTIF_CONTRACT_INPUT,
             "contract3_total_type": 0,
             "contract3_number_hours": 0,
             "contract3_date": datetime.date.today(),
+            "contract3_number_hours_min": 0,
             "contract3_counter_name": "Corrective",
+            "contract3_email_alert": False,
         }
 
     def test_all_required_fields_by_sending_a_empty_update_form(self):
