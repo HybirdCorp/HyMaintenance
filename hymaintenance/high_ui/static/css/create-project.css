@@ -23,6 +23,10 @@
 
 .form-group.activation-inactive .row-counter-type,
 .form-group.activation-inactive .row-credit,
+.form-group.activation-inactive .row-email-alert,
+.form-group.activation-inactive .row-credit-min,
+.form-group.activation-inactive .row-recipient,
+.form-group.activation-inactive .help-email-alert,
 .form-group.activation-inactive .help-credit,
 .form-group.activation-inactive .show-more-container {
     display: none;
@@ -36,11 +40,24 @@
 
 /* counter-type state machine */
 
-.form-group.counter-total .row-credit {
+.form-group.counter-total .row-credit,
+.form-group.counter-total .row-email-alert,
+.form-group.counter-total .row-credit-min,
+.form-group.counter-total .row-recipient,
+.form-group.counter-total .help-email-alert,
+.form-group.counter-total .help-credit {
     display: none;
 }
 
 .form-group.counter-total .help-credit > span:not(.counter-total),
 .form-group.counter-credit .help-credit > span:not(.counter-credit) {
+    display: none;
+}
+
+/* alert-status state machine */
+
+.form-group.email-alert-disabled .row-credit-min,
+.form-group.email-alert-disabled .row-recipient,
+.form-group.email-alert-disabled .help-email-alert {
     display: none;
 }

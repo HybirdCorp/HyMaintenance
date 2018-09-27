@@ -163,6 +163,22 @@ class ProjectCreateForm(ProjectForm):
 
 
 class ProjectUpdateForm(ProjectForm):
+    contract1_email_alert = forms.BooleanField(label=_("Email Alert"), required=False, widget=forms.HiddenInput())
+    contract2_email_alert = forms.BooleanField(label=_("Email Alert"), required=False, widget=forms.HiddenInput())
+    contract3_email_alert = forms.BooleanField(label=_("Email Alert"), required=False, widget=forms.HiddenInput())
+    contract1_number_hours_min = forms.IntegerField(
+        label=_("Hour threshold"), required=False, min_value=0, initial=0, widget=forms.TextInput()
+    )
+    contract2_number_hours_min = forms.IntegerField(
+        label=_("Hour threshold"), required=False, min_value=0, initial=0, widget=forms.TextInput()
+    )
+    contract3_number_hours_min = forms.IntegerField(
+        label=_("Hour threshold"), required=False, min_value=0, initial=0, widget=forms.TextInput()
+    )
+    contract1_recipient = forms.ModelChoiceField(label=_("To contact"), empty_label=None, required=False, queryset=None)
+    contract2_recipient = forms.ModelChoiceField(label=_("To contact"), empty_label=None, required=False, queryset=None)
+    contract3_recipient = forms.ModelChoiceField(label=_("To contact"), empty_label=None, required=False, queryset=None)
+
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
         self.contracts = list(self.company.contracts.order_by("maintenance_type_id"))
@@ -184,6 +200,25 @@ class ProjectUpdateForm(ProjectForm):
         self.fields["contract1_number_hours"].initial = self.contracts[0].number_hours
         self.fields["contract2_number_hours"].initial = self.contracts[1].number_hours
         self.fields["contract3_number_hours"].initial = self.contracts[2].number_hours
+
+        self.fields["contract1_recipient"].queryset = MaintenanceUser.objects.filter(
+            is_staff=False, company=self.company, is_active=True
+        )
+        self.fields["contract2_recipient"].queryset = MaintenanceUser.objects.filter(
+            is_staff=False, company=self.company, is_active=True
+        )
+        self.fields["contract3_recipient"].queryset = MaintenanceUser.objects.filter(
+            is_staff=False, company=self.company, is_active=True
+        )
+        self.fields["contract1_email_alert"].initial = self.contracts[0].email_alert
+        self.fields["contract2_email_alert"].initial = self.contracts[1].email_alert
+        self.fields["contract3_email_alert"].initial = self.contracts[2].email_alert
+        self.fields["contract1_number_hours_min"].initial = self.contracts[0].number_hours_min
+        self.fields["contract2_number_hours_min"].initial = self.contracts[1].number_hours_min
+        self.fields["contract3_number_hours_min"].initial = self.contracts[2].number_hours_min
+        self.fields["contract1_recipient"].initial = self.contracts[0].recipient
+        self.fields["contract2_recipient"].initial = self.contracts[1].recipient
+        self.fields["contract3_recipient"].initial = self.contracts[2].recipient
 
     def clean_company_name(self):
         company_name = self.cleaned_data["company_name"]
@@ -224,6 +259,21 @@ class ProjectUpdateForm(ProjectForm):
         if contract.number_hours != contract_number_hours:
             contract_is_modified = True
             contract.number_hours = contract_number_hours
+
+        contract_email_alert = self.cleaned_data[f"contract{index}_email_alert"]
+        if contract.email_alert != contract_email_alert:
+            contract_is_modified = True
+            contract.email_alert = contract_email_alert
+
+        contract_number_hours_min = self.cleaned_data[f"contract{index}_number_hours_min"]
+        if contract.number_hours_min != contract_number_hours_min:
+            contract_is_modified = True
+            contract.number_hours_min = contract_number_hours_min
+
+        contract_recipient = self.cleaned_data[f"contract{index}_recipient"]
+        if contract.recipient != contract_recipient:
+            contract_is_modified = True
+            contract.recipient = contract_recipient
 
         if contract_is_modified:
             contract.save()

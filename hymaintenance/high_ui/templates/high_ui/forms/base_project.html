@@ -59,7 +59,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group activation-active counter-total">
+                    <div class="form-group activation-active counter-total email-alert-disabled">
                         <div class="group-title-container">
                             <div class="group-title">{% trans "Counter" %} {% block form_counter_name_1 %}{% endblock %}</div>
                             <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
@@ -135,6 +135,8 @@
                             <span class="counter-credit">{% blocktrans with name=general_info.name mtype=maintenance_types.0.name %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
 
+                        {% block email_alert_1 %}{% endblock %}
+
                         <div class="show-more-container">
                             <div class="form-row {% if form.contract1_counter_name.errors %}form-error{% endif %}">
                                 {% if form.contract1_counter_name.errors %}
@@ -170,7 +172,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group activation-active counter-total">
+                    <div class="form-group activation-active counter-total email-alert-disabled">
                         <div class="group-title-container">
                             <div class="group-title">{% trans "Counter" %} {% block form_counter_name_2 %}{% endblock %}</div>
                             <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
@@ -246,6 +248,8 @@
                             <span class="counter-credit">{% blocktrans with name=general_info.name mtype=maintenance_types.1.name %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
 
+                        {% block email_alert_2 %}{% endblock %}
+
                         <div class="show-more-container">
                             <div class="form-row {% if form.contract2_counter_name.errors %}form-error{% endif %}">
                                 {% if form.contract2_counter_name.errors %}
@@ -281,7 +285,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group activation-active counter-total">
+                    <div class="form-group activation-active counter-total email-alert-disabled">
                         <div class="group-title-container">
                             <div class="group-title">{% trans "Counter" %} {% block form_counter_name_3 %}{% endblock %}</div>
                             <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
@@ -356,6 +360,8 @@
                             <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
                             <span class="counter-credit">{% blocktrans with name=general_info.name mtype=maintenance_types.2.name %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
+
+                        {% block email_alert_3 %}{% endblock %}
 
                         <div class="show-more-container">
                             <div class="form-row {% if form.contract3_counter_name.errors %}form-error{% endif %}">
@@ -442,6 +448,25 @@
                 var creditInput = parent.querySelector(".row-credit input");
                 creditInput.required = selectedType === "counter-credit";
             }.bind(null, counterType));
+        }
+
+        var alertStatuss = document.querySelectorAll(".form-row.row-email-alert");
+        for (var i = 0; i < alertStatuss.length; ++i) {
+            var alertStatus = alertStatuss[i];
+            new SegmentedSelector(alertStatus.querySelector(".segmented-selector"),
+                                  function (node, currentKey, selectedKey) {
+                var currentType = "email-alert-" + currentKey;
+                var selectedType = "email-alert-" + selectedKey;
+
+                var parent = node.parentElement;
+                parent.className = parent.className.replace(currentType, selectedType);
+
+                var creditMinInput = parent.querySelector(".row-credit-min input");
+                creditMinInput.required = selectedType === "email-alert-enabled";
+
+                var recipientSelect = parent.querySelector(".row-recipient select");
+                recipientSelect.required = selectedType === "email-alert-enabled";
+            }.bind(null, alertStatus));
         }
         
         var showMoreLinks = document.querySelectorAll(".form-group a.show-more");
