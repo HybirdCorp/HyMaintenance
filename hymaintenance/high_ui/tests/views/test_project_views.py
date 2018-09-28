@@ -64,6 +64,14 @@ class ProjectCreateViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_no_email_alert_field_on_create_form(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertNotContains(response, 'class="form-row row-email-alert')
+        self.assertNotContains(response, 'class="form-row row-credit-min')
+        self.assertNotContains(response, 'class="form-row row-recipient')
+
     def test_admin_can_post_form_to_create_a_project(self):
         operator = OperatorUserFactory(first_name="Chell")
         company_name = "Black Mesa"
@@ -162,6 +170,14 @@ class ProjectUpdateViewTestCase(TestCase):
         response = self.client.get(self.form_url)
 
         self.assertEqual(response.status_code, 200)
+
+    def test_email_alert_field_on_update_form(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertContains(response, 'class="form-row row-email-alert')
+        self.assertContains(response, 'class="form-row row-credit-min')
+        self.assertContains(response, 'class="form-row row-recipient')
 
     def test_i_can_post_and_form_to_update_a_project(self):
         operator = OperatorUserFactory(first_name="Chell")
