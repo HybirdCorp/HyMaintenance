@@ -496,7 +496,7 @@ class ProjectUpdateFormTestCase(TestCase):
         self.assertEqual(operator, company.contact)
 
     def test_when_i_add_email_alert(self):
-        manager = ManagerUserFactory()
+        manager = ManagerUserFactory(company=self.company)
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["contract1_visible"] = 1
         dict_for_post["contract1_total_type"] = AVAILABLE_TOTAL_TIME
@@ -504,13 +504,13 @@ class ProjectUpdateFormTestCase(TestCase):
         dict_for_post["contract1_email_alert"] = True
         dict_for_post["contract1_number_hours_min"] = 40
         dict_for_post["contract1_recipient"] = manager.pk
-        print(dict_for_post)
         form = ProjectUpdateForm(company=self.company, data=dict_for_post)
 
         is_valid = form.is_valid()
         form.update_company_and_contracts()
 
+        contract = MaintenanceContract.objects.get(pk=self.contract1.pk)
         self.assertTrue(is_valid)
-        self.assertTrue(self.contract1.email_alert)
-        self.assertEqual(40, self.contract1.number_hours_min)
-        self.assertEqual(manager, self.contract1.recipient)
+        self.assertTrue(contract.email_alert)
+        self.assertEqual(40, contract.number_hours_min)
+        self.assertEqual(manager, contract.recipient)
