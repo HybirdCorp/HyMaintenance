@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
 from customers.tests.factories import CompanyFactory
+from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.forms.project import INACTIF_CONTRACT_INPUT
 from maintenance.forms.project import ProjectCreateForm
@@ -493,3 +494,23 @@ class ProjectUpdateFormTestCase(TestCase):
         self.assertTrue(is_valid)
         company = Company.objects.get(pk=self.company.pk)
         self.assertEqual(operator, company.contact)
+
+    def test_when_i_add_email_alert(self):
+        manager = ManagerUserFactory()
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contract1_visible"] = 1
+        dict_for_post["contract1_total_type"] = AVAILABLE_TOTAL_TIME
+        dict_for_post["contract1_number_hours"] = 80
+        dict_for_post["contract1_email_alert"] = True
+        dict_for_post["contract1_number_hours_min"] = 40
+        dict_for_post["contract1_recipient"] = manager.pk
+        print(dict_for_post)
+        form = ProjectUpdateForm(company=self.company, data=dict_for_post)
+
+        is_valid = form.is_valid()
+        form.update_company_and_contracts()
+
+        self.assertTrue(is_valid)
+        self.assertTrue(self.contract1.email_alert)
+        self.assertEqual(40, self.contract1.number_hours_min)
+        self.assertEqual(manager, self.contract1.recipient)
