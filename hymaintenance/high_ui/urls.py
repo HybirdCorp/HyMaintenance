@@ -11,6 +11,7 @@ from .views.issue import IssueCreateView
 from .views.issue import IssueDetailView
 from .views.issue import IssueUpdateView
 from .views.maintenance_type import MaintenanceTypeUpdateView
+from .views.project import EmailAlertUpdateView
 from .views.project import ProjectCreateView
 from .views.project import ProjectDetailsView
 from .views.project import ProjectUpdateView
@@ -102,4 +103,7 @@ urlpatterns = [
     path(r"admins/", AdminUserCreateView.as_view(), name="create_admin"),
     path(r"admins/<int:pk>/update/", AdminUserUpdateView.as_view(), name="update_admin"),
     path(r"operators/archive/", OperatorUsersArchiveView.as_view(), name="archive_operators"),
+    path(
+        r"projects/<slug:company_name>/email-alert/", EmailAlertUpdateView.as_view(), name="project-update_email_alert"
+    ),
 ]
