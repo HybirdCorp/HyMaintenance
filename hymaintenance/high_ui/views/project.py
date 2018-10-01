@@ -1,14 +1,19 @@
 from datetime import datetime
 from datetime import timedelta
 
+from django import forms
+from django.forms import modelformset_factory
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView
 from django.views.generic import FormView
 
 from customers.models import Company
 from maintenance.forms.project import ProjectCreateForm
 from maintenance.forms.project import ProjectUpdateForm
+from maintenance.models import MaintenanceContract
 from maintenance.models import MaintenanceCredit
 from maintenance.models import MaintenanceIssue
+from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 
 from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedManagerTestMixin
@@ -153,3 +158,44 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
         context["history"] = self.get_history(months, contracts)
 
         return context
+
+
+class EmailAlertUpdateView(IsAtLeastAllowedManagerTestMixin, ViewWithCompany, FormView):
+    form_class = modelformset_factory(
+        MaintenanceContract,
+        fields=["email_alert", "number_hours_min", "recipient", "id"],
+        widgets={
+            "email_alert": forms.HiddenInput(),
+            "number_hours_min": forms.TextInput(),
+            "id": forms.HiddenInput(attrs={"readonly": True}),
+        },
+        labels={"number_hours_min": _("Hour threshold"), "recipient": _("To contact")},
+        extra=0,
+    )
+    template_name = "high_ui/forms/update_email_alert.html"
+    success_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_maintenance_types())
+        context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_data_footer())
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["queryset"] = self.company.contracts.filter(disabled=False, total_type=AVAILABLE_TOTAL_TIME).order_by(
+            "maintenance_type_id"
+        )
+        return kwargs
+
+    def get_form(self):
+        formset = super().get_form()
+        for form in formset:
+            form.fields["recipient"].queryset = form.fields["recipient"].queryset.filter(company=self.company)
+            form.counter_name = form.instance.get_counter_name()
+        return formset
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

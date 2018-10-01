@@ -36,7 +36,12 @@ class MaintenanceContract(models.Model):
     email_alert = models.BooleanField(_("Email alert"), default=False)
     number_hours_min = models.IntegerField(_("Credited hours Threshold"), default=0)
     recipient = models.ForeignKey(
-        to="customers.MaintenanceUser", on_delete=models.PROTECT, related_name="referent_for", null=True, blank=True
+        to="customers.MaintenanceUser",
+        on_delete=models.PROTECT,
+        related_name="referent_for",
+        null=True,
+        blank=True,
+        limit_choices_to={"is_staff": False},
     )
 
     objects = MaintenanceContractQuerySet.as_manager()
