@@ -18,6 +18,9 @@
             {% else %}
             <a href='{% url 'high_ui:project-contact' company_name=company.slug_name %}'>{% trans "Buy hours" %}</a>
             {% endif %}
+            {% if contracts.filter_enabled_with_available_total_time.count %}
+            <a href='{% url 'high_ui:project-update_email_alert' company_name=company.slug_name %}'>{% trans "Email alerts" %}</a>
+            {% endif %}
         </div>
     </div>
 
