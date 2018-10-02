@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-20 11:51+0200\n"
+"POT-Creation-Date: 2018-10-02 15:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,526 +18,519 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: high_ui/models.py:8
+#: models.py:8
 msgid "Name"
 msgstr "Nom"
 
-#: high_ui/models.py:9
+#: models.py:9
 msgid "Email address"
 msgstr "Adresse email"
 
-#: high_ui/models.py:10
+#: models.py:10
 msgid "postal address"
 msgstr "Adresse postale"
 
-#: high_ui/models.py:11
+#: models.py:11
 msgid "Website"
 msgstr "Site web"
 
-#: high_ui/models.py:12
+#: models.py:12
 msgid "phone number"
 msgstr "Numéro de téléphone"
 
-#: high_ui/templates/auth/login.html:5
-#: high_ui/templates/auth/password_reset_complet.html:15
+#: templates/auth/login.html:5 templates/auth/password_reset_complet.html:15
 msgid "Log in"
 msgstr "Connectez vous"
 
-#: high_ui/templates/auth/login.html:9
+#: templates/auth/login.html:9
 msgid "Login to"
 msgstr "Se connecter à"
 
-#: high_ui/templates/auth/login.html:17
-#: high_ui/templates/auth/password_reset_form.html:18
+#: templates/auth/login.html:17 templates/auth/password_reset_form.html:18
 msgid "Email"
 msgstr "Email"
 
-#: high_ui/templates/auth/login.html:21
+#: templates/auth/login.html:21
 msgid "Password"
 msgstr "Mot de passe"
 
-#: high_ui/templates/auth/login.html:25
+#: templates/auth/login.html:25
 msgid "Forgotten your password?"
 msgstr "Vous avez oublié votre mot de passe ?"
 
-#: high_ui/templates/auth/login.html:29
+#: templates/auth/login.html:29
 msgid "Login"
 msgstr "Se connecter"
 
-#: high_ui/templates/auth/password_reset_complet.html:5
-#: high_ui/templates/auth/password_reset_complet.html:9
+#: templates/auth/password_reset_complet.html:5
+#: templates/auth/password_reset_complet.html:9
 msgid "Password reset complete"
 msgstr ""
 
-#: high_ui/templates/auth/password_reset_complet.html:13
+#: templates/auth/password_reset_complet.html:13
 msgid "Your password has been set.  You may go ahead and log in now."
 msgstr ""
 
-#: high_ui/templates/auth/password_reset_confirm.html:5
-#: high_ui/templates/auth/password_reset_confirm.html:9
+#: templates/auth/password_reset_confirm.html:5
+#: templates/auth/password_reset_confirm.html:9
 msgid "Enter new password"
 msgstr ""
 
-#: high_ui/templates/auth/password_reset_confirm.html:15
+#: templates/auth/password_reset_confirm.html:15
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
 msgstr ""
 
-#: high_ui/templates/auth/password_reset_confirm.html:20
+#: templates/auth/password_reset_confirm.html:20
 #, fuzzy
 #| msgid "Password"
 msgid "New password:"
 msgstr "Mot de passe"
 
-#: high_ui/templates/auth/password_reset_confirm.html:25
+#: templates/auth/password_reset_confirm.html:25
 #, fuzzy
 #| msgid "Modify password"
 msgid "Confirm password:"
 msgstr "Modifier le mot de passe"
 
-#: high_ui/templates/auth/password_reset_confirm.html:29
+#: templates/auth/password_reset_confirm.html:29
 #, fuzzy
 #| msgid "Modify my password"
 msgid "Change my password"
 msgstr "Modifier mon mot de passe"
 
-#: high_ui/templates/auth/password_reset_confirm.html:36
+#: templates/auth/password_reset_confirm.html:36
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
 msgstr ""
 
-#: high_ui/templates/auth/password_reset_done.html:5
-#: high_ui/templates/auth/password_reset_done.html:9
+#: templates/auth/password_reset_done.html:5
+#: templates/auth/password_reset_done.html:9
 msgid "Password reset sent"
 msgstr ""
 
-#: high_ui/templates/auth/password_reset_done.html:13
+#: templates/auth/password_reset_done.html:13
 msgid ""
 "We've emailed you instructions for setting your password, if an account "
 "exists with the email you entered. You should receive them shortly."
 msgstr ""
 
-#: high_ui/templates/auth/password_reset_done.html:15
+#: templates/auth/password_reset_done.html:15
 msgid ""
 "If you don't receive an email, please make sure you've entered the address "
 "you registered with, and check your spam folder."
 msgstr ""
 
-#: high_ui/templates/auth/password_reset_form.html:5
-#: high_ui/templates/auth/password_reset_form.html:9
+#: templates/auth/password_reset_form.html:5
+#: templates/auth/password_reset_form.html:9
 #, fuzzy
 #| msgid "Password"
 msgid "Password reset"
 msgstr "Mot de passe"
 
-#: high_ui/templates/auth/password_reset_form.html:13
+#: templates/auth/password_reset_form.html:13
 msgid ""
 "Forgotten your password? Enter your email address below, and we'll email "
 "instructions for setting a new one."
 msgstr ""
 
-#: high_ui/templates/auth/password_reset_form.html:22
+#: templates/auth/password_reset_form.html:22
 #, fuzzy
 #| msgid "Modify my password"
 msgid "Reset my password"
 msgstr "Modifier mon mot de passe"
 
-#: high_ui/templates/high_ui/admin.html:5
+#: templates/high_ui/admin.html:5
 msgid "Administration dashboard"
 msgstr "Tableau de bord administrateur"
 
-#: high_ui/templates/high_ui/admin.html:22
+#: templates/high_ui/admin.html:22
 msgid "Settings"
 msgstr "Paramètres"
 
-#: high_ui/templates/high_ui/admin.html:29
+#: templates/high_ui/admin.html:29
+#, python-format
 msgid "%(name)s's general information"
 msgstr "Informations générales de %(name)s"
 
-#: high_ui/templates/high_ui/admin.html:33
+#: templates/high_ui/admin.html:33
 msgid "Update general information"
 msgstr "Mettre à jour les informations générales"
 
-#: high_ui/templates/high_ui/admin.html:33
-#: high_ui/templates/high_ui/admin.html:52
-#: high_ui/templates/high_ui/admin.html:69
-#: high_ui/templates/high_ui/dashboard.html:25
-#: high_ui/templates/high_ui/issue_details.html:20
-#: high_ui/tests/views/test_issue_views.py:344
-#: high_ui/tests/views/test_issue_views.py:353
-#: high_ui/tests/views/test_issue_views.py:361
+#: templates/high_ui/admin.html:33 templates/high_ui/admin.html:52
+#: templates/high_ui/admin.html:69 templates/high_ui/dashboard.html:25
+#: templates/high_ui/issue_details.html:20 tests/views/test_issue_views.py:344
+#: tests/views/test_issue_views.py:353 tests/views/test_issue_views.py:361
 msgid "Modify"
 msgstr "Modifier"
 
-#: high_ui/templates/high_ui/admin.html:48
+#: templates/high_ui/admin.html:48
 msgid "Default contract type"
 msgstr "Type de contrat par défaut"
 
-#: high_ui/templates/high_ui/admin.html:52
+#: templates/high_ui/admin.html:52
 msgid "Modify default name of contract types"
 msgstr "Modifier les noms par défaut des types de contract"
 
-#: high_ui/templates/high_ui/admin.html:65
+#: templates/high_ui/admin.html:65
+#: templates/high_ui/company_details_header.html:22
 msgid "Email alerts"
 msgstr "alertes par email"
 
-#: high_ui/templates/high_ui/admin.html:69
+#: templates/high_ui/admin.html:69
 msgid "Manage email alerts"
 msgstr "Gestion des alertes par emails"
 
-#: high_ui/templates/high_ui/admin.html:74
+#: templates/high_ui/admin.html:74
 msgid "Incomming feature"
 msgstr "Fonctionnalité à venir"
 
-#: high_ui/templates/high_ui/admin.html:82
+#: templates/high_ui/admin.html:82
 #, python-format
 msgid "%(name)s's users"
 msgstr "Utilisateurs de %(name)s"
 
-#: high_ui/templates/high_ui/admin.html:89
-#: high_ui/templates/high_ui/dashboard.html:46
-#: high_ui/templates/high_ui/dashboard_header.html:17
+#: templates/high_ui/admin.html:89 templates/high_ui/dashboard.html:46
+#: templates/high_ui/dashboard_header.html:17
 msgid "Operators"
 msgstr "Intervenants"
 
-#: high_ui/templates/high_ui/admin.html:94
+#: templates/high_ui/admin.html:94
 msgid "Create a new operator"
 msgstr "Créer un nouvel intervenant"
 
-#: high_ui/templates/high_ui/admin.html:94
-#: high_ui/templates/high_ui/admin.html:117
-#: high_ui/templates/high_ui/dashboard.html:51
-#: high_ui/templates/high_ui/dashboard.html:76
-#: high_ui/templates/high_ui/dashboard.html:102
+#: templates/high_ui/admin.html:94 templates/high_ui/admin.html:117
+#: templates/high_ui/dashboard.html:51 templates/high_ui/dashboard.html:76
+#: templates/high_ui/dashboard.html:102
 msgctxt "ms"
 msgid "New"
 msgstr "Nouveau"
 
-#: high_ui/templates/high_ui/admin.html:99
+#: templates/high_ui/admin.html:99
 msgid "Modify the operator list"
 msgstr "Modifier la liste des intervenants"
 
-#: high_ui/templates/high_ui/admin.html:99
-#: high_ui/templates/high_ui/admin.html:122
-#: high_ui/templates/high_ui/dashboard.html:56
-#: high_ui/templates/high_ui/dashboard.html:81
-#: high_ui/templates/high_ui/dashboard.html:107
+#: templates/high_ui/admin.html:99 templates/high_ui/admin.html:122
+#: templates/high_ui/dashboard.html:56 templates/high_ui/dashboard.html:81
+#: templates/high_ui/dashboard.html:107
 msgid "Modify the list"
 msgstr "Modifier la liste"
 
-#: high_ui/templates/high_ui/admin.html:112
+#: templates/high_ui/admin.html:112
 msgid "Administrators"
 msgstr "Administrateurs"
 
-#: high_ui/templates/high_ui/admin.html:117
+#: templates/high_ui/admin.html:117
 msgid "Create a new administrator"
 msgstr "Créer un nouvel administrateur"
 
-#: high_ui/templates/high_ui/admin.html:122
+#: templates/high_ui/admin.html:122
 msgid "Modify the administrator list"
 msgstr "Modifier la liste des administrateurs"
 
-#: high_ui/templates/high_ui/company_details.html:20
+#: templates/high_ui/company_details.html:20
 msgid "Summary"
 msgstr "Résumé"
 
-#: high_ui/templates/high_ui/company_details.html:37
+#: templates/high_ui/company_details.html:37
 msgctxt "fp"
 msgid "consumed"
 msgstr "consommées"
 
-#: high_ui/templates/high_ui/company_details.html:40
+#: templates/high_ui/company_details.html:40
 msgctxt "fp"
 msgid "credited"
 msgstr "créditées"
 
-#: high_ui/templates/high_ui/company_details.html:51
+#: templates/high_ui/company_details.html:51
 msgid "History"
 msgstr "Historique"
 
-#: high_ui/templates/high_ui/company_details.html:57
+#: templates/high_ui/company_details.html:57
 msgid "Months"
 msgstr "Mois"
 
-#: high_ui/templates/high_ui/company_details.html:62
+#: templates/high_ui/company_details.html:62
 msgid "Issues"
 msgstr "Demandes"
 
-#: high_ui/templates/high_ui/company_details_header.html:4
-#: high_ui/templates/high_ui/dashboard.html:20
-#: high_ui/templates/high_ui/issue_details_header.html:4
-#: high_ui/templates/high_ui/user_header.html:8
+#: templates/high_ui/company_details_header.html:4
+#: templates/high_ui/dashboard.html:20
+#: templates/high_ui/issue_details_header.html:4
+#: templates/high_ui/user_header.html:8
 msgid "Account"
 msgstr "Compte"
 
-#: high_ui/templates/high_ui/company_details_header.html:5
-#: high_ui/templates/high_ui/dashboard_header.html:5
-#: high_ui/templates/high_ui/issue_details.html:16
-#: high_ui/templates/high_ui/user_header.html:6
-#: high_ui/templates/high_ui/user_header.html:9
+#: templates/high_ui/company_details_header.html:5
+#: templates/high_ui/dashboard_header.html:5
+#: templates/high_ui/issue_details.html:16 templates/high_ui/user_header.html:6
+#: templates/high_ui/user_header.html:9
 msgid "Return to dashboard"
 msgstr "Retour à l'accueil"
 
-#: high_ui/templates/high_ui/company_details_header.html:17
-#: high_ui/templates/high_ui/forms/create_credit.html:23
-#: high_ui/templates/high_ui/forms/create_credit.html:64
-#: high_ui/tests/views/test_project_views.py:285
-#: high_ui/tests/views/test_project_views.py:300
+#: templates/high_ui/company_details_header.html:17
+#: templates/high_ui/forms/create_credit.html:23
+#: templates/high_ui/forms/create_credit.html:64
+#: tests/views/test_project_views.py:313 tests/views/test_project_views.py:328
 msgid "Add hours"
 msgstr "Ajouter des crédits"
 
-#: high_ui/templates/high_ui/company_details_header.html:19
+#: templates/high_ui/company_details_header.html:19
 msgid "Buy hours"
 msgstr "Commander des heures"
 
-#: high_ui/templates/high_ui/company_details_header.html:26
-#: high_ui/templates/high_ui/issue_details_header.html:21
+#: templates/high_ui/company_details_header.html:29
+#: templates/high_ui/issue_details_header.html:21
 msgid "Your Contact"
 msgstr "Votre Contact"
 
-#: high_ui/templates/high_ui/company_details_header.html:36
-#: high_ui/templates/high_ui/dashboard_header.html:35
-#: high_ui/templates/high_ui/issue_details_header.html:31
-#: high_ui/templates/high_ui/user_header.html:19
+#: templates/high_ui/company_details_header.html:39
+#: templates/high_ui/dashboard_header.html:35
+#: templates/high_ui/issue_details_header.html:31
+#: templates/high_ui/user_header.html:19
 msgid "Quit the application"
 msgstr "Quitter l'application"
 
-#: high_ui/templates/high_ui/company_details_header.html:36
-#: high_ui/templates/high_ui/dashboard_header.html:35
-#: high_ui/templates/high_ui/issue_details_header.html:31
-#: high_ui/templates/high_ui/user_header.html:19
+#: templates/high_ui/company_details_header.html:39
+#: templates/high_ui/dashboard_header.html:35
+#: templates/high_ui/issue_details_header.html:31
+#: templates/high_ui/user_header.html:19
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: high_ui/templates/high_ui/contact.html:6
+#: templates/high_ui/contact.html:6
 msgid "buy credits"
 msgstr "Acheter des crédits"
 
-#: high_ui/templates/high_ui/contact.html:20
+#: templates/high_ui/contact.html:20
 msgid "Buy some credits"
 msgstr "Commander des crédits"
 
-#: high_ui/templates/high_ui/contact.html:21
-#: high_ui/templates/high_ui/forms/base_consumer.html:22
-#: high_ui/templates/high_ui/forms/create_company_operator.html:14
-#: high_ui/templates/high_ui/forms/create_credit.html:24
-#: high_ui/templates/high_ui/forms/create_issue.html:14
-#: high_ui/templates/high_ui/forms/create_manager.html:14
-#: high_ui/templates/high_ui/forms/update_company_operator.html:14
-#: high_ui/templates/high_ui/forms/update_issue.html:14
-#: high_ui/templates/high_ui/forms/update_list_base.html:24
-#: high_ui/templates/high_ui/forms/update_manager.html:14
+#: templates/high_ui/contact.html:21
+#: templates/high_ui/forms/base_consumer.html:22
+#: templates/high_ui/forms/create_company_operator.html:14
+#: templates/high_ui/forms/create_credit.html:24
+#: templates/high_ui/forms/create_issue.html:14
+#: templates/high_ui/forms/create_manager.html:14
+#: templates/high_ui/forms/update_company_operator.html:14
+#: templates/high_ui/forms/update_issue.html:14
+#: templates/high_ui/forms/update_list_base.html:24
+#: templates/high_ui/forms/update_manager.html:14
 msgid "Client account"
 msgstr "Compte client"
 
-#: high_ui/templates/high_ui/contact.html:24
+#: templates/high_ui/contact.html:24
 msgid "if you want to buy some credits, please contact :"
 msgstr "Si vous voulez commander des crédits, contactez s'il vous plait&nbsp;:"
 
-#: high_ui/templates/high_ui/contact.html:59
+#: templates/high_ui/contact.html:59
 msgid "Back to the homepage"
 msgstr "Retour sur la page d'accueil"
 
-#: high_ui/templates/high_ui/dashboard.html:6
+#: templates/high_ui/dashboard.html:6
 #, python-format
 msgid "%(name)s Dashboard"
 msgstr "Tableau de bord %(name)s"
 
-#: high_ui/templates/high_ui/dashboard.html:21
+#: templates/high_ui/dashboard.html:21
 #, python-format
 msgid "Access to %(company)s details"
 msgstr "Accéder aux détails de %(company)s"
 
-#: high_ui/templates/high_ui/dashboard.html:37
+#: templates/high_ui/dashboard.html:37
 msgid "Register an issue"
 msgstr "Enregistrer une demande"
 
-#: high_ui/templates/high_ui/dashboard.html:51
+#: templates/high_ui/dashboard.html:51
 msgid "Create a new operator and add them at the project"
 msgstr "Créer un nouvel intervenant et l'ajouter à ce projet"
 
-#: high_ui/templates/high_ui/dashboard.html:56
+#: templates/high_ui/dashboard.html:56
 msgid "Modify the project operator list"
 msgstr "Modifier la liste des intervenants de ce projet"
 
-#: high_ui/templates/high_ui/dashboard.html:71
+#: templates/high_ui/dashboard.html:71
 msgid "Managers"
 msgstr "Managers"
 
-#: high_ui/templates/high_ui/dashboard.html:76
+#: templates/high_ui/dashboard.html:76
 msgid "Create a new manager and add them to the project"
 msgstr "Créer un nouveau manager et l'ajouter à ce projet"
 
-#: high_ui/templates/high_ui/dashboard.html:81
+#: templates/high_ui/dashboard.html:81
 msgid "Modify the project manager list"
 msgstr "Modifier la liste des managers de ce projet"
 
-#: high_ui/templates/high_ui/dashboard.html:97
+#: templates/high_ui/dashboard.html:97
 msgid "Employees"
 msgstr "Salariés"
 
-#: high_ui/templates/high_ui/dashboard.html:102
+#: templates/high_ui/dashboard.html:102
 msgid "Create a new employee and add them to the project"
 msgstr "Créer un nouveau salarié et l'ajouter à ce projet"
 
-#: high_ui/templates/high_ui/dashboard.html:107
+#: templates/high_ui/dashboard.html:107
 msgid "Modify the project salary list"
 msgstr "Modifier la liste des salariés de ce projet"
 
-#: high_ui/templates/high_ui/dashboard_header.html:4
+#: templates/high_ui/dashboard_header.html:4
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: high_ui/templates/high_ui/dashboard_header.html:8
+#: templates/high_ui/dashboard_header.html:8
 msgid "Projects"
 msgstr "Projets"
 
-#: high_ui/templates/high_ui/dashboard_header.html:13
+#: templates/high_ui/dashboard_header.html:13
 msgid "Add a project"
 msgstr "Ajouter un projet"
 
-#: high_ui/templates/high_ui/dashboard_header.html:22
+#: templates/high_ui/dashboard_header.html:22
 msgid "Create an operator"
 msgstr "Créer un intervenant"
 
-#: high_ui/templates/high_ui/dashboard_header.html:23
-#: high_ui/templates/high_ui/forms/update_company_operators.html:9
-#: high_ui/templates/high_ui/forms/update_company_operators.html:24
-#: high_ui/templates/high_ui/forms/update_operators.html:6
+#: templates/high_ui/dashboard_header.html:23
+#: templates/high_ui/forms/update_company_operators.html:9
+#: templates/high_ui/forms/update_company_operators.html:24
+#: templates/high_ui/forms/update_operators.html:6
 msgid "Modify operator list"
 msgstr "Modifier la liste des intervenants"
 
-#: high_ui/templates/high_ui/dashboard_header.html:33
+#: templates/high_ui/dashboard_header.html:33
 msgid "Access to HyMaintenance administration dashboard"
 msgstr "Accéder au tableau de bord administrateur"
 
-#: high_ui/templates/high_ui/dashboard_header.html:33
+#: templates/high_ui/dashboard_header.html:33
 msgid "Administration"
 msgstr "Administration"
 
-#: high_ui/templates/high_ui/footer.html:14
+#: templates/high_ui/footer.html:14
 msgid "is a FOSS, developed in France since 2017, by"
 msgstr "est un logiciel libre, développé en France depuis 2017, par"
 
-#: high_ui/templates/high_ui/footer.html:15
+#: templates/high_ui/footer.html:15
 msgid "Version"
 msgstr "Version"
 
-#: high_ui/templates/high_ui/footer.html:23
+#: templates/high_ui/footer.html:23
 msgid "Documentation"
 msgstr "Documentation"
 
-#: high_ui/templates/high_ui/footer.html:24
+#: templates/high_ui/footer.html:24
 msgid "Reamaze support"
 msgstr "Support Reamaze"
 
-#: high_ui/templates/high_ui/footer.html:25
+#: templates/high_ui/footer.html:25
 msgid "Source code"
 msgstr "Code source"
 
-#: high_ui/templates/high_ui/footer.html:33
+#: templates/high_ui/footer.html:33
 msgid "Your contact"
 msgstr "Votre contact"
 
-#: high_ui/templates/high_ui/footer.html:54
+#: templates/high_ui/footer.html:54
 #, python-format
 msgid "%(company)s Prestations"
 msgstr "Prestations %(company)s"
 
-#: high_ui/templates/high_ui/footer.html:56
+#: templates/high_ui/footer.html:56
 msgid "Prestations"
 msgstr "Prestations"
 
-#: high_ui/templates/high_ui/footer.html:73
+#: templates/high_ui/footer.html:73
 msgid "Maintenance, support, corrections, ..."
 msgstr "Maintenance, support, corrections, ..."
 
-#: high_ui/templates/high_ui/footer.html:75
+#: templates/high_ui/footer.html:75
 msgid "Prestation management by consumed time or by available credited hours"
 msgstr ""
 "Gestion des prestations au temps passé, ou par consommation d'heures "
 "créditées"
 
-#: high_ui/templates/high_ui/footer.html:76
+#: templates/high_ui/footer.html:76
 msgid "Order credits in the application"
 msgstr "Crédits commandables dans l'application"
 
-#: high_ui/templates/high_ui/footer.html:77
+#: templates/high_ui/footer.html:77
 msgid "Prestation types by project"
 msgstr "Types de prestations par projet"
 
-#: high_ui/templates/high_ui/forms/base_issue.html:56
+#: templates/high_ui/forms/base_issue.html:56
 msgid "Display disable employees"
 msgstr "Proposer les salariés désactivés"
 
-#: high_ui/templates/high_ui/forms/base_issue.html:86
+#: templates/high_ui/forms/base_issue.html:86
 msgid "Issue received by"
 msgstr "Demande reçue par"
 
-#: high_ui/templates/high_ui/forms/base_issue.html:155
-#: high_ui/templates/high_ui/issue_details.html:54
-#: high_ui/templates/high_ui/issue_details.html:69
+#: templates/high_ui/forms/base_issue.html:155
+#: templates/high_ui/issue_details.html:54
+#: templates/high_ui/issue_details.html:69
 msgid "Resolution"
 msgstr "Résolution"
 
-#: high_ui/templates/high_ui/forms/base_issue.html:181
+#: templates/high_ui/forms/base_issue.html:181
 msgid "Display disable operators"
 msgstr "Proposer les intervenants désactivés"
 
-#: high_ui/templates/high_ui/forms/base_issue.html:191
+#: templates/high_ui/forms/base_issue.html:191
 #, python-format
 msgid "'%(mtype)s'-type activity"
 msgstr "activité de type '%(mtype)s'"
 
-#: high_ui/templates/high_ui/forms/base_issue.html:206
+#: templates/high_ui/forms/base_issue.html:206
 msgid "minutes"
 msgstr "minutes"
 
-#: high_ui/templates/high_ui/forms/base_issue.html:207
+#: templates/high_ui/forms/base_issue.html:207
 msgid "hours"
 msgstr "heures"
 
-#: high_ui/templates/high_ui/forms/base_project.html:64
-#: high_ui/templates/high_ui/forms/base_project.html:175
-#: high_ui/templates/high_ui/forms/base_project.html:286
+#: templates/high_ui/forms/base_project.html:64
+#: templates/high_ui/forms/base_project.html:177
+#: templates/high_ui/forms/base_project.html:290
 msgid "Counter"
 msgstr "Compteur"
 
-#: high_ui/templates/high_ui/forms/base_project.html:65
-#: high_ui/templates/high_ui/forms/base_project.html:176
-#: high_ui/templates/high_ui/forms/base_project.html:287
+#: templates/high_ui/forms/base_project.html:65
+#: templates/high_ui/forms/base_project.html:178
+#: templates/high_ui/forms/base_project.html:291
 msgid "Display more details about the counter"
 msgstr "Afficher plus de détails pour ce compteur"
 
-#: high_ui/templates/high_ui/forms/base_project.html:65
-#: high_ui/templates/high_ui/forms/base_project.html:176
-#: high_ui/templates/high_ui/forms/base_project.html:287
+#: templates/high_ui/forms/base_project.html:65
+#: templates/high_ui/forms/base_project.html:178
+#: templates/high_ui/forms/base_project.html:291
 msgid "Display more details"
 msgstr "Afficher plus de détail"
 
-#: high_ui/templates/high_ui/forms/base_project.html:75
-#: high_ui/templates/high_ui/forms/base_project.html:186
-#: high_ui/templates/high_ui/forms/base_project.html:297
+#: templates/high_ui/forms/base_project.html:75
+#: templates/high_ui/forms/base_project.html:188
+#: templates/high_ui/forms/base_project.html:301
 msgid "Visible to everyone"
 msgstr "Visible à tous"
 
-#: high_ui/templates/high_ui/forms/base_project.html:76
-#: high_ui/templates/high_ui/forms/base_project.html:187
-#: high_ui/templates/high_ui/forms/base_project.html:298
+#: templates/high_ui/forms/base_project.html:76
+#: templates/high_ui/forms/base_project.html:189
+#: templates/high_ui/forms/base_project.html:302
 msgid "Invisible to managers"
 msgstr "Invisible aux clients"
 
-#: high_ui/templates/high_ui/forms/base_project.html:77
-#: high_ui/templates/high_ui/forms/base_project.html:188
-#: high_ui/templates/high_ui/forms/base_project.html:299
+#: templates/high_ui/forms/base_project.html:77
+#: templates/high_ui/forms/base_project.html:190
+#: templates/high_ui/forms/base_project.html:303
+#: templates/high_ui/forms/update_email_alert.html:38
+#: templates/high_ui/forms/update_project.html:41
+#: templates/high_ui/forms/update_project.html:101
+#: templates/high_ui/forms/update_project.html:161
 msgid "Disabled"
 msgstr "Inactif"
 
-#: high_ui/templates/high_ui/forms/base_project.html:90
-#: high_ui/templates/high_ui/forms/base_project.html:201
-#: high_ui/templates/high_ui/forms/base_project.html:312
+#: templates/high_ui/forms/base_project.html:90
+#: templates/high_ui/forms/base_project.html:203
+#: templates/high_ui/forms/base_project.html:316
 #, python-format
 msgid ""
 "This counter will be <em>visible for managers</em> of the project, and "
@@ -548,9 +541,9 @@ msgstr ""
 "<em>utilisable par les intervenants de %(name)s</em> dans le tableaux de "
 "bord et pour enregistrer des demandes."
 
-#: high_ui/templates/high_ui/forms/base_project.html:92
-#: high_ui/templates/high_ui/forms/base_project.html:203
-#: high_ui/templates/high_ui/forms/base_project.html:314
+#: templates/high_ui/forms/base_project.html:92
+#: templates/high_ui/forms/base_project.html:205
+#: templates/high_ui/forms/base_project.html:318
 #, python-format
 msgid ""
 "This counter will be <em>invisible for managers, but </em>usable by "
@@ -560,27 +553,27 @@ msgstr ""
 "les intervenants de %(name)s</em> dans les tableaux de bord et pour "
 "enregistrer des demandes."
 
-#: high_ui/templates/high_ui/forms/base_project.html:93
-#: high_ui/templates/high_ui/forms/base_project.html:204
-#: high_ui/templates/high_ui/forms/base_project.html:315
+#: templates/high_ui/forms/base_project.html:93
+#: templates/high_ui/forms/base_project.html:206
+#: templates/high_ui/forms/base_project.html:319
 msgid "This counter will be <em>disabled</em> for the project"
 msgstr "Ce compteur sera <em>désactivé</em> pour ce projet."
 
-#: high_ui/templates/high_ui/forms/base_project.html:103
-#: high_ui/templates/high_ui/forms/base_project.html:214
-#: high_ui/templates/high_ui/forms/base_project.html:325
+#: templates/high_ui/forms/base_project.html:103
+#: templates/high_ui/forms/base_project.html:216
+#: templates/high_ui/forms/base_project.html:329
 msgid "Available total time"
 msgstr "Total disponible"
 
-#: high_ui/templates/high_ui/forms/base_project.html:104
-#: high_ui/templates/high_ui/forms/base_project.html:215
-#: high_ui/templates/high_ui/forms/base_project.html:326
+#: templates/high_ui/forms/base_project.html:104
+#: templates/high_ui/forms/base_project.html:217
+#: templates/high_ui/forms/base_project.html:330
 msgid "Consumed total time"
 msgstr "Total du temps passé"
 
-#: high_ui/templates/high_ui/forms/base_project.html:134
-#: high_ui/templates/high_ui/forms/base_project.html:245
-#: high_ui/templates/high_ui/forms/base_project.html:356
+#: templates/high_ui/forms/base_project.html:134
+#: templates/high_ui/forms/base_project.html:247
+#: templates/high_ui/forms/base_project.html:360
 #, python-format
 msgid ""
 "This counter will display the <em>consumed total time</em> by the registered "
@@ -589,9 +582,9 @@ msgstr ""
 "Ce compteur affichera le <em>total du temps passé</em> sur les demandes "
 "enregistrées par les intervenants de %(name)s."
 
-#: high_ui/templates/high_ui/forms/base_project.html:135
-#: high_ui/templates/high_ui/forms/base_project.html:246
-#: high_ui/templates/high_ui/forms/base_project.html:357
+#: templates/high_ui/forms/base_project.html:135
+#: templates/high_ui/forms/base_project.html:248
+#: templates/high_ui/forms/base_project.html:361
 #, python-format
 msgid ""
 "This compteur will display the <em>available total time</em> on %(mtype)s "
@@ -602,244 +595,246 @@ msgstr ""
 "<em>de %(mtype)s créditées</em>, et qui sera consommé par les intervenants "
 "de %(name)s en enregistrant des demandes."
 
-#: high_ui/templates/high_ui/forms/base_project.html:155
-#: high_ui/templates/high_ui/forms/base_project.html:266
-#: high_ui/templates/high_ui/forms/base_project.html:377
+#: templates/high_ui/forms/base_project.html:157
+#: templates/high_ui/forms/base_project.html:270
+#: templates/high_ui/forms/base_project.html:383
 msgid "This counter can be renamed to replace the"
 msgstr "Ce compteur peut être renommé pour remplacer son nom par défaut de "
 
-#: high_ui/templates/high_ui/forms/base_project.html:155
-#: high_ui/templates/high_ui/forms/base_project.html:266
-#: high_ui/templates/high_ui/forms/base_project.html:377
+#: templates/high_ui/forms/base_project.html:157
+#: templates/high_ui/forms/base_project.html:270
+#: templates/high_ui/forms/base_project.html:383
 msgid "default name"
 msgstr "Nom par défaut"
 
-#: high_ui/templates/high_ui/forms/base_project.html:169
-#: high_ui/templates/high_ui/forms/base_project.html:280
-#: high_ui/templates/high_ui/forms/base_project.html:391
+#: templates/high_ui/forms/base_project.html:171
+#: templates/high_ui/forms/base_project.html:284
+#: templates/high_ui/forms/base_project.html:397
 msgid "Date when the contract begin."
 msgstr "La date à laquelle ce contrat débute."
 
-#: high_ui/templates/high_ui/forms/create_admin.html:5
-#: high_ui/templates/high_ui/forms/create_admin.html:13
+#: templates/high_ui/forms/create_admin.html:5
+#: templates/high_ui/forms/create_admin.html:13
 msgid "New admin"
 msgstr "Nouvel admin"
 
-#: high_ui/templates/high_ui/forms/create_admin.html:17
+#: templates/high_ui/forms/create_admin.html:17
 msgid "Add this admin"
 msgstr "Ajouter cet admin"
 
-#: high_ui/templates/high_ui/forms/create_admin.html:18
-#: high_ui/templates/high_ui/forms/create_company_operator.html:20
-#: high_ui/templates/high_ui/forms/create_consumer.html:18
-#: high_ui/templates/high_ui/forms/create_credit.html:65
-#: high_ui/templates/high_ui/forms/create_issue.html:20
-#: high_ui/templates/high_ui/forms/create_manager.html:20
-#: high_ui/templates/high_ui/forms/create_operator.html:18
-#: high_ui/templates/high_ui/forms/create_project.html:30
-#: high_ui/templates/high_ui/forms/update_admin.html:22
-#: high_ui/templates/high_ui/forms/update_admin.html:31
-#: high_ui/templates/high_ui/forms/update_company_operator.html:24
-#: high_ui/templates/high_ui/forms/update_company_operator.html:33
-#: high_ui/templates/high_ui/forms/update_company_operators.html:25
-#: high_ui/templates/high_ui/forms/update_consumer.html:18
-#: high_ui/templates/high_ui/forms/update_consumers.html:24
-#: high_ui/templates/high_ui/forms/update_infos.html:121
-#: high_ui/templates/high_ui/forms/update_issue.html:20
-#: high_ui/templates/high_ui/forms/update_maintenance_type.html:88
-#: high_ui/templates/high_ui/forms/update_manager.html:24
-#: high_ui/templates/high_ui/forms/update_manager.html:33
-#: high_ui/templates/high_ui/forms/update_managers.html:25
-#: high_ui/templates/high_ui/forms/update_operator.html:22
-#: high_ui/templates/high_ui/forms/update_operator.html:31
-#: high_ui/templates/high_ui/forms/update_operators.html:60
-#: high_ui/templates/high_ui/forms/update_operators.html:97
-#: high_ui/templates/high_ui/forms/update_profile.html:22
-#: high_ui/templates/high_ui/forms/update_profile.html:31
-#: high_ui/templates/high_ui/forms/update_project.html:30
+#: templates/high_ui/forms/create_admin.html:18
+#: templates/high_ui/forms/create_company_operator.html:20
+#: templates/high_ui/forms/create_consumer.html:18
+#: templates/high_ui/forms/create_credit.html:65
+#: templates/high_ui/forms/create_issue.html:20
+#: templates/high_ui/forms/create_manager.html:20
+#: templates/high_ui/forms/create_operator.html:18
+#: templates/high_ui/forms/create_project.html:30
+#: templates/high_ui/forms/update_admin.html:22
+#: templates/high_ui/forms/update_admin.html:31
+#: templates/high_ui/forms/update_company_operator.html:24
+#: templates/high_ui/forms/update_company_operator.html:33
+#: templates/high_ui/forms/update_company_operators.html:25
+#: templates/high_ui/forms/update_consumer.html:18
+#: templates/high_ui/forms/update_consumers.html:24
+#: templates/high_ui/forms/update_email_alert.html:103
+#: templates/high_ui/forms/update_infos.html:121
+#: templates/high_ui/forms/update_issue.html:20
+#: templates/high_ui/forms/update_maintenance_type.html:88
+#: templates/high_ui/forms/update_manager.html:24
+#: templates/high_ui/forms/update_manager.html:33
+#: templates/high_ui/forms/update_managers.html:25
+#: templates/high_ui/forms/update_operator.html:22
+#: templates/high_ui/forms/update_operator.html:31
+#: templates/high_ui/forms/update_operators.html:60
+#: templates/high_ui/forms/update_operators.html:97
+#: templates/high_ui/forms/update_profile.html:22
+#: templates/high_ui/forms/update_profile.html:31
+#: templates/high_ui/forms/update_project.html:18
 msgid "or"
 msgstr "ou"
 
-#: high_ui/templates/high_ui/forms/create_admin.html:18
-#: high_ui/templates/high_ui/forms/create_company_operator.html:20
-#: high_ui/templates/high_ui/forms/create_consumer.html:18
-#: high_ui/templates/high_ui/forms/create_credit.html:65
-#: high_ui/templates/high_ui/forms/create_manager.html:20
-#: high_ui/templates/high_ui/forms/create_operator.html:18
+#: templates/high_ui/forms/create_admin.html:18
+#: templates/high_ui/forms/create_company_operator.html:20
+#: templates/high_ui/forms/create_consumer.html:18
+#: templates/high_ui/forms/create_credit.html:65
+#: templates/high_ui/forms/create_manager.html:20
+#: templates/high_ui/forms/create_operator.html:18
 msgid "Don't add"
 msgstr "Ne pas ajouter"
 
-#: high_ui/templates/high_ui/forms/create_company_operator.html:5
+#: templates/high_ui/forms/create_company_operator.html:5
 msgid "New operator of"
 msgstr "Nouvel intervenant de"
 
-#: high_ui/templates/high_ui/forms/create_company_operator.html:13
-#: high_ui/templates/high_ui/forms/create_operator.html:5
-#: high_ui/templates/high_ui/forms/create_operator.html:13
+#: templates/high_ui/forms/create_company_operator.html:13
+#: templates/high_ui/forms/create_operator.html:5
+#: templates/high_ui/forms/create_operator.html:13
 msgid "New operator"
 msgstr "Nouvel intervenant"
 
-#: high_ui/templates/high_ui/forms/create_company_operator.html:19
+#: templates/high_ui/forms/create_company_operator.html:19
 msgid "Add new operator"
 msgstr "Créer un intervenant"
 
-#: high_ui/templates/high_ui/forms/create_consumer.html:5
+#: templates/high_ui/forms/create_consumer.html:5
 msgid "new employee of"
 msgstr "Nouveau salarié de"
 
-#: high_ui/templates/high_ui/forms/create_consumer.html:13
+#: templates/high_ui/forms/create_consumer.html:13
 msgid "New employee"
 msgstr "Nouveau salariés"
 
-#: high_ui/templates/high_ui/forms/create_consumer.html:17
+#: templates/high_ui/forms/create_consumer.html:17
 msgid "Add this employee"
 msgstr "Ajouter ce salarié"
 
-#: high_ui/templates/high_ui/forms/create_credit.html:5
+#: templates/high_ui/forms/create_credit.html:5
 #, python-format
 msgid "Add credits for %(name)s"
 msgstr "Ajouter des crédits à %(name)s"
 
-#: high_ui/templates/high_ui/forms/create_credit.html:35
+#: templates/high_ui/forms/create_credit.html:35
 #, python-format
 msgid "Add %(hours_number)sh"
 msgstr "Ajout de %(hours_number)sh"
 
-#: high_ui/templates/high_ui/forms/create_credit.html:48
+#: templates/high_ui/forms/create_credit.html:48
 #, python-format
 msgid "%(mtype)s-type activity"
 msgstr "activité de type %(mtype)s"
 
-#: high_ui/templates/high_ui/forms/create_issue.html:5
+#: templates/high_ui/forms/create_issue.html:5
 #, python-format
 msgid "%(company)s new issue"
 msgstr "Nouvelle demande de %(company)s"
 
-#: high_ui/templates/high_ui/forms/create_issue.html:13
+#: templates/high_ui/forms/create_issue.html:13
 msgid "New issue"
 msgstr "Nouvelle demande"
 
-#: high_ui/templates/high_ui/forms/create_issue.html:19
+#: templates/high_ui/forms/create_issue.html:19
 msgid "Save issue"
 msgstr "Sauvegarder la demande"
 
-#: high_ui/templates/high_ui/forms/create_issue.html:20
+#: templates/high_ui/forms/create_issue.html:20
 msgid "Don't save"
 msgstr "Ne pas sauvegarder"
 
-#: high_ui/templates/high_ui/forms/create_manager.html:5
+#: templates/high_ui/forms/create_manager.html:5
 msgid "New manager of"
 msgstr "Nouveau manager de"
 
-#: high_ui/templates/high_ui/forms/create_manager.html:13
+#: templates/high_ui/forms/create_manager.html:13
 msgid "New manager"
 msgstr "Nouveau manager"
 
-#: high_ui/templates/high_ui/forms/create_manager.html:19
+#: templates/high_ui/forms/create_manager.html:19
 msgid "Add this manager"
 msgstr "Ajouter ce manager"
 
-#: high_ui/templates/high_ui/forms/create_operator.html:17
+#: templates/high_ui/forms/create_operator.html:17
 msgid "Add this operator"
 msgstr "Ajouter cet intervenant"
 
-#: high_ui/templates/high_ui/forms/create_project.html:5
-#: high_ui/templates/high_ui/forms/create_project.html:13
+#: templates/high_ui/forms/create_project.html:5
+#: templates/high_ui/forms/create_project.html:13
 msgid "New project"
 msgstr "Nouveau projet"
 
-#: high_ui/templates/high_ui/forms/create_project.html:29
+#: templates/high_ui/forms/create_project.html:29
 msgid "Create this project"
 msgstr "créer ce projet"
 
-#: high_ui/templates/high_ui/forms/create_project.html:30
+#: templates/high_ui/forms/create_project.html:30
 msgid "Don't create"
 msgstr "Ne pas créer"
 
-#: high_ui/templates/high_ui/forms/update_admin.html:5
+#: templates/high_ui/forms/update_admin.html:5
 msgid "Modify this admin"
 msgstr "Modifier cet admin"
 
-#: high_ui/templates/high_ui/forms/update_admin.html:13
+#: templates/high_ui/forms/update_admin.html:13
 msgid "Admin modification"
 msgstr "Modification de l'admin"
 
-#: high_ui/templates/high_ui/forms/update_admin.html:17
-#: high_ui/templates/high_ui/forms/update_company_operator.html:19
-#: high_ui/templates/high_ui/forms/update_company_operator.html:28
-#: high_ui/templates/high_ui/forms/update_manager.html:19
-#: high_ui/templates/high_ui/forms/update_manager.html:28
-#: high_ui/templates/high_ui/forms/update_operator.html:17
-#: high_ui/templates/high_ui/forms/update_operator.html:26
-#: high_ui/templates/high_ui/forms/update_profile.html:17
+#: templates/high_ui/forms/update_admin.html:17
+#: templates/high_ui/forms/update_company_operator.html:19
+#: templates/high_ui/forms/update_company_operator.html:28
+#: templates/high_ui/forms/update_manager.html:19
+#: templates/high_ui/forms/update_manager.html:28
+#: templates/high_ui/forms/update_operator.html:17
+#: templates/high_ui/forms/update_operator.html:26
+#: templates/high_ui/forms/update_profile.html:17
 msgid "Display/hide the profil modification form"
 msgstr "Afficher/cacher le formulaire de modification de profil"
 
-#: high_ui/templates/high_ui/forms/update_admin.html:17
-#: high_ui/templates/high_ui/forms/update_company_operator.html:19
-#: high_ui/templates/high_ui/forms/update_manager.html:19
-#: high_ui/templates/high_ui/forms/update_operator.html:17
+#: templates/high_ui/forms/update_admin.html:17
+#: templates/high_ui/forms/update_company_operator.html:19
+#: templates/high_ui/forms/update_manager.html:19
+#: templates/high_ui/forms/update_operator.html:17
 msgid "Modify profile"
 msgstr "Modifier le profil"
 
-#: high_ui/templates/high_ui/forms/update_admin.html:21
-#: high_ui/templates/high_ui/forms/update_company_operator.html:23
-#: high_ui/templates/high_ui/forms/update_manager.html:23
-#: high_ui/templates/high_ui/forms/update_operator.html:21
+#: templates/high_ui/forms/update_admin.html:21
+#: templates/high_ui/forms/update_company_operator.html:23
+#: templates/high_ui/forms/update_manager.html:23
+#: templates/high_ui/forms/update_operator.html:21
 msgid "Modify this informations"
 msgstr "Modifier ces informations"
 
-#: high_ui/templates/high_ui/forms/update_admin.html:22
-#: high_ui/templates/high_ui/forms/update_admin.html:31
-#: high_ui/templates/high_ui/forms/update_company_operator.html:24
-#: high_ui/templates/high_ui/forms/update_company_operator.html:33
-#: high_ui/templates/high_ui/forms/update_company_operators.html:25
-#: high_ui/templates/high_ui/forms/update_consumer.html:18
-#: high_ui/templates/high_ui/forms/update_consumers.html:24
-#: high_ui/templates/high_ui/forms/update_infos.html:121
-#: high_ui/templates/high_ui/forms/update_issue.html:20
-#: high_ui/templates/high_ui/forms/update_maintenance_type.html:88
-#: high_ui/templates/high_ui/forms/update_manager.html:24
-#: high_ui/templates/high_ui/forms/update_manager.html:33
-#: high_ui/templates/high_ui/forms/update_managers.html:25
-#: high_ui/templates/high_ui/forms/update_operator.html:22
-#: high_ui/templates/high_ui/forms/update_operator.html:31
-#: high_ui/templates/high_ui/forms/update_profile.html:22
-#: high_ui/templates/high_ui/forms/update_profile.html:31
-#: high_ui/templates/high_ui/forms/update_project.html:30
+#: templates/high_ui/forms/update_admin.html:22
+#: templates/high_ui/forms/update_admin.html:31
+#: templates/high_ui/forms/update_company_operator.html:24
+#: templates/high_ui/forms/update_company_operator.html:33
+#: templates/high_ui/forms/update_company_operators.html:25
+#: templates/high_ui/forms/update_consumer.html:18
+#: templates/high_ui/forms/update_consumers.html:24
+#: templates/high_ui/forms/update_email_alert.html:103
+#: templates/high_ui/forms/update_infos.html:121
+#: templates/high_ui/forms/update_issue.html:20
+#: templates/high_ui/forms/update_maintenance_type.html:88
+#: templates/high_ui/forms/update_manager.html:24
+#: templates/high_ui/forms/update_manager.html:33
+#: templates/high_ui/forms/update_managers.html:25
+#: templates/high_ui/forms/update_operator.html:22
+#: templates/high_ui/forms/update_operator.html:31
+#: templates/high_ui/forms/update_profile.html:22
+#: templates/high_ui/forms/update_profile.html:31
+#: templates/high_ui/forms/update_project.html:18
 msgid "Don't Modify"
 msgstr "Ne pas modifier"
 
-#: high_ui/templates/high_ui/forms/update_admin.html:26
-#: high_ui/templates/high_ui/forms/update_profile.html:26
+#: templates/high_ui/forms/update_admin.html:26
+#: templates/high_ui/forms/update_profile.html:26
 msgid "Display/hide the password modification form"
 msgstr "Afficher/cacher le formulaire de modification de mot de passe"
 
-#: high_ui/templates/high_ui/forms/update_admin.html:26
-#: high_ui/templates/high_ui/forms/update_admin.html:30
-#: high_ui/templates/high_ui/forms/update_company_operator.html:28
-#: high_ui/templates/high_ui/forms/update_company_operator.html:32
-#: high_ui/templates/high_ui/forms/update_manager.html:28
-#: high_ui/templates/high_ui/forms/update_manager.html:32
-#: high_ui/templates/high_ui/forms/update_operator.html:26
-#: high_ui/templates/high_ui/forms/update_operator.html:30
+#: templates/high_ui/forms/update_admin.html:26
+#: templates/high_ui/forms/update_admin.html:30
+#: templates/high_ui/forms/update_company_operator.html:28
+#: templates/high_ui/forms/update_company_operator.html:32
+#: templates/high_ui/forms/update_manager.html:28
+#: templates/high_ui/forms/update_manager.html:32
+#: templates/high_ui/forms/update_operator.html:26
+#: templates/high_ui/forms/update_operator.html:30
 msgid "Modify password"
 msgstr "Modifier le mot de passe"
 
-#: high_ui/templates/high_ui/forms/update_company_operator.html:5
+#: templates/high_ui/forms/update_company_operator.html:5
 msgid "Modify operator of"
 msgstr "Modifier l'intervenant de"
 
-#: high_ui/templates/high_ui/forms/update_company_operator.html:13
-#: high_ui/templates/high_ui/forms/update_operator.html:13
+#: templates/high_ui/forms/update_company_operator.html:13
+#: templates/high_ui/forms/update_operator.html:13
 msgid "Modification of this operator"
 msgstr "Modification de l'intervenant"
 
-#: high_ui/templates/high_ui/forms/update_company_operators.html:5
+#: templates/high_ui/forms/update_company_operators.html:5
 msgid "Modify operator list of"
 msgstr "Modifier la liste des intervenants de"
 
-#: high_ui/templates/high_ui/forms/update_company_operators.html:13
+#: templates/high_ui/forms/update_company_operators.html:13
 #, python-format
 msgid ""
 "Select the operators of this project, among the %(operators_number)s already "
@@ -848,139 +843,168 @@ msgstr ""
 "Sélectionner les intervenants pour ce projet, parmi les %(operators_number)s "
 "existants:"
 
-#: high_ui/templates/high_ui/forms/update_company_operators.html:18
+#: templates/high_ui/forms/update_company_operators.html:18
 msgid "operator of this project"
 msgstr "intervenant du projet"
 
-#: high_ui/templates/high_ui/forms/update_consumer.html:5
+#: templates/high_ui/forms/update_consumer.html:5
 msgid "Modify employee of"
 msgstr "Modification du salarié de"
 
-#: high_ui/templates/high_ui/forms/update_consumer.html:13
+#: templates/high_ui/forms/update_consumer.html:13
 msgid "Modification of this employee"
 msgstr "Modification de ce salarié"
 
-#: high_ui/templates/high_ui/forms/update_consumer.html:17
+#: templates/high_ui/forms/update_consumer.html:17
 msgid "Modify this employee"
 msgstr "Modifier ce salarié"
 
-#: high_ui/templates/high_ui/forms/update_consumers.html:5
+#: templates/high_ui/forms/update_consumers.html:5
 msgid "Modify employee list of"
 msgstr "Modifier la liste des salariés de"
 
-#: high_ui/templates/high_ui/forms/update_consumers.html:9
-#: high_ui/templates/high_ui/forms/update_consumers.html:23
+#: templates/high_ui/forms/update_consumers.html:9
+#: templates/high_ui/forms/update_consumers.html:23
 msgid "Modify employee list"
 msgstr "Modifier la liste de salariés"
 
-#: high_ui/templates/high_ui/forms/update_consumers.html:13
+#: templates/high_ui/forms/update_consumers.html:13
 #, python-format
 msgid ""
 "Select the consumers of this project, among the %(nb)s already existing:"
 msgstr ""
 "Sélectionner les intervenants pour ce projet, parmi les %(nb)s existants:"
 
-#: high_ui/templates/high_ui/forms/update_consumers.html:18
+#: templates/high_ui/forms/update_consumers.html:18
 msgid "employee of this project"
 msgstr "salarié du projet"
 
-#: high_ui/templates/high_ui/forms/update_infos.html:5
+#: templates/high_ui/forms/update_email_alert.html:6
+#, python-format
+msgid "Modify %(company)s email alerts"
+msgstr "Modifier les alertes par email de %(company)s"
+
+#: templates/high_ui/forms/update_email_alert.html:29
+#, python-format
+msgid "%(name)s's email-alert configuration"
+msgstr "Configuration des alertes par email de %(name)s"
+
+#: templates/high_ui/forms/update_email_alert.html:39
+#: templates/high_ui/forms/update_project.html:42
+#: templates/high_ui/forms/update_project.html:102
+#: templates/high_ui/forms/update_project.html:162
+msgid "Enabled"
+msgstr "Actif"
+
+#: templates/high_ui/forms/update_email_alert.html:88
+msgid ""
+"The <em>to contact</em> manager will recieve an email alert when the "
+"<em>remaining hours</em> of the contract reach the <em>hour threshold</em>."
+msgstr ""
+"Le manager <em>à prévenir</em> recevra une alerte par email lorsque les "
+"<em>heures restantes</em> du contrat atteindra le <em>seuil d'heures</em>."
+
+#: templates/high_ui/forms/update_email_alert.html:102
+msgid "Modify this configuration"
+msgstr "Modifier cette configuration"
+
+#: templates/high_ui/forms/update_infos.html:5
 msgid "Modify general information of"
 msgstr "Modifier les informations générales de"
 
-#: high_ui/templates/high_ui/forms/update_infos.html:21
+#: templates/high_ui/forms/update_infos.html:21
 #, python-format
 msgid "Modification of %(name)s's general informations"
 msgstr "Modification des informations générales de %(name)s"
 
-#: high_ui/templates/high_ui/forms/update_infos.html:120
+#: templates/high_ui/forms/update_infos.html:120
 msgid "Modify this information"
 msgstr "Modifier ces informations"
 
-#: high_ui/templates/high_ui/forms/update_issue.html:5
+#: templates/high_ui/forms/update_issue.html:5
 #, python-format
 msgid "Modification of %(company)s %(counter)s issue #%(number)s"
 msgstr "Modification de la demande N°%(number)s en %(counter)s de %(company)s"
 
-#: high_ui/templates/high_ui/forms/update_issue.html:13
-#: high_ui/templates/high_ui/issue_details.html:17
-#: high_ui/templates/high_ui/issue_details.html:26
-#: high_ui/templates/high_ui/issue_details_header.html:8
+#: templates/high_ui/forms/update_issue.html:13
+#: templates/high_ui/issue_details.html:17
+#: templates/high_ui/issue_details.html:26
+#: templates/high_ui/issue_details_header.html:8
 msgid "Issue #"
 msgstr "Demandes N°"
 
-#: high_ui/templates/high_ui/forms/update_issue.html:19
+#: templates/high_ui/forms/update_issue.html:19
 msgid "Modify this issue"
 msgstr "Modifier cet demande"
 
-#: high_ui/templates/high_ui/forms/update_maintenance_type.html:5
+#: templates/high_ui/forms/update_maintenance_type.html:5
 msgid "Modify default counters"
 msgstr "Modifier les compteurs par défaut"
 
-#: high_ui/templates/high_ui/forms/update_maintenance_type.html:25
+#: templates/high_ui/forms/update_maintenance_type.html:25
 msgid "Default counters"
 msgstr "Compteurs par défaut"
 
-#: high_ui/templates/high_ui/forms/update_maintenance_type.html:32
+#: templates/high_ui/forms/update_maintenance_type.html:32
 msgid "Green counter"
 msgstr "Compteur vert"
 
-#: high_ui/templates/high_ui/forms/update_maintenance_type.html:48
+#: templates/high_ui/forms/update_maintenance_type.html:48
 msgid "Blue counter"
 msgstr "Compteur bleu"
 
-#: high_ui/templates/high_ui/forms/update_maintenance_type.html:64
+#: templates/high_ui/forms/update_maintenance_type.html:64
 msgid "Grey counter"
 msgstr "Compteur gris"
 
-#: high_ui/templates/high_ui/forms/update_maintenance_type.html:87
+#: templates/high_ui/forms/update_maintenance_type.html:87
 msgid "Modify counters"
 msgstr "Modifier les compteurs"
 
-#: high_ui/templates/high_ui/forms/update_manager.html:5
+#: templates/high_ui/forms/update_manager.html:5
 msgid "modification manager of"
 msgstr "modification du manager de"
 
-#: high_ui/templates/high_ui/forms/update_manager.html:13
+#: templates/high_ui/forms/update_manager.html:13
 msgid "Modification of this manager"
 msgstr "Modification du manager"
 
-#: high_ui/templates/high_ui/forms/update_managers.html:5
+#: templates/high_ui/forms/update_managers.html:5
 msgid "Modify manager list of"
 msgstr "Modifier la liste des managers de"
 
-#: high_ui/templates/high_ui/forms/update_managers.html:9
-#: high_ui/templates/high_ui/forms/update_managers.html:24
+#: templates/high_ui/forms/update_managers.html:9
+#: templates/high_ui/forms/update_managers.html:24
 msgid "Modify manager list"
 msgstr "Modifier la liste de managers"
 
-#: high_ui/templates/high_ui/forms/update_managers.html:13
+#: templates/high_ui/forms/update_managers.html:13
 #, python-format
 msgid "Select the managers of this project, among the %(nb)s already existing:"
 msgstr "Sélectionner les managers pour ce projet, parmi les %(nb)s existants:"
 
-#: high_ui/templates/high_ui/forms/update_managers.html:18
+#: templates/high_ui/forms/update_managers.html:18
 msgid "manager of this project"
 msgstr "manager du projet"
 
-#: high_ui/templates/high_ui/forms/update_operator.html:5
+#: templates/high_ui/forms/update_operator.html:5
 msgid "modify operator"
 msgstr "Modifier l'intervenant de"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:22
+#: templates/high_ui/forms/update_operators.html:22
 #, python-format
 msgid "Modify operator list of %(name)s"
 msgstr "Modifier la liste des intervenants de %(name)s"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:30
+#: templates/high_ui/forms/update_operators.html:30
 msgid "Display/hide active-intervenant list"
 msgstr "Afficher/cacher la liste des intervenants actifs"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:30
+#: templates/high_ui/forms/update_operators.html:30
 msgid "Archive operator"
 msgstr "Archiver ces intervenants"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:35
+#: templates/high_ui/forms/update_operators.html:35
 #, python-format
 msgid ""
 "Select operators that you want to be inactive, among the "
@@ -990,32 +1014,32 @@ msgstr ""
 "%(active_operators_number)s intervenants de %(name)s actuellement "
 "actifs&nbsp;:"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:37
+#: templates/high_ui/forms/update_operators.html:37
 #, python-format
 msgid "Select the single %(name)s's active operator to turn them archived:"
 msgstr ""
 "Sélectionner l'unique intervenant actif de %(name)s pour le rendre "
 "inactif&nbsp;:"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:49
-#: high_ui/templates/high_ui/issue_details.html:56
+#: templates/high_ui/forms/update_operators.html:49
+#: templates/high_ui/issue_details.html:56
 msgid "Operator"
 msgstr "Intervenant"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:59
+#: templates/high_ui/forms/update_operators.html:59
 msgid "Archive this operators"
 msgstr "Archiver ces intervenants"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:60
-#: high_ui/templates/high_ui/forms/update_operators.html:97
+#: templates/high_ui/forms/update_operators.html:60
+#: templates/high_ui/forms/update_operators.html:97
 msgid "Change nothing"
 msgstr "Ne rien changer"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:69
+#: templates/high_ui/forms/update_operators.html:69
 msgid "Reactive archived operators"
 msgstr "Réactiver des intervenants archivés"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:74
+#: templates/high_ui/forms/update_operators.html:74
 #, python-format
 msgid ""
 "Select operators that you want to be active, among the "
@@ -1025,144 +1049,146 @@ msgstr ""
 "%(archived_operators_number)s intervenants de %(name)s actuellement "
 "archivés&nbsp;:"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:76
+#: templates/high_ui/forms/update_operators.html:76
 #, python-format
 msgid "Select the single %(name)s's archived operator to turn them active:"
 msgstr ""
 "Sélectionner l'unique intervenant actif de %(name)s pour le rendre "
 "inactif&nbsp;:"
 
-#: high_ui/templates/high_ui/forms/update_operators.html:96
+#: templates/high_ui/forms/update_operators.html:96
 msgid "Enable operators"
 msgstr "Activer ces intervenants"
 
-#: high_ui/templates/high_ui/forms/update_profile.html:5
+#: templates/high_ui/forms/update_profile.html:5
 msgid "your profil"
 msgstr "Votre profil"
 
-#: high_ui/templates/high_ui/forms/update_profile.html:13
+#: templates/high_ui/forms/update_profile.html:13
 msgid "Your personnal informations"
 msgstr "Vos informations personnelles"
 
-#: high_ui/templates/high_ui/forms/update_profile.html:17
+#: templates/high_ui/forms/update_profile.html:17
 msgid "Modify your profile"
 msgstr "Modifier votre profil"
 
-#: high_ui/templates/high_ui/forms/update_profile.html:21
+#: templates/high_ui/forms/update_profile.html:21
 msgid "Modify my informations"
 msgstr "Modifier mes informations"
 
-#: high_ui/templates/high_ui/forms/update_profile.html:26
+#: templates/high_ui/forms/update_profile.html:26
 msgid "Modify your password"
 msgstr "Modifier votre mot de passe"
 
-#: high_ui/templates/high_ui/forms/update_profile.html:30
+#: templates/high_ui/forms/update_profile.html:30
 msgid "Modify my password"
 msgstr "Modifier mon mot de passe"
 
-#: high_ui/templates/high_ui/forms/update_project.html:5
+#: templates/high_ui/forms/update_project.html:5
 #, python-format
 msgid "Modify %(company)s project"
 msgstr "Modifier le projet de %(company)s"
 
-#: high_ui/templates/high_ui/forms/update_project.html:13
+#: templates/high_ui/forms/update_project.html:13
 #, python-format
 msgid "Project of the %(company)s society "
 msgstr "Projet de la société %(company)s"
 
-#: high_ui/templates/high_ui/forms/update_project.html:29
+#: templates/high_ui/forms/update_project.html:17
 msgid "Modify this project"
 msgstr "Modifier ce projet"
 
-#: high_ui/templates/high_ui/forms/update_user.html:132
-#: high_ui/tests/views/test_account_view.py:48
-#: high_ui/tests/views/test_account_view.py:71
-#: high_ui/tests/views/test_account_view.py:111
-#: high_ui/tests/views/test_manager_views.py:140
-#: high_ui/tests/views/test_manager_views.py:165
-#: high_ui/tests/views/test_operator_views.py:183
-#: high_ui/tests/views/test_operator_views.py:201
-#: high_ui/tests/views/test_operator_views.py:254
-#: high_ui/tests/views/test_operator_views.py:272
+#: templates/high_ui/forms/update_user.html:132
+#: tests/views/test_account_view.py:48 tests/views/test_account_view.py:71
+#: tests/views/test_account_view.py:111 tests/views/test_manager_views.py:140
+#: tests/views/test_manager_views.py:165 tests/views/test_operator_views.py:183
+#: tests/views/test_operator_views.py:201
+#: tests/views/test_operator_views.py:254
+#: tests/views/test_operator_views.py:272
 msgid "Modifications have been registered!"
 msgstr "Les modifications ont bien été prises en compte!"
 
-#: high_ui/templates/high_ui/issue_details.html:6
+#: templates/high_ui/issue_details.html:6
 msgid "issue of"
 msgstr "demande de"
 
-#: high_ui/templates/high_ui/issue_details.html:6
+#: templates/high_ui/issue_details.html:6
 msgid "#"
 msgstr "N°"
 
-#: high_ui/templates/high_ui/issue_details.html:28
+#: templates/high_ui/issue_details.html:28
 msgid "Author"
 msgstr "Auteur"
 
-#: high_ui/templates/high_ui/issue_details.html:32
+#: templates/high_ui/issue_details.html:32
 msgid "Date"
 msgstr "Date"
 
-#: high_ui/templates/high_ui/issue_details.html:37
+#: templates/high_ui/issue_details.html:37
 msgid "Channel"
 msgstr "Canal"
 
-#: high_ui/templates/high_ui/issue_details.html:42
+#: templates/high_ui/issue_details.html:42
 msgid "Details"
 msgstr "Détails"
 
-#: high_ui/templates/high_ui/issue_details.html:47
-#: high_ui/templates/high_ui/issue_details.html:85
+#: templates/high_ui/issue_details.html:47
+#: templates/high_ui/issue_details.html:85
 msgid "Attachment"
 msgstr "Pièce jointe"
 
-#: high_ui/templates/high_ui/issue_details.html:60
-#: high_ui/templates/high_ui/issue_details_header.html:12
+#: templates/high_ui/issue_details.html:60
+#: templates/high_ui/issue_details_header.html:12
 msgid "Activity"
 msgstr "Activité"
 
-#: high_ui/templates/high_ui/issue_details.html:64
-#: high_ui/templates/high_ui/issue_details_header.html:16
+#: templates/high_ui/issue_details.html:64
+#: templates/high_ui/issue_details_header.html:16
 msgid "Time spent"
 msgstr "Temps passé"
 
-#: high_ui/templates/high_ui/issue_details.html:75
+#: templates/high_ui/issue_details.html:75
 msgid "Delivery"
 msgstr "Livraison"
 
-#: high_ui/templates/high_ui/issue_details.html:80
+#: templates/high_ui/issue_details.html:80
 msgid "Comments"
 msgstr "Commentaires"
 
-#: high_ui/templates/high_ui/user_header.html:5
+#: templates/high_ui/user_header.html:5
 msgid "Tableau de bord"
 msgstr "Tableau de bord"
 
-#: high_ui/templatetags/print_fields.py:56
-#: high_ui/templatetags/print_fields.py:59
-#: high_ui/tests/templatetags/test_print_field.py:81
-#: high_ui/tests/templatetags/test_print_field.py:86
+#: templatetags/print_fields.py:41 templatetags/print_fields.py:44
+#: tests/templatetags/test_print_field.py:81
+#: tests/templatetags/test_print_field.py:86
 msgid "project:"
 msgstr "projet&nbsp;:"
 
-#: high_ui/templatetags/print_fields.py:58
-#: high_ui/tests/templatetags/test_print_field.py:96
+#: templatetags/print_fields.py:43 tests/templatetags/test_print_field.py:96
 msgid "projects:"
 msgstr "projets&nbsp;:"
 
-#: high_ui/templatetags/print_fields.py:59
-#: high_ui/tests/templatetags/test_print_field.py:81
+#: templatetags/print_fields.py:44 tests/templatetags/test_print_field.py:81
 msgid "none"
 msgstr "aucun"
 
-#: high_ui/templatetags/print_fields.py:80
+#: templatetags/print_fields.py:65
 #, python-brace-format
 msgid "Add extra {duration}"
 msgstr "Ajout de {duration} supplémentaires"
 
-#: high_ui/tests/views/test_admin_views.py:154
+#: tests/views/test_admin_views.py:154
 msgid "Les modifications ont bien été prises en compte!"
 msgstr "Les modifications ont bien été prises en compte!"
+
+#: views/project.py:170
+msgid "Hour threshold"
+msgstr "Seuil d'heures"
+
+#: views/project.py:170
+msgid "To contact"
+msgstr "À prévenir"
 
 #~ msgid "Update administrators"
 #~ msgstr "Modifier la demande"
