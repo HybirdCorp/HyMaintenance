@@ -11,14 +11,28 @@ jobs:
   build:
     docker:
       - image: python:3.6
-    environment:
-       COVERALLS_REPO_TOKEN=rVivfLB1a620q6D2kpgCgS71IZurNllL5
+        environment:
+          DJANGO_DB_USER: hymaintenance
+          DJANGO_DB: circle_test
+          DJANGO_DB_PASSWORD: password
+
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: hymaintenance
+          POSTGRES_DB: circle_test
+          POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+          name: Install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-v0.6.1.tar.gz && rm dockerize-linux-amd64-v0.6.1.tar.gz
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 120s
       - run: pip install tox
       - run: pip install coveralls
       - run: tox -e "flake8"
-      - run: tox -e "sqlite"
+      - run: tox -e "py36-django2.0"
       - run: coveralls
 #
 #workflows:
