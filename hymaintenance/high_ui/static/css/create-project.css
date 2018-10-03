@@ -57,7 +57,11 @@
 /* alert-status state machine */
 
 .form-group.email-alert-disabled .row-credit-min,
-.form-group.email-alert-disabled .row-recipient,
-.form-group.email-alert-disabled .help-email-alert {
+.form-group.email-alert-disabled .row-recipient {
+    display: none;
+}
+
+.form-group.email-alert-disabled .help-email-alert > span:not(.email-alert-disabled),
+.form-group.email-alert-enabled .help-email-alert > span:not(.email-alert-enabled) {
     display: none;
 }

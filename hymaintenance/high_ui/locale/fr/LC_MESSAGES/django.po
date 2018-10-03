@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 15:27+0200\n"
+"POT-Creation-Date: 2018-10-03 15:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -176,6 +176,7 @@ msgstr "Modifier les noms par défaut des types de contract"
 
 #: templates/high_ui/admin.html:65
 #: templates/high_ui/company_details_header.html:22
+#: tests/views/test_project_views.py:356
 msgid "Email alerts"
 msgstr "alertes par email"
 
@@ -637,7 +638,7 @@ msgstr "Ajouter cet admin"
 #: templates/high_ui/forms/update_company_operators.html:25
 #: templates/high_ui/forms/update_consumer.html:18
 #: templates/high_ui/forms/update_consumers.html:24
-#: templates/high_ui/forms/update_email_alert.html:103
+#: templates/high_ui/forms/update_email_alert.html:104
 #: templates/high_ui/forms/update_infos.html:121
 #: templates/high_ui/forms/update_issue.html:20
 #: templates/high_ui/forms/update_maintenance_type.html:88
@@ -790,7 +791,7 @@ msgstr "Modifier ces informations"
 #: templates/high_ui/forms/update_company_operators.html:25
 #: templates/high_ui/forms/update_consumer.html:18
 #: templates/high_ui/forms/update_consumers.html:24
-#: templates/high_ui/forms/update_email_alert.html:103
+#: templates/high_ui/forms/update_email_alert.html:104
 #: templates/high_ui/forms/update_infos.html:121
 #: templates/high_ui/forms/update_issue.html:20
 #: templates/high_ui/forms/update_maintenance_type.html:88
@@ -904,7 +905,17 @@ msgstr ""
 "Le manager <em>à prévenir</em> recevra une alerte par email lorsque les "
 "<em>heures restantes</em> du contrat atteindra le <em>seuil d'heures</em>."
 
-#: templates/high_ui/forms/update_email_alert.html:102
+#: templates/high_ui/forms/update_email_alert.html:89
+#, python-format
+msgid ""
+"Enable the option if you want that a %(company)s's manager receive an email "
+"alert when there are a few credits left on the %(counter)s contract."
+msgstr ""
+"Activez cette option si vous souhaitez qu'un manage de %(company)s"
+"reçoive une alerte par email lorsqu'il reste peu de crédits"
+"sur le contrat de %(counter)s."
+
+#: templates/high_ui/forms/update_email_alert.html:103
 msgid "Modify this configuration"
 msgstr "Modifier cette configuration"
 
@@ -1181,6 +1192,10 @@ msgstr "Ajout de {duration} supplémentaires"
 #: tests/views/test_admin_views.py:154
 msgid "Les modifications ont bien été prises en compte!"
 msgstr "Les modifications ont bien été prises en compte!"
+
+#: tests/views/test_project_views.py:344
+msgid "Email alert"
+msgstr "alerte par email"
 
 #: views/project.py:170
 msgid "Hour threshold"
