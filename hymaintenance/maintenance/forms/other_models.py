@@ -22,7 +22,7 @@ class MaintenanceTypeUpdateForm(forms.Form):
         )
         super().__init__(*args, **kwargs)
 
-    def update_maintenance_types_names(self, operator=None):
+    def update_maintenance_types_names(self):
         maintenance_types = MaintenanceType.objects.all().order_by("id")
         maintenance_types_names = (
             self.cleaned_data["maintenance_type1_name"],
