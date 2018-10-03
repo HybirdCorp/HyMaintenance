@@ -51,7 +51,7 @@ class ConsumerUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Upd
     template_name = "high_ui/forms/update_consumer.html"
     model = MaintenanceConsumer
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         return self.get_queryset().get(id=self.kwargs.get("pk"))
 
     def get_queryset(self):
