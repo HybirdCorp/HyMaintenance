@@ -49,7 +49,8 @@ class PrettyPrintMinutesTestCase(SimpleTestCase):
 
 
 class PrettyPrintContractCounterTestCase(TestCase):
-    def create_company_mtype_contract_and_issue(self, total_type):
+    @staticmethod
+    def create_company_mtype_contract_and_issue(total_type):
         company = CompanyFactory()
         maintenance_type = get_default_maintenance_type()
         contract = MaintenanceContractFactory(
