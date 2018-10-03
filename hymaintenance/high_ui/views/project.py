@@ -160,7 +160,7 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
         return context
 
 
-class EmailAlertUpdateView(IsAtLeastAllowedManagerTestMixin, ViewWithCompany, FormView):
+class EmailAlertUpdateView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, FormView):
     form_class = modelformset_factory(
         MaintenanceContract,
         fields=["email_alert", "number_hours_min", "recipient", "id"],
