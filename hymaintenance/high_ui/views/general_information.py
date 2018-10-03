@@ -17,7 +17,7 @@ class GeneralInformationUpdateView(IsAdminTestMixin, UpdateView):
     def get_success_url(self):
         return reverse("high_ui:admin")
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         return GeneralInformation.objects.all().first()
 
     def get_context_data(self, **kwargs):

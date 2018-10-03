@@ -30,7 +30,7 @@ class IssueUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Update
     template_name = "high_ui/forms/update_issue.html"
     model = MaintenanceIssue
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         return self.get_queryset().filter(company_issue_number=self.kwargs.get("company_issue_number")).first()
 
     def get_queryset(self):
@@ -50,7 +50,7 @@ class IssueDetailView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, DetailV
     template_name = "high_ui/issue_details.html"
     model = MaintenanceIssue
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         return MaintenanceIssue.objects.filter(
             company_issue_number=self.kwargs.get("company_issue_number"), company=self.company
         ).first()
