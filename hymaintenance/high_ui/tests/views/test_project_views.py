@@ -327,6 +327,34 @@ class ProjectDetailsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, _("Add hours"))
 
+    def test_no_email_alert_button(self):
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        self.contract1.total_type = CONSUMMED_TOTAL_TIME
+        self.contract1.save()
+        self.contract2.disabled = True
+        self.contract2.total_type = AVAILABLE_TOTAL_TIME
+        self.contract2.save()
+        self.contract3.disabled = True
+        self.contract3.save()
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, _("Email alert"))
+
+    def test_email_alert_button(self):
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        self.contract1.disabled = False
+        self.contract1.total_type = AVAILABLE_TOTAL_TIME
+        self.contract1.save()
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Email alerts"))
+
 
 class MonthDisplayInFrenchTestCase(TestCase):
     def test_month_display_in_french(self):
