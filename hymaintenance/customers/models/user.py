@@ -109,7 +109,7 @@ class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
         return get_full_name(first_name=self.first_name, last_name=self.last_name)
 
     def get_short_name(self):
-        "Returns the short name for the user."
+        """Returns the short name for the user."""
         return self.last_name
 
     def __str__(self):
