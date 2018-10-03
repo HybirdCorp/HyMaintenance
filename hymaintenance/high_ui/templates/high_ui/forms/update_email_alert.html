@@ -83,9 +83,10 @@
                         </div>
 
                         {{sub_form.id}}
-                        
+
                         <div class="help help-email-alert">
-                            <span class="counter-credit">{% blocktrans %}The <em>to contact</em> manager will recieve an email alert when the <em>remaining hours</em> of the contract reach the <em>hour threshold</em>.{% endblocktrans %}</span>
+                            <span class="email-alert-enabled">{% blocktrans %}The <em>to contact</em> manager will recieve an email alert when the <em>remaining hours</em> of the contract reach the <em>hour threshold</em>.{% endblocktrans %}</span>
+                            <span class="email-alert-disabled">{% blocktrans with company=company.name counter=sub_form.counter_name %}Enable the option if you want that a {{company}}'s manager receive an email alert when there are a few credits left on the {{counter}} contract.{% endblocktrans %}</span>
                         </div>
                     </div>
                     {% endfor %}
