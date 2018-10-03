@@ -98,7 +98,8 @@ class MaintenanceUserUpdateView(TemplateView):
     def get_object(self):
         return self.get_queryset().get(id=self.kwargs.get("pk"))
 
-    def get_password_form(self, *args, **kwargs):
+    @staticmethod
+    def get_password_form(*args, **kwargs):
         form = SetPasswordForm(*args, **kwargs)
         return form
 
@@ -143,10 +144,12 @@ class MaintenanceUserUpdateView(TemplateView):
 class ManagerUserUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, MaintenanceUserUpdateView):
     template_name = "high_ui/forms/update_manager.html"
 
-    def get_profile_form(self, *args, **kwargs):
+    @staticmethod
+    def get_profile_form(*args, **kwargs):
         return MaintenanceUserModelForm(*args, **kwargs)
 
-    def get_queryset(self):
+    @staticmethod
+    def get_queryset():
         return MaintenanceUser.objects.get_manager_users_queryset()
 
 
@@ -182,7 +185,8 @@ class AdminUserCreateView(IsAdminTestMixin, CreateView):
 class AdminUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
     template_name = "high_ui/forms/update_admin.html"
 
-    def get_profile_form(self, *args, **kwargs):
+    @staticmethod
+    def get_profile_form(*args, **kwargs):
         return StaffUserUpdateForm(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -191,7 +195,8 @@ class AdminUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
         context.update(get_context_data_footer())
         return context
 
-    def get_queryset(self):
+    @staticmethod
+    def get_queryset():
         return MaintenanceUser.objects.get_admin_users_queryset()
 
 
@@ -225,7 +230,8 @@ class OperatorUserCreateViewWithCompany(ViewWithCompany, IsAdminTestMixin, Creat
 class OperatorUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
     template_name = "high_ui/forms/update_operator.html"
 
-    def get_profile_form(self, *args, **kwargs):
+    @staticmethod
+    def get_profile_form(*args, **kwargs):
         return StaffUserUpdateForm(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -234,17 +240,20 @@ class OperatorUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
         context.update(get_context_data_footer())
         return context
 
-    def get_queryset(self):
+    @staticmethod
+    def get_queryset():
         return MaintenanceUser.objects.get_operator_users_queryset()
 
 
 class OperatorUserUpdateViewWithCompany(ViewWithCompany, IsAdminTestMixin, MaintenanceUserUpdateView):
     template_name = "high_ui/forms/update_company_operator.html"
 
-    def get_profile_form(self, *args, **kwargs):
+    @staticmethod
+    def get_profile_form(*args, **kwargs):
         return StaffUserUpdateForm(*args, **kwargs)
 
-    def get_queryset(self):
+    @staticmethod
+    def get_queryset():
         return MaintenanceUser.objects.get_active_operator_users_queryset()
 
 
@@ -313,13 +322,15 @@ class UserUpdateView(LoginRequiredMixin, TemplateView):
     def get_object(self):
         return self.request.user
 
-    def get_password_form(self, *args, **kwargs):
+    @staticmethod
+    def get_password_form(*args, **kwargs):
         form = PasswordChangeForm(*args, **kwargs)
         # Remove the (REALLY) annoying autofocus of this field
         form.fields["old_password"].widget.attrs["autofocus"] = False
         return form
 
-    def get_profile_form(self, is_staff, *args, **kwargs):
+    @staticmethod
+    def get_profile_form(is_staff, *args, **kwargs):
         if is_staff:
             return StaffUserProfileUpdateForm(*args, **kwargs)
         else:
