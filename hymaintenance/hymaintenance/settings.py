@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 
-DB_PORT = os.environ.setdefault("DB_PORT", "5432")
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -88,14 +86,14 @@ WSGI_APPLICATION = "hymaintenance.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
+DB_PORT = os.environ.setdefault("DJANGO_DB_PORT", "5432")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.getenv("DB", "bdhymaintenance"),
-        "USER": os.getenv("DB_USER", "hymaintenance"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "password"),
-        "HOST": os.getenv("DB_HOST", "localhost"),
+        "NAME": os.getenv("DJANGO_DB", "bdhymaintenance"),
+        "USER": os.getenv("DJANGO_DB_USER", "hymaintenance"),
+        "PASSWORD": os.getenv("DJANGO_DB_PASSWORD", "password"),
+        "HOST": os.getenv("DJANGO_DB_HOST", "localhost"),
         "PORT": DB_PORT,
     }
 }

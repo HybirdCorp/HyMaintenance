@@ -23,7 +23,8 @@ class ProjectCreateFormTestCase(TestCase):
     def setUpTestData(cls):
         cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
-    def __get_dict_for_post(self):
+    @staticmethod
+    def __get_dict_for_post():
         maintenance_types = MaintenanceType.objects.order_by("id")
         return {
             "company_name": "Black Mesa",
@@ -276,7 +277,8 @@ class ProjectUpdateFormTestCase(TestCase):
         cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.company, cls.contract1, cls.contract2, cls.contract3 = create_project()
 
-    def __get_dict_for_post(self):
+    @staticmethod
+    def __get_dict_for_post():
         return {
             "company_name": "Aperture Science",
             "contract1_visible": INACTIF_CONTRACT_INPUT,

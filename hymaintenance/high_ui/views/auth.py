@@ -12,14 +12,11 @@ from ..models import GeneralInformation
 
 
 def get_maintenance_types():
-    context = {}
-    context["maintenance_types"] = MaintenanceType.objects.all().order_by("id")
-    return context
+    return {"maintenance_types": MaintenanceType.objects.all().order_by("id")}
 
 
 def get_context_data_dashboard_header(user):
-    context = {}
-    context["operators_number"] = MaintenanceUser.objects.get_active_operator_users_queryset().count()
+    context = {"operators_number": MaintenanceUser.objects.get_active_operator_users_queryset().count()}
     if user.is_superuser:
         context["companies_number"] = Company.objects.all().count()
     else:
@@ -42,9 +39,7 @@ def get_context_data_project_header(user, company):
 
 
 def get_context_data_footer():
-    context = {}
-    context["general_info"] = GeneralInformation.objects.all().first()
-    return context
+    return {"general_info": GeneralInformation.objects.all().first()}
 
 
 class ViewWithCompany(View):
