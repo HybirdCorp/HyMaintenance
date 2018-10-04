@@ -119,8 +119,6 @@ class ProjectCreateForm(ProjectForm):
 
         form_contract2_visible = self.cleaned_data["contract2_visible"]
         contract2_disabled = True if form_contract2_visible == -1 else False
-        form_contract2_visible = self.cleaned_data["contract2_visible"]
-        contract2_disabled = True if form_contract2_visible == -1 else False
         contract2_visible = bool(form_contract2_visible) if form_contract2_visible != -1 else False
         contract2_number_hours = self.cleaned_data["contract2_number_hours"]
         contract2_total_type = self.cleaned_data["contract2_total_type"]
@@ -139,8 +137,6 @@ class ProjectCreateForm(ProjectForm):
             total_type=contract2_total_type,
         )
 
-        form_contract3_visible = self.cleaned_data["contract3_visible"]
-        contract3_disabled = True if form_contract3_visible == -1 else False
         form_contract3_visible = self.cleaned_data["contract3_visible"]
         contract3_disabled = True if form_contract3_visible == -1 else False
         contract3_visible = bool(form_contract3_visible) if form_contract3_visible != -1 else False
