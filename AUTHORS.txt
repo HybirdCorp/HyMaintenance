@@ -1,0 +1,7 @@
+Authors & Contributors
+======================
+
+* Morgane Alonso;
+* Jean-Michel Armand;
+* Rémy Rakic;
+* Hugo Smett;
