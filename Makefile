@@ -11,6 +11,9 @@ auto-isort:
 auto-pep8:
 	sh script_for_autopep8.sh
 
+black:
+	black -l120 hymaintenance
+
 run-lint:
 	flake8 --show-source hymaintenance
 	isort --recursive --atomic --check-only ./hymaintenance/
