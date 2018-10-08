@@ -340,6 +340,17 @@
                 }
             }
         }
+
+        document.getElementById('{{form.context_description_file.id_for_label}}-reset').onclick= function() {
+            var field= document.getElementById('{{form.context_description_file.id_for_label}}');
+            field.value= field.defaultValue;
+        };
+
+        document.getElementById('{{form.resolution_description_file.id_for_label}}-reset').onclick= function() {
+            var field= document.getElementById('{{form.resolution_description_file.id_for_label}}');
+            field.value= field.defaultValue;
+        };
+
     </script>
 </body>
 </html>

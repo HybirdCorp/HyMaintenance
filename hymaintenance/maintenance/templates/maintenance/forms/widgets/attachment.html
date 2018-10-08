@@ -1,9 +1,17 @@
-{% load print_files %}
+{% load i18n print_files %}
 
-<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %} />
 {% if widget.is_initial %}
-<div>{{ widget.initial_text }} : <a href="{{ widget.value.url }}">{{ widget.value|file_name }}</a></div>
-{% if not widget.required %}
-<input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}" />
-<label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>{% endif %}<br />
+<div>
+    <span>{{ widget.initial_text }} : <a href="{{ widget.value.url }}">{{ widget.value|file_name }}</a></span>
+
+    {% if not widget.required %}
+    <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
+    <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}" />
+    {% endif %}
+</div>
 {% endif %}
+
+<div>
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %} />
+<input type="button" id="{{widget.attrs.id}}-reset" value="{% trans "Reset"%}" style="float: right;"/>
+</div>

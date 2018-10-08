@@ -73,6 +73,7 @@ class MaintenanceIssue(models.Model):
     context_description_file = models.FileField(
         _("Attachment"),
         null=True,
+        blank=True,
         max_length=200,
         storage=MaintenanceIssueAttachmentStorage(),
         upload_to=_get_context_file_path,
@@ -80,6 +81,7 @@ class MaintenanceIssue(models.Model):
     resolution_description_file = models.FileField(
         _("Attachment"),
         null=True,
+        blank=True,
         max_length=200,
         storage=MaintenanceIssueAttachmentStorage(),
         upload_to=_get_resolution_file_path,
