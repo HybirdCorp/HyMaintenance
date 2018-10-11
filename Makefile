@@ -8,15 +8,19 @@ install:
 auto-isort:
 	isort --recursive --atomic ./hymaintenance/
 
-auto-pep8:
-	sh script_for_autopep8.sh
-
 black:
 	black -l120 hymaintenance
 
-run-lint:
+black-check:
+	black --check -l120 hymaintenance
+
+flake8:
 	flake8 --show-source hymaintenance
+
+isort:
 	isort --recursive --atomic --check-only ./hymaintenance/
+
+lint: flake8 isort black-check
 
 run-tests-and-coverage:
 	coverage run --branch --source=hymaintenance hymaintenance/manage.py test hymaintenance --settings hymaintenance.tests_settings
@@ -32,14 +36,15 @@ run-sqlite-only-tests:
 run-only-tests:
 	python hymaintenance/manage.py test hymaintenance --parallel=4 --settings=hymaintenance.tests_settings --noinput
 
-all_included: autopep8 run-lint run-tests-and-coverage
+all_included: black lint run-tests-and-coverage
 
 test: run-tests-and-coverage
 
-ci-test: run-lint run-sqlite-only-tests
+serve:
+	python hymaintenance/manage.py runserver --settings=hymaintenance.dev_settings
 
 migrate:
 	python hymaintenance/manage.py migrate --settings=hymaintenance.tests_settings
 
-.PHONY: all install all_included run-lint ci-test run-only-tests run-sqlite-only-tests auto-pep8 auto-isort test run-sqlite-tests-and-coverage run-tests-and-coverage
+.PHONY: all install all_included lint run-only-tests run-sqlite-only-tests auto-isort test run-sqlite-tests-and-coverage run-tests-and-coverage serve migrate
 
