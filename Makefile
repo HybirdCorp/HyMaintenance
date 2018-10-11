@@ -38,5 +38,8 @@ test: run-tests-and-coverage
 
 ci-test: run-lint run-sqlite-only-tests
 
+migrate:
+	python hymaintenance/manage.py migrate --settings=hymaintenance.tests_settings
+
 .PHONY: all install all_included run-lint ci-test run-only-tests run-sqlite-only-tests auto-pep8 auto-isort test run-sqlite-tests-and-coverage run-tests-and-coverage
 

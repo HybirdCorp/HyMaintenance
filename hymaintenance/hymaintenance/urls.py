@@ -22,44 +22,30 @@ from django.urls import path
 from django.urls import reverse_lazy
 from django.views.generic import RedirectView
 
-from high_ui.views.base import get_context_data_footer
-
 
 urlpatterns = [
     path("hymaintadmin/", admin.site.urls),
     path("high_ui/", include("high_ui.urls", namespace="high_ui")),
-    path(
-        "login",
-        auth_views.LoginView.as_view(template_name="auth/login.html", extra_context=get_context_data_footer()),
-        name="login",
-    ),
+    path("login", auth_views.LoginView.as_view(template_name="auth/login.html"), name="login"),
     path("logout", auth_views.logout_then_login, name="logout"),
     path(
         "password_reset",
-        auth_views.PasswordResetView.as_view(
-            template_name="auth/password_reset_form.html", extra_context=get_context_data_footer()
-        ),
+        auth_views.PasswordResetView.as_view(template_name="auth/password_reset_form.html"),
         name="password_reset",
     ),
     path(
         "password_reset/done/",
-        auth_views.PasswordResetDoneView.as_view(
-            template_name="auth/password_reset_done.html", extra_context=get_context_data_footer()
-        ),
+        auth_views.PasswordResetDoneView.as_view(template_name="auth/password_reset_done.html"),
         name="password_reset_done",
     ),
     path(
         "reset/<uidb64>/<token>/",
-        auth_views.PasswordResetConfirmView.as_view(
-            template_name="auth/password_reset_confirm.html", extra_context=get_context_data_footer()
-        ),
+        auth_views.PasswordResetConfirmView.as_view(template_name="auth/password_reset_confirm.html"),
         name="password_reset_confirm",
     ),
     path(
         "reset/done/",
-        auth_views.PasswordResetCompleteView.as_view(
-            template_name="auth/password_reset_complet.html", extra_context=get_context_data_footer()
-        ),
+        auth_views.PasswordResetCompleteView.as_view(template_name="auth/password_reset_complet.html"),
         name="password_reset_complete",
     ),
     path("", RedirectView.as_view(url=reverse_lazy("high_ui:dashboard"), permanent=False)),
