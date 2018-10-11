@@ -31,8 +31,8 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 120s
       - run: pip install tox
       - run: pip install coveralls
-      - run: tox -e "flake8"
       - run: tox -e "migrate"
+      - run: tox -e "lint"
       - run: tox -e "py36-django2.0"
       - run: coveralls
 #

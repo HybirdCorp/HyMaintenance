@@ -2,9 +2,7 @@
 from .settings import *  # noqa: F403
 
 
-MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa: F405
-
-ALLOWED_HOSTS = "*"
+ALLOWED_HOSTS = ["*"]
 DEBUG = True
 
 RAVEN = "raven.contrib.django.raven_compat"
