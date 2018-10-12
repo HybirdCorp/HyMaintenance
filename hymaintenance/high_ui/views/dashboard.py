@@ -6,7 +6,6 @@ from customers.models import Company
 from customers.models.user import get_companies_of_operator
 
 from .base import get_context_data_dashboard_header
-from .base import get_context_data_footer
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -15,7 +14,6 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
-        context.update(get_context_data_footer())
         return context
 
     def get(self, request, *args, **kwargs):
