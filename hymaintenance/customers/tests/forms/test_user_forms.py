@@ -1,19 +1,20 @@
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
-from ...forms import AdminUserCreateForm
-from ...forms import MaintenanceUserCreateForm
-from ...forms import MaintenanceUserModelForm
-from ...forms import MaintenanceUserProfileUpdateForm
-from ...forms import ManagerUserCreateForm
-from ...forms import ManagerUsersUpdateForm
-from ...forms import OperatorUserArchiveForm
-from ...forms import OperatorUserCreateForm
-from ...forms import OperatorUserCreateFormWithCompany
-from ...forms import OperatorUsersUpdateForm
-from ...forms import OperatorUserUnarchiveForm
-from ...forms import StaffUserProfileUpdateForm
-from ...forms import StaffUserUpdateForm
+from customers.forms.users.create_user import AdminUserCreateForm
+from customers.forms.users.create_user import ManagerUserCreateForm
+from customers.forms.users.create_user import OperatorUserCreateForm
+from customers.forms.users.create_user import OperatorUserCreateFormWithCompany
+from customers.forms.users.user_base import MaintenanceUserCreateForm
+from customers.forms.users.user_base import MaintenanceUserModelForm
+from customers.forms.users.user_base import StaffUserUpdateForm
+from customers.forms.users.user_profile import MaintenanceUserProfileUpdateForm
+from customers.forms.users.user_profile import StaffUserProfileUpdateForm
+from customers.forms.users_list.list import OperatorUserArchiveForm
+from customers.forms.users_list.list import OperatorUserUnarchiveForm
+from customers.forms.users_list.list_by_company import ManagerUsersUpdateForm
+from customers.forms.users_list.list_by_company import OperatorUsersUpdateForm
+
 from ...models import MaintenanceUser
 from ..factories import AdminUserFactory
 from ..factories import CompanyFactory
