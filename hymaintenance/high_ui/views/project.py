@@ -19,7 +19,6 @@ from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedManagerTestMixin
 from .base import ViewWithCompany
 from .base import get_context_data_dashboard_header
-from .base import get_context_data_footer
 from .base import get_maintenance_types
 
 
@@ -32,7 +31,6 @@ class ProjectCreateView(IsAdminTestMixin, FormView):
         context = super().get_context_data(**kwargs)
         context.update(get_maintenance_types())
         context.update(get_context_data_dashboard_header(self.user))
-        context.update(get_context_data_footer())
         return context
 
     def form_valid(self, form):
@@ -49,7 +47,6 @@ class ProjectUpdateView(IsAdminTestMixin, ViewWithCompany, FormView):
         context = super().get_context_data(**kwargs)
         context.update(get_maintenance_types())
         context.update(get_context_data_dashboard_header(self.user))
-        context.update(get_context_data_footer())
         return context
 
     def get_form_kwargs(self):
@@ -179,7 +176,6 @@ class EmailAlertUpdateView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Fo
         context = super().get_context_data(**kwargs)
         context.update(get_maintenance_types())
         context.update(get_context_data_dashboard_header(self.user))
-        context.update(get_context_data_footer())
         return context
 
     def get_form_kwargs(self):

@@ -8,8 +8,6 @@ from customers.models.user import get_companies_of_operator
 from maintenance.models import MaintenanceContract
 from maintenance.models import MaintenanceType
 
-from ..models import GeneralInformation
-
 
 def get_maintenance_types():
     return {"maintenance_types": MaintenanceType.objects.all().order_by("id")}
@@ -38,10 +36,6 @@ def get_context_data_project_header(user, company):
     return context
 
 
-def get_context_data_footer():
-    return {"general_info": GeneralInformation.objects.all().first()}
-
-
 class ViewWithCompany(View):
     slug_url_kwarg = "company_name"
     slug_field = "slug_name"
@@ -58,7 +52,6 @@ class ViewWithCompany(View):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         context.update(get_context_data_project_header(user, self.company))
-        context.update(get_context_data_footer())
         return context
 
 

@@ -1,5 +1,5 @@
-from .views.base import get_context_data_footer
+from .models import GeneralInformation
 
 
 def context_data_footer(request):
-    return get_context_data_footer()
+    return {"general_info": GeneralInformation.objects.all().first()}

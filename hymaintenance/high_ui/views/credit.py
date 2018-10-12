@@ -6,7 +6,6 @@ from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 
 from .base import IsAtLeastAllowedOperatorTestMixin
 from .base import ViewWithCompany
-from .base import get_context_data_footer
 
 
 class CreditCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
@@ -20,7 +19,6 @@ class CreditCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Creat
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["available_time_contracts"] = context["contracts"].filter(total_type=AVAILABLE_TOTAL_TIME)
-        context.update(get_context_data_footer())
         context.update({"hours_numbers": range(self.hours_step, 6 * self.hours_step, self.hours_step)})
         return context
 
