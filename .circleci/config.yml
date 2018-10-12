@@ -1,14 +1,15 @@
 version: 2
 
 jobs:
-#  lint:
-#    docker:
-#      - image: python:3.6
-#    steps:
-#      - checkout
-#      - run: pip install tox
-#      - run: tox -e "flake8"
-  build:
+  lint:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run: pip install tox
+      - run: tox -e "lint"
+
+  test-HyM:
     docker:
       - image: python:3.6
         environment:
@@ -32,12 +33,14 @@ jobs:
       - run: pip install tox
       - run: pip install coveralls
       - run: tox -e "migrate"
-      - run: tox -e "lint"
       - run: tox -e "py36-django2.0"
       - run: coveralls
-#
-#workflows:
-#  version: 2
-#  lint-and-test:
-#    jobs:
-#      - lint-and-py36:
+
+workflows:
+  version: 2
+  lint-and-test-HyM:
+    jobs:
+      - lint
+      - test-HyM:
+          requires:
+            - lint
