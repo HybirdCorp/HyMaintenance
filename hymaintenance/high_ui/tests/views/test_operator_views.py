@@ -9,8 +9,8 @@ from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 
-from ...views.users import OperatorUsersUpdateView
-from ...views.users import OperatorUsersUpdateViewWithCompany
+from ...views.users_list.update_user_list import OperatorUsersListUpdateView
+from ...views.users_list.update_user_list import OperatorUsersListUpdateViewWithCompany
 from ..utils import SetDjangoLanguage
 
 
@@ -273,7 +273,7 @@ class UpdateOperatorTestCase(TestCase):
             self.assertTrue(MaintenanceUser.objects.get(pk=self.operator.pk).check_password(password))
 
 
-class UpdateOperatorUsersTestCase(TestCase):
+class UpdateOperatorUsersListTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
 
@@ -289,7 +289,7 @@ class UpdateOperatorUsersTestCase(TestCase):
         factory = RequestFactory()
         request = factory.get(self.form_url)
         request.user = self.admin
-        view = OperatorUsersUpdateView()
+        view = OperatorUsersListUpdateView()
         view.request = request
         view.user = self.admin
         view.company = self.company
@@ -352,7 +352,7 @@ class UpdateOperatorUsersTestCase(TestCase):
         self.assertEqual(1, operators.count())
 
 
-class UpdateOperatorUsersWithCompanyTestCase(TestCase):
+class UpdateOperatorUsersListWithCompanyTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
 
@@ -372,7 +372,7 @@ class UpdateOperatorUsersWithCompanyTestCase(TestCase):
         factory = RequestFactory()
         request = factory.get(self.form_url)
         request.user = self.admin
-        view = OperatorUsersUpdateViewWithCompany()
+        view = OperatorUsersListUpdateViewWithCompany()
         view.request = request
         view.user = self.admin
         view.company = self.company

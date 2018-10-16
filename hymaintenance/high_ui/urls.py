@@ -15,23 +15,23 @@ from .views.project import EmailAlertUpdateView
 from .views.project import ProjectCreateView
 from .views.project import ProjectDetailsView
 from .views.project import ProjectUpdateView
-from .views.users import AdminUserCreateView
-from .views.users import AdminUserUpdateView
-from .views.users import ConsumerCreateView
-from .views.users import ConsumersUpdateView
-from .views.users import ConsumerUpdateView
-from .views.users import ManagerUserCreateView
-from .views.users import ManagerUsersUpdateView
-from .views.users import ManagerUserUpdateView
-from .views.users import OperatorUserCreateView
-from .views.users import OperatorUserCreateViewWithCompany
-from .views.users import OperatorUsersArchiveView
-from .views.users import OperatorUsersUnarchiveView
-from .views.users import OperatorUsersUpdateView
-from .views.users import OperatorUsersUpdateViewWithCompany
-from .views.users import OperatorUserUpdateView
-from .views.users import OperatorUserUpdateViewWithCompany
-from .views.users import UserUpdateView
+from .views.users.create_user import AdminUserCreateView
+from .views.users.create_user import ConsumerCreateView
+from .views.users.create_user import ManagerUserCreateView
+from .views.users.create_user import OperatorUserCreateView
+from .views.users.create_user import OperatorUserCreateViewWithCompany
+from .views.users.update_profile import UserUpdateView
+from .views.users.update_user import AdminUserUpdateView
+from .views.users.update_user import ConsumerUpdateView
+from .views.users.update_user import ManagerUserUpdateView
+from .views.users.update_user import OperatorUserUpdateView
+from .views.users.update_user import OperatorUserUpdateViewWithCompany
+from .views.users_list.update_user_list import ConsumersListUpdateView
+from .views.users_list.update_user_list import ManagerUsersListUpdateView
+from .views.users_list.update_user_list import OperatorUsersListArchiveView
+from .views.users_list.update_user_list import OperatorUsersListUnarchiveView
+from .views.users_list.update_user_list import OperatorUsersListUpdateView
+from .views.users_list.update_user_list import OperatorUsersListUpdateViewWithCompany
 
 
 app_name = "high_ui"
@@ -64,7 +64,7 @@ urlpatterns = [
     ),
     path(
         r"projects/<slug:company_name>/consumers/update/",
-        ConsumersUpdateView.as_view(),
+        ConsumersListUpdateView.as_view(),
         name="project-update_consumers",
     ),
     path(r"projects/<slug:company_name>/managers/", ManagerUserCreateView.as_view(), name="project-create_manager"),
@@ -75,7 +75,7 @@ urlpatterns = [
     ),
     path(
         r"projects/<slug:company_name>/managers/update/",
-        ManagerUsersUpdateView.as_view(),
+        ManagerUsersListUpdateView.as_view(),
         name="project-update_managers",
     ),
     path(r"operators/", OperatorUserCreateView.as_view(), name="create_operator"),
@@ -92,17 +92,17 @@ urlpatterns = [
     ),
     path(
         r"projects/<slug:company_name>/operators/update/",
-        OperatorUsersUpdateViewWithCompany.as_view(),
+        OperatorUsersListUpdateViewWithCompany.as_view(),
         name="project-update_operators",
     ),
-    path(r"operators/update/", OperatorUsersUpdateView.as_view(), name="update_operators"),
-    path(r"operators/archive/", OperatorUsersArchiveView.as_view(), name="archive_operators"),
-    path(r"operators/unarchive/", OperatorUsersUnarchiveView.as_view(), name="unarchive_operators"),
+    path(r"operators/update/", OperatorUsersListUpdateView.as_view(), name="update_operators"),
+    path(r"operators/archive/", OperatorUsersListArchiveView.as_view(), name="archive_operators"),
+    path(r"operators/unarchive/", OperatorUsersListUnarchiveView.as_view(), name="unarchive_operators"),
     path(r"account/update/", UserUpdateView.as_view(), name="update_user"),
     path(r"projects/<slug:company_name>/credits/", CreditCreateView.as_view(), name="project-create_credit"),
     path(r"admins/", AdminUserCreateView.as_view(), name="create_admin"),
     path(r"admins/<int:pk>/update/", AdminUserUpdateView.as_view(), name="update_admin"),
-    path(r"operators/archive/", OperatorUsersArchiveView.as_view(), name="archive_operators"),
+    path(r"operators/archive/", OperatorUsersListArchiveView.as_view(), name="archive_operators"),
     path(
         r"projects/<slug:company_name>/email-alert/", EmailAlertUpdateView.as_view(), name="project-update_email_alert"
     ),
