@@ -26,6 +26,9 @@ from .views.users.update_user import ConsumerUpdateView
 from .views.users.update_user import ManagerUserUpdateView
 from .views.users.update_user import OperatorUserUpdateView
 from .views.users.update_user import OperatorUserUpdateViewWithCompany
+from .views.users_list.update_users_list import AdminUsersListArchiveView
+from .views.users_list.update_users_list import AdminUsersListUnarchiveView
+from .views.users_list.update_users_list import AdminUsersListUpdateView
 from .views.users_list.update_users_list import ConsumersListUpdateView
 from .views.users_list.update_users_list import ManagerUsersListUpdateView
 from .views.users_list.update_users_list import OperatorUsersListArchiveView
@@ -102,7 +105,9 @@ urlpatterns = [
     path(r"projects/<slug:company_name>/credits/", CreditCreateView.as_view(), name="project-create_credit"),
     path(r"admins/", AdminUserCreateView.as_view(), name="create_admin"),
     path(r"admins/<int:pk>/update/", AdminUserUpdateView.as_view(), name="update_admin"),
-    path(r"operators/archive/", OperatorUsersListArchiveView.as_view(), name="archive_operators"),
+    path(r"admins/update/", AdminUsersListUpdateView.as_view(), name="update_admins"),
+    path(r"admins/archive/", AdminUsersListArchiveView.as_view(), name="archive_admins"),
+    path(r"admins/unarchive/", AdminUsersListUnarchiveView.as_view(), name="unarchive_admins"),
     path(
         r"projects/<slug:company_name>/email-alert/", EmailAlertUpdateView.as_view(), name="project-update_email_alert"
     ),

@@ -10,10 +10,10 @@ from customers.forms.users.user_base import MaintenanceUserModelForm
 from customers.forms.users.user_base import StaffUserUpdateForm
 from customers.forms.users.user_profile import MaintenanceUserProfileUpdateForm
 from customers.forms.users.user_profile import StaffUserProfileUpdateForm
-from customers.forms.users_list.list import OperatorUserArchiveForm
-from customers.forms.users_list.list import OperatorUserUnarchiveForm
-from customers.forms.users_list.list_by_company import ManagerUsersUpdateForm
-from customers.forms.users_list.list_by_company import OperatorUsersUpdateForm
+from customers.forms.users_list.list import OperatorUsersListArchiveForm
+from customers.forms.users_list.list import OperatorUsersListUnarchiveForm
+from customers.forms.users_list.list_by_company import ManagerUsersListUpdateForm
+from customers.forms.users_list.list_by_company import OperatorUsersListUpdateForm
 
 from ...models import MaintenanceUser
 from ..factories import AdminUserFactory
@@ -143,7 +143,7 @@ class UserUpdateFormTestCase(TestCase):
         self.assertEqual(self.email, user.email)
 
 
-class OperatorUserArchiveFormTestCase(TestCase):
+class OperatorUsersListArchiveFormTestCase(TestCase):
     def setUp(self):
         self.op1 = OperatorUserFactory(
             email="chell@aperture-science.com", password="azerty", is_active=False, first_name="Chell"
@@ -153,28 +153,28 @@ class OperatorUserArchiveFormTestCase(TestCase):
         )
 
     def test_archive_form_update_new_status(self):
-        form = OperatorUserArchiveForm(data={"active_operators": [self.op2]})
+        form = OperatorUsersListArchiveForm(data={"active_users": [self.op2]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertFalse(MaintenanceUser.objects.get(email="chell@aperture-science.com").is_active)
         self.assertFalse(MaintenanceUser.objects.get(email="gordon.freeman@blackmesa.com").is_active)
 
     def test_archive_form_dont_update_when_no_new_status(self):
-        form = OperatorUserArchiveForm(data={"active_operators": []})
+        form = OperatorUsersListArchiveForm(data={"active_users": []})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertFalse(MaintenanceUser.objects.get(email="chell@aperture-science.com").is_active)
         self.assertTrue(MaintenanceUser.objects.get(email="gordon.freeman@blackmesa.com").is_active)
 
     def test_unarchive_form_update_new_status(self):
-        form = OperatorUserUnarchiveForm(data={"inactive_operators": [self.op1]})
+        form = OperatorUsersListUnarchiveForm(data={"inactive_users": [self.op1]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertTrue(MaintenanceUser.objects.get(email="chell@aperture-science.com").is_active)
         self.assertTrue(MaintenanceUser.objects.get(email="gordon.freeman@blackmesa.com").is_active)
 
     def test_unarchive_form_dont_update_when_no_new_status(self):
-        form = OperatorUserUnarchiveForm(data={"inactive_operators": []})
+        form = OperatorUsersListUnarchiveForm(data={"inactive_users": []})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertFalse(MaintenanceUser.objects.get(email="chell@aperture-science.com").is_active)
@@ -190,11 +190,11 @@ class ManagerUsersUpdateFormTestCase(TestCase):
         self.m4 = ManagerUserFactory(is_active=False, company=self.company)
 
     def test_update_form_initial_values(self):
-        form = ManagerUsersUpdateForm(company=self.company)
+        form = ManagerUsersListUpdateForm(company=self.company)
         self.assertEqual(list(form.fields["users"].initial), [self.m1, self.m3])
 
     def test_update_form(self):
-        form = ManagerUsersUpdateForm(company=self.company, data={"users": [self.m1, self.m2]})
+        form = ManagerUsersListUpdateForm(company=self.company, data={"users": [self.m1, self.m2]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertTrue(MaintenanceUser.objects.get(id=self.m2.id).is_active)
@@ -216,12 +216,12 @@ class OperatorUsersUpdateFormTestCase(TestCase):
         self.op4 = OperatorUserFactory(is_active=True, first_name="Wheatley")
 
     def test_update_form_initial_values(self):
-        form = OperatorUsersUpdateForm(company=self.company)
+        form = OperatorUsersListUpdateForm(company=self.company)
         self.assertEqual(list(form.fields["users"].initial), [self.op2, self.op1])
 
     def test_update_form(self):
         self.assertEqual(list(self.company.managed_by.all().order_by("first_name")), [self.op2, self.op1])
-        form = OperatorUsersUpdateForm(company=self.company, data={"users": [self.op1, self.op3]})
+        form = OperatorUsersListUpdateForm(company=self.company, data={"users": [self.op1, self.op3]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertEqual(list(self.company.managed_by.all().order_by("first_name")), [self.op3, self.op1])

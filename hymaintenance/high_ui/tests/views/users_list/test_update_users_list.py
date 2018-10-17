@@ -206,10 +206,10 @@ class OperatorUsersListUpdateViewTestCase(TestCase):
         view.company = self.company
 
         context = view.get_context_data()
-        self.assertIn("active_operators_number", context.keys())
-        self.assertEqual(2, context["active_operators_number"])
-        self.assertIn("archived_operators_number", context.keys())
-        self.assertEqual(1, context["archived_operators_number"])
+        self.assertIn("active_users_number", context.keys())
+        self.assertEqual(2, context["active_users_number"])
+        self.assertIn("archived_users_number", context.keys())
+        self.assertEqual(1, context["archived_users_number"])
         self.assertIn("archive_form", context.keys())
         self.assertIn("unarchive_form", context.keys())
 
@@ -243,7 +243,7 @@ class OperatorUsersListUpdateViewTestCase(TestCase):
 
         self.client.login(username=self.admin.email, password="azerty")
         archive_url = reverse("high_ui:archive_operators")
-        response = self.client.post(archive_url, {"active_operators": op_id}, follow=True)
+        response = self.client.post(archive_url, {"active_users": op_id}, follow=True)
 
         self.assertRedirects(response, reverse("high_ui:dashboard"))
         operators = MaintenanceUser.objects.filter(email=op_email, is_active=False)
@@ -256,7 +256,7 @@ class OperatorUsersListUpdateViewTestCase(TestCase):
 
         self.client.login(username=self.admin.email, password="azerty")
         unarchive_url = reverse("high_ui:unarchive_operators")
-        response = self.client.post(unarchive_url, {"inactive_operators": op_id}, follow=True)
+        response = self.client.post(unarchive_url, {"inactive_users": op_id}, follow=True)
 
         self.assertRedirects(response, reverse("high_ui:dashboard"))
         operators = MaintenanceUser.objects.filter(email=op_email, is_active=True)
