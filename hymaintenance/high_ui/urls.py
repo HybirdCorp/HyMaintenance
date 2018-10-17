@@ -26,12 +26,12 @@ from .views.users.update_user import ConsumerUpdateView
 from .views.users.update_user import ManagerUserUpdateView
 from .views.users.update_user import OperatorUserUpdateView
 from .views.users.update_user import OperatorUserUpdateViewWithCompany
-from .views.users_list.update_user_list import ConsumersListUpdateView
-from .views.users_list.update_user_list import ManagerUsersListUpdateView
-from .views.users_list.update_user_list import OperatorUsersListArchiveView
-from .views.users_list.update_user_list import OperatorUsersListUnarchiveView
-from .views.users_list.update_user_list import OperatorUsersListUpdateView
-from .views.users_list.update_user_list import OperatorUsersListUpdateViewWithCompany
+from .views.users_list.update_users_list import ConsumersListUpdateView
+from .views.users_list.update_users_list import ManagerUsersListUpdateView
+from .views.users_list.update_users_list import OperatorUsersListArchiveView
+from .views.users_list.update_users_list import OperatorUsersListUnarchiveView
+from .views.users_list.update_users_list import OperatorUsersListUpdateView
+from .views.users_list.update_users_list import OperatorUsersListUpdateViewWithCompany
 
 
 app_name = "high_ui"
