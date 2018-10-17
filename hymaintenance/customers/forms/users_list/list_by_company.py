@@ -5,7 +5,7 @@ from toolkit.forms import UsersMultipleChoiceField
 from ...models import MaintenanceUser
 
 
-class OperatorUsersUpdateForm(forms.Form):
+class OperatorUsersListUpdateForm(forms.Form):
     users = UsersMultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, queryset=None)
 
     def __init__(self, *args, **kwargs):
@@ -26,7 +26,7 @@ class OperatorUsersUpdateForm(forms.Form):
                 operator.save()
 
 
-class ManagerUsersUpdateForm(forms.Form):
+class ManagerUsersListUpdateForm(forms.Form):
     users = UsersMultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, queryset=None)
 
     def __init__(self, *args, **kwargs):
