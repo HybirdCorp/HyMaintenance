@@ -17,7 +17,7 @@ class MaintenanceConsumerModelForm(forms.ModelForm):
         return super().save(commit)
 
 
-class MaintenanceConsumersUpdateForm(forms.Form):
+class MaintenanceConsumersListUpdateForm(forms.Form):
     users = forms.ModelMultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, queryset=None)
 
     def __init__(self, *args, **kwargs):

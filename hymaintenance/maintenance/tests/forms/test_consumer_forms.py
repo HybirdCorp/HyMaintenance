@@ -3,12 +3,12 @@ from django.test import TestCase
 from customers.tests.factories import CompanyFactory
 
 from ...forms.consumer import MaintenanceConsumerModelForm
-from ...forms.consumer import MaintenanceConsumersUpdateForm
+from ...forms.consumer import MaintenanceConsumersListUpdateForm
 from ...models import MaintenanceConsumer
 from ..factories import MaintenanceConsumerFactory
 
 
-class MaintenanceConsumersUpdateFormTestCase(TestCase):
+class MaintenanceConsumersListUpdateFormTestCase(TestCase):
     def setUp(self):
         self.company = CompanyFactory()
         self.c2 = MaintenanceConsumerFactory(name="Chell", is_used=False, company=self.company)
@@ -17,11 +17,11 @@ class MaintenanceConsumersUpdateFormTestCase(TestCase):
         MaintenanceConsumerFactory(name="Wheatley", is_used=False, company=self.company)
 
     def test_update_form_initial_values(self):
-        form = MaintenanceConsumersUpdateForm(company=self.company)
+        form = MaintenanceConsumersListUpdateForm(company=self.company)
         self.assertEqual(list(form.fields["users"].initial), [self.c1, self.c3])
 
     def test_update_form(self):
-        form = MaintenanceConsumersUpdateForm(company=self.company, data={"users": [self.c1, self.c2]})
+        form = MaintenanceConsumersListUpdateForm(company=self.company, data={"users": [self.c1, self.c2]})
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.assertTrue(MaintenanceConsumer.objects.get(name="Chell").is_used)
