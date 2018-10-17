@@ -10,8 +10,8 @@ from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceConsumer
 from maintenance.tests.factories import MaintenanceConsumerFactory
 
-from ....views.users_list.update_user_list import OperatorUsersListUpdateView
-from ....views.users_list.update_user_list import OperatorUsersListUpdateViewWithCompany
+from ....views.users_list.update_users_list import OperatorUsersListUpdateView
+from ....views.users_list.update_users_list import OperatorUsersListUpdateViewWithCompany
 
 
 class ConsumersListUpdateViewTestCase(TestCase):
