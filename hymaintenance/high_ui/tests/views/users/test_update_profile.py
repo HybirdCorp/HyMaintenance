@@ -7,10 +7,10 @@ from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 
-from ..utils import SetDjangoLanguage
+from ...utils import SetDjangoLanguage
 
 
-class UpdateAccountTestCase(TestCase):
+class UpdateProfileTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
