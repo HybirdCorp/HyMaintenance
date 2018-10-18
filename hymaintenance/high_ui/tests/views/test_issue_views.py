@@ -21,6 +21,8 @@ from maintenance.tests.factories import MaintenanceConsumerFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import create_project
 
+from ..utils import SetDjangoLanguage
+
 
 def create_temporary_file(content=b"I am not empty", directory=None):
     tmp_file = NamedTemporaryFile(dir=directory, delete=True)
@@ -143,15 +145,16 @@ class IssueCreateViewTestCase(TestCase):
 
     def test_there_are_attachment_reset_buttons(self):
         self.client.login(username=self.admin.email, password="azerty")
-        response = self.client.get(self.form_url, follow=True)
-        self.assertContains(
-            response,
-            '<input type="button" id="id_context_description_file-reset" value="Reset" style="float: right;"/>',
-        )
-        self.assertContains(
-            response,
-            '<input type="button" id="id_resolution_description_file-reset" value="Reset" style="float: right;"/>',
-        )
+        with SetDjangoLanguage("en"):
+            response = self.client.get(self.form_url, follow=True)
+            self.assertContains(
+                response,
+                '<input type="button" id="id_context_description_file-reset" value="Reset" style="float: right;"/>',
+            )
+            self.assertContains(
+                response,
+                '<input type="button" id="id_resolution_description_file-reset" value="Reset" style="float: right;"/>',
+            )
 
 
 class IssueUpdateViewTestCase(TestCase):
@@ -268,15 +271,16 @@ class IssueUpdateViewTestCase(TestCase):
 
     def test_there_are_attachment_reset_buttons(self):
         self.client.login(username=self.admin.email, password="azerty")
-        response = self.client.get(self.form_url, follow=True)
-        self.assertContains(
-            response,
-            '<input type="button" id="id_context_description_file-reset" value="Reset" style="float: right;"/>',
-        )
-        self.assertContains(
-            response,
-            '<input type="button" id="id_resolution_description_file-reset" value="Reset" style="float: right;"/>',
-        )
+        with SetDjangoLanguage("en"):
+            response = self.client.get(self.form_url, follow=True)
+            self.assertContains(
+                response,
+                '<input type="button" id="id_context_description_file-reset" value="Reset" style="float: right;"/>',
+            )
+            self.assertContains(
+                response,
+                '<input type="button" id="id_resolution_description_file-reset" value="Reset" style="float: right;"/>',
+            )
 
     def test_there_are_attachment_delete_checkbox(self):
         test_file_name = "the_cake.lie"
