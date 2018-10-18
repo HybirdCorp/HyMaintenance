@@ -141,6 +141,18 @@ class IssueCreateViewTestCase(TestCase):
             self.assertEqual(test_file_content, open(issue.resolution_description_file.path, "rb").read())
             self.assertRedirects(response, self.company.get_absolute_url())
 
+    def test_there_are_attachment_reset_buttons(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+        self.assertContains(
+            response,
+            '<input type="button" id="id_context_description_file-reset" value="Reset" style="float: right;"/>',
+        )
+        self.assertContains(
+            response,
+            '<input type="button" id="id_resolution_description_file-reset" value="Reset" style="float: right;"/>',
+        )
+
 
 class IssueUpdateViewTestCase(TestCase):
     @classmethod
@@ -183,6 +195,18 @@ class IssueUpdateViewTestCase(TestCase):
         cls.tmp_directory.cleanup()
         super().tearDownClass()
 
+    def __get_dict_for_post(self, subject, description):
+        return {
+            "consumer_who_ask": self.consumer.pk,
+            "incoming_channel": self.channel.pk,
+            "subject": subject,
+            "date": "2017-03-22",
+            "contract": self.contract.pk,
+            "description": description,
+            "duration_type": "hours",
+            "duration": 2,
+        }
+
     def test_manager_cannot_get_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
 
@@ -220,20 +244,7 @@ class IssueUpdateViewTestCase(TestCase):
 
         self.client.login(username=self.admin.email, password="azerty")
 
-        response = self.client.post(
-            self.form_url,
-            {
-                "consumer_who_ask": self.consumer.pk,
-                "incoming_channel": self.channel.pk,
-                "subject": subject,
-                "date": "2017-03-22",
-                "contract": self.contract.pk,
-                "description": description,
-                "duration_type": "hours",
-                "duration": 2,
-            },
-            follow=True,
-        )
+        response = self.client.post(self.form_url, self.__get_dict_for_post(subject, description), follow=True)
 
         self.assertEqual(response.status_code, 200)
         success_url = reverse(
@@ -254,6 +265,35 @@ class IssueUpdateViewTestCase(TestCase):
             description=description,
         )
         self.assertEqual(1, issues.count())
+
+    def test_there_are_attachment_reset_buttons(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+        self.assertContains(
+            response,
+            '<input type="button" id="id_context_description_file-reset" value="Reset" style="float: right;"/>',
+        )
+        self.assertContains(
+            response,
+            '<input type="button" id="id_resolution_description_file-reset" value="Reset" style="float: right;"/>',
+        )
+
+    def test_there_are_attachment_delete_checkbox(self):
+        test_file_name = "the_cake.lie"
+        with TemporaryFile() as tmp_file:
+            self.issue.context_description_file.save(test_file_name, File(tmp_file), save=True)
+            self.issue.resolution_description_file.save(test_file_name, File(tmp_file), save=True)
+
+            self.client.login(username=self.admin.email, password="azerty")
+            response = self.client.get(self.form_url, follow=True)
+            self.assertContains(
+                response,
+                '<input type="checkbox" name="context_description_file-clear" id="context_description_file-clear_id" />',  # noqa : E501
+            )
+            self.assertContains(
+                response,
+                '<input type="checkbox" name="resolution_description_file-clear" id="resolution_description_file-clear_id" />',  # noqa : E501
+            )
 
 
 class IssueDetailViewTestCase(TestCase):
