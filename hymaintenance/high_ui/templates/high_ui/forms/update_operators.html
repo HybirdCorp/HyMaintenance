@@ -1,122 +1,54 @@
-{% load static %}
+{% extends 'high_ui/forms/update_users.html' %}
 {% load i18n print_fields %}
-<!DOCTYPE html>
-<html>
-<head>
+
+{% block page_title %}
 <title>Maintenance {{general_info.name}} &mdash; {% trans "Modify operator list" %}</title> {# TMP #}
-<meta charset="utf-8" />
-<link rel="stylesheet" href="/static/css/normalize.css" />
-<link rel="stylesheet" href="/static/css/style.css" />
-<link rel="stylesheet" href="/static/css/form.css" />
-<link rel="stylesheet" href="/static/css/create.css" />
-<link rel="stylesheet" href="/static/css/edit-list.css" />
-<link rel="stylesheet" href="/static/css/edit-operators.css" />
-</head>
-<body>
-    {% include "high_ui/dashboard_header.html" %}
-    <div class="content-container">
-        <div class="content">
-            <div class="form-content">
-                <div class="form-intro">
-                    <div class="group-title-container">
-                        <div class="group-title">{% blocktrans with name=general_info.name %}Modify operator list of {{name}}{% endblocktrans %}</div>
-                    </div>
-                </div>
-                {% if active_operators_number %}
-                <form action="{% url 'high_ui:archive_operators' %}" method="post">
-                    {% csrf_token %}
-                    <div class="form-group archive-group form-group-collapsable">
-                        <div class="group-title-container">
-                            <div class="group-title" title="{% trans "Display/hide active-intervenant list" %}">{% trans "Archive operator" %}</div>
-                        </div>
+{% endblock %}
 
-                        <div class="form-group-collapsable-content">
-                            {% if active_operators_number > 1%}
-                            <span class="list-intro">{% blocktrans with name=general_info.name %}Select operators that you want to be inactive, among the {{active_operators_number}} active {{name}}'s operators:{% endblocktrans %}</span>
-                            {% else %}
-                            <span class="list-intro">{% blocktrans with name=general_info.name %}Select the single {{name}}'s active operator to turn them archived:{% endblocktrans %}</span>
-                            {% endif %}
-                            <ul class="checkbox-list">
-                            {% for value, label in archive_form.active_operators.field.choices %}
-                                <li>
-                                    <label>
-                                        <input value="{{value}}" name="active_operators" type="checkbox"> 
-                                        <div class="item-container">
-                                            <a href='{% url 'high_ui:update_operator' pk=value %}'>
-                                            <div class="item-name">
-                                                {{label}}
-                                            </div>
-                                            <div class="item-description">{% trans "Operator" %} <span class="typography dash">&mdash;</span> {{value|print_operator_projects}}</div>
-                                            </a>
-                                        </div>
-                                    </label>
-                                </li>
-                            {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="form-footer">
-                        <button type="submit">{% trans "Archive this operators" %}</button>
-                        <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Change nothing" %}</a></span>
-                    </div>
-                </form>
-                {% endif %}
-                {% if archived_operators_number %}
-                <form action="{% url 'high_ui:unarchive_operators' %}" method="post">
-                    {% csrf_token %}
-                    <div class="form-group reactivate-form form-group-collapsable form-group-collapsed">
-                        <div class="group-title-container">
-                            <div class="group-title" title="Afficher/cacher la liste des intervenants archivés">{% trans "Reactive archived operators" %}</div>
-                        </div>
+{% block form_title %}
+<div class="group-title">{% blocktrans with name=general_info.name %}Modify operator list of {{name}}{% endblocktrans %}</div>
+{% endblock %}
 
-                        <div class="form-group-collapsable-content">
-                            {% if archived_operators_number > 1%}
-                            <span class="list-intro">{% blocktrans with name=general_info.name %}Select operators that you want to be active, among the {{archived_operators_number}} archived {{name}}'s operators:{% endblocktrans %}</span>
-                            {% else %}
-                            <span class="list-intro">{% blocktrans with name=general_info.name %}Select the single {{name}}'s archived operator to turn them active:{% endblocktrans %}</span>
-                            {% endif %}
-                            <ul class="checkbox-list">
-                            {% for value, label in unarchive_form.inactive_operators.field.choices %}
-                                <li>
-                                    <label>
-                                        <input value="{{value}}" name="inactive_operators" type="checkbox"> 
-                                        <div class="item-container">
-                                            <div class="item-name">
-                                                {{label}}
-                                            </div>
-                                            <div class="item-description">Operator <span class="typography dash">&mdash;</span> {{value|print_operator_projects}}</div>
-                                        </div>
-                                    </label>
-                                </li>
-                            {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="form-footer">
-                        <button type="submit">{% trans "Enable operators" %}</button>
-                        <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Change nothing" %}</a></span>
-                    </div>
-                </form>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    {% include "high_ui/footer.html" with show_menu_client=True %}
-    <script>
-        var collapsableTriggers = document.querySelectorAll("form .group-title");
-        for (var i = 0; i < collapsableTriggers.length; ++i) {
-            var trigger = collapsableTriggers[i];
-            trigger.addEventListener("click", function(e) {
-                var className = "form-group-collapsed";
-                
-                var collapsable = this.parentElement.parentElement;                
-                if (collapsable.className.indexOf(className) === -1) {
-                    collapsable.className += " " + className;
-                } else {
-                    collapsable.className = collapsable.className.replace(className, "");
-                }
-            }, false);
-        }
-    </script>
-</body>
-</html>
+{% block archive_form_post_url %}
+{% url 'high_ui:archive_operators' %}
+{% endblock %}
+
+{% block archive_form_title %}
+<div class="group-title" title="{% trans "Display/hide active-operator list" %}">{% trans "Archive operators" %}</div>
+{% endblock %}
+
+{% block archive_form_multiple_users_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select operators that you want to be inactive, among the {{active_users_number}} active {{name}}'s operators:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block archive_form_single_user_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select the single {{name}}'s active operator to turn them archived:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block archive_form_user_link %}
+{% url 'high_ui:update_operator' pk=value %}
+{% endblock %}
+
+{% block archive_form_footer %}
+<button type="submit">{% trans "Archive this operators" %}</button>
+{% endblock %}
+
+{% block unarchive_form_post_url %}
+{% url 'high_ui:unarchive_operators' %}
+{% endblock %}
+
+{% block unarchive_form_title %}
+<div class="group-title" title="{% trans "Display/hide archived-operator list" %}">{% trans "Reactive archived operators" %}</div>
+{% endblock %}
+
+{% block unarchive_form_multiple_users_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select operators that you want to be active, among the {{archived_users_number}} archived {{name}}'s operators:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block unarchive_form_single_user_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select the single {{name}}'s archived operator to turn them active:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block unarchive_form_footer %}
+<button type="submit">{% trans "Enable operators" %}</button>
+{% endblock %}

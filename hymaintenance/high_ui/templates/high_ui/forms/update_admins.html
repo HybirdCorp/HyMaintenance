@@ -1,0 +1,54 @@
+{% extends 'high_ui/forms/update_users.html' %}
+{% load i18n print_fields %}
+
+{% block page_title %}
+<title>Maintenance {{general_info.name}} &mdash; {% trans "Modify administrator list" %}</title> {# TMP #}
+{% endblock %}
+
+{% block form_title %}
+<div class="group-title">{% blocktrans with name=general_info.name %}Modify administrator list of {{name}}{% endblocktrans %}</div>
+{% endblock %}
+
+{% block archive_form_post_url %}
+{% url 'high_ui:archive_admins' %}
+{% endblock %}
+
+{% block archive_form_title %}
+<div class="group-title" title="{% trans "Display/hide active-administrator list" %}">{% trans "Archive administrators" %}</div>
+{% endblock %}
+
+{% block archive_form_multiple_users_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select administrators that you want to be inactive, among the {{active_users_number}} active {{name}}'s administrators:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block archive_form_single_user_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select the single {{name}}'s active admin to turn them archived:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block archive_form_user_link %}
+{% url 'high_ui:update_admin' pk=value %}
+{% endblock %}
+
+{% block archive_form_footer %}
+<button type="submit">{% trans "Archive this administrators" %}</button>
+{% endblock %}
+
+{% block unarchive_form_post_url %}
+{% url 'high_ui:unarchive_admins' %}
+{% endblock %}
+
+{% block unarchive_form_title %}
+<div class="group-title" title="{% trans "Display/hide archived-administrator list"%}">{% trans "Reactive archived administrators" %}</div>
+{% endblock %}
+
+{% block unarchive_form_multiple_users_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select administrators that you want to be active, among the {{archived_users_number}} archived {{name}}'s administrators:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block unarchive_form_single_user_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select the single {{name}}'s archived administrator to turn them active:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block unarchive_form_footer %}
+<button type="submit">{% trans "Enable administrators" %}</button>
+{% endblock %}
