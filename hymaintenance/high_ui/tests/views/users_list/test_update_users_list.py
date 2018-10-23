@@ -10,6 +10,7 @@ from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceConsumer
 from maintenance.tests.factories import MaintenanceConsumerFactory
 
+from ....views.users_list.update_users_list import AdminUsersListUpdateView
 from ....views.users_list.update_users_list import OperatorUsersListUpdateView
 from ....views.users_list.update_users_list import OperatorUsersListUpdateViewWithCompany
 
@@ -261,3 +262,82 @@ class OperatorUsersListUpdateViewTestCase(TestCase):
         self.assertRedirects(response, reverse("high_ui:dashboard"))
         operators = MaintenanceUser.objects.filter(email=op_email, is_active=True)
         self.assertEqual(1, operators.count())
+
+
+class AdminUsersListUpdateViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+
+        cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        cls.company = CompanyFactory()
+        cls.form_url = reverse("high_ui:update_admins")
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_get_context_data(self):
+        AdminUserFactory(is_active=True)
+        AdminUserFactory(is_active=False)
+
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = AdminUsersListUpdateView()
+        view.request = request
+        view.user = self.admin
+        view.company = self.company
+
+        context = view.get_context_data()
+        self.assertIn("active_users_number", context.keys())
+        self.assertEqual(2, context["active_users_number"])
+        self.assertIn("archived_users_number", context.keys())
+        self.assertEqual(1, context["archived_users_number"])
+        self.assertIn("archive_form", context.keys())
+        self.assertIn("unarchive_form", context.keys())
+
+    def test_manager_cannot_get_update_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_operator_of_the_company_cannot_get_update_form(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_admin_can_get_update_operator_form(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_archive_operators_form(self):
+        op_id = 2
+        op_email = "chell@aperture-science.com"
+        AdminUserFactory(email=op_email, password="azerty", is_active=True, id=op_id)
+
+        self.client.login(username=self.admin.email, password="azerty")
+        archive_url = reverse("high_ui:archive_admins")
+        response = self.client.post(archive_url, {"active_users": op_id}, follow=True)
+
+        self.assertRedirects(response, reverse("high_ui:admin"))
+        admins = MaintenanceUser.objects.filter(email=op_email, is_active=False)
+        self.assertEqual(1, admins.count())
+
+    def test_post_unarchive_operators_form(self):
+        op_id = 2
+        op_email = "chell@aperture-science.com"
+        AdminUserFactory(email=op_email, password="azerty", is_active=False, id=op_id)
+
+        self.client.login(username=self.admin.email, password="azerty")
+        unarchive_url = reverse("high_ui:unarchive_admins")
+        response = self.client.post(unarchive_url, {"inactive_users": op_id}, follow=True)
+
+        self.assertRedirects(response, reverse("high_ui:admin"))
+        admins = MaintenanceUser.objects.filter(email=op_email, is_active=True)
+        self.assertEqual(1, admins.count())
