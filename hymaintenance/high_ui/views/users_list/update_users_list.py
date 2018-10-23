@@ -116,7 +116,7 @@ class AdminUsersListUpdateView(IsAdminTestMixin, TemplateView):
 
 class AdminUsersListArchiveView(IsAdminTestMixin, FormView):
     form_class = AdminUsersListArchiveForm
-    success_url = "/"
+    success_url = "/high_ui/admin/"  # TMP
 
     def form_valid(self, form):
         form.save()
@@ -125,7 +125,7 @@ class AdminUsersListArchiveView(IsAdminTestMixin, FormView):
 
 class AdminUsersListUnarchiveView(IsAdminTestMixin, FormView):
     form_class = AdminUsersListUnarchiveForm
-    success_url = "/"
+    success_url = "/high_ui/admin/"  # TMP
 
     def form_valid(self, form):
         form.save()
