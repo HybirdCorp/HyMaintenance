@@ -49,9 +49,21 @@ class DashboardTestCase(TestCase):
         self.assertContains(response, "Op2 Op2")
         self.assertNotContains(response, "Op1 Op1")
 
+    def test_operator_admin_user_can_seen_all_companies(self):
+        admin = AdminUserFactory(email="other.man@blackmesa.com", password="azerty", is_staff=True)
+        other_company = CompanyFactory(name="Black Mesa")
+
+        self.client.login(username=admin.email, password="azerty")
+
+        response = self.client.get(self.page_url)
+
+        self.assertEqual(0, other_company.managed_by.count())
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.company.name)
+        self.assertContains(response, other_company.name)
+
     def test_admin_user_can_seen_all_companies(self):
-        admin = AdminUserFactory(email="other.man@blackmesa.com", password="azerty")
-        admin.operator_for.add(self.company)
+        admin = AdminUserFactory(email="other.man@blackmesa.com", password="azerty", is_staff=False)
         other_company = CompanyFactory(name="Black Mesa")
 
         self.client.login(username=admin.email, password="azerty")

@@ -18,7 +18,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         self.user = request.user
-        if self.user.is_staff:
+        if self.user.is_superuser or self.user.is_staff:
             context = self.get_context_data(**kwargs)
             if self.user.is_superuser:
                 context["companies"] = Company.objects.all()
