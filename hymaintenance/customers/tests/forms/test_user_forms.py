@@ -5,9 +5,10 @@ from customers.forms.users.create_user import AdminUserCreateForm
 from customers.forms.users.create_user import ManagerUserCreateForm
 from customers.forms.users.create_user import OperatorUserCreateForm
 from customers.forms.users.create_user import OperatorUserCreateFormWithCompany
+from customers.forms.users.update_user import AdminUserUpdateForm
+from customers.forms.users.update_user import OperatorUserUpdateForm
 from customers.forms.users.user_base import MaintenanceUserCreateForm
 from customers.forms.users.user_base import MaintenanceUserModelForm
-from customers.forms.users.user_base import StaffUserUpdateForm
 from customers.forms.users.user_profile import MaintenanceUserProfileUpdateForm
 from customers.forms.users.user_profile import StaffUserProfileUpdateForm
 from customers.forms.users_list.list import OperatorUsersListArchiveForm
@@ -120,6 +121,7 @@ class UserUpdateFormTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.company = CompanyFactory()
+        cls.admin = AdminUserFactory(email="wheatley@aperture-science.com", is_staff=False)
         cls.operator = OperatorUserFactory(email="glados@aperture-science.com")
         cls.manager = ManagerUserFactory(email="chell@aperture-science.com")
         cls.email = "gordon.freeman@blackmesa.com"
@@ -135,12 +137,22 @@ class UserUpdateFormTestCase(TestCase):
         user = MaintenanceUser.objects.get(pk=self.manager.pk)
         self.assertEqual(self.email, user.email)
 
-    def test_if_update_staff_user_form_works(self):
-        form = StaffUserUpdateForm(instance=self.operator, data=self.__get_dict_for_post())
+    def test_if_update_operator_user_form_works(self):
+        form = OperatorUserUpdateForm(instance=self.operator, data=self.__get_dict_for_post())
         self.assertTrue(form.is_valid())
         self.assertTrue(form.save())
         user = MaintenanceUser.objects.get(pk=self.operator.pk)
         self.assertEqual(self.email, user.email)
+
+    def test_if_update_admin_user_form_works(self):
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["is_staff"] = True
+        form = AdminUserUpdateForm(instance=self.admin, data=dict_for_post)
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        user = MaintenanceUser.objects.get(pk=self.admin.pk)
+        self.assertEqual(self.email, user.email)
+        self.assertTrue(user.is_staff)
 
 
 class OperatorUsersListArchiveFormTestCase(TestCase):
