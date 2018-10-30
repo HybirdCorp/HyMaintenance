@@ -2,7 +2,7 @@
 from django.template import Library
 from django.utils.html import format_html
 from django.utils.html import mark_safe
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from customers.models.user import MaintenanceUser
 from customers.models.user import get_companies_of_operator
@@ -38,10 +38,10 @@ def print_operator_projects(operator_id):
     if projects:
         projects_names = [project.name for project in projects]
         if len(projects_names) == 1:
-            return _("project:") + " " + projects_names[0]
+            return mark_safe(_("project:") + " " + projects_names[0])
         else:
-            return _("projects:") + " " + ", ".join(projects_names)
-    return _("project:") + " " + _("none")
+            return mark_safe(_("projects:") + " " + ", ".join(projects_names))
+    return mark_safe(_("project:") + " " + _("none"))
 
 
 @register.filter
