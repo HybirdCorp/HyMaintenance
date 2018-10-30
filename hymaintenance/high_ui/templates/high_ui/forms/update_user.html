@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="/static/css/create.css" />
 <link rel="stylesheet" href="/static/css/edit-list.css" />
 <link rel="stylesheet" href="/static/css/edit-operators.css" />
+<link rel="stylesheet" href="/static/css/create-project.css" />
 </head>
 <body>
 {% block header %}{% endblock %}
@@ -97,6 +98,26 @@
                                 {% for error in profile_form.phone.errors %}
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% if profile_form.is_staff %}
+                            <div class="form-row {% if profile_form.is_staff.errors %}form-error{% endif %}">
+                                {% if profile_form.is_staff.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
+
+                                {{profile_form.is_staff}}&nbsp;<label for="{{profile_form.is_staff.id_for_label}}">{% trans "Is operator" %}</label>
+
+                                {% if profile_form.is_staff.errors %}
+                                </div>
+                                {% endif %}
+
+                                {% for error in profile_form.is_staff.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="help help-activation">
+                                <span class='activation-active'>{% trans "Checks it, if the administrator is also an operator and will manage some projects." %}</span>
                             </div>
                             {% endif %}
 

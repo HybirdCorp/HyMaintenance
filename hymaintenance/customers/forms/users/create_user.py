@@ -15,10 +15,9 @@ class ManagerUserCreateForm(MaintenanceUserCreateForm):
 class AdminUserCreateForm(MaintenanceUserCreateForm):
     class Meta:
         model = MaintenanceUser
-        fields = ("first_name", "last_name", "phone", "email")
+        fields = ("first_name", "last_name", "phone", "email", "is_staff")
 
     def fill_user(self, user):
-        user.is_staff = True
         user.is_superuser = True
 
 

@@ -5,8 +5,9 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
+from customers.forms.users.update_user import AdminUserUpdateForm
+from customers.forms.users.update_user import OperatorUserUpdateForm
 from customers.forms.users.user_base import MaintenanceUserModelForm
-from customers.forms.users.user_base import StaffUserUpdateForm
 from customers.models.user import MaintenanceUser
 from maintenance.forms.consumer import MaintenanceConsumerModelForm
 from maintenance.models import MaintenanceConsumer
@@ -101,7 +102,7 @@ class OperatorUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
 
     @staticmethod
     def get_profile_form(*args, **kwargs):
-        return StaffUserUpdateForm(*args, **kwargs)
+        return OperatorUserUpdateForm(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -118,7 +119,7 @@ class OperatorUserUpdateViewWithCompany(ViewWithCompany, IsAdminTestMixin, Maint
 
     @staticmethod
     def get_profile_form(*args, **kwargs):
-        return StaffUserUpdateForm(*args, **kwargs)
+        return OperatorUserUpdateForm(*args, **kwargs)
 
     @staticmethod
     def get_queryset():
@@ -130,7 +131,7 @@ class AdminUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
 
     @staticmethod
     def get_profile_form(*args, **kwargs):
-        return StaffUserUpdateForm(*args, **kwargs)
+        return AdminUserUpdateForm(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
