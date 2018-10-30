@@ -54,9 +54,3 @@ class MaintenanceUserCreateForm(MaintenanceUserModelForm):
         if commit:
             user.save()
         return user
-
-
-class StaffUserUpdateForm(MaintenanceUserModelForm):
-    class Meta:
-        model = MaintenanceUser
-        fields = ("first_name", "last_name", "phone", "email")
