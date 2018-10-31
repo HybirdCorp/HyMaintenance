@@ -46,11 +46,17 @@ class MaintenanceUserTestCase(TestCase):
         )
         self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=False).count())
 
-    def test_i_can_create_a_maintenance_superuser(self):
-        MaintenanceUser.objects.create_superuser(
+    def test_i_can_create_an_admin_user(self):
+        MaintenanceUser.objects.create_admin_user(
             "gordon.freeman@blackmesa.com", "azerty", first_name="Gordon", last_name="Freeman"
         )
-        self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=True).count())
+        self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=True, is_staff=False).count())
+
+    def test_i_can_create_an_admin_operator_user(self):
+        MaintenanceUser.objects.create_admin_operator_user(
+            "gordon.freeman@blackmesa.com", "azerty", first_name="Gordon", last_name="Freeman"
+        )
+        self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=True, is_staff=True).count())
 
     def test_get_operator_by_primary_key(self):
         self.assertEqual(0, MaintenanceUser.objects.all().count())
@@ -67,18 +73,32 @@ class MaintenanceUserTestCase(TestCase):
         self.assertEqual(user.pk, MaintenanceUser.objects.get_admin_users_queryset().first().pk)
 
     def test_get_operator_users_queryset(self):
-        admin = AdminUserFactory()
+        AdminUserFactory()
         operator = OperatorUserFactory()
         ManagerUserFactory()
-        self.assertEqual([admin, operator], list(MaintenanceUser.objects.get_operator_users_queryset()))
+        self.assertEqual([operator], list(MaintenanceUser.objects.get_operator_users_queryset()))
 
     def test_get_active_operator_users_queryset(self):
         admin = AdminUserFactory(is_active=True)
         operator = OperatorUserFactory(is_active=True)
         OperatorUserFactory(is_active=False)
         ManagerUserFactory()
-        self.assertIn(admin, list(MaintenanceUser.objects.get_active_operator_users_queryset()))
+        self.assertNotIn(admin, list(MaintenanceUser.objects.get_active_operator_users_queryset()))
         self.assertIn(operator, list(MaintenanceUser.objects.get_active_operator_users_queryset()))
+
+    def test_get_all_types_operator_users_queryset(self):
+        admin = AdminUserFactory()
+        operator = OperatorUserFactory()
+        ManagerUserFactory()
+        self.assertEqual([admin, operator], list(MaintenanceUser.objects.get_all_types_operator_users_queryset()))
+
+    def test_get_active_all_types_operator_users_queryset(self):
+        admin = AdminUserFactory(is_active=True)
+        operator = OperatorUserFactory(is_active=True)
+        OperatorUserFactory(is_active=False)
+        ManagerUserFactory()
+        self.assertIn(admin, list(MaintenanceUser.objects.get_active_all_types_operator_users_queryset()))
+        self.assertIn(operator, list(MaintenanceUser.objects.get_active_all_types_operator_users_queryset()))
 
     def test_get_manager_users_queryset(self):
         AdminUserFactory()

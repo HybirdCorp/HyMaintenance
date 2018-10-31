@@ -147,8 +147,8 @@ class OperatorUsersListUpdateViewWithCompanyTestCase(TestCase):
         view.company = self.company
 
         context = view.get_context_data()
-        self.assertIn("operators_number", context.keys())
-        self.assertEqual(2, context["operators_number"])
+        self.assertIn("all_type_operators_number", context.keys())
+        self.assertEqual(2, context["all_type_operators_number"])
 
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -208,7 +208,7 @@ class OperatorUsersListUpdateViewTestCase(TestCase):
 
         context = view.get_context_data()
         self.assertIn("active_users_number", context.keys())
-        self.assertEqual(2, context["active_users_number"])
+        self.assertEqual(1, context["active_users_number"])
         self.assertIn("archived_users_number", context.keys())
         self.assertEqual(1, context["archived_users_number"])
         self.assertIn("archive_form", context.keys())
