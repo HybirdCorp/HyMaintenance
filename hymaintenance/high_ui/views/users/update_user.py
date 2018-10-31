@@ -123,7 +123,7 @@ class OperatorUserUpdateViewWithCompany(ViewWithCompany, IsAdminTestMixin, Maint
 
     @staticmethod
     def get_queryset():
-        return MaintenanceUser.objects.get_active_operator_users_queryset()
+        return MaintenanceUser.objects.get_active_all_types_operator_users_queryset()
 
 
 class AdminUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):

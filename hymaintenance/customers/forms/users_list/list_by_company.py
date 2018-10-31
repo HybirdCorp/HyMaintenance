@@ -11,7 +11,7 @@ class OperatorUsersListUpdateForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
         super().__init__(*args, **kwargs)
-        self.fields["users"].queryset = MaintenanceUser.objects.get_active_operator_users_queryset()
+        self.fields["users"].queryset = MaintenanceUser.objects.get_active_all_types_operator_users_queryset()
         self.fields["users"].initial = self.company.managed_by.all().order_by("first_name", "last_name")
 
     def save(self):
