@@ -24,7 +24,7 @@ class DashboardGetContextDataFunctionsTestCase(TestCase):
 
         context = get_context_data_dashboard_header(user)
         self.assertEqual(1, context["companies_number"])
-        self.assertEqual(1, context["operators_number"])
+        self.assertEqual(1, context["all_types_operators_number"])
 
     def test_operator_dont_gets_other_company(self):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -42,7 +42,7 @@ class DashboardGetContextDataFunctionsTestCase(TestCase):
         user = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
 
         context = get_context_data_dashboard_header(user)
-        self.assertEqual(1, context["operators_number"])
+        self.assertEqual(1, context["all_types_operators_number"])
 
 
 class ProjectGetContextDataFunctionsTestCase(TestCase):
