@@ -28,7 +28,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.first_name.id_for_label}}">Prénom *</label>
+                            <label for="{{form.first_name.id_for_label}}">{{form.first_name.label}} *</label>
                             {{form.first_name}}
 
                             {% if form.first_name.errors %}
@@ -45,7 +45,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.last_name.id_for_label}}">Nom *</label>
+                            <label for="{{form.last_name.id_for_label}}">{{form.last_name.label}} *</label>
                             {{form.last_name}}
 
                             {% if form.last_name.errors %}
@@ -62,7 +62,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
                         
-                            <label for="{{form.phone.id_for_label}}">Téléphone</label>
+                            <label for="{{form.phone.id_for_label}}">{{form.phone.label}}</label>
                             {{form.phone}}
                         
                             {% if form.phone.errors %}
@@ -99,7 +99,7 @@
 
                     <div class="form-group">
                         <div class="group-title-container">
-                            <div class="group-title">Compte utilisateur</div>
+                            <div class="group-title">{% trans "User account" %}</div>
                         </div>
 
                         <div class="form-row form-label-row {% if form.email.errors %}form-error{% endif %}">
@@ -107,7 +107,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.email.id_for_label}}">E-mail *</label>
+                            <label for="{{form.email.id_for_label}}">{{form.email.label}} *</label>
                             {{form.email}}
 
                             {% if form.email.errors %}
@@ -124,7 +124,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.password1.id_for_label}}">Mot de passe *</label>
+                            <label for="{{form.password1.id_for_label}}">{% trans "Password" %} *</label>
                             {{form.password1}}
 
                             {% if form.password1.errors %}
@@ -141,7 +141,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.password2.id_for_label}}">Confirmation du mot de passe *</label>
+                            <label for="{{form.password2.id_for_label}}">{% trans "Confirm password" %} *</label>
                             {{form.password2}}
 
                             {% if form.password2.errors %}

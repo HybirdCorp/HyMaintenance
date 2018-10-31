@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-03 15:26+0200\n"
+"POT-Creation-Date: 2018-10-31 16:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgstr "Se connecter à"
 msgid "Email"
 msgstr "Email"
 
-#: templates/auth/login.html:21
+#: templates/auth/login.html:21 templates/high_ui/forms/create_user.html:127
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -161,8 +161,8 @@ msgstr "Mettre à jour les informations générales"
 
 #: templates/high_ui/admin.html:33 templates/high_ui/admin.html:52
 #: templates/high_ui/admin.html:69 templates/high_ui/dashboard.html:25
-#: templates/high_ui/issue_details.html:20 tests/views/test_issue_views.py:344
-#: tests/views/test_issue_views.py:353 tests/views/test_issue_views.py:361
+#: templates/high_ui/issue_details.html:20 tests/views/test_issue_views.py:388
+#: tests/views/test_issue_views.py:397 tests/views/test_issue_views.py:405
 msgid "Modify"
 msgstr "Modifier"
 
@@ -395,7 +395,7 @@ msgstr "Créer un intervenant"
 #: templates/high_ui/dashboard_header.html:23
 #: templates/high_ui/forms/update_company_operators.html:9
 #: templates/high_ui/forms/update_company_operators.html:24
-#: templates/high_ui/forms/update_operators.html:6
+#: templates/high_ui/forms/update_operators.html:5
 msgid "Modify operator list"
 msgstr "Modifier la liste des intervenants"
 
@@ -647,11 +647,11 @@ msgstr "Ajouter cet admin"
 #: templates/high_ui/forms/update_managers.html:25
 #: templates/high_ui/forms/update_operator.html:22
 #: templates/high_ui/forms/update_operator.html:31
-#: templates/high_ui/forms/update_operators.html:60
-#: templates/high_ui/forms/update_operators.html:97
 #: templates/high_ui/forms/update_profile.html:22
 #: templates/high_ui/forms/update_profile.html:31
 #: templates/high_ui/forms/update_project.html:18
+#: templates/high_ui/forms/update_users.html:60
+#: templates/high_ui/forms/update_users.html:97
 msgid "or"
 msgstr "ou"
 
@@ -751,6 +751,26 @@ msgstr "créer ce projet"
 msgid "Don't create"
 msgstr "Ne pas créer"
 
+#: templates/high_ui/forms/create_user.html:83
+#: templates/high_ui/forms/update_user.html:109
+msgid "Is operator"
+msgstr "Est intervenant"
+
+#: templates/high_ui/forms/create_user.html:94
+#: templates/high_ui/forms/update_user.html:120
+msgid ""
+"Checks it, if the administrator is also an operator and will manage some "
+"projects."
+msgstr "Cochez la case, si l'administrateur est aussi un intervenant et devra gérer des projets."
+
+#: templates/high_ui/forms/create_user.html:102
+msgid "User account"
+msgstr "Compte utilisateur"
+
+#: templates/high_ui/forms/create_user.html:144
+msgid "Confirm password"
+msgstr "Confirmez le mot de passe"
+
 #: templates/high_ui/forms/update_admin.html:5
 msgid "Modify this admin"
 msgstr "Modifier cet admin"
@@ -822,6 +842,97 @@ msgstr "Afficher/cacher le formulaire de modification de mot de passe"
 msgid "Modify password"
 msgstr "Modifier le mot de passe"
 
+#: templates/high_ui/forms/update_admins.html:5
+#, fuzzy
+#| msgid "Modify the administrator list"
+msgid "Modify administrator list"
+msgstr "Modifier la liste des administrateurs"
+
+#: templates/high_ui/forms/update_admins.html:9
+#, fuzzy, python-format
+#| msgid "Modify operator list of %(name)s"
+msgid "Modify administrator list of %(name)s"
+msgstr "Modifier la liste des intervenants de %(name)s"
+
+#: templates/high_ui/forms/update_admins.html:17
+#, fuzzy
+#| msgid "Display/hide active-intervenant list"
+msgid "Display/hide active-administrator list"
+msgstr "Afficher/cacher la liste des intervenants actifs"
+
+#: templates/high_ui/forms/update_admins.html:17
+#, fuzzy
+#| msgid "Administrators"
+msgid "Archive administrators"
+msgstr "Administrateurs"
+
+#: templates/high_ui/forms/update_admins.html:21
+#, fuzzy, python-format
+#| msgid ""
+#| "Select operators that you want to be inactive, among the "
+#| "%(active_operators_number)s active %(name)s's operators:"
+msgid ""
+"Select administrators that you want to be inactive, among the "
+"%(active_users_number)s active %(name)s's administrators:"
+msgstr ""
+"Sélectionner les intervenants que vous voulez rendre inactifs, parmi les "
+"%(active_operators_number)s intervenants de %(name)s actuellement "
+"actifs&nbsp;:"
+
+#: templates/high_ui/forms/update_admins.html:25
+#, fuzzy, python-format
+#| msgid "Select the single %(name)s's active operator to turn them archived:"
+msgid "Select the single %(name)s's active admin to turn them archived:"
+msgstr ""
+"Sélectionner l'unique intervenant actif de %(name)s pour le rendre "
+"inactif&nbsp;:"
+
+#: templates/high_ui/forms/update_admins.html:33
+#, fuzzy
+#| msgid "Archive this operators"
+msgid "Archive this administrators"
+msgstr "Archiver ces intervenants"
+
+#: templates/high_ui/forms/update_admins.html:41
+#, fuzzy
+#| msgid "Display/hide active-intervenant list"
+msgid "Display/hide archived-administrator list"
+msgstr "Afficher/cacher la liste des intervenants actifs"
+
+#: templates/high_ui/forms/update_admins.html:41
+#, fuzzy
+#| msgid "Reactive archived operators"
+msgid "Reactive archived administrators"
+msgstr "Réactiver des intervenants archivés"
+
+#: templates/high_ui/forms/update_admins.html:45
+#, fuzzy, python-format
+#| msgid ""
+#| "Select operators that you want to be active, among the "
+#| "%(archived_operators_number)s archived %(name)s's operators:"
+msgid ""
+"Select administrators that you want to be active, among the "
+"%(archived_users_number)s archived %(name)s's administrators:"
+msgstr ""
+"Sélectionner les intervenants que vous voulez rendre actifs, parmi les "
+"%(archived_operators_number)s intervenants de %(name)s actuellement "
+"archivés&nbsp;:"
+
+#: templates/high_ui/forms/update_admins.html:49
+#, fuzzy, python-format
+#| msgid "Select the single %(name)s's archived operator to turn them active:"
+msgid ""
+"Select the single %(name)s's archived administrator to turn them active:"
+msgstr ""
+"Sélectionner l'unique intervenant actif de %(name)s pour le rendre "
+"inactif&nbsp;:"
+
+#: templates/high_ui/forms/update_admins.html:53
+#, fuzzy
+#| msgid "Update administrators"
+msgid "Enable administrators"
+msgstr "Modifier la demande"
+
 #: templates/high_ui/forms/update_company_operator.html:5
 msgid "Modify operator of"
 msgstr "Modifier l'intervenant de"
@@ -836,10 +947,13 @@ msgid "Modify operator list of"
 msgstr "Modifier la liste des intervenants de"
 
 #: templates/high_ui/forms/update_company_operators.html:13
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "Select the operators of this project, among the %(operators_number)s "
+#| "already existing:"
 msgid ""
-"Select the operators of this project, among the %(operators_number)s already "
-"existing:"
+"Select the operators of this project, among the "
+"%(all_types_operators_number)s already existing:"
 msgstr ""
 "Sélectionner les intervenants pour ce projet, parmi les %(operators_number)s "
 "existants:"
@@ -911,9 +1025,9 @@ msgid ""
 "Enable the option if you want that a %(company)s's manager receive an email "
 "alert when there are a few credits left on the %(counter)s contract."
 msgstr ""
-"Activez cette option si vous souhaitez qu'un manage de %(company)s"
-"reçoive une alerte par email lorsqu'il reste peu de crédits"
-"sur le contrat de %(counter)s."
+"Activez cette option si vous souhaitez qu'un manage de %(company)sreçoive "
+"une alerte par email lorsqu'il reste peu de créditssur le contrat de "
+"%(counter)s."
 
 #: templates/high_ui/forms/update_email_alert.html:103
 msgid "Modify this configuration"
@@ -1002,72 +1116,78 @@ msgstr "manager du projet"
 msgid "modify operator"
 msgstr "Modifier l'intervenant de"
 
-#: templates/high_ui/forms/update_operators.html:22
+#: templates/high_ui/forms/update_operators.html:9
 #, python-format
 msgid "Modify operator list of %(name)s"
 msgstr "Modifier la liste des intervenants de %(name)s"
 
-#: templates/high_ui/forms/update_operators.html:30
-msgid "Display/hide active-intervenant list"
+#: templates/high_ui/forms/update_operators.html:17
+#, fuzzy
+#| msgid "Display/hide active-intervenant list"
+msgid "Display/hide active-operator list"
 msgstr "Afficher/cacher la liste des intervenants actifs"
 
-#: templates/high_ui/forms/update_operators.html:30
-msgid "Archive operator"
+#: templates/high_ui/forms/update_operators.html:17
+#, fuzzy
+#| msgid "Archive operator"
+msgid "Archive operators"
 msgstr "Archiver ces intervenants"
 
-#: templates/high_ui/forms/update_operators.html:35
-#, python-format
+#: templates/high_ui/forms/update_operators.html:21
+#, fuzzy, python-format
+#| msgid ""
+#| "Select operators that you want to be inactive, among the "
+#| "%(active_operators_number)s active %(name)s's operators:"
 msgid ""
 "Select operators that you want to be inactive, among the "
-"%(active_operators_number)s active %(name)s's operators:"
+"%(active_users_number)s active %(name)s's operators:"
 msgstr ""
 "Sélectionner les intervenants que vous voulez rendre inactifs, parmi les "
 "%(active_operators_number)s intervenants de %(name)s actuellement "
 "actifs&nbsp;:"
 
-#: templates/high_ui/forms/update_operators.html:37
+#: templates/high_ui/forms/update_operators.html:25
 #, python-format
 msgid "Select the single %(name)s's active operator to turn them archived:"
 msgstr ""
 "Sélectionner l'unique intervenant actif de %(name)s pour le rendre "
 "inactif&nbsp;:"
 
-#: templates/high_ui/forms/update_operators.html:49
-#: templates/high_ui/issue_details.html:56
-msgid "Operator"
-msgstr "Intervenant"
-
-#: templates/high_ui/forms/update_operators.html:59
+#: templates/high_ui/forms/update_operators.html:33
 msgid "Archive this operators"
 msgstr "Archiver ces intervenants"
 
-#: templates/high_ui/forms/update_operators.html:60
-#: templates/high_ui/forms/update_operators.html:97
-msgid "Change nothing"
-msgstr "Ne rien changer"
+#: templates/high_ui/forms/update_operators.html:41
+#, fuzzy
+#| msgid "Display/hide active-intervenant list"
+msgid "Display/hide archived-operator list"
+msgstr "Afficher/cacher la liste des intervenants actifs"
 
-#: templates/high_ui/forms/update_operators.html:69
+#: templates/high_ui/forms/update_operators.html:41
 msgid "Reactive archived operators"
 msgstr "Réactiver des intervenants archivés"
 
-#: templates/high_ui/forms/update_operators.html:74
-#, python-format
+#: templates/high_ui/forms/update_operators.html:45
+#, fuzzy, python-format
+#| msgid ""
+#| "Select operators that you want to be active, among the "
+#| "%(archived_operators_number)s archived %(name)s's operators:"
 msgid ""
 "Select operators that you want to be active, among the "
-"%(archived_operators_number)s archived %(name)s's operators:"
+"%(archived_users_number)s archived %(name)s's operators:"
 msgstr ""
 "Sélectionner les intervenants que vous voulez rendre actifs, parmi les "
 "%(archived_operators_number)s intervenants de %(name)s actuellement "
 "archivés&nbsp;:"
 
-#: templates/high_ui/forms/update_operators.html:76
+#: templates/high_ui/forms/update_operators.html:49
 #, python-format
 msgid "Select the single %(name)s's archived operator to turn them active:"
 msgstr ""
 "Sélectionner l'unique intervenant actif de %(name)s pour le rendre "
 "inactif&nbsp;:"
 
-#: templates/high_ui/forms/update_operators.html:96
+#: templates/high_ui/forms/update_operators.html:53
 msgid "Enable operators"
 msgstr "Activer ces intervenants"
 
@@ -1109,15 +1229,29 @@ msgstr "Projet de la société %(company)s"
 msgid "Modify this project"
 msgstr "Modifier ce projet"
 
-#: templates/high_ui/forms/update_user.html:132
-#: tests/views/test_account_view.py:48 tests/views/test_account_view.py:71
-#: tests/views/test_account_view.py:111 tests/views/test_manager_views.py:140
-#: tests/views/test_manager_views.py:165 tests/views/test_operator_views.py:183
-#: tests/views/test_operator_views.py:201
-#: tests/views/test_operator_views.py:254
-#: tests/views/test_operator_views.py:272
+#: templates/high_ui/forms/update_user.html:153
+#: tests/views/users/test_update_profile.py:48
+#: tests/views/users/test_update_profile.py:71
+#: tests/views/users/test_update_profile.py:111
+#: tests/views/users/test_update_user.py:138
+#: tests/views/users/test_update_user.py:163
+#: tests/views/users/test_update_user.py:237
+#: tests/views/users/test_update_user.py:255
+#: tests/views/users/test_update_user.py:310
+#: tests/views/users/test_update_user.py:328
 msgid "Modifications have been registered!"
 msgstr "Les modifications ont bien été prises en compte!"
+
+#: templates/high_ui/forms/update_users.html:49
+#: templates/high_ui/forms/update_users.html:87
+#: templates/high_ui/issue_details.html:56
+msgid "Operator"
+msgstr "Intervenant"
+
+#: templates/high_ui/forms/update_users.html:60
+#: templates/high_ui/forms/update_users.html:97
+msgid "Change nothing"
+msgstr "Ne rien changer"
 
 #: templates/high_ui/issue_details.html:6
 msgid "issue of"
@@ -1171,16 +1305,16 @@ msgid "Tableau de bord"
 msgstr "Tableau de bord"
 
 #: templatetags/print_fields.py:41 templatetags/print_fields.py:44
-#: tests/templatetags/test_print_field.py:81
-#: tests/templatetags/test_print_field.py:86
+#: tests/templatetags/test_print_field.py:82
+#: tests/templatetags/test_print_field.py:87
 msgid "project:"
 msgstr "projet&nbsp;:"
 
-#: templatetags/print_fields.py:43 tests/templatetags/test_print_field.py:96
+#: templatetags/print_fields.py:43 tests/templatetags/test_print_field.py:97
 msgid "projects:"
 msgstr "projets&nbsp;:"
 
-#: templatetags/print_fields.py:44 tests/templatetags/test_print_field.py:81
+#: templatetags/print_fields.py:44 tests/templatetags/test_print_field.py:82
 msgid "none"
 msgstr "aucun"
 
@@ -1189,24 +1323,21 @@ msgstr "aucun"
 msgid "Add extra {duration}"
 msgstr "Ajout de {duration} supplémentaires"
 
-#: tests/views/test_admin_views.py:154
-msgid "Les modifications ont bien été prises en compte!"
-msgstr "Les modifications ont bien été prises en compte!"
-
 #: tests/views/test_project_views.py:344
 msgid "Email alert"
 msgstr "alerte par email"
 
-#: views/project.py:170
+#: tests/views/users/test_update_user.py:380
+msgid "Les modifications ont bien été prises en compte!"
+msgstr "Les modifications ont bien été prises en compte!"
+
+#: views/project.py:169
 msgid "Hour threshold"
 msgstr "Seuil d'heures"
 
-#: views/project.py:170
+#: views/project.py:169
 msgid "To contact"
 msgstr "À prévenir"
-
-#~ msgid "Update administrators"
-#~ msgstr "Modifier la demande"
 
 #~ msgid "Administrator list. Click on a administrator to update them."
 #~ msgstr ""
