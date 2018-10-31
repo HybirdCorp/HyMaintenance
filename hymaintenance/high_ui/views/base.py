@@ -16,7 +16,9 @@ def get_maintenance_types():
 
 
 def get_context_data_dashboard_header(user):
-    context = {"operators_number": MaintenanceUser.objects.get_active_operator_users_queryset().count()}
+    context = {
+        "all_types_operators_number": MaintenanceUser.objects.get_active_all_types_operator_users_queryset().count()
+    }
     if user.is_superuser:
         context["companies_number"] = Company.objects.all().count()
     else:

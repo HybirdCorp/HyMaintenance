@@ -53,7 +53,9 @@ class OperatorUsersListUpdateViewWithCompany(ViewWithCompany, IsAdminTestMixin, 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["operators_number"] = MaintenanceUser.objects.get_active_operator_users_queryset().count()
+        context[
+            "all_type_operators_number"
+        ] = MaintenanceUser.objects.get_active_all_types_operator_users_queryset().count()
         return context
 
     def get_form_kwargs(self):

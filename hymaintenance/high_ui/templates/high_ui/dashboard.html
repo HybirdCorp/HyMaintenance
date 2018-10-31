@@ -44,7 +44,7 @@
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
                                 <span class="dashboard-title">{% trans "Operators" %}</span>
-                                <span class="dashboard-value">{{company.managed_by.get_active_operator_users_queryset.count}}</span>
+                                <span class="dashboard-value">{{company.managed_by.get_active_all_types_operator_users_queryset.count}}</span>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <div class="project-users">
-                            {% for maintainer in company.managed_by.get_active_operator_users_queryset %}
+                            {% for maintainer in company.managed_by.get_active_all_types_operator_users_queryset %}
                             <div>{{maintainer.get_full_name}}</div>
                             {% endfor %}
                         </div>
