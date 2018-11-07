@@ -17,13 +17,13 @@
         <span class="dashboard-value">{% pretty_print_minutes_tag object.number_minutes use_long_minute_format=True %}</span>
     </div>
     <div class="dashboard-item dashboard-contact">
-    {% if not request.user.is_staff %}
+    {% if not request.user.is_staff and not request.user.is_superuser %}
         <span class="dashboard-title">{% trans "Your Contact" %}</span>
         <span class="dashboard-value">{% pretty_print_name company.contact.first_name company.contact.last_name %}</span>
     </div>
     <div class="dashboard-item dashboard-user">
     {% endif %}
-	<span class="dashboard-title">{% if request.user.is_staff %}{{general_info.name}}{% else %}{{request.user.company}}{% endif %}</span>
+	<span class="dashboard-title">{% if request.user.is_staff or request.user.is_superuser %}{{general_info.name}}{% else %}{{request.user.company}}{% endif %}</span>
         <span class="dashboard-value"><a href='{% url 'high_ui:update_user' %}'>{% pretty_print_name request.user.first_name request.user.last_name %}</a></span>
     </div>
     <div class="dashboard-item dashboard-button">
