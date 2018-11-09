@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from customers.models import MaintenanceUser
+from customers.tests.factories import AdminOperatorUserFactory
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
@@ -137,6 +138,7 @@ class OperatorUsersListUpdateViewWithCompanyTestCase(TestCase):
         op2 = OperatorUserFactory(is_active=False)
         op2.operator_for.add(self.company)
         OperatorUserFactory(is_active=False)
+        AdminOperatorUserFactory()
 
         factory = RequestFactory()
         request = factory.get(self.form_url)

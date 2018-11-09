@@ -2,6 +2,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from customers.tests.factories import AdminOperatorUserFactory
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
@@ -50,7 +51,7 @@ class DashboardTestCase(TestCase):
         self.assertNotContains(response, "Op1 Op1")
 
     def test_operator_admin_user_can_seen_all_companies(self):
-        admin = AdminUserFactory(email="other.man@blackmesa.com", password="azerty", is_staff=True)
+        admin = AdminOperatorUserFactory(email="other.man@blackmesa.com", password="azerty")
         other_company = CompanyFactory(name="Black Mesa")
 
         self.client.login(username=admin.email, password="azerty")
@@ -63,7 +64,7 @@ class DashboardTestCase(TestCase):
         self.assertContains(response, other_company.name)
 
     def test_admin_user_can_seen_all_companies(self):
-        admin = AdminUserFactory(email="other.man@blackmesa.com", password="azerty", is_staff=False)
+        admin = AdminUserFactory(email="other.man@blackmesa.com", password="azerty")
         other_company = CompanyFactory(name="Black Mesa")
 
         self.client.login(username=admin.email, password="azerty")
