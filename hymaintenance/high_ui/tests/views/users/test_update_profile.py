@@ -15,7 +15,7 @@ class UpdateProfileTestCase(TestCase):
     def setUpTestData(cls):
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
-        cls.company = CompanyFactory()
+        cls.company = CompanyFactory(name="Black Mesa")
         cls.form_url = reverse("high_ui:update_user")
 
     def test_manager_can_get_update_form(self):
@@ -23,6 +23,47 @@ class UpdateProfileTestCase(TestCase):
         response = self.client.get(self.form_url, follow=True)
 
         self.assertEqual(response.status_code, 200)
+
+    def test_staff_company_display_update_form_header(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(
+            response,
+            '<span class="dashboard-value"><a href="/high_ui/" class="home-link" title="{}">Black Mesa</a></span>'.format(  # noqa : E501
+                _("Return to dashboard")
+            ),
+        )
+        self.assertNotContains(response, '<span class="dashboard-title">Black Mesa</span>')
+        self.assertContains(
+            response,
+            '<span class="dashboard-value"><a href="/high_ui/" class="home-link" title="{}">company</a></span>'.format(
+                _("Return to dashboard")
+            ),
+        )
+        self.assertContains(response, '<span class="dashboard-title">company</span>')
+
+    def test_manager_company_display_update_form_header(self):
+        user = ManagerUserFactory(email="glados@aperture-science.com", password="azerty", company=self.company)
+        self.client.login(username=user.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            '<span class="dashboard-value"><a href="/high_ui/" class="home-link" title="{}">Black Mesa</a></span>'.format(  # noqa : E501
+                _("Return to dashboard")
+            ),
+        )
+        self.assertContains(response, '<span class="dashboard-title">Black Mesa</span>')
+        self.assertNotContains(
+            response,
+            '<span class="dashboard-value"><a href="/high_ui/" class="home-link" title="{}">company</a></span>'.format(
+                _("Return to dashboard")
+            ),
+        )
+        self.assertNotContains(response, '<span class="dashboard-title">company</span>')
 
     def test_staff_update_profile_form(self):
         first_name = "Barney"
