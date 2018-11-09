@@ -1,0 +1,12 @@
+# HyMaintenance
+
+If you want to contribute, don't forget to add pre-commit hock.
+```
+cp precommit_script.py .git/hooks/pre-commit
+```
+
+Here is the contribution workflow :
+* assigned you on a ticket
+* create a new branch from master with your pseudo at the begin of the branch's name
+* code and don't forget to add tests on your modification
+* create a pull request with your modification
