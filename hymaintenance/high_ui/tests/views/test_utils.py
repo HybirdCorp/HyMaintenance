@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from customers.tests.factories import AdminOperatorUserFactory
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
@@ -19,12 +20,15 @@ class GetMaintenanceTypesTestCase(TestCase):
 class DashboardGetContextDataFunctionsTestCase(TestCase):
     def test_admin_gets_all_company_and_operators(self):
         user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        AdminOperatorUserFactory()
+        OperatorUserFactory()
+        ManagerUserFactory()
 
         _, _, _, _ = create_project()
 
         context = get_context_data_dashboard_header(user)
         self.assertEqual(1, context["companies_number"])
-        self.assertEqual(1, context["all_types_operators_number"])
+        self.assertEqual(2, context["all_types_operators_number"])
 
     def test_operator_dont_gets_other_company(self):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")

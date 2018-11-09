@@ -121,7 +121,7 @@ class UserUpdateFormTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.company = CompanyFactory()
-        cls.admin = AdminUserFactory(email="wheatley@aperture-science.com", is_staff=False)
+        cls.admin = AdminUserFactory(email="wheatley@aperture-science.com")
         cls.operator = OperatorUserFactory(email="glados@aperture-science.com")
         cls.manager = ManagerUserFactory(email="chell@aperture-science.com")
         cls.email = "gordon.freeman@blackmesa.com"

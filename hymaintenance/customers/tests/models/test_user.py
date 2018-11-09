@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from ...models import MaintenanceUser
+from ..factories import AdminOperatorUserFactory
 from ..factories import AdminUserFactory
 from ..factories import ManagerUserFactory
 from ..factories import OperatorUserFactory
@@ -87,18 +88,25 @@ class MaintenanceUserTestCase(TestCase):
         self.assertIn(operator, list(MaintenanceUser.objects.get_active_operator_users_queryset()))
 
     def test_get_all_types_operator_users_queryset(self):
-        admin = AdminUserFactory()
+        AdminUserFactory()
+        adminOp = AdminOperatorUserFactory()
         operator = OperatorUserFactory()
         ManagerUserFactory()
-        self.assertEqual([admin, operator], list(MaintenanceUser.objects.get_all_types_operator_users_queryset()))
+        operators = list(MaintenanceUser.objects.get_all_types_operator_users_queryset())
+        self.assertEqual(2, len(operators))
+        self.assertIn(operator, operators)
+        self.assertIn(adminOp, operators)
 
     def test_get_active_all_types_operator_users_queryset(self):
-        admin = AdminUserFactory(is_active=True)
-        operator = OperatorUserFactory(is_active=True)
+        AdminUserFactory()
+        adminOp = AdminOperatorUserFactory()
+        op1 = OperatorUserFactory()
         OperatorUserFactory(is_active=False)
         ManagerUserFactory()
-        self.assertIn(admin, list(MaintenanceUser.objects.get_active_all_types_operator_users_queryset()))
-        self.assertIn(operator, list(MaintenanceUser.objects.get_active_all_types_operator_users_queryset()))
+        operators = list(MaintenanceUser.objects.get_active_all_types_operator_users_queryset())
+        self.assertEqual(2, len(operators))
+        self.assertIn(op1, operators)
+        self.assertIn(adminOp, operators)
 
     def test_get_manager_users_queryset(self):
         AdminUserFactory()
