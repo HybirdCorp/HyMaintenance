@@ -43,7 +43,7 @@ It is designed by projects comprised of three different types of maintenance con
 
 ### Before HyMaintenance
 
-In the first place, here is the list of softwares you have to install before installating HyMaintenance.
+In the first place, here is the list of softwares you have to install before installing HyMaintenance.
 Install python3:
 ```
 sudo apt-get install python3
@@ -79,7 +79,7 @@ Activate your virtual environnement:
 ```
 workon <nom_venv>
 ```
-Install all the python libs needed listed in the file requirements.txt:
+Install all python libs needed listed in the file requirements.txt:
 ```
 pip install -r requirements.txt
 ```
@@ -103,13 +103,4 @@ If you didn't have PostgreSQL installed, like in the installation, add the optio
 python manage.py runserver --settings=hymaintenance.sqlite_tests_settings
 ```
 ## Developers
-If you want to contribute, don't forget to add pre-commit hock.
-```
-cp precommit_script.py .git/hooks/pre-commit
-```
-
-Here is the contribution workflow :
-* assigned you on a ticket
-* create a new branch from master with your pseudo at the begin of the branch's name
-* code and don't forget to add tests on your modification
-* create a pull request with your modification
+All instructions are in CONTRIBUTING.txt file.
