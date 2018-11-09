@@ -30,7 +30,8 @@ class UserUpdateView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         user = self.get_object()
-        profile_form = self.get_profile_form(is_staff=self.request.user.is_staff, instance=user)
+        is_staff = self.request.user.is_staff or self.request.user.is_superuser
+        profile_form = self.get_profile_form(is_staff=is_staff, instance=user)
         password_form = self.get_password_form(user)
         return self.render_to_response(self.get_context_data(profile_form=profile_form, password_form=password_form))
 
@@ -39,14 +40,15 @@ class UserUpdateView(LoginRequiredMixin, TemplateView):
 
         context = {}
         # initial state
-        profile_form = self.get_profile_form(is_staff=self.request.user.is_staff, instance=user)
+        is_staff = self.request.user.is_staff or self.request.user.is_superuser
+        profile_form = self.get_profile_form(is_staff=is_staff, instance=user)
         password_form = self.get_password_form(user)
 
         data = request.POST.copy()
         form_mod = data.pop("form-mod", [None])[0]
 
         if form_mod == "profile":
-            profile_form = self.get_profile_form(is_staff=self.request.user.is_staff, data=data, instance=user)
+            profile_form = self.get_profile_form(is_staff=is_staff, data=data, instance=user)
             if profile_form.is_valid():
                 profile_form.save()
                 context["profile_form_success"] = True
