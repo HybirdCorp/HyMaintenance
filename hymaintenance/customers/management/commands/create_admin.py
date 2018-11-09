@@ -20,7 +20,7 @@ class Command(BaseCommand):
         admins_number = MaintenanceUser.objects.filter(is_superuser=True).count()
         if admins_number == 0:
             admin = MaintenanceUser.objects.create(
-                is_superuser=True, is_staff=True, is_active=True, email=email, first_name="admin"
+                is_superuser=True, is_staff=False, is_active=True, email=email, first_name="admin"
             )
             admin.set_password(password)
             admin.save()
