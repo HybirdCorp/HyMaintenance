@@ -32,9 +32,11 @@ class ManagerUsersListUpdateForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
         super().__init__(*args, **kwargs)
-        self.fields["users"].queryset = MaintenanceUser.objects.filter(company=self.company, is_staff=False)
+        self.fields["users"].queryset = MaintenanceUser.objects.filter(
+            company=self.company, is_staff=False, is_superuser=False
+        )
         self.fields["users"].initial = MaintenanceUser.objects.filter(
-            company=self.company, is_staff=False, is_active=True
+            company=self.company, is_staff=False, is_superuser=False, is_active=True
         ).order_by("first_name", "last_name")
 
     def save(self):
