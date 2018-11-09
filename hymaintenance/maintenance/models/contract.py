@@ -44,7 +44,7 @@ class MaintenanceContract(models.Model):
         related_name="referent_for",
         null=True,
         blank=True,
-        limit_choices_to={"is_staff": False},
+        limit_choices_to={"is_staff": False, "is_superuser": False},
     )
 
     objects = MaintenanceContractQuerySet.as_manager()
