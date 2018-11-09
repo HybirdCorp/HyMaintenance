@@ -301,7 +301,25 @@ class ProjectDetailsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<td class="history-item-duration duration">+10h</td>')
 
-    def test_add_credit_button(self):
+    def test_staff_company_display_project_header(self):
+        admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        self.client.login(username=admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, '<span class="dashboard-title">Black Mesa</span>')
+        self.assertContains(response, '<span class="dashboard-title">company</span>')
+
+    def test_manager_company_display_project_header(self):
+        user = ManagerUserFactory(email="glados@aperture-science.com", password="azerty", company=self.company)
+        self.client.login(username=user.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<span class="dashboard-title">Black Mesa</span>')
+        self.assertNotContains(response, '<span class="dashboard-title">company</span>')
+
+    def test_admin_add_credit_button(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         self.contract1.total_type = AVAILABLE_TOTAL_TIME
         self.contract1.save()
@@ -312,7 +330,18 @@ class ProjectDetailsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _("Add hours"))
 
-    def test_no_add_credit_button(self):
+    def test_manager_buy_credit_button(self):
+        ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
+        self.contract1.total_type = AVAILABLE_TOTAL_TIME
+        self.contract1.save()
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Buy hours"))
+
+    def test_admin_no_add_credit_button(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         self.contract1.total_type = CONSUMMED_TOTAL_TIME
         self.contract1.save()
