@@ -28,7 +28,7 @@ def get_context_data_dashboard_header(user):
 
 def get_context_data_project_header(user, company):
     context = {}
-    if user.is_staff:
+    if user.is_staff or user.is_superuser:
         context["contracts"] = MaintenanceContract.objects.filter(company=company, disabled=False).order_by(
             "maintenance_type__pk"
         )
