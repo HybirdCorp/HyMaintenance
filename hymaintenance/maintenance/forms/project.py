@@ -197,15 +197,12 @@ class ProjectUpdateForm(ProjectForm):
         self.fields["contract2_number_hours"].initial = self.contracts[1].number_hours
         self.fields["contract3_number_hours"].initial = self.contracts[2].number_hours
 
-        self.fields["contract1_recipient"].queryset = MaintenanceUser.objects.filter(
-            is_staff=False, company=self.company, is_active=True
+        recipients = MaintenanceUser.objects.filter(
+            is_staff=False, is_superuser=False, company=self.company, is_active=True
         )
-        self.fields["contract2_recipient"].queryset = MaintenanceUser.objects.filter(
-            is_staff=False, company=self.company, is_active=True
-        )
-        self.fields["contract3_recipient"].queryset = MaintenanceUser.objects.filter(
-            is_staff=False, company=self.company, is_active=True
-        )
+        self.fields["contract1_recipient"].queryset = recipients
+        self.fields["contract2_recipient"].queryset = recipients
+        self.fields["contract3_recipient"].queryset = recipients
         self.fields["contract1_email_alert"].initial = self.contracts[0].email_alert
         self.fields["contract2_email_alert"].initial = self.contracts[1].email_alert
         self.fields["contract3_email_alert"].initial = self.contracts[2].email_alert
