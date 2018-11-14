@@ -90,7 +90,7 @@
                             <td class="history-item-date">{{event.date|date:"d/m"}}</td>
                             <td class="history-item-duration duration">+{{event.hours_number}}h</td>
                             <td class="history-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
-                            <td class="history-item-summary">{% extra_credit_subject event.hours_number %}</td>
+                            <td class="history-item-summary"><a href="{% url 'high_ui:project-update_credit' company_name=event.slug_name pk=event.id %}">{% extra_credit_subject event.hours_number %}</a></td>
                         </tr>
                         {% endif %}
                         {% endfor %}
