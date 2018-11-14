@@ -20,3 +20,10 @@ class MaintenanceCreditCreateForm(forms.ModelForm):
     def save(self, commit=True):
         self.instance.company = self.company
         return super().save(commit)
+
+
+class MaintenanceCreditUpdateForm(forms.ModelForm):
+    class Meta:
+        model = MaintenanceCredit
+        fields = ("hours_number", "contract")
+        widgets = {"hours_number": forms.HiddenInput(), "contract": forms.HiddenInput()}

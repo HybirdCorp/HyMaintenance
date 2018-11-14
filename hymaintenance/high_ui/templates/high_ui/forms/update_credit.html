@@ -1,0 +1,15 @@
+{% extends 'high_ui/forms/base_credit.html' %}
+{% load i18n %}
+
+{% block page_title %}
+<title>Maintenance {{general_info.name}} &mdash; {% blocktrans with name=company.name %}Modify credits of {{name}}{% endblocktrans %}</title>
+{% endblock %}
+
+{% block form_title %}
+<div class="group-title">{% trans "Modify credits" %}</div>
+{% endblock %}
+
+{% block form_footer %}
+<button type="submit">{% trans "Modify credits" %}</button>
+<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
+{% endblock %}

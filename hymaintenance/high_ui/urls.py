@@ -5,6 +5,7 @@ from django.urls import path
 from .views.admin import AdminView
 from .views.contact import ContactView
 from .views.credit import CreditCreateView
+from .views.credit import CreditUpdateView
 from .views.dashboard import DashboardView
 from .views.general_information import GeneralInformationUpdateView
 from .views.issue import IssueCreateView
@@ -103,6 +104,11 @@ urlpatterns = [
     path(r"operators/unarchive/", OperatorUsersListUnarchiveView.as_view(), name="unarchive_operators"),
     path(r"account/update/", UserUpdateView.as_view(), name="update_user"),
     path(r"projects/<slug:company_name>/credits/", CreditCreateView.as_view(), name="project-create_credit"),
+    path(
+        r"projects/<slug:company_name>/credits/<int:pk>/update/",
+        CreditUpdateView.as_view(),
+        name="project-update_credit",
+    ),
     path(r"admins/", AdminUserCreateView.as_view(), name="create_admin"),
     path(r"admins/<int:pk>/update/", AdminUserUpdateView.as_view(), name="update_admin"),
     path(r"admins/update/", AdminUsersListUpdateView.as_view(), name="update_admins"),
