@@ -1,6 +1,8 @@
+from django.http import Http404
 from django.urls import reverse
 from django.views.generic import CreateView
 from django.views.generic import DetailView
+from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 
 from maintenance.forms.issue import MaintenanceIssueCreateForm
@@ -31,7 +33,11 @@ class IssueUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Update
     model = MaintenanceIssue
 
     def get_object(self, queryset=None):
-        return self.get_queryset().filter(company_issue_number=self.kwargs.get("company_issue_number")).first()
+        issue = self.get_queryset().filter(company_issue_number=self.kwargs.get("company_issue_number")).first()
+        if issue.is_deleted:
+            raise Http404("No issue matches the given query.")
+        else:
+            return issue
 
     def get_queryset(self):
         return MaintenanceIssue.objects.filter(company=self.company)
@@ -51,6 +57,30 @@ class IssueDetailView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, DetailV
     model = MaintenanceIssue
 
     def get_object(self, queryset=None):
-        return MaintenanceIssue.objects.filter(
-            company_issue_number=self.kwargs.get("company_issue_number"), company=self.company
-        ).first()
+        issue = self.get_queryset().filter(company_issue_number=self.kwargs.get("company_issue_number")).first()
+        if issue.is_deleted:
+            raise Http404("No issue matches the given query.")
+        else:
+            return issue
+
+    def get_queryset(self):
+        return MaintenanceIssue.objects.filter(company=self.company)
+
+
+class IssueArchiveView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, RedirectView):
+    permanent = True
+    query_string = True
+    pattern_name = "high_ui:project_details"
+
+    def get_object(self, queryset=None):
+        issue = self.get_queryset().filter(company_issue_number=self.kwargs.get("company_issue_number")).first()
+        return issue
+
+    def get_queryset(self):
+        return MaintenanceIssue.objects.filter(company=self.company)
+
+    def get_redirect_url(self, *args, **kwargs):
+        issue = self.get_object()
+        issue.archive()
+        del kwargs["company_issue_number"]
+        return super().get_redirect_url(*args, **kwargs)
