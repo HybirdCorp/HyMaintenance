@@ -8,6 +8,7 @@ from .views.credit import CreditCreateView
 from .views.credit import CreditUpdateView
 from .views.dashboard import DashboardView
 from .views.general_information import GeneralInformationUpdateView
+from .views.issue import IssueArchiveView
 from .views.issue import IssueCreateView
 from .views.issue import IssueDetailView
 from .views.issue import IssueUpdateView
@@ -59,6 +60,11 @@ urlpatterns = [
         r"projects/<slug:company_name>/issues/<int:company_issue_number>/update/",
         IssueUpdateView.as_view(),
         name="project-update_issue",
+    ),
+    path(
+        r"projects/<slug:company_name>/issues/<int:company_issue_number>/archive/",
+        IssueArchiveView.as_view(),
+        name="project-archive_issue",
     ),
     path(r"projects/<slug:company_name>/consumers/", ConsumerCreateView.as_view(), name="project-create_consumer"),
     path(
