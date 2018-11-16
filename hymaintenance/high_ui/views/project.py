@@ -101,7 +101,11 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
 
     def get_maintenance_issues(self, month, contracts):
         return MaintenanceIssue.objects.filter(
-            contract__in=contracts, company_id=self.company, date__month=month.month, date__year=month.year
+            contract__in=contracts,
+            company_id=self.company,
+            date__month=month.month,
+            date__year=month.year,
+            is_deleted=False,
         )
 
     def get_maintenance_credits(self, month, contracts):
