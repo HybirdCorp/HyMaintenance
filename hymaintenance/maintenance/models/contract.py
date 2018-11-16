@@ -67,23 +67,32 @@ class MaintenanceContract(models.Model):
     def get_number_contract_minutes(self) -> int:
         return self.get_number_contract_hours() * 60
 
-    def get_number_consumed_minutes_in_month(self, date: datetime.date) -> int:
-        consumed = MaintenanceIssue.objects.filter(
-            company=self.company, date__month=date.month, date__year=date.year, contract=self
-        ).aggregate(models.Sum("number_minutes"))
-        consumed = consumed["number_minutes__sum"]
-        return consumed if consumed is not None else 0
-
     def get_number_consumed_minutes(self) -> int:
-        consumed = MaintenanceIssue.objects.filter(company=self.company, contract=self).aggregate(
+        consumed = MaintenanceIssue.objects.filter(company=self.company, contract=self, is_deleted=False).aggregate(
             models.Sum("number_minutes")
         )
         consumed = consumed["number_minutes__sum"]
         return consumed if consumed is not None else 0
 
+    def get_number_consumed_hours(self) -> float:
+        return self.get_number_consumed_minutes() / 60
+
     def get_number_remaining_minutes(self) -> int:
         remaining = self.get_number_contract_minutes() - self.get_number_consumed_minutes()
         return remaining
+
+    def get_number_remaining_hours(self) -> float:
+        return self.get_number_remaining_minutes() / 60
+
+    def get_number_consumed_minutes_in_month(self, date: datetime.date) -> int:
+        consumed = MaintenanceIssue.objects.filter(
+            company=self.company, date__month=date.month, date__year=date.year, contract=self, is_deleted=False
+        ).aggregate(models.Sum("number_minutes"))
+        consumed = consumed["number_minutes__sum"]
+        return consumed if consumed is not None else 0
+
+    def get_number_consumed_hours_in_month(self, date: datetime.date) -> float:
+        return self.get_number_consumed_minutes_in_month(date) / 60
 
     def get_number_credited_hours_in_month(self, date: datetime.date) -> int:
         credited = MaintenanceCredit.objects.filter(
@@ -95,12 +104,3 @@ class MaintenanceContract(models.Model):
         if self.start.month == date.month and self.start.year == date.year:
             credited += self.number_hours
         return credited
-
-    def get_number_consumed_hours_in_month(self, date: datetime.date) -> float:
-        return self.get_number_consumed_minutes_in_month(date) / 60
-
-    def get_number_consumed_hours(self) -> float:
-        return self.get_number_consumed_minutes() / 60
-
-    def get_number_remaining_hours(self) -> float:
-        return self.get_number_remaining_minutes() / 60
