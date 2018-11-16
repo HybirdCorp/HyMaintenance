@@ -86,6 +86,7 @@ class MaintenanceIssue(models.Model):
         storage=MaintenanceIssueAttachmentStorage(),
         upload_to=_get_resolution_file_path,
     )
+    is_deleted = models.BooleanField(_("Deleted"), default=False)
 
     fields_for_form = (
         "consumer_who_ask",
@@ -125,6 +126,10 @@ class MaintenanceIssue(models.Model):
         if self.consumer_who_ask:
             return self.consumer_who_ask.name
         return ""
+
+    def archive(self):
+        self.is_deleted = True
+        self.save()
 
     @transaction.atomic
     def save(self, *args, **kwargs):
