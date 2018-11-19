@@ -4,10 +4,11 @@ from django.utils.translation import ugettext as _
 
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import OperatorUserFactory
+from maintenance.models.contract import AVAILABLE_TOTAL_TIME
+from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 from maintenance.tests.factories import MaintenanceConsumerFactory
-from maintenance.tests.factories import MaintenanceContractFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
-from maintenance.tests.factories import get_default_maintenance_type
+from maintenance.tests.factories import create_project
 
 from ...templatetags.print_fields import extra_credit_subject
 from ...templatetags.print_fields import hide_disabled_consumer
@@ -49,28 +50,35 @@ class PrettyPrintMinutesTestCase(SimpleTestCase):
 
 
 class PrettyPrintContractCounterTestCase(TestCase):
-    @staticmethod
-    def create_company_mtype_contract_and_issue(total_type):
-        company = CompanyFactory()
-        maintenance_type = get_default_maintenance_type()
-        contract = MaintenanceContractFactory(
-            company=company, maintenance_type=maintenance_type, number_hours=1, total_type=total_type
+    @classmethod
+    def setUpTestData(cls):
+        cls.company, cls.available_contract, cls.consumed_contract, _ = create_project(
+            contract1={"number_hours": 1, "total_type": AVAILABLE_TOTAL_TIME},
+            contract2={"total_type": CONSUMMED_TOTAL_TIME},
         )
-        MaintenanceIssueFactory(company=company, contract=contract, number_minutes=10)
-        return contract
-
-    def test_print_comsummed_time(self):
-        contract = self.create_company_mtype_contract_and_issue(0)
-        self.assertEqual("50m /&nbsp;1h", pretty_print_contract_counter(contract))
 
     def test_print_available_time(self):
-        contract = self.create_company_mtype_contract_and_issue(1)
-        self.assertEqual("10m", pretty_print_contract_counter(contract))
+        MaintenanceIssueFactory(company=self.company, contract=self.available_contract, number_minutes=10)
+        self.assertEqual("50m /&nbsp;1h", pretty_print_contract_counter(self.available_contract))
+
+    def test_print_comsummed_time(self):
+        MaintenanceIssueFactory(company=self.company, contract=self.consumed_contract, number_minutes=10)
+        self.assertEqual("10m", pretty_print_contract_counter(self.consumed_contract))
 
     def test_print_fancy_time(self):
-        contract = self.create_company_mtype_contract_and_issue(1)
-        contract.total_type = 42
-        self.assertEqual("", pretty_print_contract_counter(contract))
+        MaintenanceIssueFactory(company=self.company, contract=self.consumed_contract, number_minutes=10)
+        self.consumed_contract.total_type = 42
+        self.assertEqual("", pretty_print_contract_counter(self.consumed_contract))
+
+    def test_deleted_issue_not_counted(self):
+        MaintenanceIssueFactory(
+            company=self.company, contract=self.consumed_contract, number_minutes=10, is_deleted=True
+        )
+        self.assertEqual("0h", pretty_print_contract_counter(self.consumed_contract))
+        MaintenanceIssueFactory(
+            company=self.company, contract=self.available_contract, number_minutes=10, is_deleted=True
+        )
+        self.assertEqual("1h /&nbsp;1h", pretty_print_contract_counter(self.available_contract))
 
 
 class PrintOperatorProjectsTestCase(TestCase):
