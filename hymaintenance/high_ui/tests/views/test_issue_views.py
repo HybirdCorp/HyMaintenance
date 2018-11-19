@@ -241,6 +241,24 @@ class IssueUpdateViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_admin_cannot_get_form_of_archived_issue(self):
+        self.issue.archive()
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_admin_cannot_update_archived_issue(self):
+        self.issue.archive()
+        subject = "subject of the issue"
+        description = "Description of the Issue"
+
+        self.client.login(username=self.admin.email, password="azerty")
+
+        response = self.client.post(self.form_url, self.__get_dict_for_post(subject, description), follow=True)
+
+        self.assertEqual(response.status_code, 404)
+
     def test_admin_update_a_issue(self):
         subject = "subject of the issue"
         description = "Description of the Issue"
@@ -357,6 +375,13 @@ class IssueDetailViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_admin_cannot_see_archived_issue_details(self):
+        self.issue.archive()
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.view_url)
+
+        self.assertEqual(response.status_code, 404)
+
     def test_user_can_see_issue_context_attachment_of_this_company(self):
 
         test_file_name = "the_cake.lie"
@@ -403,3 +428,54 @@ class IssueDetailViewTestCase(TestCase):
         response = self.client.get(self.view_url)
 
         self.assertNotContains(response, _("Modify"))
+
+
+class IssueArchiveViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        cls.company, cls.contract, _, _ = create_project()
+
+    def setUp(self):
+        self.issue = MaintenanceIssueFactory(company=self.company, contract=self.contract)
+        self.view_url = reverse(
+            "high_ui:project-archive_issue",
+            kwargs={"company_name": self.company.slug_name, "company_issue_number": self.issue.company_issue_number},
+        )
+        self.login_url = reverse("login") + "?next=" + self.view_url
+        self.success_url = reverse("high_ui:project_details", kwargs={"company_name": self.company.slug_name})
+
+    def test_manager_cannot_archive_issue(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.view_url)
+
+        self.assertRedirects(response, self.login_url)
+        self.assertFalse(MaintenanceIssue.objects.get(pk=self.issue.pk).is_deleted)
+
+    def test_operator_of_the_company_can_archive_issue(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.view_url)
+
+        self.assertRedirects(response, self.success_url, 301)
+        self.assertTrue(MaintenanceIssue.objects.get(pk=self.issue.pk).is_deleted)
+
+    def test_operator_of_other_company_cannot_archive_issue(self):
+        OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.view_url)
+
+        self.assertRedirects(response, self.login_url)
+        self.assertFalse(MaintenanceIssue.objects.get(pk=self.issue.pk).is_deleted)
+
+    def test_admin_can_archive_issue(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.view_url)
+
+        self.assertRedirects(response, self.success_url, 301)
+        self.assertTrue(MaintenanceIssue.objects.get(pk=self.issue.pk).is_deleted)

@@ -97,3 +97,9 @@ class MaintenanceIssueTestCase(TestCase):
                 ),
                 issue.resolution_description_file.name,
             )
+
+    def test_archive(self):
+        issue = MaintenanceIssueFactory(consumer_who_ask=None)
+        self.assertFalse(issue.is_deleted)
+        issue.archive()
+        self.assertTrue(MaintenanceIssue.objects.get(pk=issue.pk).is_deleted)

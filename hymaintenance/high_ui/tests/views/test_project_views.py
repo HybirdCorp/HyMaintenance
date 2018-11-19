@@ -516,10 +516,17 @@ class GetContextDataProjectDetailsTestCase(TestCase):
             contract1={"start": datetime.date(2020, 2, 29)}, contract2={"disabled": True}, contract3={"visible": False}
         )
         month = datetime.date(2020, 2, 29)
-        MaintenanceIssueFactory(company=company, contract=contract1, number_minutes=12, date=datetime.date(2020, 2, 29))
+        issue1 = MaintenanceIssueFactory(
+            company=company, contract=contract1, number_minutes=12, date=datetime.date(2020, 2, 29)
+        )
         MaintenanceIssueFactory(company=company, contract=contract1, number_minutes=12, date=datetime.date(2018, 2, 28))
         MaintenanceIssueFactory(company=company, contract=contract2, number_minutes=12, date=datetime.date(2020, 2, 29))
-        MaintenanceIssueFactory(company=company, contract=contract3, number_minutes=12, date=datetime.date(2020, 2, 29))
+        issue2 = MaintenanceIssueFactory(
+            company=company, contract=contract3, number_minutes=12, date=datetime.date(2020, 2, 29)
+        )
+        MaintenanceIssueFactory(
+            company=company, contract=contract3, number_minutes=12, date=datetime.date(2020, 2, 29), is_deleted=True
+        )
 
         view = ProjectDetailsView()
         view.company = company
@@ -528,6 +535,8 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         issues = view.get_maintenance_issues(month, contracts)
 
         self.assertEqual(2, len(issues))
+        self.assertIn(issue1, issues)
+        self.assertIn(issue2, issues)
 
     def test_get_maintenance_credits(self):
         company, contract1, contract2, contract3 = create_project(
