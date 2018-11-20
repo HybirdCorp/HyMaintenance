@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-14 15:42+0100\n"
+"POT-Creation-Date: 2018-11-20 11:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -481,8 +481,8 @@ msgid "Issue received by"
 msgstr "Demande reçue par"
 
 #: templates/high_ui/forms/base_issue.html:155
-#: templates/high_ui/issue_details.html:54
-#: templates/high_ui/issue_details.html:69
+#: templates/high_ui/issue_details.html:57
+#: templates/high_ui/issue_details.html:72
 msgid "Resolution"
 msgstr "Résolution"
 
@@ -676,7 +676,6 @@ msgstr "ou"
 #: templates/high_ui/forms/create_credit.html:14
 #: templates/high_ui/forms/create_manager.html:20
 #: templates/high_ui/forms/create_operator.html:18
-#: templates/high_ui/forms/update_credit.html:14
 msgid "Don't add"
 msgstr "Ne pas ajouter"
 
@@ -820,6 +819,7 @@ msgstr "Modifier ces informations"
 #: templates/high_ui/forms/update_company_operators.html:25
 #: templates/high_ui/forms/update_consumer.html:18
 #: templates/high_ui/forms/update_consumers.html:24
+#: templates/high_ui/forms/update_credit.html:14
 #: templates/high_ui/forms/update_email_alert.html:104
 #: templates/high_ui/forms/update_infos.html:121
 #: templates/high_ui/forms/update_issue.html:20
@@ -856,6 +856,7 @@ msgid "Modify administrator list"
 msgstr "Modifier la liste des administrateurs"
 
 #: templates/high_ui/forms/update_admins.html:9
+#, python-format
 msgid "Modify administrator list of %(name)s"
 msgstr "Modifier la liste des administrateurs de %(name)s"
 
@@ -868,6 +869,7 @@ msgid "Archive administrators"
 msgstr "Administrateurs archivés"
 
 #: templates/high_ui/forms/update_admins.html:21
+#, python-format
 msgid ""
 "Select administrators that you want to be inactive, among the "
 "%(active_users_number)s active %(name)s's administrators:"
@@ -877,6 +879,7 @@ msgstr ""
 "actifs&nbsp;:"
 
 #: templates/high_ui/forms/update_admins.html:25
+#, python-format
 msgid "Select the single %(name)s's active admin to turn them archived:"
 msgstr ""
 "Sélectionner l'unique administrateur actif de %(name)s pour le rendre "
@@ -895,6 +898,7 @@ msgid "Reactive archived administrators"
 msgstr "Réactiver des administrateurs archivés"
 
 #: templates/high_ui/forms/update_admins.html:45
+#, python-format
 msgid ""
 "Select administrators that you want to be active, among the "
 "%(archived_users_number)s archived %(name)s's administrators:"
@@ -904,6 +908,7 @@ msgstr ""
 "archivés&nbsp;:"
 
 #: templates/high_ui/forms/update_admins.html:49
+#, python-format
 msgid ""
 "Select the single %(name)s's archived administrator to turn them active:"
 msgstr ""
@@ -928,12 +933,13 @@ msgid "Modify operator list of"
 msgstr "Modifier la liste des intervenants de"
 
 #: templates/high_ui/forms/update_company_operators.html:13
+#, python-format
 msgid ""
 "Select the operators of this project, among the "
 "%(all_types_operators_number)s already existing:"
 msgstr ""
-"Sélectionner les intervenants pour ce projet, parmi les %(all_types_operators_number)s "
-"existants:"
+"Sélectionner les intervenants pour ce projet, parmi les "
+"%(all_types_operators_number)s existants:"
 
 #: templates/high_ui/forms/update_company_operators.html:18
 msgid "operator of this project"
@@ -972,6 +978,7 @@ msgid "employee of this project"
 msgstr "salarié du projet"
 
 #: templates/high_ui/forms/update_credit.html:5
+#, python-format
 msgid "Modify credits of %(name)s"
 msgstr "Modifier des crédits à %(name)s"
 
@@ -1039,7 +1046,7 @@ msgstr "Modification de la demande N°%(number)s en %(counter)s de %(company)s"
 
 #: templates/high_ui/forms/update_issue.html:13
 #: templates/high_ui/issue_details.html:17
-#: templates/high_ui/issue_details.html:26
+#: templates/high_ui/issue_details.html:29
 #: templates/high_ui/issue_details_header.html:8
 msgid "Issue #"
 msgstr "Demandes N°"
@@ -1116,13 +1123,13 @@ msgid "Archive operators"
 msgstr "Archiver ces intervenants"
 
 #: templates/high_ui/forms/update_operators.html:21
+#, python-format
 msgid ""
 "Select operators that you want to be inactive, among the "
 "%(active_users_number)s active %(name)s's operators:"
 msgstr ""
 "Sélectionner les intervenants que vous voulez rendre inactifs, parmi les "
-"%(active_users_number)s intervenants de %(name)s actuellement "
-"actifs&nbsp;:"
+"%(active_users_number)s intervenants de %(name)s actuellement actifs&nbsp;:"
 
 #: templates/high_ui/forms/update_operators.html:25
 #, python-format
@@ -1144,6 +1151,7 @@ msgid "Reactive archived operators"
 msgstr "Réactiver des intervenants archivés"
 
 #: templates/high_ui/forms/update_operators.html:45
+#, python-format
 msgid ""
 "Select operators that you want to be active, among the "
 "%(archived_users_number)s archived %(name)s's operators:"
@@ -1216,7 +1224,7 @@ msgstr "Les modifications ont bien été prises en compte!"
 
 #: templates/high_ui/forms/update_users.html:49
 #: templates/high_ui/forms/update_users.html:87
-#: templates/high_ui/issue_details.html:56
+#: templates/high_ui/issue_details.html:59
 msgid "Operator"
 msgstr "Intervenant"
 
@@ -1233,56 +1241,60 @@ msgstr "demande de"
 msgid "#"
 msgstr "N°"
 
-#: templates/high_ui/issue_details.html:28
+#: templates/high_ui/issue_details.html:23
+msgid "Archive"
+msgstr "Archiver"
+
+#: templates/high_ui/issue_details.html:31
 msgid "Author"
 msgstr "Auteur"
 
-#: templates/high_ui/issue_details.html:32
+#: templates/high_ui/issue_details.html:35
 msgid "Date"
 msgstr "Date"
 
-#: templates/high_ui/issue_details.html:37
+#: templates/high_ui/issue_details.html:40
 msgid "Channel"
 msgstr "Canal"
 
-#: templates/high_ui/issue_details.html:42
+#: templates/high_ui/issue_details.html:45
 msgid "Details"
 msgstr "Détails"
 
-#: templates/high_ui/issue_details.html:47
-#: templates/high_ui/issue_details.html:85
+#: templates/high_ui/issue_details.html:50
+#: templates/high_ui/issue_details.html:88
 msgid "Attachment"
 msgstr "Pièce jointe"
 
-#: templates/high_ui/issue_details.html:60
+#: templates/high_ui/issue_details.html:63
 #: templates/high_ui/issue_details_header.html:12
 msgid "Activity"
 msgstr "Activité"
 
-#: templates/high_ui/issue_details.html:64
+#: templates/high_ui/issue_details.html:67
 #: templates/high_ui/issue_details_header.html:16
 msgid "Time spent"
 msgstr "Temps passé"
 
-#: templates/high_ui/issue_details.html:75
+#: templates/high_ui/issue_details.html:78
 msgid "Delivery"
 msgstr "Livraison"
 
-#: templates/high_ui/issue_details.html:80
+#: templates/high_ui/issue_details.html:83
 msgid "Comments"
 msgstr "Commentaires"
 
 #: templatetags/print_fields.py:41 templatetags/print_fields.py:44
-#: tests/templatetags/test_print_field.py:82
-#: tests/templatetags/test_print_field.py:87
+#: tests/templatetags/test_print_field.py:90
+#: tests/templatetags/test_print_field.py:95
 msgid "project:"
 msgstr "projet&nbsp;:"
 
-#: templatetags/print_fields.py:43 tests/templatetags/test_print_field.py:97
+#: templatetags/print_fields.py:43 tests/templatetags/test_print_field.py:105
 msgid "projects:"
 msgstr "projets&nbsp;:"
 
-#: templatetags/print_fields.py:44 tests/templatetags/test_print_field.py:82
+#: templatetags/print_fields.py:44 tests/templatetags/test_print_field.py:90
 msgid "none"
 msgstr "aucun"
 
@@ -1299,11 +1311,11 @@ msgstr "alerte par email"
 msgid "Les modifications ont bien été prises en compte!"
 msgstr "Les modifications ont bien été prises en compte!"
 
-#: views/project.py:171
+#: views/project.py:175
 msgid "Hour threshold"
 msgstr "Seuil d'heures"
 
-#: views/project.py:171
+#: views/project.py:175
 msgid "To contact"
 msgstr "À prévenir"
 
