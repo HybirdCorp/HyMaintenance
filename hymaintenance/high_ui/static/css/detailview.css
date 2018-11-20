@@ -27,6 +27,11 @@
     font-weight: 700;
 }
 
+.home-link-header .dashboard-item + .dashboard-item {
+    margin-left: 0px;
+    padding-left: 10px;
+}
+
 /* properties */
 
 .property-container {
