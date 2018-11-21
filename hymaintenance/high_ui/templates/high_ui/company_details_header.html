@@ -14,7 +14,7 @@
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
             {% if add_credits %}
-                {% if request.user.is_staff or request.user.is_superuser %}
+                {% if request.user.has_operator_or_admin_permissions %}
                 <a href='{% url 'high_ui:project-create_credit' company_name=company.slug_name %}'>{% trans "Add hours" %}</a>
                 {% else %}
                 <a href='{% url 'high_ui:project-contact' company_name=company.slug_name %}'>{% trans "Buy hours" %}</a>
@@ -27,13 +27,13 @@
     </div>
 
     <div class="dashboard-item dashboard-contact">
-    {% if not request.user.is_staff and not request.user.is_superuser %}
+    {% if not request.user.has_operator_or_admin_permissons %}
         <span class="dashboard-title">{% trans "Your Contact" %}</span>
         <span class="dashboard-value">{% pretty_print_name company.contact.first_name company.contact.last_name %}</span>
     </div>
     <div class="dashboard-item dashboard-user">
     {% endif %}
-	<span class="dashboard-title">{% if request.user.is_staff or request.user.is_superuser %}{{general_info.name}}{% else %}{{request.user.company}}{% endif %}</span>
+	<span class="dashboard-title">{% if request.user.has_operator_or_admin_permissions %}{{general_info.name}}{% else %}{{request.user.company}}{% endif %}</span>
         <span class="dashboard-value"><a href='{% url 'high_ui:update_user' %}'>{% pretty_print_name request.user.first_name request.user.last_name %}</a></span>
     </div>
     <div class="dashboard-item dashboard-button">

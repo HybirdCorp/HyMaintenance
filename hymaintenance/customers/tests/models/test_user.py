@@ -120,3 +120,36 @@ class MaintenanceUserTestCase(TestCase):
         manager = ManagerUserFactory(is_active=True)
         ManagerUserFactory(is_active=False)
         self.assertEqual([manager], list(MaintenanceUser.objects.get_active_manager_users_queryset()))
+
+    def test_has_operator_permissions(self):
+        admin = AdminUserFactory()
+        adminOp = AdminOperatorUserFactory()
+        operator = OperatorUserFactory()
+        manager = ManagerUserFactory()
+
+        self.assertFalse(admin.has_operator_permissions())
+        self.assertTrue(adminOp.has_operator_permissions())
+        self.assertTrue(operator.has_operator_permissions())
+        self.assertFalse(manager.has_operator_permissions())
+
+    def test_has_admin_permissions(self):
+        admin = AdminUserFactory()
+        adminOp = AdminOperatorUserFactory()
+        operator = OperatorUserFactory()
+        manager = ManagerUserFactory()
+
+        self.assertTrue(admin.has_admin_permissions())
+        self.assertTrue(adminOp.has_admin_permissions())
+        self.assertFalse(operator.has_admin_permissions())
+        self.assertFalse(manager.has_admin_permissions())
+
+    def test_has_operator_or_admin_permissions(self):
+        admin = AdminUserFactory()
+        adminOp = AdminOperatorUserFactory()
+        operator = OperatorUserFactory()
+        manager = ManagerUserFactory()
+
+        self.assertTrue(admin.has_operator_or_admin_permissions())
+        self.assertTrue(adminOp.has_operator_or_admin_permissions())
+        self.assertTrue(operator.has_operator_or_admin_permissions())
+        self.assertFalse(manager.has_operator_or_admin_permissions())
