@@ -2,7 +2,7 @@
 <div class="dashboard {% if contracts %}{{contracts.0.maintenance_type.css_class}}{% else %}type-maintenance{% endif %}">
     <div class="dashboard-item dashboard-account">
         <span class="dashboard-title">{% trans "User account" %}</span>
-	{% if request.user.is_staff or request.user.is_superuser %}
+	{% if request.user.has_operator_or_admin_permissions %}
         <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="{% trans "Return to dashboard" %}">{{general_info.name}}</a></span> {# TMP: names and urls are hardcoded until "maintenance providers" are added #}
 	{% else %}
         <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="{% trans "Return to dashboard" %}">{{request.user.company}}</a></span>
@@ -10,7 +10,7 @@
     </div>
 
     <div class="dashboard-item dashboard-contact">
-	<span class="dashboard-title">{% if request.user.is_staff or request.user.is_superuser %}{{general_info.name}}{% else %}{{request.user.company}}{% endif %}</span>
+	<span class="dashboard-title">{% if request.user.has_operator_or_admin_permissions %}{{general_info.name}}{% else %}{{request.user.company}}{% endif %}</span>
         <span class="dashboard-value"><a href='{% url 'high_ui:update_user' %}'>{% pretty_print_name request.user.first_name request.user.last_name %}</a></span>
     </div>
     <div class="dashboard-item dashboard-button">

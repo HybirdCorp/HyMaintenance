@@ -257,13 +257,21 @@ class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
         """Returns the full name of the user."""
         return get_full_name(first_name=self.first_name, last_name=self.last_name)
 
-    def get_short_name(self):
-        """Returns the short name for the user."""
-        return self.last_name
-
     def __str__(self):
         """See get_full_name method"""
         return self.get_full_name()
+
+    def has_admin_permissions(self):
+        """Returns True if the user is an AdminUser, else False"""
+        return self.is_superuser
+
+    def has_operator_permissions(self):
+        """Returns True if the user is an OperatorUser, else False"""
+        return self.is_staff
+
+    def has_operator_or_admin_permissions(self):
+        """Returns True if the user is an OperatorUser or an AdminUser, else False"""
+        return self.is_staff or self.is_superuser
 
 
 def get_full_name(*, first_name: str, last_name: str) -> str:

@@ -29,7 +29,7 @@
     </div>
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
-            {% if request.user.is_superuser %}
+            {% if request.user.has_admin_permissions %}
             <a href="{% url 'high_ui:admin' %}" title="{% trans "Access to HyMaintenance administration dashboard" %}">{% trans "Administration" %}</a>
             {% endif %}
             <a href="/logout" title="{% trans "Quit the application" %}">{% trans "Logout" %}</a>

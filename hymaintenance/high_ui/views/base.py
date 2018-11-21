@@ -19,7 +19,7 @@ def get_context_data_dashboard_header(user):
     context = {
         "all_types_operators_number": MaintenanceUser.objects.get_active_all_types_operator_users_queryset().count()
     }
-    if user.is_superuser:
+    if user.has_admin_permissions():
         context["companies_number"] = Company.objects.all().count()
     else:
         context["companies_number"] = get_companies_of_operator(user).count()
@@ -28,7 +28,7 @@ def get_context_data_dashboard_header(user):
 
 def get_context_data_project_header(user, company):
     context = {}
-    if user.is_staff or user.is_superuser:
+    if user.has_operator_or_admin_permissions():
         context["contracts"] = MaintenanceContract.objects.filter(company=company, disabled=False).order_by(
             "maintenance_type__pk"
         )
@@ -65,12 +65,14 @@ class ViewWithCompany(View):
 class IsAdminTestMixin(UserPassesTestMixin):
     def test_func(self):
         self.user = self.request.user
-        return self.user.is_superuser
+        return self.user.has_admin_permissions()
 
 
 class IsAtLeastAllowedOperatorTestMixin(IsAdminTestMixin):
     def test_func(self):
-        return super().test_func() or (self.user.is_staff and self.company in self.user.operator_for.all())
+        return super().test_func() or (
+            self.user.has_operator_permissions() and self.company in self.user.operator_for.all()
+        )
 
 
 class IsAtLeastAllowedManagerTestMixin(IsAtLeastAllowedOperatorTestMixin):

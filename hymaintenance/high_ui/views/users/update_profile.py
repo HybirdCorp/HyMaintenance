@@ -30,17 +30,16 @@ class UserUpdateView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         user = self.get_object()
-        is_staff = self.request.user.is_staff or self.request.user.is_superuser
-        profile_form = self.get_profile_form(is_staff=is_staff, instance=user)
+        profile_form = self.get_profile_form(is_staff=user.has_operator_or_admin_permissions(), instance=user)
         password_form = self.get_password_form(user)
         return self.render_to_response(self.get_context_data(profile_form=profile_form, password_form=password_form))
 
     def post(self, request, *args, **kwargs):
         user = self.get_object()
+        is_staff = user.has_operator_or_admin_permissions()
 
         context = {}
         # initial state
-        is_staff = self.request.user.is_staff or self.request.user.is_superuser
         profile_form = self.get_profile_form(is_staff=is_staff, instance=user)
         password_form = self.get_password_form(user)
 
