@@ -5,6 +5,7 @@ from django.urls import path
 from .views.admin import AdminView
 from .views.contact import ContactView
 from .views.credit import CreditCreateView
+from .views.credit import CreditDeleteView
 from .views.credit import CreditUpdateView
 from .views.dashboard import DashboardView
 from .views.general_information import GeneralInformationUpdateView
@@ -116,6 +117,11 @@ urlpatterns = [
         r"projects/<slug:company_name>/credits/<int:pk>/update/",
         CreditUpdateView.as_view(),
         name="project-update_credit",
+    ),
+    path(
+        r"projects/<slug:company_name>/credits/<int:pk>/delete/",
+        CreditDeleteView.as_view(),
+        name="project-delete_credit",
     ),
     path(r"admins/", AdminUserCreateView.as_view(), name="create_admin"),
     path(r"admins/<int:pk>/update/", AdminUserUpdateView.as_view(), name="update_admin"),

@@ -205,3 +205,54 @@ class CreditUpdateViewTestCase(TestCase):
         self.assertNotIn(self.c1, context["available_time_contracts"])
         self.assertNotIn(self.c2, context["available_time_contracts"])
         self.assertNotIn(self.c3, context["available_time_contracts"])
+
+
+class CreditDeleteViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        cls.company, cls.c1, cls.c2, cls.c3 = create_project(contract1={"total_type": AVAILABLE_TOTAL_TIME})
+
+    def setUp(self):
+        self.credit = MaintenanceCreditFactory(company=self.company, contract=self.c1, hours_number=8)
+        self.form_url = reverse(
+            "high_ui:project-delete_credit", kwargs={"company_name": self.company.slug_name, "pk": self.credit.id}
+        )
+        self.login_url = reverse("login") + "?next=" + self.form_url
+        self.success_url = reverse("high_ui:project_details", kwargs={"company_name": self.company.slug_name})
+
+    def test_manager_cannot_delete_credit(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+        self.assertEqual(self.credit, MaintenanceCredit.objects.get(pk=self.credit.pk))
+
+    def test_operator_of_the_company_can_delete_credit(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.success_url, 301)
+        self.assertEqual(0, MaintenanceCredit.objects.filter(pk=self.credit.pk).count())
+
+    def test_operator_of_other_company_cannot_delete_credit(self):
+        OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+        self.assertEqual(self.credit, MaintenanceCredit.objects.get(pk=self.credit.pk))
+
+    def test_admin_can_delete_credit(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.success_url, 301)
+        self.assertEqual(0, MaintenanceCredit.objects.filter(pk=self.credit.pk).count())
