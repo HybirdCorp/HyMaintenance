@@ -1,5 +1,6 @@
 from django.urls import reverse
 from django.views.generic import CreateView
+from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 
 from maintenance.forms.credit import MaintenanceCreditCreateForm
@@ -58,3 +59,21 @@ class CreditUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Updat
 
     def get_success_url(self):
         return reverse("high_ui:project_details", kwargs={"company_name": self.object.company.slug_name})
+
+
+class CreditDeleteView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, RedirectView):
+    permanent = True
+    query_string = True
+    pattern_name = "high_ui:project_details"
+
+    def get_object(self, queryset=None):
+        return self.get_queryset().filter(pk=self.kwargs.get("pk")).first()
+
+    def get_queryset(self):
+        return MaintenanceCredit.objects.filter(company=self.company)
+
+    def get_redirect_url(self, *args, **kwargs):
+        credit = self.get_object()
+        credit.delete()
+        del kwargs["pk"]
+        return super().get_redirect_url(*args, **kwargs)
