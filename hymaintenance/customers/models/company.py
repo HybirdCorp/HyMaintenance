@@ -8,6 +8,7 @@ class Company(models.Model):
     name = models.CharField(_("Name"), max_length=255)
     slug_name = models.SlugField(editable=False, unique=True, max_length=255)
     issues_counter = models.PositiveIntegerField(default=0)
+    is_archived = models.BooleanField(_("Archived"), default=False)
     contact = models.ForeignKey(
         to="customers.MaintenanceUser",
         verbose_name=_("Contact"),
