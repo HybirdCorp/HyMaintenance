@@ -302,3 +302,16 @@ def get_companies_of_operator(operator):
         A Company queryset with all the companies operated by the given operator order by id.
     """
     return operator.operator_for.order_by("id").prefetch_related("maintenanceuser_set")
+
+
+def get_active_companies_of_operator(operator):
+    """Returns a queryset of active companies operated by the given operator.
+
+    Returns a queryset of active companies operated by the given operator order by id
+
+    Args:
+        operator: MaintenanceUser instance which is an operator
+    Returns:
+        A Company queryset with all the active companies operated by the given operator order by id.
+    """
+    return operator.operator_for.filter(is_archived=False).order_by("id").prefetch_related("maintenanceuser_set")
