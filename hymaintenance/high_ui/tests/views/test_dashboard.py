@@ -40,6 +40,7 @@ class DashboardTestCase(TestCase):
             email="gordon.freeman@blackmesa.com", password="azerty", first_name="Op2", last_name="Op2"
         )
         op2.operator_for.add(self.company)
+        archive_company = CompanyFactory(name="Aperture Fixtures", is_archived=True)
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
@@ -49,10 +50,12 @@ class DashboardTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Op2 Op2")
         self.assertNotContains(response, "Op1 Op1")
+        self.assertNotContains(response, archive_company.name)
 
     def test_operator_admin_user_can_seen_all_companies(self):
         admin = AdminOperatorUserFactory(email="other.man@blackmesa.com", password="azerty")
         other_company = CompanyFactory(name="Black Mesa")
+        archive_company = CompanyFactory(name="Aperture Fixtures", is_archived=True)
 
         self.client.login(username=admin.email, password="azerty")
 
@@ -62,10 +65,12 @@ class DashboardTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.company.name)
         self.assertContains(response, other_company.name)
+        self.assertNotContains(response, archive_company.name)
 
-    def test_admin_user_can_seen_all_companies(self):
+    def test_admin_user_can_seen_all_active_companies(self):
         admin = AdminUserFactory(email="other.man@blackmesa.com", password="azerty")
         other_company = CompanyFactory(name="Black Mesa")
+        archive_company = CompanyFactory(name="Aperture Fixtures", is_archived=True)
 
         self.client.login(username=admin.email, password="azerty")
 
@@ -75,3 +80,4 @@ class DashboardTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.company.name)
         self.assertContains(response, other_company.name)
+        self.assertNotContains(response, archive_company.name)

@@ -274,6 +274,17 @@ class ProjectDetailsViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_operator_cannot_seen_his_archived_company(self):
+        company, _, _, _ = create_project(company={"is_archived": True})
+        view_url = reverse("high_ui:project_details", args=[company.slug_name])
+        operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        operator.operator_for.add(company)
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(view_url)
+
+        self.assertEqual(response.status_code, 404)
+
     def test_operator_cannot_seen_other_company(self):
         OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
@@ -289,6 +300,16 @@ class ProjectDetailsViewTestCase(TestCase):
         response = self.client.get(self.form_url)
 
         self.assertEqual(response.status_code, 200)
+
+    def test_admin_cannot_seen_an_archived_company(self):
+        company, _, _, _ = create_project(company={"is_archived": True})
+        view_url = reverse("high_ui:project_details", args=[company.slug_name])
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(view_url)
+
+        self.assertEqual(response.status_code, 404)
 
     def test_display_extra_credit(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
