@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
 from customers.tests.factories import AdminUserFactory
+from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.forms.project import INACTIF_CONTRACT_INPUT
@@ -618,3 +619,49 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         self.assertEqual(6, len(context["activities"]))
         self.assertIn("history", context.keys())
         self.assertEqual(6, len(context["history"]))
+
+
+class ProjectArchiveViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        cls.company = CompanyFactory()
+
+        cls.view_url = reverse("high_ui:archive_project", kwargs={"company_name": cls.company.slug_name})
+        cls.login_url = reverse("login") + "?next=" + cls.view_url
+        cls.success_url = reverse("high_ui:dashboard")
+
+    def test_manager_cannot_archive_company(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.view_url)
+
+        self.assertRedirects(response, self.login_url)
+        self.assertFalse(Company.objects.get(pk=self.company.pk).is_archived)
+
+    def test_operator_of_the_company_cannot_archive_company(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.view_url)
+
+        self.assertRedirects(response, self.login_url)
+        self.assertFalse(Company.objects.get(pk=self.company.pk).is_archived)
+
+    def test_operator_of_other_company_cannot_archive_company(self):
+        OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.view_url)
+
+        self.assertRedirects(response, self.login_url)
+        self.assertFalse(Company.objects.get(pk=self.company.pk).is_archived)
+
+    def test_admin_can_archive_company(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.view_url)
+
+        self.assertRedirects(response, self.success_url, 301)
+        self.assertTrue(Company.objects.get(pk=self.company.pk).is_archived)
