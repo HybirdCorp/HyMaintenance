@@ -94,3 +94,8 @@ class CompanyTestCase(TestCase):
 
         operators_choices = company.get_active_operators_choices()
         self.assertEqual([(operator2.pk, "Cave Johnson")], operators_choices)
+
+    def test_archive(self):
+        company = CompanyFactory(is_archived=False)
+        company.archive()
+        self.assertTrue(Company.objects.get(id=company.id).is_archived)
