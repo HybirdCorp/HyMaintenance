@@ -6,6 +6,7 @@ from django.forms import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView
 from django.views.generic import FormView
+from django.views.generic import RedirectView
 
 from customers.models import Company
 from maintenance.forms.project import ProjectCreateForm
@@ -161,6 +162,17 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
         context["history"] = self.get_history(months, contracts)
 
         return context
+
+
+class ProjectArchiveView(ViewWithCompany, IsAdminTestMixin, RedirectView):
+    permanent = True
+    query_string = True
+    pattern_name = "high_ui:dashboard"
+
+    def get_redirect_url(self, *args, **kwargs):
+        self.company.archive()
+        del kwargs["company_name"]
+        return super().get_redirect_url(*args, **kwargs)
 
 
 class EmailAlertUpdateView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, FormView):

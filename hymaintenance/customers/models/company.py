@@ -39,8 +39,8 @@ class Company(models.Model):
         if self.id is not None:
             if self.__original_name != self.name:
                 self.slug_name = self.slugify_company_name()
-                super().save(update_fields=["name", "slug_name", "contact"])
-            super().save(update_fields=["name", "contact"])
+                super().save(update_fields=["name", "slug_name", "contact", "is_archived"])
+            super().save(update_fields=["name", "contact", "is_archived"])
         else:
             self.slug_name = self.slugify_company_name()
             super().save(*args, **kwargs)
@@ -51,3 +51,7 @@ class Company(models.Model):
 
     def get_active_operators_choices(self):
         return [(operator.pk, operator.get_full_name()) for operator in self.managed_by.filter(is_active=True)]
+
+    def archive(self):
+        self.is_archived = True
+        self.save()
