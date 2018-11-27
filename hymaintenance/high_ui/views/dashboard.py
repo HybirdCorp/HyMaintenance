@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from customers.models import Company
-from customers.models.user import get_companies_of_operator
+from customers.models.user import get_active_companies_of_operator
 
 from .base import get_context_data_dashboard_header
 
@@ -21,9 +21,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         if self.user.has_operator_or_admin_permissions():
             context = self.get_context_data(**kwargs)
             if self.user.has_admin_permissions():
-                context["companies"] = Company.objects.all()
+                context["companies"] = Company.objects.filter(is_archived=False)
             else:
-                context["companies"] = get_companies_of_operator(self.user)
+                context["companies"] = get_active_companies_of_operator(self.user)
 
             # TODO prefetch the Company relations in one query for all companies:
             # 1) Company to its MaintenanceConsumers
