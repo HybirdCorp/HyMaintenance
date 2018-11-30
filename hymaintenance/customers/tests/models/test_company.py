@@ -45,6 +45,15 @@ class CompanyTestCase(TestCase):
         company = Company.objects.create(name="Black Mesa")
         self.assertEqual("black-mesa3", company.slug_name)
 
+    def test_if_slug_name_is_not_update_when_update_company_without_changing_name(self):
+        company = Company.objects.create(name="Black Mesa")
+        self.assertEqual("black-mesa", company.slug_name)
+        operator = OperatorUserFactory()
+        operator.operator_for.add(company)
+        company.save()
+        company = Company.objects.get(pk=company.pk)
+        self.assertEqual("black-mesa", company.slug_name)
+
     def test_cannot_update_slug_name(self):
         company = Company.objects.create(name="Black Mesa")
         company.slug_name = "i-m-a-sluggy-name"
