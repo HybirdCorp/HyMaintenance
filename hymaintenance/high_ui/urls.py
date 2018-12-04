@@ -17,6 +17,7 @@ from .views.maintenance_type import MaintenanceTypeUpdateView
 from .views.project import EmailAlertUpdateView
 from .views.project import ProjectArchiveView
 from .views.project import ProjectCreateView
+from .views.project import ProjectCustomizeView
 from .views.project import ProjectDetailsView
 from .views.project import ProjectUpdateView
 from .views.users.create_user import AdminUserCreateView
@@ -52,6 +53,7 @@ urlpatterns = [
     path(r"projects/<slug:company_name>/", ProjectDetailsView.as_view(), name="project_details"),
     path(r"projects/", ProjectCreateView.as_view(), name="create_project"),
     path(r"projects/<slug:company_name>/update/", ProjectUpdateView.as_view(), name="update_project"),
+    path(r"projects/<slug:company_name>/customize/", ProjectCustomizeView.as_view(), name="customize_project"),
     path(r"projects/<slug:company_name>/archive/", ProjectArchiveView.as_view(), name="archive_project"),
     path(r"projects/<slug:company_name>/issues/", IssueCreateView.as_view(), name="project-create_issue"),
     path(

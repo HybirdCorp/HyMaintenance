@@ -1,5 +1,6 @@
 {% load i18n print_fields %}
-<div class="dashboard {% if default_activity_type %}{{default_activity_type}}{% elif contracts %}{{contracts.0.maintenance_type.css_class}}{% else %}type-maintenance{% endif %}">
+<div class="dashboard {% if default_activity_type %}{{default_activity_type}}{% elif contracts %}{{contracts.0.maintenance_type.css_class}}{% else %}type-maintenance{% endif %}" {% if company.color %}style="background:{{company.color}};"{% endif %}>
+    {% if company.logo %}<div class="dashboard-logo"><img src="{{company.logo.url}}" /></div>{% endif %}
     <div class="dashboard-item dashboard-account">
         <span class="dashboard-title">{% trans "Account" %}</span>
         <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="{% trans "Return to dashboard" %}">{{company.name}}</a></span>
