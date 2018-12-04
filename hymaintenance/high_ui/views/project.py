@@ -7,7 +7,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView
 from django.views.generic import FormView
 from django.views.generic import RedirectView
+from django.views.generic import UpdateView
 
+from customers.forms.company import ProjectCustomizeForm
 from customers.models import Company
 from maintenance.forms.project import ProjectCreateForm
 from maintenance.forms.project import ProjectUpdateForm
@@ -213,3 +215,20 @@ class EmailAlertUpdateView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Fo
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+
+class ProjectCustomizeView(IsAdminTestMixin, ViewWithCompany, UpdateView):
+    form_class = ProjectCustomizeForm
+    template_name = "high_ui/forms/customize_project.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_maintenance_types())
+        context.update(get_context_data_dashboard_header(self.user))
+        return context
+
+    def get_object(self, queryset=None):
+        return self.company
+
+    def get_success_url(self):
+        return self.company.get_absolute_url()

@@ -121,6 +121,19 @@ table td {
     color: currentColor;
 }
 
+.dashboard-logo {
+    margin-left: -15px;
+    margin-top: -15px;
+    margin-bottom: -15px;
+    margin-right: 5px;
+    max-height: 75px;
+    display: flex;
+}
+
+.dashboard-logo img {
+    margin: auto;
+}
+
 .dashboard a.home-link:hover {
     text-decoration: none;
 }
@@ -221,7 +234,7 @@ table td {
 }
 
 .dashboard.type-maintenance .dashboard-item + .dashboard-item {
-    border-color: #a5d3be;
+    border-color: #0000001A;
 }
 
 /* support = blues */
