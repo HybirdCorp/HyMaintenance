@@ -1,7 +1,13 @@
+import os
+
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
+
+
+def _get_logo_file_path(instance, filename):
+    return os.path.join("upload", instance.slug_name, "logo", filename)
 
 
 class Company(models.Model):
@@ -17,6 +23,8 @@ class Company(models.Model):
         on_delete=models.PROTECT,
         related_name="contact_of",
     )
+    color = models.CharField(_("Color"), null=True, blank=True, max_length=10)
+    logo = models.ImageField(_("Logo"), null=True, blank=True, max_length=200, upload_to=_get_logo_file_path)
 
     def __str__(self):
         return self.name
@@ -38,8 +46,9 @@ class Company(models.Model):
             old_name = Company.objects.get(id=self.id).name
             if old_name != self.name:
                 self.slug_name = self.slugify_company_name()
-                super().save(update_fields=["name", "slug_name", "contact", "is_archived"])
-            super().save(update_fields=["name", "contact", "is_archived"])
+                super().save(update_fields=["name", "slug_name", "contact", "is_archived", "logo", "color"])
+            else:
+                super().save(update_fields=["name", "contact", "is_archived", "logo", "color"])
         else:
             self.slug_name = self.slugify_company_name()
             super().save(*args, **kwargs)
