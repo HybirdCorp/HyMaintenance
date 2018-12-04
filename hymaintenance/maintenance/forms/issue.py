@@ -1,10 +1,10 @@
 from django import forms
-from django.forms.widgets import ClearableFileInput
 from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
 from toolkit.email import is_number_hours_min_exceeded
 from toolkit.email import send_email_alert
+from toolkit.forms import HyClearableFileInput
 
 from ..models import MaintenanceIssue
 
@@ -13,10 +13,6 @@ def duration_in_minutes(duration, duration_type):
     if duration_type == "hours":
         duration *= 60
     return duration
-
-
-class AttachmentInput(ClearableFileInput):
-    template_name = "maintenance/forms/widgets/attachment.html"
 
 
 class MaintenanceIssueCreateForm(forms.ModelForm):
@@ -34,8 +30,8 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
             "answer": forms.Textarea(attrs={"rows": 4}),
             "incoming_channel": forms.HiddenInput(),
             "contract": forms.HiddenInput(),
-            "context_description_file": AttachmentInput,
-            "resolution_description_file": AttachmentInput,
+            "context_description_file": HyClearableFileInput,
+            "resolution_description_file": HyClearableFileInput,
         }
 
     def __init__(self, *args, **kwargs):

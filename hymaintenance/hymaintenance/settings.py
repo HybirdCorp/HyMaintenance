@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "customers",
     "maintenance",
     "high_ui",
+    "toolkit",
 ]
 
 MIDDLEWARE = [
