@@ -28,7 +28,7 @@
     </div>
 
     <div class="dashboard-item dashboard-contact">
-    {% if not request.user.has_operator_or_admin_permissons %}
+    {% if not request.user.has_operator_or_admin_permissions %}
         <span class="dashboard-title">{% trans "Your Contact" %}</span>
         <span class="dashboard-value">{% pretty_print_name company.contact.first_name company.contact.last_name %}</span>
     </div>
