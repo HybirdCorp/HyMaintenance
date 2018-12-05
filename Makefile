@@ -18,7 +18,7 @@ flake8:
 	flake8 --show-source hymaintenance
 
 isort:
-	isort --recursive --atomic --check-only ./hymaintenance/
+	isort --recursive -vb --atomic --check-only ./hymaintenance/
 
 lint: flake8 isort black-check
 
