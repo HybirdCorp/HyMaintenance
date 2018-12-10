@@ -323,6 +323,18 @@ class ProjectDetailsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<td class="history-item-duration duration">+10h</td>')
 
+    def test_customize_project_header_display(self):
+        self.company.color = "#000"
+        self.company.save()
+        admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        self.client.login(username=admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<div class="dashboard type-maintenance" style="background:#000;">')
+        self.company.color = None
+        self.company.save()
+
     def test_staff_company_display_project_header(self):
         admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         self.client.login(username=admin.email, password="azerty")
@@ -686,3 +698,55 @@ class ProjectArchiveViewTestCase(TestCase):
 
         self.assertRedirects(response, self.success_url, 301)
         self.assertTrue(Company.objects.get(pk=self.company.pk).is_archived)
+
+
+class ProjectCustomizeViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        cls.company, _, _, _ = create_project()
+
+        cls.form_url = reverse("high_ui:customize_project", kwargs={"company_name": cls.company.slug_name})
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_manager_cannot_get_update_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_operator_cannot_get_update_form(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_admin_can_get_update_form(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_i_can_post_and_form_to_update_a_project(self):
+        operator = OperatorUserFactory(first_name="Chell")
+        operator.operator_for.add(self.company)
+        company_name = "Aperture Science"
+        color = "#000"
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+
+        response = self.client.post(
+            self.form_url, {"name": company_name, "contact": operator.pk, "color": color, "logo": None}, follow=True
+        )
+
+        company = Company.objects.get(pk=self.company.pk)
+        self.assertRedirects(response, reverse("high_ui:project_details", kwargs={"company_name": company.slug_name}))
+        self.assertEquals(company_name, company.name)
+        self.assertEquals(color, company.color)
+        self.assertEquals(operator, company.contact)
