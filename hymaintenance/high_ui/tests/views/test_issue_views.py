@@ -20,6 +20,7 @@ from maintenance.tests.factories import MaintenanceConsumerFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import create_project
 from toolkit.tests import create_temporary_file
+from toolkit.tests import create_temporary_image
 
 from ..utils import SetDjangoLanguage
 
@@ -374,6 +375,23 @@ class IssueDetailViewTestCase(TestCase):
         response = self.client.get(self.view_url)
 
         self.assertEqual(response.status_code, 404)
+
+    def test_customize_issue_header_display(self):
+        self.company.color = "#000"
+        with create_temporary_image() as tmp_file:
+            self.company.logo.save(os.path.basename(tmp_file.name), File(tmp_file))
+            self.company.save()
+            self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+            response = self.client.get(self.view_url, follow=True)
+
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, '<div class="dashboard type-maintenance" style="background:#000;">')
+            self.assertContains(
+                response, '<div class="dashboard-logo"><img src="{}"/></div>'.format(self.company.logo.url)
+            )
+            self.company.color = None
+            self.company.logo = None
+            self.company.save()
 
     def test_user_can_see_issue_context_attachment_of_this_company(self):
 

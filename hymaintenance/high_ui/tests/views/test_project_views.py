@@ -1,5 +1,7 @@
 import datetime
+import os
 
+from django.core.files import File
 from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
@@ -18,6 +20,7 @@ from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 from maintenance.tests.factories import MaintenanceCreditFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import create_project
+from toolkit.tests import create_temporary_image
 
 from ...views.project import ProjectCreateView
 from ...views.project import ProjectDetailsView
@@ -325,15 +328,21 @@ class ProjectDetailsViewTestCase(TestCase):
 
     def test_customize_project_header_display(self):
         self.company.color = "#000"
-        self.company.save()
-        admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        self.client.login(username=admin.email, password="azerty")
-        response = self.client.get(self.form_url, follow=True)
+        with create_temporary_image() as tmp_file:
+            self.company.logo.save(os.path.basename(tmp_file.name), File(tmp_file))
+            self.company.save()
+            admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+            self.client.login(username=admin.email, password="azerty")
+            response = self.client.get(self.form_url, follow=True)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<div class="dashboard type-maintenance" style="background:#000;">')
-        self.company.color = None
-        self.company.save()
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, '<div class="dashboard type-maintenance" style="background:#000;">')
+            self.assertContains(
+                response, '<div class="dashboard-logo"><img src="{}"/></div>'.format(self.company.logo.url)
+            )
+            self.company.color = None
+            self.company.logo = None
+            self.company.save()
 
     def test_staff_company_display_project_header(self):
         admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
