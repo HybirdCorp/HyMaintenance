@@ -1,6 +1,5 @@
 import os
 from shutil import rmtree
-from tempfile import NamedTemporaryFile
 from tempfile import TemporaryDirectory
 
 from django.conf import settings
@@ -11,6 +10,7 @@ from django.utils.translation import gettext as _
 
 from customers.tests.factories import OperatorUserFactory
 from high_ui.tests.utils import SetDjangoLanguage
+from toolkit.tests import create_temporary_file
 
 from ...forms.issue import MaintenanceIssueCreateForm
 from ...forms.issue import MaintenanceIssueUpdateForm
@@ -20,13 +20,6 @@ from ..factories import IncomingChannelFactory
 from ..factories import MaintenanceConsumerFactory
 from ..factories import MaintenanceIssueFactory
 from ..factories import create_project
-
-
-def create_temporary_file(content=b"I am not empty", directory=None):
-    tmp_file = NamedTemporaryFile(dir=directory, delete=True)
-    tmp_file.write(content)
-    tmp_file.flush()
-    return open(tmp_file.name, "rb")
 
 
 class DurationFunctionTestCase(TestCase):

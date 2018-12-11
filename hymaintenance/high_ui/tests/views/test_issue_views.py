@@ -1,6 +1,5 @@
 import os
 from shutil import rmtree
-from tempfile import NamedTemporaryFile
 from tempfile import TemporaryDirectory
 from tempfile import TemporaryFile
 from urllib.parse import urljoin
@@ -20,15 +19,9 @@ from maintenance.tests.factories import IncomingChannelFactory
 from maintenance.tests.factories import MaintenanceConsumerFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import create_project
+from toolkit.tests import create_temporary_file
 
 from ..utils import SetDjangoLanguage
-
-
-def create_temporary_file(content=b"I am not empty", directory=None):
-    tmp_file = NamedTemporaryFile(dir=directory, delete=True)
-    tmp_file.write(content)
-    tmp_file.flush()
-    return open(tmp_file.name, "rb")
 
 
 class IssueCreateViewTestCase(TestCase):
