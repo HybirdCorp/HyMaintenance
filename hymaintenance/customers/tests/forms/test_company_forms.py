@@ -1,6 +1,5 @@
 import os
 from shutil import rmtree
-from tempfile import NamedTemporaryFile
 from tempfile import TemporaryDirectory
 
 from PIL import Image
@@ -13,18 +12,10 @@ from django.utils.translation import gettext as _
 
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import OperatorUserFactory
+from toolkit.tests import create_temporary_image
 
 from ...forms.company import ProjectCustomizeForm
 from ...models.company import Company
-
-
-def create_temporary_file(directory=None):
-    tmp_file = NamedTemporaryFile(dir=directory, delete=True, suffix=".jpg")
-    img = Image.new("RGB", (150, 100))
-    img.putdata([(0, 0, 0) for i in range(15000)])
-    img.save(tmp_file)
-    tmp_file.seek(0)
-    return open(tmp_file.name, "rb")
 
 
 class ProjectCustomizeFormTestCase(TestCase):
@@ -57,7 +48,7 @@ class ProjectCustomizeFormTestCase(TestCase):
     def test_when_user_sends_valid_form(self):
         dict_for_post = self.__get_dict_for_post()
 
-        with create_temporary_file() as tmp_file:
+        with create_temporary_image() as tmp_file:
             dict_for_post["logo"] = tmp_file
 
             form = ProjectCustomizeForm(
@@ -111,7 +102,7 @@ class ProjectCustomizeFormTestCase(TestCase):
     def test_when_user_update_already_existing_logo(self):
         dict_for_post = self.__get_dict_for_post()
 
-        with create_temporary_file() as tmp_file, create_temporary_file() as old_tmp_file:
+        with create_temporary_image() as tmp_file, create_temporary_image() as old_tmp_file:
             self.company.logo.save(os.path.basename(old_tmp_file.name), File(old_tmp_file))
             self.company.save()
             company = Company.objects.get(pk=self.company.pk)
@@ -139,7 +130,7 @@ class ProjectCustomizeFormTestCase(TestCase):
             self.company.save()
 
     def test_when_user_dont_update_already_existing_logo(self):
-        with create_temporary_file() as old_tmp_file:
+        with create_temporary_image() as old_tmp_file:
             self.company.logo.save(os.path.basename(old_tmp_file.name), File(old_tmp_file))
             self.company.save()
             company = Company.objects.get(pk=self.company.pk)
