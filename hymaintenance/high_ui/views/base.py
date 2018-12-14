@@ -20,9 +20,9 @@ def get_context_data_dashboard_header(user):
         "all_types_operators_number": MaintenanceUser.objects.get_active_all_types_operator_users_queryset().count()
     }
     if user.has_admin_permissions():
-        context["companies_number"] = Company.objects.all().count()
+        context["companies_number"] = Company.objects.filter(is_archived=False).count()
     else:
-        context["companies_number"] = get_companies_of_operator(user).count()
+        context["companies_number"] = get_companies_of_operator(user).filter(is_archived=False).count()
     return context
 
 
