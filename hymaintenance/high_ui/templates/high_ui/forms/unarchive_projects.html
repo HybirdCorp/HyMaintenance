@@ -1,0 +1,22 @@
+{% extends 'high_ui/forms/update_projects.html' %}
+{% load i18n print_fields %}
+
+{% block page_title %}
+<title>Maintenance {{general_info.name}} &mdash; {% trans "Activate projects" %}</title> {# TMP #}
+{% endblock %}
+
+{% block form_title %}
+<div class="group-title">{% trans "Activate projects" %}</div>
+{% endblock %}
+
+{% block form_multiple_projects_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select projects that you want to be active, among the {{projects_number}} archive {{name}}'s projects:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block form_single_project_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select the single {{name}}'s archived project to turn it active:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block form_footer %}
+<button type="submit">{% trans "Activate this projects" %}</button>
+{% endblock %}

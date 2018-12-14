@@ -1,0 +1,22 @@
+{% extends 'high_ui/forms/update_projects.html' %}
+{% load i18n print_fields %}
+
+{% block page_title %}
+<title>Maintenance {{general_info.name}} &mdash; {% trans "Archive projects" %}</title> {# TMP #}
+{% endblock %}
+
+{% block form_title %}
+<div class="group-title">{% trans "Archive projects" %}</div>
+{% endblock %}
+
+{% block form_multiple_projects_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select projects that you want to be inactive, among the {{projects_number}} active {{name}}'s projects:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block form_single_project_help %}
+<span class="list-intro">{% blocktrans with name=general_info.name %}Select the single {{name}}'s active project to turn them archived:{% endblocktrans %}</span>
+{% endblock %}
+
+{% block form_footer %}
+<button type="submit">{% trans "Archive this projects" %}</button>
+{% endblock %}

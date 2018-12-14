@@ -6,10 +6,11 @@ from django.forms import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView
 from django.views.generic import FormView
-from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 
 from customers.forms.company import ProjectCustomizeForm
+from customers.forms.project import ProjectListArchiveForm
+from customers.forms.project import ProjectListUnarchiveForm
 from customers.models import Company
 from maintenance.forms.project import ProjectCreateForm
 from maintenance.forms.project import ProjectUpdateForm
@@ -166,15 +167,36 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
         return context
 
 
-class ProjectArchiveView(ViewWithCompany, IsAdminTestMixin, RedirectView):
-    permanent = True
-    query_string = True
-    pattern_name = "high_ui:dashboard"
+class ProjectListArchiveView(IsAdminTestMixin, FormView):
+    form_class = ProjectListArchiveForm
+    template_name = "high_ui/forms/archive_projects.html"
+    success_url = "/high_ui/admin/"  # TMP
 
-    def get_redirect_url(self, *args, **kwargs):
-        self.company.archive()
-        del kwargs["company_name"]
-        return super().get_redirect_url(*args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_data_dashboard_header(self.user))
+        context["projects_number"] = Company.objects.filter(is_archived=False).count()
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+class ProjectListUnarchiveView(IsAdminTestMixin, FormView):
+    form_class = ProjectListUnarchiveForm
+    template_name = "high_ui/forms/unarchive_projects.html"
+    success_url = "/high_ui/admin/"  # TMP
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_data_dashboard_header(self.user))
+        context["projects_number"] = Company.objects.filter(is_archived=True).count()
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 
 class EmailAlertUpdateView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, FormView):
