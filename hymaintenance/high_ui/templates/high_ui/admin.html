@@ -116,6 +116,55 @@
                     </div>
                 </div>
             </div>
+            <div class='dashboard-container'>
+                <div class="dashboard type-project">
+                    <div class="dashboard-item dashboard-account">
+                        <span class="dashboard-value">{% blocktrans with name=general_info.name %}{{name}}'s projects{% endblocktrans %}</span>
+                    </div>
+                </div>
+                <div class="project-details">
+                    <div class="project-user-list">
+                        <div class="dashboard">
+                            <div class="dashboard-item project-detail">
+                                <span class="dashboard-title">{% trans "Active projects" %}</span>
+                                <span class="dashboard-value">{{active_projects.count}}</span>
+                            </div>
+                            {% if active_projects.count %}
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{% url 'high_ui:archive_projects' %}" title="{% trans "Archive active projects" %}">{% trans "Archive projects" %}</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="project-users">
+                            {% for project in active_projects %}
+                            <div><a href='{% url 'high_ui:update_project' company_name=project.slug_name %}'>{{project.name}}</a></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="project-user-list">
+                        <div class="dashboard">
+                            <div class="dashboard-item project-detail">
+                                <span class="dashboard-title">{% trans "Archived projects" %}</span>
+                                <span class="dashboard-value">{{archived_projects.count}}</span>
+                            </div>
+                            {% if archived_projects.count %}
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{% url 'high_ui:unarchive_projects' %}" title="{% trans "Activate archived projects" %}">{% trans "Activate projects" %}</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="project-users">
+                            {% for project in archived_projects %}
+                            <div>{{project.name}}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     {% include "high_ui/footer.html" with show_menu_client=True %}

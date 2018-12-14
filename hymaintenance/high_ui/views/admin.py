@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 
+from customers.models.user import Company
 from customers.models.user import MaintenanceUser
 
 from .base import IsAdminTestMixin
@@ -16,4 +17,6 @@ class AdminView(IsAdminTestMixin, TemplateView):
         context.update(get_maintenance_types())
         context["admins"] = MaintenanceUser.objects.get_admin_users_queryset()
         context["operators"] = MaintenanceUser.objects.get_active_operator_users_queryset()
+        context["active_projects"] = Company.objects.filter(is_archived=False).order_by("name")
+        context["archived_projects"] = Company.objects.filter(is_archived=True).order_by("name")
         return context
