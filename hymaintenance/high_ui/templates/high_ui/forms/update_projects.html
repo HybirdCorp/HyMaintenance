@@ -1,0 +1,58 @@
+{% load static %}
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+{% block page_title %}{% endblock %}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/edit-list.css" />
+</head>
+<body>
+    {% include "high_ui/dashboard_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-content">
+                    <div class="form-group">
+                        <div class="group-title-container">
+                            {% block form_title %}{% endblock %}
+                        </div>
+
+                        <div>
+                            {% if projects_number > 1%}
+                            {% block form_multiple_projects_help %}{% endblock %}
+                            {% else %}
+                            {% block form_single_project_help %}{% endblock %}
+                            {% endif %}
+                            <ul class="checkbox-list">
+                            {% for value, label in form.projects.field.choices %}
+                                <li>
+                                    <label>
+                                        <input value="{{value}}" name="projects" type="checkbox"> 
+                                        <div class="item-container">
+                                            <div class="item-name">
+                                                {{label}}
+                                            </div>
+                                        </div>
+                                    </label>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        {% block form_footer %}{% endblock %}
+                        <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Change nothing" %}</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+</body>
+</html>
