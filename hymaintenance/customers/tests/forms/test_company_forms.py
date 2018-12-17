@@ -15,6 +15,8 @@ from customers.tests.factories import OperatorUserFactory
 from toolkit.tests import create_temporary_image
 
 from ...forms.company import ProjectCustomizeForm
+from ...forms.project import ProjectListArchiveForm
+from ...forms.project import ProjectListUnarchiveForm
 from ...models.company import Company
 
 
@@ -142,3 +144,49 @@ class ProjectCustomizeFormTestCase(TestCase):
             self.assertTrue(os.path.isfile(company.logo.path))
             self.company.logo.delete()
             self.company.save()
+
+
+class ProjectArchiveFormTestCase(TestCase):
+    def setUp(self):
+        self.c1 = CompanyFactory(name="Black Mesa", is_archived=True)
+        self.c2 = CompanyFactory(name="Aperture Science")
+
+    def test_archive_form_queryset(self):
+        form = ProjectListArchiveForm(data={"projects": []})
+        project_choices = [project[0] for project in form.fields["projects"].choices]
+        self.assertIn(self.c2.pk, project_choices)
+        self.assertNotIn(self.c1.pk, project_choices)
+
+    def test_archive_form_update_new_status(self):
+        form = ProjectListArchiveForm(data={"projects": [self.c2]})
+        self.assertTrue(form.is_valid(), form.errors)
+        form.save()
+        self.assertTrue(Company.objects.get(pk=self.c1.pk).is_archived)
+        self.assertTrue(Company.objects.get(pk=self.c2.pk).is_archived)
+
+    def test_archive_form_dont_update_when_no_new_status(self):
+        form = ProjectListArchiveForm(data={"projects": []})
+        self.assertTrue(form.is_valid(), form.errors)
+        form.save()
+        self.assertTrue(Company.objects.get(pk=self.c1.pk).is_archived)
+        self.assertFalse(Company.objects.get(pk=self.c2.pk).is_archived)
+
+    def test_unarchive_form_queryset(self):
+        form = ProjectListUnarchiveForm(data={"projects": []})
+        project_choices = [project[0] for project in form.fields["projects"].choices]
+        self.assertNotIn(self.c2.pk, project_choices)
+        self.assertIn(self.c1.pk, project_choices)
+
+    def test_unarchive_form_update_new_status(self):
+        form = ProjectListUnarchiveForm(data={"projects": [self.c1]})
+        self.assertTrue(form.is_valid(), form.errors)
+        form.save()
+        self.assertFalse(Company.objects.get(pk=self.c1.pk).is_archived)
+        self.assertFalse(Company.objects.get(pk=self.c2.pk).is_archived)
+
+    def test_unarchive_form_dont_update_when_no_new_status(self):
+        form = ProjectListUnarchiveForm(data={"projects": []})
+        self.assertTrue(form.is_valid(), form.errors)
+        form.save()
+        self.assertTrue(Company.objects.get(pk=self.c1.pk).is_archived)
+        self.assertFalse(Company.objects.get(pk=self.c2.pk).is_archived)
