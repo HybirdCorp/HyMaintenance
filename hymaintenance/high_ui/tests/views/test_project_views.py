@@ -24,6 +24,8 @@ from toolkit.tests import create_temporary_image
 
 from ...views.project import ProjectCreateView
 from ...views.project import ProjectDetailsView
+from ...views.project import ProjectListArchiveView
+from ...views.project import ProjectListUnarchiveView
 from ...views.project import ProjectUpdateView
 
 
@@ -663,50 +665,114 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         self.assertEqual(6, len(context["history"]))
 
 
-class ProjectArchiveViewTestCase(TestCase):
+class ProjectListArchiveViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        cls.company = CompanyFactory()
+        cls.form_url = reverse("high_ui:archive_projects")
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
 
-        cls.view_url = reverse("high_ui:archive_project", kwargs={"company_name": cls.company.slug_name})
-        cls.login_url = reverse("login") + "?next=" + cls.view_url
-        cls.success_url = reverse("high_ui:dashboard")
+    def setUp(self):
+        self.c1 = CompanyFactory(name="Black Mesa", is_archived=True)
+        self.c2 = CompanyFactory(name="Aperture Science")
 
-    def test_manager_cannot_archive_company(self):
-        ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = ProjectListArchiveView()
+        view.request = request
+        view.user = self.admin
+
+        context = view.get_context_data()
+        self.assertIn("projects_number", context.keys())
+        self.assertEqual(1, context["projects_number"])
+
+    def test_manager_cannot_get_update_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
         self.client.login(username="chell@aperture-science.com", password="azerty")
-        response = self.client.get(self.view_url)
+        response = self.client.get(self.form_url)
 
         self.assertRedirects(response, self.login_url)
-        self.assertFalse(Company.objects.get(pk=self.company.pk).is_archived)
 
-    def test_operator_of_the_company_cannot_archive_company(self):
-        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
-        operator.operator_for.add(self.company)
-
-        self.client.login(username="chell@aperture-science.com", password="azerty")
-        response = self.client.get(self.view_url)
-
-        self.assertRedirects(response, self.login_url)
-        self.assertFalse(Company.objects.get(pk=self.company.pk).is_archived)
-
-    def test_operator_of_other_company_cannot_archive_company(self):
+    def test_operator_cannot_get_update_form(self):
         OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
 
         self.client.login(username="chell@aperture-science.com", password="azerty")
-        response = self.client.get(self.view_url)
+        response = self.client.get(self.form_url)
 
         self.assertRedirects(response, self.login_url)
-        self.assertFalse(Company.objects.get(pk=self.company.pk).is_archived)
 
-    def test_admin_can_archive_company(self):
-        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
-        response = self.client.get(self.view_url)
+    def test_admin_can_get_update_operator_form(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
 
-        self.assertRedirects(response, self.success_url, 301)
-        self.assertTrue(Company.objects.get(pk=self.company.pk).is_archived)
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_project_archive_form(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.post(self.form_url, {"projects": self.c2.pk}, follow=True)
+
+        self.assertRedirects(response, reverse("high_ui:admin"))
+        companies = Company.objects.filter(is_archived=True)
+        self.assertEqual(2, companies.count())
+        self.assertIn(self.c2, companies)
+
+
+class ProjectListUnunarchiveViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        cls.form_url = reverse("high_ui:unarchive_projects")
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def setUp(self):
+        self.c1 = CompanyFactory(name="Black Mesa", is_archived=True)
+        self.c2 = CompanyFactory(name="Aperture Science")
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = ProjectListUnarchiveView()
+        view.request = request
+        view.user = self.admin
+
+        context = view.get_context_data()
+        self.assertIn("projects_number", context.keys())
+        self.assertEqual(1, context["projects_number"])
+
+    def test_manager_cannot_get_update_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_operator_cannot_get_update_form(self):
+        OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_admin_can_get_update_operator_form(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_project_unarchive_form(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.post(self.form_url, {"projects": self.c1.pk}, follow=True)
+
+        self.assertRedirects(response, reverse("high_ui:admin"))
+        companies = Company.objects.filter(is_archived=False)
+        self.assertEqual(2, companies.count())
+        self.assertIn(self.c1, companies)
 
 
 class ProjectCustomizeViewTestCase(TestCase):

@@ -1,4 +1,4 @@
-
+from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
 
@@ -8,12 +8,45 @@ from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 
+from ...views.dashboard import DashboardView
+
 
 class DashboardTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.company = CompanyFactory(name="Aperture Science")
         cls.page_url = reverse("high_ui:dashboard")
+
+    def test_get_context_data_companies_number_for_admin(self):
+        user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        CompanyFactory(is_archived=True)
+
+        factory = RequestFactory()
+        request = factory.get(self.page_url)
+        request.user = user
+        view = DashboardView()
+        view.request = request
+        view.user = user
+
+        context = view.get_context_data()
+        self.assertEqual(1, context["companies_number"])
+
+    def test_get_context_data_companies_number_for_operator(self):
+        user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        user.operator_for.add(self.company)
+        archived_company = CompanyFactory(is_archived=True)
+        user.operator_for.add(archived_company)
+        CompanyFactory()
+
+        factory = RequestFactory()
+        request = factory.get(self.page_url)
+        request.user = user
+        view = DashboardView()
+        view.request = request
+        view.user = user
+
+        context = view.get_context_data()
+        self.assertEqual(1, context["companies_number"])
 
     def test_operator_can_seen_the_dashboard(self):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
