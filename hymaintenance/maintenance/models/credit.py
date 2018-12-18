@@ -26,3 +26,10 @@ class MaintenanceCredit(models.Model):
 
     def get_counter_name(self):
         return get_counter_name(self)
+
+
+class MaintenanceCreditChoices(models.Model):
+    value = models.IntegerField(_("Value"))
+
+    def __str__(self):
+        return "{}".format(self.value)
