@@ -1,16 +1,20 @@
-function SegmentedSelector (element, listener) {
+function SegmentedSelector (element, listener, input) {
     if (!element) {
         console.error("Segmented selector created with invalid root element");
         return;
     }
 
-    var input = element.querySelector("input");
+    var input = input || element.querySelector("input");
 
     var onValueSelected = function (selected) {
         var active = element.querySelector("a.active");
 
         var currentKey = active.getAttribute("data-selector-key");
         var selectedKey = selected.getAttribute("data-selector-key");
+
+        if (currentKey == "custom-value") {
+            active.setAttribute("data-selector-value", input.value);
+        }
         
         var selectedValue = selected.getAttribute("data-selector-value");
         input.value = selectedValue;
@@ -28,7 +32,11 @@ function SegmentedSelector (element, listener) {
     // TODO: check this is still useful when the app is implemented server-side. This will be unused if the page is rerendered
     //       by the server in such cases.
     if (input.value) {
-        var selected = element.querySelector("a[data-selector-value='" + input.value + "']");
+        if (element.querySelector("a[data-selector-value='" + input.value + "']") == undefined) {
+            var selected = element.querySelector("a[data-selector-key='custom-value']")
+        } else {
+            var selected = element.querySelector("a[data-selector-value='" + input.value + "']");
+        }
         onValueSelected(selected);
     } else {
         var visuallyActive = element.querySelector("a.active");

@@ -8,7 +8,7 @@ class MaintenanceCreditCreateForm(forms.ModelForm):
     class Meta:
         model = MaintenanceCredit
         fields = ("hours_number", "contract")
-        widgets = {"hours_number": forms.HiddenInput(), "contract": forms.HiddenInput()}
+        widgets = {"hours_number": forms.TextInput(), "contract": forms.HiddenInput()}
 
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
@@ -26,4 +26,4 @@ class MaintenanceCreditUpdateForm(forms.ModelForm):
     class Meta:
         model = MaintenanceCredit
         fields = ("hours_number", "contract")
-        widgets = {"hours_number": forms.HiddenInput(), "contract": forms.HiddenInput()}
+        widgets = {"hours_number": forms.TextInput(), "contract": forms.HiddenInput()}

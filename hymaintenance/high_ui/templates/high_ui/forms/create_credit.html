@@ -9,6 +9,23 @@
 <div class="group-title">{% trans "Add hours" %}</div>
 {% endblock %}
 
+{% block hours_number_a %}
+{% for hours_number in hours_numbers %}
+<a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
+   data-selector-key="{{hours_number}}"
+   data-selector-value="{{hours_number}}"
+   title="{% blocktrans %}Add {{hours_number}}h{% endblocktrans %}">{{hours_number}}h</a>
+{% endfor %}
+<a href=""
+   class="inactive"
+   id="custom-value"
+   data-selector-key="custom-value"
+   data-selector-value=""
+   title="{% blocktrans %}Add custom nomber of hours{% endblocktrans %}">
+    Autre
+</a>
+{% endblock %}
+
 {% block form_footer %}
 <button type="submit">{% trans "Add hours" %}</button>
 <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't add" %}</a></span>
