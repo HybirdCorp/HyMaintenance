@@ -9,6 +9,26 @@
 <div class="group-title">{% trans "Modify credits" %}</div>
 {% endblock %}
 
+{% block hours_number_a %}
+{% for hours_number in hours_numbers %}
+<a href=""
+   class="{% if form.hours_number.value == hours_number %}active{% else %}inactive{% endif %}"
+   data-selector-key="{{hours_number}}"
+   data-selector-value="{{hours_number}}"
+   title="{% blocktrans %}Add {{hours_number}}h{% endblocktrans %}">
+    {{hours_number}}h
+</a>
+{% endfor %}
+<a href=""
+   class="{% if form.hours_number.value not in hours_numbers %}active{% else %}inactive{% endif %}"
+   id="custom-value"
+   data-selector-key="custom-value"
+   data-selector-value="{% if form.hours_number.value not in hours_numbers %}{{form.hours_number.value}}{% endif %}"
+   title="{% blocktrans %}Add custom nomber of hours{% endblocktrans %}">
+    Autre
+</a>
+{% endblock %}
+
 {% block form_footer %}
 <button type="submit">{% trans "Modify credits" %}</button>
 <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>

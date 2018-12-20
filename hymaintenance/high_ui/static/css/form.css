@@ -388,3 +388,11 @@ textarea {
 }
 
 /* default html widgets overrides - end */
+
+/* credit form */
+
+#row-custom-hours-number.hidden {
+    display: none;
+}
+
+/* credut form - end */

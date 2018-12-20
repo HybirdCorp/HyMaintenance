@@ -28,14 +28,24 @@
                         <div class="form-row">
                             <label for="{{form.hours_number.id_for_label}}">{{form.hours_number.label}}</label>
                             <section class="segmented-selector {{default_activity_type}} selector-hours_number">
-                                {% for hours_number in hours_numbers %}
-                                <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
-                                   data-selector-key="{{hours_number}}"
-                                   data-selector-value="{{hours_number}}"
-                                   title="{% blocktrans %}Add {{hours_number}}h{% endblocktrans %}">{{hours_number}}h</a>
-                                {% endfor %}
-                                {{form.hours_number}}
+                            {% block hours_number_a %}{% endblock %}
                             </section>
+                        </div>
+                        <div id="row-custom-hours-number" class="form-row {% if form.hours_number.errors %}form-error{% endif %}">
+                            {% if form.hours_number.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+			    <label for="{{form.hours_number.id_for_label}}"></label>
+                            {{form.hours_number}}&nbsp;H
+
+                            {% if form.hours_number.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.hours_number.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
                         </div>
 
                         <div class="form-row">
@@ -71,7 +81,15 @@
     {% include "high_ui/footer.html" with show_menu_client=True %}
     <script>
         var hoursSelector = document.querySelector(".selector-hours_number");
-        new SegmentedSelector (hoursSelector, function (currentKey, selectedKey) {});
+        new SegmentedSelector (hoursSelector, function (currentKey, selectedKey) {
+            var customHoursNumber = document.getElementById("row-custom-hours-number");
+            if (selectedKey == "custom-value") {
+                customHoursNumber.classList.remove("hidden");
+            } else {
+                customHoursNumber.classList.add("hidden");
+            }
+        }, document.getElementById("row-custom-hours-number").querySelector("input"));
+
         var activityTypeSelector = new SegmentedSelector (document.querySelector(".selector-activity-type"),
                                                           function (currentKey, selectedKey) {
             var currentType = currentKey;
