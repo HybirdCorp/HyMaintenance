@@ -2,6 +2,7 @@ from django import forms
 
 from ..models import MaintenanceContract
 from ..models import MaintenanceCredit
+from ..models.credit import MaintenanceCreditChoices
 
 
 class MaintenanceCreditCreateForm(forms.ModelForm):
@@ -12,9 +13,8 @@ class MaintenanceCreditCreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
-        hours_number_initial = kwargs.pop("hours_number_initial")
         super().__init__(*args, **kwargs)
-        self.fields["hours_number"].initial = hours_number_initial
+        self.fields["hours_number"].initial = MaintenanceCreditChoices.objects.all().order_by("id").first()
         self.fields["contract"].queryset = MaintenanceContract.objects.filter(company=self.company)
 
     def save(self, commit=True):

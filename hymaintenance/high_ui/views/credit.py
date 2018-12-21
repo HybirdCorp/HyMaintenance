@@ -22,20 +22,16 @@ class CreditCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Creat
     form_class = MaintenanceCreditCreateForm
     template_name = "high_ui/forms/create_credit.html"
 
-    def dispatch(self, request, *args, **kwargs):
-        self.hours_step = 8
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["available_time_contracts"] = context["contracts"].filter(total_type=AVAILABLE_TOTAL_TIME)
-        context.update({"hours_numbers": range(self.hours_step, 6 * self.hours_step, self.hours_step)})
+        hours_numbers = (credit_choice.value for credit_choice in MaintenanceCreditChoices.objects.all().order_by("id"))
+        context.update({"hours_numbers": list(hours_numbers)})
         return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs["company"] = self.company
-        kwargs["hours_number_initial"] = self.hours_step
         return kwargs
 
     def get_success_url(self):
@@ -60,7 +56,8 @@ class CreditUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Updat
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["available_time_contracts"] = context["contracts"].filter(total_type=AVAILABLE_TOTAL_TIME)
-        context.update({"hours_numbers": range(self.hours_step, 6 * self.hours_step, self.hours_step)})
+        hours_numbers = (credit_choice.value for credit_choice in MaintenanceCreditChoices.objects.all().order_by("id"))
+        context.update({"hours_numbers": list(hours_numbers)})
         return context
 
     def get_success_url(self):
