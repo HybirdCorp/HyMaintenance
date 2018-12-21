@@ -1,5 +1,8 @@
+from django import forms
+from django.forms import modelformset_factory
 from django.urls import reverse
 from django.views.generic import CreateView
+from django.views.generic import FormView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 
@@ -7,9 +10,12 @@ from maintenance.forms.credit import MaintenanceCreditCreateForm
 from maintenance.forms.credit import MaintenanceCreditUpdateForm
 from maintenance.models import MaintenanceCredit
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
+from maintenance.models.credit import MaintenanceCreditChoices
 
+from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedOperatorTestMixin
 from .base import ViewWithCompany
+from .base import get_context_data_dashboard_header
 
 
 class CreditCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
@@ -77,3 +83,26 @@ class CreditDeleteView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Redir
         credit.delete()
         del kwargs["pk"]
         return super().get_redirect_url(*args, **kwargs)
+
+
+class CreditChoicesUpdateView(IsAdminTestMixin, FormView):
+    form_class = modelformset_factory(
+        MaintenanceCreditChoices, fields=["value"], widgets={"value": forms.TextInput()}, extra=0
+    )
+    template_name = "high_ui/forms/update_credit_choices.html"
+    success_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_data_dashboard_header(self.user))
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["queryset"] = MaintenanceCreditChoices.objects.all().order_by("id")
+        print(MaintenanceCreditChoices.objects.all().order_by("id"))
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

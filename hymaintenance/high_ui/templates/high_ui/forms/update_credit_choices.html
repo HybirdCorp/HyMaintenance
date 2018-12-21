@@ -1,0 +1,88 @@
+{% load static %}
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance {{general_info.name}} &mdash; {% blocktrans %}Modify {{company}} email alerts{% endblocktrans %}</title> {# TMP #}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/create-project.css" />
+<script src="/static/js/segmented-selector.js"></script>
+<script src="/static/js/date-picker.js"></script>
+</head>
+<body>
+    {% include "high_ui/dashboard_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content">
+                    {{form.management_form}}
+                    <div class="form-group">
+                        <div class="group-title-container">
+                            <div class="group-title">{% blocktrans %}Default credit's values{% endblocktrans %}</div>
+                        </div>
+                        {% for sub_form in form %}
+                        <div class="form-row {% if sub_form.value.errors %}form-error{% endif %}">
+                            {% if sub_form.value.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+                        
+                            <label for="{{sub_form.value.id_for_label}}">{{sub_form.value.label}} {{forloop.counter}} *</label>
+                            {{sub_form.value}}
+                        
+                            {% if sub_form.value.errors %}
+                            </div>
+                            {% endif %}
+                        
+                            {% for error in sub_form.value.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                            {{sub_form.id}}
+                        </div>
+
+                        {% endfor %}
+                    </div>
+
+                    {% if form.non_field_errors %}
+                    <div class="form-error">
+                        {% for error in form.non_field_errors %}
+                            <p><i>{{ error }}</i></p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-footer">
+                        <button type="submit">{% trans "Modify this configuration" %}</button>
+                        <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script>
+        var alertStatuss = document.querySelectorAll(".form-row.row-email-alert");
+        for (var i = 0; i < alertStatuss.length; ++i) {
+            var alertStatus = alertStatuss[i];
+            new SegmentedSelector(alertStatus.querySelector(".segmented-selector"),
+                                  function (node, currentKey, selectedKey) {
+                var currentType = "email-alert-" + currentKey;
+                var selectedType = "email-alert-" + selectedKey;
+
+                var parent = node.parentElement;
+                parent.className = parent.className.replace(currentType, selectedType);
+
+                var creditMinInput = parent.querySelector(".row-credit-min input");
+                creditMinInput.required = selectedType === "email-alert-enabled";
+
+                var recipientSelect = parent.querySelector(".row-recipient select");
+                recipientSelect.required = selectedType === "email-alert-enabled";
+            }.bind(null, alertStatus));
+        }
+    </script>
+</body>
+</html>
