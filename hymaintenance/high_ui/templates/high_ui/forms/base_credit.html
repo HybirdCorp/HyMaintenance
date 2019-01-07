@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="/static/css/buy.css" />
 <script src="/static/js/segmented-selector.js"></script>
 </head>
+<style>
+.form-row.hidden {
+    display: none;
+}
+</style>
 <body>
 {% with default_activity_type=available_time_contracts.0.maintenance_type.css_class|default:"type-maintenance" %}
 {% include "high_ui/company_details_header.html" %}
@@ -31,7 +36,7 @@
                             {% block hours_number_a %}{% endblock %}
                             </section>
                         </div>
-                        <div id="row-custom-hours-number" class="form-row {% if form.hours_number.errors %}form-error{% endif %}">
+                        <div class="form-row form-row-custom-hours-number {% if form.hours_number.errors %}form-error{% endif %}">
                             {% if form.hours_number.errors %}
                             <div class="form-row-wrapper">
                             {% endif %}
@@ -82,13 +87,13 @@
     <script>
         var hoursSelector = document.querySelector(".selector-hours_number");
         new SegmentedSelector (hoursSelector, function (currentKey, selectedKey) {
-            var customHoursNumber = document.getElementById("row-custom-hours-number");
+            var customHoursNumber = document.querySelector(".form-row-custom-hours-number");
             if (selectedKey == "custom-value") {
                 customHoursNumber.classList.remove("hidden");
             } else {
                 customHoursNumber.classList.add("hidden");
             }
-        }, document.getElementById("row-custom-hours-number").querySelector("input"));
+        }, document.querySelector(".form-row-custom-hours-number input"));
 
         var activityTypeSelector = new SegmentedSelector (document.querySelector(".selector-activity-type"),
                                                           function (currentKey, selectedKey) {
