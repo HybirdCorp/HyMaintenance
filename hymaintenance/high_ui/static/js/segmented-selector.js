@@ -12,6 +12,7 @@ function SegmentedSelector (element, listener, input) {
         var currentKey = active.getAttribute("data-selector-key");
         var selectedKey = selected.getAttribute("data-selector-key");
 
+        // save last entered custom value if then a default value is selected
         if (currentKey == "custom-value") {
             active.setAttribute("data-selector-value", input.value);
         }
@@ -32,11 +33,7 @@ function SegmentedSelector (element, listener, input) {
     // TODO: check this is still useful when the app is implemented server-side. This will be unused if the page is rerendered
     //       by the server in such cases.
     if (input.value) {
-        if (element.querySelector("a[data-selector-value='" + input.value + "']") == undefined) {
-            var selected = element.querySelector("a[data-selector-key='custom-value']")
-        } else {
-            var selected = element.querySelector("a[data-selector-value='" + input.value + "']");
-        }
+        var selected = element.querySelector("a[data-selector-value='" + input.value + "']");
         onValueSelected(selected);
     } else {
         var visuallyActive = element.querySelector("a.active");
