@@ -59,6 +59,23 @@
                             {% endfor %}
                         </div>
                     </div>
+                    <div class="project-user-list">
+                        <div class="dashboard">
+                            <div class="dashboard-item project-detail">
+                                <span class="dashboard-title">{% trans "Default credit values" %}</span>
+                            </div>
+                            <div class="dashboard-item dashboard-button">
+                                <div class="dashboard-value">
+                                    <a href="{% url 'high_ui:admin-update_credits' %}" title="{% trans "Modify default credit values" %}">{% trans "Modify" %}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-users">
+                            {% for credit in credit_choices %}
+                            <div>{{credit.value}}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class='dashboard-container'>

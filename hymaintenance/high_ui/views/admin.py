@@ -2,6 +2,7 @@ from django.views.generic import TemplateView
 
 from customers.models.user import Company
 from customers.models.user import MaintenanceUser
+from maintenance.models.credit import MaintenanceCreditChoices
 
 from .base import IsAdminTestMixin
 from .base import get_context_data_dashboard_header
@@ -19,4 +20,5 @@ class AdminView(IsAdminTestMixin, TemplateView):
         context["operators"] = MaintenanceUser.objects.get_active_operator_users_queryset()
         context["active_projects"] = Company.objects.filter(is_archived=False).order_by("name")
         context["archived_projects"] = Company.objects.filter(is_archived=True).order_by("name")
+        context["credit_choices"] = MaintenanceCreditChoices.objects.all().order_by("id")
         return context
