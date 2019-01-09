@@ -14,7 +14,7 @@ class MaintenanceCreditCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
         super().__init__(*args, **kwargs)
-        self.fields["hours_number"].initial = MaintenanceCreditChoices.objects.all().order_by("id").first()
+        self.fields["hours_number"].initial = MaintenanceCreditChoices.objects.all().order_by("id").first().value
         self.fields["contract"].queryset = MaintenanceContract.objects.filter(company=self.company)
 
     def save(self, commit=True):
