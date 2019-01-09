@@ -49,10 +49,6 @@ class CreditUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Updat
     def get_queryset(self):
         return MaintenanceCredit.objects.filter(company=self.company)
 
-    def dispatch(self, request, *args, **kwargs):
-        self.hours_step = 8
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["available_time_contracts"] = context["contracts"].filter(total_type=AVAILABLE_TOTAL_TIME)
@@ -87,7 +83,6 @@ class CreditChoicesUpdateView(IsAdminTestMixin, FormView):
         MaintenanceCreditChoices, fields=["value"], widgets={"value": forms.TextInput()}, extra=0
     )
     template_name = "high_ui/forms/update_credit_choices.html"
-    success_url = "/"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -97,9 +92,11 @@ class CreditChoicesUpdateView(IsAdminTestMixin, FormView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs["queryset"] = MaintenanceCreditChoices.objects.all().order_by("id")
-        print(MaintenanceCreditChoices.objects.all().order_by("id"))
         return kwargs
 
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("high_ui:admin")
