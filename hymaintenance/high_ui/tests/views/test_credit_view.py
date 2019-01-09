@@ -8,6 +8,7 @@ from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceCredit
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 from maintenance.models.contract import CONSUMMED_TOTAL_TIME
+from maintenance.models.credit import MaintenanceCreditChoices
 from maintenance.tests.factories import MaintenanceCreditFactory
 from maintenance.tests.factories import create_project
 
@@ -256,3 +257,71 @@ class CreditDeleteViewTestCase(TestCase):
 
         self.assertRedirects(response, self.success_url, 301)
         self.assertEqual(0, MaintenanceCredit.objects.filter(pk=self.credit.pk).count())
+
+
+class CreditChoicesUpdateViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        cls.form_url = reverse("high_ui:admin-update_credits")
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_manager_cannot_get_update_form(self):
+        manager = ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username=manager.email, password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_operator_cannot_get_update_form(self):
+        operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username=operator.email, password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_admin_can_get_update_form(self):
+        self.client.login(username=self.user.email, password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_can_post_form_to_update_credit_choices_values(self):
+        value1 = 10
+        value2 = 20
+        value3 = 30
+        value4 = 40
+        value5 = 50
+        self.client.login(username=self.user.email, password="azerty")
+
+        credit_choices = MaintenanceCreditChoices.objects.order_by("id")
+        response = self.client.post(
+            self.form_url,
+            {
+                "form-TOTAL_FORMS": "5",
+                "form-INITIAL_FORMS": "5",
+                "form-MAX_NUM_FORMS": "",
+                "form-0-id": credit_choices[0].id,
+                "form-0-value": value1,
+                "form-1-id": credit_choices[1].id,
+                "form-1-value": value2,
+                "form-2-id": credit_choices[2].id,
+                "form-2-value": value3,
+                "form-3-id": credit_choices[3].id,
+                "form-3-value": value4,
+                "form-4-id": credit_choices[4].id,
+                "form-4-value": value5,
+            },
+            follow=True,
+        )
+
+        self.assertRedirects(response, reverse("high_ui:admin"))
+
+        credit_choices.all()
+        self.assertEqual(value1, credit_choices[0].value)
+        self.assertEqual(value2, credit_choices[1].value)
+        self.assertEqual(value3, credit_choices[2].value)
+        self.assertEqual(value4, credit_choices[3].value)
+        self.assertEqual(value5, credit_choices[4].value)
