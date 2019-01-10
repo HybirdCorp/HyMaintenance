@@ -1,0 +1,59 @@
+{% load static %}
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance {{general_info.name}} &mdash; {% blocktrans with name=company.name %}Activate deleted {{name}}'s issues{% endblocktrans %}</title> {# TMP #}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/edit-list.css" />
+</head>
+<body>
+    {% include "high_ui/dashboard_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-content">
+                    <div class="form-group">
+                        <div class="group-title-container">
+                            <div class="group-title">{% blocktrans with name=company.name %}Deleted {{name}}'s issues{% endblocktrans %}</div>
+                        </div>
+
+                        <div>
+                            {% if issues_number > 1%}
+                            <span class="list-intro">{% blocktrans with name=company.name %}Select issues that you want to be active, among the {{issues_number}} deleted {{name}}'s issues:{% endblocktrans %}</span>
+                            {% else %}
+                            <span class="list-intro">{% blocktrans with name=company.name %}Select the single {{name}}'s deleted issues to turn it active:{% endblocktrans %}</span>
+                            {% endif %}
+                            <ul class="checkbox-list">
+                            {% for value, label in form.issues.field.choices %}
+                                <li>
+                                    <label>
+                                        <input value="{{value}}" name="issues" type="checkbox"> 
+                                        <div class="item-container">
+                                            <div class="item-name">
+                                                {{value|print_issue_number_and_type}}
+                                            </div>
+                                            <div class="item-description">{{value|print_issue_subject}}</div>
+                                        </div>
+                                    </label>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <button type="submit">{% trans "Activate this issues" %}</button>
+                        <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Change nothing" %}</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+</body>
+</html>
