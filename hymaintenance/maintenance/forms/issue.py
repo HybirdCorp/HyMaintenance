@@ -74,3 +74,19 @@ class MaintenanceIssueUpdateForm(MaintenanceIssueCreateForm):
         self.fields["duration"].initial = self.instance.number_minutes
         self.fields["context_description_file"].required = False
         self.fields["resolution_description_file"].required = False
+
+
+class MaintenanceIssueListUnarchiveForm(forms.Form):
+    issues = forms.ModelMultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, queryset=None)
+
+    def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop("company")
+        super().__init__(*args, **kwargs)
+        self.fields["issues"].queryset = MaintenanceIssue.objects.filter(
+            is_deleted=True, company=self.company
+        ).order_by("date")
+
+    def save(self):
+        for issue in self.cleaned_data["issues"]:
+            issue.is_deleted = False
+            issue.save()
