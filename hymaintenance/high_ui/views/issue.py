@@ -3,16 +3,20 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView
 from django.views.generic import DetailView
+from django.views.generic import FormView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 
 from maintenance.forms.issue import MaintenanceIssueCreateForm
+from maintenance.forms.issue import MaintenanceIssueListUnarchiveForm
 from maintenance.forms.issue import MaintenanceIssueUpdateForm
 from maintenance.models import MaintenanceIssue
 
+from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedManagerTestMixin
 from .base import IsAtLeastAllowedOperatorTestMixin
 from .base import ViewWithCompany
+from .base import get_context_data_dashboard_header
 
 
 class IssueCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
@@ -82,3 +86,26 @@ class IssueArchiveView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Redir
         issue.archive()
         del kwargs["company_issue_number"]
         return super().get_redirect_url(*args, **kwargs)
+
+
+class IssueListUnarchiveView(ViewWithCompany, IsAdminTestMixin, FormView):
+    form_class = MaintenanceIssueListUnarchiveForm
+    template_name = "high_ui/forms/unarchive_issues.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_data_dashboard_header(self.user))
+        context["issues_number"] = MaintenanceIssue.objects.filter(is_deleted=True, company=self.company).count()
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["company"] = self.company
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("high_ui:admin")

@@ -156,7 +156,7 @@
                         </div>
                         <div class="project-users">
                             {% for project in active_projects %}
-                            <div><a href='{% url 'high_ui:update_project' company_name=project.slug_name %}'>{{project.name}}</a></div>
+                            <div><a href='{% url 'high_ui:admin-project-unarchive_issues' company_name=project.slug_name %}'>{{project.name}}</a></div>
                             {% endfor %}
                         </div>
                     </div>

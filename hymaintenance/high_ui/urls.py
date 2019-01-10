@@ -13,6 +13,7 @@ from .views.general_information import GeneralInformationUpdateView
 from .views.issue import IssueArchiveView
 from .views.issue import IssueCreateView
 from .views.issue import IssueDetailView
+from .views.issue import IssueListUnarchiveView
 from .views.issue import IssueUpdateView
 from .views.maintenance_type import MaintenanceTypeUpdateView
 from .views.project import EmailAlertUpdateView
@@ -60,6 +61,11 @@ urlpatterns = [
     path(r"projects/<slug:company_name>/update/", ProjectUpdateView.as_view(), name="update_project"),
     path(r"projects/<slug:company_name>/customize/", ProjectCustomizeView.as_view(), name="customize_project"),
     path(r"projects/<slug:company_name>/issues/", IssueCreateView.as_view(), name="project-create_issue"),
+    path(
+        r"admin/projects/<slug:company_name>/issues/",
+        IssueListUnarchiveView.as_view(),
+        name="admin-project-unarchive_issues",
+    ),
     path(
         r"projects/<slug:company_name>/issues/<int:company_issue_number>/",
         IssueDetailView.as_view(),
