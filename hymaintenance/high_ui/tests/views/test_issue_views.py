@@ -6,6 +6,7 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 from django.core.files import File
+from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
 from django.utils.timezone import now
@@ -22,6 +23,7 @@ from maintenance.tests.factories import create_project
 from toolkit.tests import create_temporary_file
 from toolkit.tests import create_temporary_image
 
+from ...views.issue import IssueListUnarchiveView
 from ..utils import SetDjangoLanguage
 
 
@@ -490,3 +492,60 @@ class IssueArchiveViewTestCase(TestCase):
 
         self.assertRedirects(response, self.success_url, 301)
         self.assertTrue(MaintenanceIssue.objects.get(pk=self.issue.pk).is_deleted)
+
+
+class IssueListUnunarchiveViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        cls.company, cls.contract, _, _ = create_project()
+        cls.form_url = reverse("high_ui:admin-project-unarchive_issues", kwargs={"company_name": cls.company.slug_name})
+        cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def setUp(self):
+        self.issue1 = MaintenanceIssueFactory(subject="archive", company=self.company, is_deleted=True)
+        self.issue2 = MaintenanceIssueFactory(subject="active", company=self.company)
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = IssueListUnarchiveView()
+        view.request = request
+        view.user = self.admin
+        view.company = self.company
+
+        context = view.get_context_data()
+        self.assertIn("issues_number", context.keys())
+        self.assertEqual(1, context["issues_number"])
+
+    def test_manager_cannot_get_update_form(self):
+        ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_operator_cannot_get_update_form(self):
+        OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
+
+        self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
+    def test_admin_can_get_update_operator_form(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_issue_unarchive_form(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.post(self.form_url, {"issues": self.issue1.pk}, follow=True)
+
+        self.assertRedirects(response, reverse("high_ui:admin"))
+        issues = MaintenanceIssue.objects.filter(is_deleted=False)
+        self.assertEqual(2, issues.count())
+        self.assertIn(self.issue1, issues)

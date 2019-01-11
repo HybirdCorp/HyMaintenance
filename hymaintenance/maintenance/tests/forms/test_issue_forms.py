@@ -13,6 +13,7 @@ from high_ui.tests.utils import SetDjangoLanguage
 from toolkit.tests import create_temporary_file
 
 from ...forms.issue import MaintenanceIssueCreateForm
+from ...forms.issue import MaintenanceIssueListUnarchiveForm
 from ...forms.issue import MaintenanceIssueUpdateForm
 from ...forms.issue import duration_in_minutes
 from ...models import MaintenanceIssue
@@ -514,3 +515,33 @@ class IssueUpdateFormTestCase(TestCase):
                 self.assertTrue(os.path.exists(issue.resolution_description_file.path))
                 self.assertEqual(test_file_content, open(issue.resolution_description_file.path, "rb").read())
                 self.assertEqual("same_file_name", os.path.basename(issue.resolution_description_file.path))
+
+
+class MaintenanceIssueListArchiveFormTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.company, cls.contract, _, _ = create_project()
+
+    def setUp(self):
+        self.issue1 = MaintenanceIssueFactory(subject="archive", company=self.company, is_deleted=True)
+        self.issue2 = MaintenanceIssueFactory(subject="active", company=self.company)
+
+    def test_unarchive_form_queryset(self):
+        form = MaintenanceIssueListUnarchiveForm(data={"issues": []}, company=self.company)
+        issue_choices = [issue[0] for issue in form.fields["issues"].choices]
+        self.assertNotIn(self.issue2.pk, issue_choices)
+        self.assertIn(self.issue1.pk, issue_choices)
+
+    def test_unarchive_form_update_new_status(self):
+        form = MaintenanceIssueListUnarchiveForm(data={"issues": [self.issue1]}, company=self.company)
+        self.assertTrue(form.is_valid(), form.errors)
+        form.save()
+        self.assertFalse(MaintenanceIssue.objects.get(pk=self.issue1.pk).is_deleted)
+        self.assertFalse(MaintenanceIssue.objects.get(pk=self.issue2.pk).is_deleted)
+
+    def test_unarchive_form_dont_update_when_no_new_status(self):
+        form = MaintenanceIssueListUnarchiveForm(data={"issues": []}, company=self.company)
+        self.assertTrue(form.is_valid(), form.errors)
+        form.save()
+        self.assertTrue(MaintenanceIssue.objects.get(pk=self.issue1.pk).is_deleted)
+        self.assertFalse(MaintenanceIssue.objects.get(pk=self.issue2.pk).is_deleted)
