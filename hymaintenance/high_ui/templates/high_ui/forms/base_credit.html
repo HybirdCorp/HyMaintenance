@@ -29,9 +29,8 @@
                             <label>{% trans "Client account" %}</label>
                             <span>{{company}}</span>
                         </div>
-
                         <div class="form-row">
-                            <label for="{{form.hours_number.id_for_label}}">{{form.hours_number.label}}</label>
+                            <label for="{{form.hours_number.id_for_label}}">{{form.hours_number.label}} *</label>
                             <section class="segmented-selector {{default_activity_type}} selector-hours_number">
                             {% block hours_number_a %}{% endblock %}
                             </section>
@@ -54,7 +53,7 @@
                         </div>
 
                         <div class="form-row">
-                            <label for="{{form.contract.id_for_label}}">{{form.contract.label}}</label>
+                            <label for="{{form.contract.id_for_label}}">{{form.contract.label}} *</label>
                             <section class="segmented-selector {{default_activity_type}} selector-activity-type">
                                 {% for contract in available_time_contracts %}
                                 <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
@@ -64,6 +63,23 @@
                                 {% endfor %}
                                 {{form.contract}}
                             </section>
+                        </div>
+
+                        <div class="form-row form-label-row {% if form.subject.errors %}form-error{% endif %}">
+                            {% if form.subject.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.subject.id_for_label}}">{{form.subject.label}} {% trans "(optional)" %}</label>
+                            {{form.subject}}
+
+                            {% if form.subject.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.subject.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
                         </div>
                     </div>
 
