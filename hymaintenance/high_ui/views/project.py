@@ -96,6 +96,7 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
                 "counter_name": credit.get_counter_name,
                 "slug_name": credit.company.slug_name,
                 "id": credit.id,
+                "subject": credit.subject,
             }
             for credit in credits
         ]
