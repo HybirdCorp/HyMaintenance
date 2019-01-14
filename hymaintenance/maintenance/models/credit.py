@@ -15,6 +15,7 @@ class MaintenanceCredit(models.Model):
         to="maintenance.MaintenanceContract", verbose_name=_("Activity type"), on_delete=models.PROTECT
     )
     hours_number = models.PositiveIntegerField(_("Quantity"), default=0)
+    subject = models.CharField(_("Subject"), null=True, blank=True, max_length=500)
 
     def __str__(self):
         return "%s, the %s for %s and %s hours" % (
