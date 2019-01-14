@@ -328,6 +328,21 @@ class ProjectDetailsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<td class="history-item-duration duration">+10h</td>')
 
+    def test_display_extra_credit_optional_subject(self):
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        self.contract1.total_type = AVAILABLE_TOTAL_TIME
+        self.contract1.save()
+        subject = "The cake is lie"
+        MaintenanceCreditFactory(
+            contract=self.contract1, company=self.company, hours_number=10, date=now().date(), subject=subject
+        )
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, subject)
+
     def test_customize_project_header_display(self):
         self.company.color = "#000"
         with create_temporary_image() as tmp_file:
