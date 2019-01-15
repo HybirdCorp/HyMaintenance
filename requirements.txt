@@ -4,7 +4,7 @@ black==18.6b2
 click==6.7
 coverage==4.5.1
 decorator==4.3.0
-Django==2.0.8
+Django==2.0.10
 django-debug-toolbar==1.9.1
 django-extensions==2.0.6
 django-grappelli==2.11.1
