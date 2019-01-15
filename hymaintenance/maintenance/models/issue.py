@@ -59,7 +59,7 @@ class MaintenanceIssue(models.Model):
         IncomingChannel, verbose_name=_("Incoming Channel"), null=True, blank=True, on_delete=models.PROTECT
     )
 
-    subject = models.CharField(_("Subject"), max_length=500, default="une question")
+    subject = models.CharField(_("Subject"), max_length=500, default=_("a question"))
     date = models.DateField(_("Issue Date"))
     contract = models.ForeignKey(
         to="maintenance.MaintenanceContract", verbose_name=_("Type of activity"), on_delete=models.PROTECT

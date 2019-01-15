@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-18 17:24+0200\n"
+"POT-Creation-Date: 2019-01-15 10:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: forms/issue.py:53 tests/forms/test_issue_forms.py:106
-#: tests/forms/test_issue_forms.py:318
+#: forms/issue.py:49 tests/forms/test_issue_forms.py:99
+#: tests/forms/test_issue_forms.py:311
 #, python-format
 msgid "Invalid duration type: '%s'"
 msgstr "Unité invalide: '%s'"
@@ -60,7 +60,7 @@ msgstr "Heures créditées"
 msgid "You have to create at least one contract on the project."
 msgstr "Vous devez créer au moins un contrat sur le projet."
 
-#: forms/project.py:68 forms/project.py:222
+#: forms/project.py:68 forms/project.py:219
 #: tests/forms/test_project_forms.py:219 tests/forms/test_project_forms.py:435
 msgid "This company already exists."
 msgstr "Cette société existe déjà."
@@ -74,10 +74,8 @@ msgid "Hour threshold"
 msgstr ""
 
 #: forms/project.py:174 forms/project.py:175 forms/project.py:176
-#, fuzzy
-#| msgid "Contact"
 msgid "To contact"
-msgstr "Contact"
+msgstr "À Contacter"
 
 #: management/commands/send_email_alerts.py:11
 msgid ""
@@ -85,6 +83,9 @@ msgid ""
 "           * check if remaining minutes reach the minutes minimum\n"
 "           * if yes, send an alert email to the client"
 msgstr ""
+"Cette commande réalise sur chaque contrats :\n"
+"           * vérifie si le temps restants a atteint le nombre de minutes minimum\n"
+"           * si oui, envoie une alerte par email au client"
 
 #: migrations/0010_auto_20180315_0012.py:17
 #: migrations/0010_auto_20180315_0012.py:19
@@ -126,13 +127,11 @@ msgstr "Désactive le contrat"
 
 #: models/contract.py:39
 msgid "Email alert"
-msgstr ""
+msgstr "Alert par email"
 
 #: models/contract.py:40
-#, fuzzy
-#| msgid "Credited hours"
 msgid "Credited hours Threshold"
-msgstr "Heures créditées"
+msgstr "Seuil des heures créditées"
 
 #: models/credit.py:13
 msgid "Effective date"
@@ -145,6 +144,14 @@ msgstr "Type de l'activité"
 #: models/credit.py:17
 msgid "Quantity"
 msgstr "Quantité"
+
+#: models/credit.py:18 models/issue.py:62
+msgid "Subject"
+msgstr "Sujet"
+
+#: models/credit.py:33
+msgid "Value"
+msgstr "Valeur"
 
 #: models/issue.py:39
 msgid "Issue number"
@@ -163,8 +170,8 @@ msgid "Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
 #: models/issue.py:62
-msgid "Subject"
-msgstr "Sujet"
+msgid "a question"
+msgstr "une question"
 
 #: models/issue.py:63
 msgid "Issue Date"
@@ -198,12 +205,16 @@ msgstr "Commentaire"
 msgid "Attachment"
 msgstr "Pièce jointe"
 
-#: models/issue.py:111
+#: models/issue.py:89
+msgid "Deleted"
+msgstr "Supprimé"
+
+#: models/issue.py:112
 #, python-brace-format
 msgid "Date: {date}, Subject: {subject}, For: {company} , Type: {contract} "
 msgstr "Date : {date}, sujet : {subject}, for : {company}, type : {contract} "
 
-#: models/issue.py:112
+#: models/issue.py:113
 msgid "%m/%d/%Y at %H:%M"
 msgstr "%d/%m/%Y à %H:%M"
 
@@ -223,28 +234,27 @@ msgstr "Canal d'entrée des demandes"
 msgid "Maintenance's Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
-#: templates/maintenance/forms/widgets/attachment.html:16
-msgid "Reset"
-msgstr "Réinitialiser"
-
-#: tests/forms/test_credit_forms.py:20 tests/forms/test_issue_forms.py:72
-#: tests/forms/test_issue_forms.py:295
+#: tests/forms/test_credit_forms.py:22 tests/forms/test_issue_forms.py:65
+#: tests/forms/test_issue_forms.py:288
 #: tests/forms/test_other_models_forms.py:49
 #: tests/forms/test_project_forms.py:67 tests/forms/test_project_forms.py:310
 msgid "This field is required."
 msgstr "Ce champs est obligatoire."
 
-#: tests/forms/test_issue_forms.py:120 tests/forms/test_issue_forms.py:331
+#: tests/forms/test_issue_forms.py:113 tests/forms/test_issue_forms.py:324
 #: tests/forms/test_project_forms.py:228 tests/forms/test_project_forms.py:444
 #, python-format
 msgid "Ensure this value is greater than or equal to %(limit_value)s."
 msgstr ""
 "Assurez-vous que cette valeur est plus grande ou égale à %(limit_value)s."
 
-#: tests/forms/test_issue_forms.py:133 tests/forms/test_issue_forms.py:344
+#: tests/forms/test_issue_forms.py:126 tests/forms/test_issue_forms.py:337
 #: tests/forms/test_project_forms.py:238 tests/forms/test_project_forms.py:454
 msgid "Enter a whole number."
 msgstr "Entrez un nombre entier."
+
+#~ msgid "Reset"
+#~ msgstr "Réinitialiser"
 
 #, fuzzy
 #~| msgid "Type of activity"
