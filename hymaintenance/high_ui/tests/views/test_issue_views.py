@@ -62,6 +62,11 @@ class IssueCreateViewTestCase(TestCase):
             "duration": 2,
         }
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_cannot_get_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
 
@@ -206,6 +211,11 @@ class IssueUpdateViewTestCase(TestCase):
             "duration": 2,
         }
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_cannot_get_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
 
@@ -340,6 +350,11 @@ class IssueDetailViewTestCase(TestCase):
         cls.tmp_directory.cleanup()
         super().tearDownClass()
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.view_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_can_see_issue_details(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
 
@@ -458,6 +473,11 @@ class IssueArchiveViewTestCase(TestCase):
         self.login_url = reverse("login") + "?next=" + self.view_url
         self.success_url = reverse("high_ui:project_details", kwargs={"company_name": self.company.slug_name})
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.view_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_cannot_archive_issue(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
 
@@ -518,6 +538,11 @@ class IssueListUnunarchiveViewTestCase(TestCase):
         context = view.get_context_data()
         self.assertIn("issues_number", context.keys())
         self.assertEqual(1, context["issues_number"])
+
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
 
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")

@@ -14,6 +14,11 @@ class MaintenanceTypeUpdateViewTestCase(TestCase):
         cls.form_url = reverse("high_ui:update_maintenance_types")
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_cannot_get_update_form(self):
         manager = ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 

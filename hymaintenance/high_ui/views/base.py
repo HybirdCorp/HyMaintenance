@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
@@ -62,7 +63,7 @@ class ViewWithCompany(View):
         return context
 
 
-class IsAdminTestMixin(UserPassesTestMixin):
+class IsAdminTestMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         self.user = self.request.user
         return self.user.has_admin_permissions()

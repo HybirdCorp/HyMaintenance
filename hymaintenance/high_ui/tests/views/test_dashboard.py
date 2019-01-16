@@ -16,6 +16,7 @@ class DashboardTestCase(TestCase):
     def setUpTestData(cls):
         cls.company = CompanyFactory(name="Aperture Science")
         cls.page_url = reverse("high_ui:dashboard")
+        cls.login_url = reverse("login") + "?next=" + cls.page_url
 
     def test_get_context_data_companies_number_for_admin(self):
         user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -47,6 +48,11 @@ class DashboardTestCase(TestCase):
 
         context = view.get_context_data()
         self.assertEqual(1, context["companies_number"])
+
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.page_url)
+
+        self.assertRedirects(response, self.login_url)
 
     def test_operator_can_seen_the_dashboard(self):
         user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")

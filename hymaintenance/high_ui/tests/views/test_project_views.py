@@ -48,6 +48,11 @@ class ProjectCreateViewTestCase(TestCase):
         context = view.get_context_data()
         self.assertEqual(3, len(context["maintenance_types"]))
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_cannot_get_create_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
@@ -153,6 +158,11 @@ class ProjectUpdateViewTestCase(TestCase):
         context = view.get_context_data()
         self.assertEqual(3, len(context["maintenance_types"]))
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
 
@@ -253,6 +263,11 @@ class ProjectDetailsViewTestCase(TestCase):
         self.company, self.contract1, self.contract2, self.contract3 = create_project()
         self.form_url = reverse("high_ui:project_details", args=[self.company.slug_name])
         self.login_url = reverse("login") + "?next=" + self.form_url
+
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
 
     def test_manager_can_seen_his_company(self):
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
@@ -703,6 +718,11 @@ class ProjectListArchiveViewTestCase(TestCase):
         self.assertIn("projects_number", context.keys())
         self.assertEqual(1, context["projects_number"])
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
@@ -758,6 +778,11 @@ class ProjectListUnunarchiveViewTestCase(TestCase):
         self.assertIn("projects_number", context.keys())
         self.assertEqual(1, context["projects_number"])
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
@@ -798,6 +823,11 @@ class ProjectCustomizeViewTestCase(TestCase):
 
         cls.form_url = reverse("high_ui:customize_project", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
 
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
