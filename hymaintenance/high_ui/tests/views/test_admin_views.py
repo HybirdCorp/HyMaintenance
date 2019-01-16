@@ -12,6 +12,11 @@ class AdminTestCase(TestCase):
         cls.page_url = reverse("high_ui:admin")
         cls.login_url = reverse("login") + "?next=" + cls.page_url
 
+    def test_unlogged_user_cannot_see_the_admin_page(self):
+        response = self.client.get(self.page_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_operator_cannot_see_the_admin_page(self):
         operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 

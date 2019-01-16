@@ -45,6 +45,11 @@ class CreditCreateViewTestCase(TestCase):
         self.assertIn(self.c2, context["available_time_contracts"])
         self.assertNotIn(self.c3, context["available_time_contracts"])
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_cannot_get_create_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
@@ -144,6 +149,11 @@ class CreditUpdateViewTestCase(TestCase):
         self.assertIn(self.c2, context["available_time_contracts"])
         self.assertNotIn(self.c3, context["available_time_contracts"])
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
@@ -222,6 +232,11 @@ class CreditDeleteViewTestCase(TestCase):
         self.login_url = reverse("login") + "?next=" + self.form_url
         self.success_url = reverse("high_ui:project_details", kwargs={"company_name": self.company.slug_name})
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_cannot_delete_credit(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
 
@@ -265,6 +280,11 @@ class CreditChoicesUpdateViewTestCase(TestCase):
         cls.user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.form_url = reverse("high_ui:admin-update_credits")
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
 
     def test_manager_cannot_get_update_form(self):
         manager = ManagerUserFactory(email="chell@aperture-science.com", password="azerty")

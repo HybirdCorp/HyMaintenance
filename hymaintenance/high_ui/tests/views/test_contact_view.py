@@ -20,6 +20,11 @@ class ContactViewTestCase(TestCase):
         cls.form_url = reverse("high_ui:project-contact", args=[cls.company.slug_name])
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
+    def test_unlogged_user_cannot_see_the_page(self):
+        response = self.client.get(self.form_url)
+
+        self.assertRedirects(response, self.login_url)
+
     def test_manager_can_seen_his_company_contact(self):
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
 
