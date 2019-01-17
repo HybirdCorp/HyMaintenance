@@ -10,12 +10,19 @@
 <link rel="stylesheet" href="/static/css/form.css" />
 <link rel="stylesheet" href="/static/css/create.css" />
 <link rel="stylesheet" href="/static/css/create-project.css" />
-<link rel="stylesheet" href="/static/css/date-picker.css" />
 <script src="/static/js/segmented-selector.js"></script>
-<script src="/static/js/date-picker.js"></script>
+{% if company.color %}
+<style>
+.dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
+    background-color: white;
+    color: {{company.color}};
+}
+</style>
+{% endif %}
 </head>
 <body>
-    {% include "high_ui/company_details_header.html" %}
+{% include "high_ui/company_details_header.html" %}
+{% with default_activity_type=contracts.0.maintenance_type.css_class|default:"type-maintenance" %}
     <div class="content-container">
         <div class="content">
             <form action="" method="post" enctype="multipart/form-data">
@@ -59,7 +66,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group activation-active counter-total email-alert-disabled">
+                    <div class="form-group">
                         <div class="group-title-container">
                             <div class="group-title">{% trans "Customize project header" %}</div>
                         </div>
@@ -81,7 +88,27 @@
                             {% endfor %}
                         </div>
                         <div class="help">
-                            <span class='activation-inactive'>{% trans "Enter a custom color for the project header, with the hexadecimal format like <em>#FF0000</em>. If you want the default color, leave the field empty." %}</span>
+                            <span>{% trans "Enter a custom color for the project header, with the hexadecimal format like <em>#FF0000</em>. If you want the default color, leave the field empty." %}</span>
+                        </div>
+                        <div class="form-row {% if form.dark_font_color.errors %}form-error{% endif %}">
+                            {% if form.dark_font_color.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.dark_font_color.id_for_label}}">{{form.dark_font_color.label}} *</label>
+                            <section class="segmented-selector {{default_activity_type}} selector-dark_font_color">
+                                <a href="" class="active" data-selector-value="False">{% trans "light" %}</a>
+                                <a href="" class="inactive" data-selector-value="True">{% trans "dark" %}</a>
+                                {{form.dark_font_color}}
+                            </section>
+
+                            {% if form.dark_font_color.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.dark_font_color.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
                         </div>
                         <div class="form-row form-label-row {% if form.logo.errors %}form-error{% endif %}">
                             {% if form.logo.errors %}
@@ -120,86 +147,10 @@
             </form>
         </div>
     </div>
+    {% endwith %}
     {% include "high_ui/footer.html" with show_menu_client=True %}
     <script>
-        var activationTypes = document.querySelectorAll(".form-row.row-activation-type");
-        for (var i = 0; i < activationTypes.length; ++i) {
-            var activationType = activationTypes[i];
-            new SegmentedSelector(activationType.querySelector(".segmented-selector"),
-                                  function(node, currentKey, selectedKey) {
-                var currentActivation = "activation-" + currentKey;
-                var selectedActivation = "activation-" + selectedKey;
-
-                var parent = node.parentElement;
-                parent.className = parent.className.replace(currentActivation, selectedActivation);
-
-                if (selectedActivation === "activation-inactive") {
-                    var creditInput = parent.querySelector(".row-credit input");
-                    creditInput.required = false;
-                }
-            }.bind(null, activationType));
-        }
-
-        var counterTypes = document.querySelectorAll(".form-row.row-counter-type");
-        for (var i = 0; i < counterTypes.length; ++i) {
-            var counterType = counterTypes[i];
-            new SegmentedSelector(counterType.querySelector(".segmented-selector"),
-                                  function (node, currentKey, selectedKey) {
-                var currentType = "counter-" + currentKey;
-                var selectedType = "counter-" + selectedKey;
-
-                var parent = node.parentElement;
-                parent.className = parent.className.replace(currentType, selectedType);
-
-                var creditInput = parent.querySelector(".row-credit input");
-                creditInput.required = selectedType === "counter-credit";
-            }.bind(null, counterType));
-        }
-
-        var alertStatuss = document.querySelectorAll(".form-row.row-email-alert");
-        for (var i = 0; i < alertStatuss.length; ++i) {
-            var alertStatus = alertStatuss[i];
-            new SegmentedSelector(alertStatus.querySelector(".segmented-selector"),
-                                  function (node, currentKey, selectedKey) {
-                var currentType = "email-alert-" + currentKey;
-                var selectedType = "email-alert-" + selectedKey;
-
-                var parent = node.parentElement;
-                parent.className = parent.className.replace(currentType, selectedType);
-
-                var creditMinInput = parent.querySelector(".row-credit-min input");
-                creditMinInput.required = selectedType === "email-alert-enabled";
-
-                var recipientSelect = parent.querySelector(".row-recipient select");
-                recipientSelect.required = selectedType === "email-alert-enabled";
-            }.bind(null, alertStatus));
-        }
-        
-        var showMoreLinks = document.querySelectorAll(".form-group a.show-more");
-        for (var i = 0; i < showMoreLinks.length; ++i) {
-            var link = showMoreLinks[i];
-            
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
-                
-                var node = e.target;
-                var formGroup = node.parentElement.parentElement;
-                
-                var showMoreContainer = formGroup.querySelector(".show-more-container");
-                if (showMoreContainer.className.indexOf("is-showing") === -1) {
-                    showMoreContainer.className += " is-showing";
-                }
-                
-                node.parentElement.removeChild(node);
-            }, false);
-        }
-
-        // setup date pickers
-        var dateFields = ["{{form.contract1_date.id_for_label}}", "{{form.contract2_date.id_for_label}}", "{{form.contract3_date.id_for_label}}"];
-        for (var i = 0; i < dateFields.length; ++i) {
-            var fieldId = dateFields[i];
-            new DatePicker(document.getElementById(fieldId));
-        }
+        var FontColorSelector = new SegmentedSelector (document.querySelector(".selector-dark_font_color"));
     </script>
 </body>
 </html>
