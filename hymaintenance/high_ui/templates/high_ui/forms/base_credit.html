@@ -14,6 +14,12 @@
 .form-row.hidden {
     display: none;
 }
+{% if company.color %}
+.dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
+    background-color: white;
+    color: {{company.color}};
+}
+{% endif %}
 </style>
 <body>
 {% with default_activity_type=available_time_contracts.0.maintenance_type.css_class|default:"type-maintenance" %}

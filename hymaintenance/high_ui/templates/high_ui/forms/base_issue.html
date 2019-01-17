@@ -11,11 +11,17 @@
 <link rel="stylesheet" href="/static/css/date-picker.css" />
 <script src="/static/js/segmented-selector.js"></script>
 <script src="/static/js/date-picker.js"></script>
+{% if company.color %}
 <style>
 .disabled_consumer, .disabled_operator {
     display: none;
 }
+.dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
+    background-color: white;
+    color: {{company.color}};
+}
 </style>
+{% endif %}
 </head>
 <body>
 {% block header %}{% endblock %}

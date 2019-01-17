@@ -1,5 +1,5 @@
 {% load i18n print_fields %}
-<div class="dashboard {{object.contract.maintenance_type.css_class}}" {% if company.color %}style="background:{{company.color}};"{% endif %}>
+<div class="dashboard {% if company.color %}{% if company.dark_font_color %}dark{% else%}light{% endif %}{% else %}{% if default_activity_type %}{{default_activity_type}}{% elif contracts %}{{contracts.0.maintenance_type.css_class}}{% else %}type-maintenance{% endif %}{% endif %}" {% if company.color %}style="background:{{company.color}};"{% endif %}>
     {% if company.logo %}<div class="dashboard-logo"><img src="{{company.logo.url}}"/></div>{% endif %}
     <div class="dashboard-item dashboard-account">
         <span class="dashboard-title">{% trans "Account" %}</span>

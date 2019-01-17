@@ -8,6 +8,14 @@
 <link rel="stylesheet" href="/static/css/style.css" />
 <link rel="stylesheet" href="/static/css/form.css" />
 <link rel="stylesheet" href="/static/css/create.css" />
+{% if company.color %}
+<style>
+.dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
+    background-color: white;
+    color: {{company.color}};
+}
+</style>
+{% endif %}
 </head>
 <body>
     {% block header %}{% endblock %}
