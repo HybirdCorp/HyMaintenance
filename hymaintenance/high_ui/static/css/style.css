@@ -234,7 +234,7 @@ table td {
 }
 
 .dashboard.type-maintenance .dashboard-item + .dashboard-item {
-    border-color: #0000001A;
+    border-color: #a5d3be;
 }
 
 /* support = blues */
@@ -275,6 +275,42 @@ table td {
 
 .dashboard.type-correction .dashboard-item + .dashboard-item {
     border-color: #999;
+}
+
+/* custom light */
+
+.dashboard.light {
+    color: white;
+}
+
+.dashboard.light .dashboard-title {
+    color: white;
+}
+
+.dashboard.light .dashboard-button a:hover {
+    background-color: white;
+}
+
+.dashboard.light .dashboard-item + .dashboard-item {
+    border-color: white;
+}
+
+/* custom dark */
+
+.dashboard.dark {
+    color: #242426;
+}
+
+.dashboard.dark .dashboard-title {
+    color: #242426;
+}
+
+.dashboard.dark .dashboard-button a:hover {
+    background-color: white;
+}
+
+.dashboard.dark .dashboard-item + .dashboard-item {
+    border-color: #242426;
 }
 
 /* dashboard types themes - end */
