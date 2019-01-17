@@ -24,6 +24,7 @@ class Company(models.Model):
         related_name="contact_of",
     )
     color = models.CharField(_("Color"), null=True, blank=True, max_length=10)
+    dark_font_color = models.BooleanField(_("Font color"), default=False)
     logo = models.ImageField(_("Logo"), null=True, blank=True, max_length=200, upload_to=_get_logo_file_path)
 
     def __str__(self):
@@ -46,9 +47,11 @@ class Company(models.Model):
             old_name = Company.objects.get(id=self.id).name
             if old_name != self.name:
                 self.slug_name = self.slugify_company_name()
-                super().save(update_fields=["name", "slug_name", "contact", "is_archived", "logo", "color"])
+                super().save(
+                    update_fields=["name", "slug_name", "contact", "is_archived", "logo", "color", "dark_font_color"]
+                )
             else:
-                super().save(update_fields=["name", "contact", "is_archived", "logo", "color"])
+                super().save(update_fields=["name", "contact", "is_archived", "logo", "color", "dark_font_color"])
         else:
             self.slug_name = self.slugify_company_name()
             super().save(*args, **kwargs)
