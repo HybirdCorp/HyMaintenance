@@ -14,8 +14,8 @@ from ..models import Company
 class ProjectCustomizeForm(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ("name", "contact", "logo", "color")
-        widgets = {"logo": HyClearableFileInput}
+        fields = ("name", "contact", "logo", "color", "dark_font_color")
+        widgets = {"logo": HyClearableFileInput, "dark_font_color": forms.HiddenInput()}
 
     def clean_color(self):
         color = self.cleaned_data["color"]
