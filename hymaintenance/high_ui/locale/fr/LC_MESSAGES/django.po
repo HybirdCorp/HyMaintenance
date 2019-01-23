@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-15 11:00+0100\n"
+"POT-Creation-Date: 2019-01-23 10:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgstr "Se connecter à"
 msgid "Email"
 msgstr "Email"
 
-#: templates/auth/login.html:21 templates/high_ui/forms/create_user.html:127
+#: templates/auth/login.html:21 templates/high_ui/forms/create_user.html:135
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -69,7 +69,8 @@ msgstr "Réinitialisation de votre mot de passe terminée"
 
 #: templates/auth/password_reset_complet.html:13
 msgid "Your password has been set.  You may go ahead and log in now."
-msgstr "Votre mot de passe a été défini. Vous pouvez maintenant vous authentifier."
+msgstr ""
+"Votre mot de passe a été défini. Vous pouvez maintenant vous authentifier."
 
 #: templates/auth/password_reset_confirm.html:5
 #: templates/auth/password_reset_confirm.html:9
@@ -164,8 +165,8 @@ msgstr "Mettre à jour les informations générales"
 
 #: templates/high_ui/admin.html:33 templates/high_ui/admin.html:52
 #: templates/high_ui/admin.html:69 templates/high_ui/dashboard.html:25
-#: templates/high_ui/issue_details.html:20 tests/views/test_issue_views.py:424
-#: tests/views/test_issue_views.py:433 tests/views/test_issue_views.py:441
+#: templates/high_ui/issue_details.html:28 tests/views/test_issue_views.py:409
+#: tests/views/test_issue_views.py:418 tests/views/test_issue_views.py:426
 msgid "Modify"
 msgstr "Modifier"
 
@@ -261,29 +262,29 @@ msgstr "Réactiver des projets archivés"
 msgid "Activate projects"
 msgstr "Activer des projets"
 
-#: templates/high_ui/company_details.html:20
+#: templates/high_ui/company_details.html:28
 msgid "Summary"
 msgstr "Résumé"
 
-#: templates/high_ui/company_details.html:37
+#: templates/high_ui/company_details.html:45
 msgctxt "fp"
 msgid "consumed"
 msgstr "consommées"
 
-#: templates/high_ui/company_details.html:40
+#: templates/high_ui/company_details.html:48
 msgctxt "fp"
 msgid "credited"
 msgstr "créditées"
 
-#: templates/high_ui/company_details.html:51
+#: templates/high_ui/company_details.html:59
 msgid "History"
 msgstr "Historique"
 
-#: templates/high_ui/company_details.html:57
+#: templates/high_ui/company_details.html:65
 msgid "Months"
 msgstr "Mois"
 
-#: templates/high_ui/company_details.html:62
+#: templates/high_ui/company_details.html:70
 msgid "Issues"
 msgstr "Demandes"
 
@@ -295,7 +296,7 @@ msgstr "Compte"
 
 #: templates/high_ui/company_details_header.html:6
 #: templates/high_ui/dashboard_header.html:5
-#: templates/high_ui/issue_details.html:16 templates/high_ui/user_header.html:6
+#: templates/high_ui/issue_details.html:24 templates/high_ui/user_header.html:6
 #: templates/high_ui/user_header.html:8
 #: tests/views/users/test_update_profile.py:35
 #: tests/views/users/test_update_profile.py:42
@@ -307,17 +308,17 @@ msgstr "Retour à l'accueil"
 #: templates/high_ui/company_details_header.html:19
 #: templates/high_ui/forms/create_credit.html:9
 #: templates/high_ui/forms/create_credit.html:30
-#: tests/views/test_project_views.py:391 tests/views/test_project_views.py:417
+#: tests/views/test_project_views.py:373 tests/views/test_project_views.py:399
 msgid "Add hours"
 msgstr "Ajouter des crédits"
 
 #: templates/high_ui/company_details_header.html:21
-#: tests/views/test_project_views.py:402
+#: tests/views/test_project_views.py:384
 msgid "Buy hours"
 msgstr "Commander des heures"
 
 #: templates/high_ui/company_details_header.html:25
-#: tests/views/test_project_views.py:445
+#: tests/views/test_project_views.py:427
 msgid "Email alerts"
 msgstr "alertes par email"
 
@@ -344,28 +345,28 @@ msgstr "Déconnexion"
 msgid "buy credits"
 msgstr "Acheter des crédits"
 
-#: templates/high_ui/contact.html:20
+#: templates/high_ui/contact.html:28
 msgid "Buy some credits"
 msgstr "Commander des crédits"
 
-#: templates/high_ui/contact.html:21
-#: templates/high_ui/forms/base_consumer.html:22
-#: templates/high_ui/forms/base_credit.html:29
+#: templates/high_ui/contact.html:29
+#: templates/high_ui/forms/base_consumer.html:30
+#: templates/high_ui/forms/base_credit.html:35
 #: templates/high_ui/forms/create_company_operator.html:14
 #: templates/high_ui/forms/create_issue.html:14
 #: templates/high_ui/forms/create_manager.html:14
 #: templates/high_ui/forms/update_company_operator.html:14
 #: templates/high_ui/forms/update_issue.html:14
-#: templates/high_ui/forms/update_list_base.html:24
+#: templates/high_ui/forms/update_list_base.html:32
 #: templates/high_ui/forms/update_manager.html:14
 msgid "Client account"
 msgstr "Compte client"
 
-#: templates/high_ui/contact.html:24
+#: templates/high_ui/contact.html:32
 msgid "if you want to buy some credits, please contact :"
 msgstr "Si vous voulez commander des crédits, contactez s'il vous plait&nbsp;:"
 
-#: templates/high_ui/contact.html:59
+#: templates/high_ui/contact.html:67
 msgid "Back to the homepage"
 msgstr "Retour sur la page d'accueil"
 
@@ -498,6 +499,7 @@ msgid "Prestation types by project"
 msgstr "Types de prestations par projet"
 
 #: templates/high_ui/forms/archive_projects.html:13
+#, python-format
 msgid ""
 "Select projects that you want to be inactive, among the %(projects_number)s "
 "active %(name)s's projects:"
@@ -515,89 +517,89 @@ msgstr ""
 msgid "Archive this projects"
 msgstr "Archiver ces projets"
 
-#: templates/high_ui/forms/base_credit.html:62
+#: templates/high_ui/forms/base_credit.html:68
 #, python-format
 msgid "%(mtype)s-type activity"
 msgstr "activité de type %(mtype)s"
 
-#: templates/high_ui/forms/base_credit.html:73
+#: templates/high_ui/forms/base_credit.html:79
 msgid "(optional)"
 msgstr "(optionnel)"
 
-#: templates/high_ui/forms/base_issue.html:56
+#: templates/high_ui/forms/base_issue.html:62
 msgid "Display disable employees"
 msgstr "Proposer les salariés désactivés"
 
-#: templates/high_ui/forms/base_issue.html:86
+#: templates/high_ui/forms/base_issue.html:92
 msgid "Issue received by"
 msgstr "Demande reçue par"
 
-#: templates/high_ui/forms/base_issue.html:155
-#: templates/high_ui/issue_details.html:57
-#: templates/high_ui/issue_details.html:72
+#: templates/high_ui/forms/base_issue.html:161
+#: templates/high_ui/issue_details.html:65
+#: templates/high_ui/issue_details.html:80
 msgid "Resolution"
 msgstr "Résolution"
 
-#: templates/high_ui/forms/base_issue.html:181
+#: templates/high_ui/forms/base_issue.html:187
 msgid "Display disable operators"
 msgstr "Proposer les intervenants désactivés"
 
-#: templates/high_ui/forms/base_issue.html:191
+#: templates/high_ui/forms/base_issue.html:197
 #, python-format
 msgid "'%(mtype)s'-type activity"
 msgstr "activité de type '%(mtype)s'"
 
-#: templates/high_ui/forms/base_issue.html:206
+#: templates/high_ui/forms/base_issue.html:212
 msgid "minutes"
 msgstr "minutes"
 
-#: templates/high_ui/forms/base_issue.html:207
+#: templates/high_ui/forms/base_issue.html:213
 msgid "hours"
 msgstr "heures"
 
-#: templates/high_ui/forms/base_project.html:64
-#: templates/high_ui/forms/base_project.html:177
-#: templates/high_ui/forms/base_project.html:290
+#: templates/high_ui/forms/base_project.html:72
+#: templates/high_ui/forms/base_project.html:185
+#: templates/high_ui/forms/base_project.html:298
 msgid "Counter"
 msgstr "Compteur"
 
-#: templates/high_ui/forms/base_project.html:65
-#: templates/high_ui/forms/base_project.html:178
-#: templates/high_ui/forms/base_project.html:291
+#: templates/high_ui/forms/base_project.html:73
+#: templates/high_ui/forms/base_project.html:186
+#: templates/high_ui/forms/base_project.html:299
 msgid "Display more details about the counter"
 msgstr "Afficher plus de détails pour ce compteur"
 
-#: templates/high_ui/forms/base_project.html:65
-#: templates/high_ui/forms/base_project.html:178
-#: templates/high_ui/forms/base_project.html:291
+#: templates/high_ui/forms/base_project.html:73
+#: templates/high_ui/forms/base_project.html:186
+#: templates/high_ui/forms/base_project.html:299
 msgid "Display more details"
 msgstr "Afficher plus de détail"
 
-#: templates/high_ui/forms/base_project.html:75
-#: templates/high_ui/forms/base_project.html:188
-#: templates/high_ui/forms/base_project.html:301
+#: templates/high_ui/forms/base_project.html:83
+#: templates/high_ui/forms/base_project.html:196
+#: templates/high_ui/forms/base_project.html:309
 msgid "Visible to everyone"
 msgstr "Visible à tous"
 
-#: templates/high_ui/forms/base_project.html:76
-#: templates/high_ui/forms/base_project.html:189
-#: templates/high_ui/forms/base_project.html:302
+#: templates/high_ui/forms/base_project.html:84
+#: templates/high_ui/forms/base_project.html:197
+#: templates/high_ui/forms/base_project.html:310
 msgid "Invisible to managers"
 msgstr "Invisible aux clients"
 
-#: templates/high_ui/forms/base_project.html:77
-#: templates/high_ui/forms/base_project.html:190
-#: templates/high_ui/forms/base_project.html:303
-#: templates/high_ui/forms/update_email_alert.html:38
+#: templates/high_ui/forms/base_project.html:85
+#: templates/high_ui/forms/base_project.html:198
+#: templates/high_ui/forms/base_project.html:311
+#: templates/high_ui/forms/update_email_alert.html:46
 #: templates/high_ui/forms/update_project.html:41
 #: templates/high_ui/forms/update_project.html:101
 #: templates/high_ui/forms/update_project.html:161
 msgid "Disabled"
 msgstr "Inactif"
 
-#: templates/high_ui/forms/base_project.html:90
-#: templates/high_ui/forms/base_project.html:203
-#: templates/high_ui/forms/base_project.html:316
+#: templates/high_ui/forms/base_project.html:98
+#: templates/high_ui/forms/base_project.html:211
+#: templates/high_ui/forms/base_project.html:324
 #, python-format
 msgid ""
 "This counter will be <em>visible for managers</em> of the project, and "
@@ -608,9 +610,9 @@ msgstr ""
 "<em>utilisable par les intervenants de %(name)s</em> dans le tableaux de "
 "bord et pour enregistrer des demandes."
 
-#: templates/high_ui/forms/base_project.html:92
-#: templates/high_ui/forms/base_project.html:205
-#: templates/high_ui/forms/base_project.html:318
+#: templates/high_ui/forms/base_project.html:100
+#: templates/high_ui/forms/base_project.html:213
+#: templates/high_ui/forms/base_project.html:326
 #, python-format
 msgid ""
 "This counter will be <em>invisible for managers, but </em>usable by "
@@ -620,27 +622,27 @@ msgstr ""
 "les intervenants de %(name)s</em> dans les tableaux de bord et pour "
 "enregistrer des demandes."
 
-#: templates/high_ui/forms/base_project.html:93
-#: templates/high_ui/forms/base_project.html:206
-#: templates/high_ui/forms/base_project.html:319
+#: templates/high_ui/forms/base_project.html:101
+#: templates/high_ui/forms/base_project.html:214
+#: templates/high_ui/forms/base_project.html:327
 msgid "This counter will be <em>disabled</em> for the project"
 msgstr "Ce compteur sera <em>désactivé</em> pour ce projet."
 
-#: templates/high_ui/forms/base_project.html:103
-#: templates/high_ui/forms/base_project.html:216
-#: templates/high_ui/forms/base_project.html:329
+#: templates/high_ui/forms/base_project.html:111
+#: templates/high_ui/forms/base_project.html:224
+#: templates/high_ui/forms/base_project.html:337
 msgid "Available total time"
 msgstr "Total disponible"
 
-#: templates/high_ui/forms/base_project.html:104
-#: templates/high_ui/forms/base_project.html:217
-#: templates/high_ui/forms/base_project.html:330
+#: templates/high_ui/forms/base_project.html:112
+#: templates/high_ui/forms/base_project.html:225
+#: templates/high_ui/forms/base_project.html:338
 msgid "Consumed total time"
 msgstr "Total du temps passé"
 
-#: templates/high_ui/forms/base_project.html:134
-#: templates/high_ui/forms/base_project.html:247
-#: templates/high_ui/forms/base_project.html:360
+#: templates/high_ui/forms/base_project.html:142
+#: templates/high_ui/forms/base_project.html:255
+#: templates/high_ui/forms/base_project.html:368
 #, python-format
 msgid ""
 "This counter will display the <em>consumed total time</em> by the registered "
@@ -649,9 +651,9 @@ msgstr ""
 "Ce compteur affichera le <em>total du temps passé</em> sur les demandes "
 "enregistrées par les intervenants de %(name)s."
 
-#: templates/high_ui/forms/base_project.html:135
-#: templates/high_ui/forms/base_project.html:248
-#: templates/high_ui/forms/base_project.html:361
+#: templates/high_ui/forms/base_project.html:143
+#: templates/high_ui/forms/base_project.html:256
+#: templates/high_ui/forms/base_project.html:369
 #, python-format
 msgid ""
 "This compteur will display the <em>available total time</em> on %(mtype)s "
@@ -662,21 +664,21 @@ msgstr ""
 "<em>de %(mtype)s créditées</em>, et qui sera consommé par les intervenants "
 "de %(name)s en enregistrant des demandes."
 
-#: templates/high_ui/forms/base_project.html:157
-#: templates/high_ui/forms/base_project.html:270
-#: templates/high_ui/forms/base_project.html:383
+#: templates/high_ui/forms/base_project.html:165
+#: templates/high_ui/forms/base_project.html:278
+#: templates/high_ui/forms/base_project.html:391
 msgid "This counter can be renamed to replace the"
 msgstr "Ce compteur peut être renommé pour remplacer son nom par défaut de "
 
-#: templates/high_ui/forms/base_project.html:157
-#: templates/high_ui/forms/base_project.html:270
-#: templates/high_ui/forms/base_project.html:383
+#: templates/high_ui/forms/base_project.html:165
+#: templates/high_ui/forms/base_project.html:278
+#: templates/high_ui/forms/base_project.html:391
 msgid "default name"
 msgstr "Nom par défaut"
 
-#: templates/high_ui/forms/base_project.html:171
-#: templates/high_ui/forms/base_project.html:284
-#: templates/high_ui/forms/base_project.html:397
+#: templates/high_ui/forms/base_project.html:179
+#: templates/high_ui/forms/base_project.html:292
+#: templates/high_ui/forms/base_project.html:405
 msgid "Date when the contract begin."
 msgstr "La date à laquelle ce contrat débute."
 
@@ -697,7 +699,8 @@ msgstr "Ajouter cet admin"
 #: templates/high_ui/forms/create_manager.html:20
 #: templates/high_ui/forms/create_operator.html:18
 #: templates/high_ui/forms/create_project.html:30
-#: templates/high_ui/forms/customize_project.html:117
+#: templates/high_ui/forms/customize_project.html:164
+#: templates/high_ui/forms/unarchive_issues.html:51
 #: templates/high_ui/forms/update_admin.html:22
 #: templates/high_ui/forms/update_admin.html:31
 #: templates/high_ui/forms/update_company_operator.html:24
@@ -707,7 +710,7 @@ msgstr "Ajouter cet admin"
 #: templates/high_ui/forms/update_consumers.html:24
 #: templates/high_ui/forms/update_credit.html:34
 #: templates/high_ui/forms/update_credit_choices.html:60
-#: templates/high_ui/forms/update_email_alert.html:104
+#: templates/high_ui/forms/update_email_alert.html:112
 #: templates/high_ui/forms/update_infos.html:121
 #: templates/high_ui/forms/update_issue.html:20
 #: templates/high_ui/forms/update_maintenance_type.html:88
@@ -822,13 +825,13 @@ msgstr "créer ce projet"
 msgid "Don't create"
 msgstr "Ne pas créer"
 
-#: templates/high_ui/forms/create_user.html:83
-#: templates/high_ui/forms/update_user.html:109
+#: templates/high_ui/forms/create_user.html:91
+#: templates/high_ui/forms/update_user.html:117
 msgid "Is operator"
 msgstr "Est intervenant"
 
-#: templates/high_ui/forms/create_user.html:94
-#: templates/high_ui/forms/update_user.html:120
+#: templates/high_ui/forms/create_user.html:102
+#: templates/high_ui/forms/update_user.html:128
 msgid ""
 "Checks it, if the administrator is also an operator and will manage some "
 "projects."
@@ -836,12 +839,12 @@ msgstr ""
 "Cochez la case, si l'administrateur est aussi un intervenant et devra gérer "
 "des projets."
 
-#: templates/high_ui/forms/create_user.html:102
+#: templates/high_ui/forms/create_user.html:110
 #: templates/high_ui/user_header.html:4
 msgid "User account"
 msgstr "Compte utilisateur"
 
-#: templates/high_ui/forms/create_user.html:144
+#: templates/high_ui/forms/create_user.html:152
 msgid "Confirm password"
 msgstr "Confirmez le mot de passe"
 
@@ -850,26 +853,33 @@ msgstr "Confirmez le mot de passe"
 msgid "Customize %(company)s project"
 msgstr "Personnaliser le projet de %(company)s"
 
-#: templates/high_ui/forms/customize_project.html:26
+#: templates/high_ui/forms/customize_project.html:36
 #: templates/high_ui/forms/update_project.html:13
 #, python-format
 msgid "Project of the %(company)s society "
 msgstr "Projet de la société %(company)s"
 
-#: templates/high_ui/forms/customize_project.html:64
+#: templates/high_ui/forms/customize_project.html:74
 msgid "Customize project header"
 msgstr "Personnaliser le bandeau supérieur du projet"
 
 #: templates/high_ui/forms/customize_project.html:84
-msgid ""
-"Enter a custom color for the project header, with the hexadecimal format "
-"like <em>#FF0000</em>. If you want the default color, leave the field empty."
-msgstr ""
-"Entrer une couleur personnalisée pour le bandeau supérieur du projet, au "
-"format héxadécimal par exemple <em>#FF0000</em>. Si vous voulez la couleur "
-"par défaut, laisser ce champ vide."
+msgid "Default"
+msgstr "Par défaut"
 
-#: templates/high_ui/forms/customize_project.html:103
+#: templates/high_ui/forms/customize_project.html:85
+msgid "Customize"
+msgstr "Personnalisée"
+
+#: templates/high_ui/forms/customize_project.html:120
+msgid "light"
+msgstr "claire"
+
+#: templates/high_ui/forms/customize_project.html:121
+msgid "dark"
+msgstr "sombre"
+
+#: templates/high_ui/forms/customize_project.html:150
 msgid ""
 "Upload an image of your client logo. It will be displayed in the top left "
 "corner of the page in the project pages."
@@ -877,12 +887,12 @@ msgstr ""
 "Téléverser une image du logo de votre client. Il sera affiché en haut à "
 "gauche de la page de détails du projet."
 
-#: templates/high_ui/forms/customize_project.html:116
+#: templates/high_ui/forms/customize_project.html:163
 #: templates/high_ui/forms/update_project.html:17
 msgid "Modify this project"
 msgstr "Modifier ce projet"
 
-#: templates/high_ui/forms/customize_project.html:117
+#: templates/high_ui/forms/customize_project.html:164
 #: templates/high_ui/forms/update_admin.html:22
 #: templates/high_ui/forms/update_admin.html:31
 #: templates/high_ui/forms/update_company_operator.html:24
@@ -892,7 +902,7 @@ msgstr "Modifier ce projet"
 #: templates/high_ui/forms/update_consumers.html:24
 #: templates/high_ui/forms/update_credit.html:34
 #: templates/high_ui/forms/update_credit_choices.html:60
-#: templates/high_ui/forms/update_email_alert.html:104
+#: templates/high_ui/forms/update_email_alert.html:112
 #: templates/high_ui/forms/update_infos.html:121
 #: templates/high_ui/forms/update_issue.html:20
 #: templates/high_ui/forms/update_maintenance_type.html:88
@@ -907,7 +917,41 @@ msgstr "Modifier ce projet"
 msgid "Don't Modify"
 msgstr "Ne pas modifier"
 
+#: templates/high_ui/forms/unarchive_issues.html:6
+#, python-format
+msgid "Activate deleted %(name)s's issues"
+msgstr "Activer les demandes supprimées de %(name)s"
+
+#: templates/high_ui/forms/unarchive_issues.html:23
+msgid "Deleted %(name)s's issues"
+msgstr "Demandes supprimées de %(name)s"
+
+#: templates/high_ui/forms/unarchive_issues.html:28
+msgid ""
+"Select issues that you want to be active, among the %(issues_number)s "
+"deleted %(name)s's issues:"
+msgstr ""
+"Sélectionner les demandes que vous voulez rendre actives, parmi les "
+"%(issues_number)s demandes de %(name)s actuellement supprimées&nbsp;:"
+
+#: templates/high_ui/forms/unarchive_issues.html:30
+msgid "Select the single %(name)s's deleted issues to turn it active:"
+msgstr ""
+"Sélectionner l'unique demande supprimée de %(name)s pour le rendre active&nbsp;:"
+
+#: templates/high_ui/forms/unarchive_issues.html:50
+msgid "Activate this issues"
+msgstr "Activer cette demande"
+
+#: templates/high_ui/forms/unarchive_issues.html:51
+#: templates/high_ui/forms/update_projects.html:50
+#: templates/high_ui/forms/update_users.html:60
+#: templates/high_ui/forms/update_users.html:97
+msgid "Change nothing"
+msgstr "Ne rien changer"
+
 #: templates/high_ui/forms/unarchive_projects.html:13
+#, python-format
 msgid ""
 "Select projects that you want to be active, among the %(projects_number)s "
 "archive %(name)s's projects:"
@@ -1121,23 +1165,23 @@ msgid "Default credit's values"
 msgstr "Valeurs de crédits par défaut"
 
 #: templates/high_ui/forms/update_credit_choices.html:59
-#: templates/high_ui/forms/update_email_alert.html:103
+#: templates/high_ui/forms/update_email_alert.html:111
 msgid "Modify this configuration"
 msgstr "Modifier cette configuration"
 
-#: templates/high_ui/forms/update_email_alert.html:29
+#: templates/high_ui/forms/update_email_alert.html:37
 #, python-format
 msgid "%(name)s's email-alert configuration"
 msgstr "Configuration des alertes par email de %(name)s"
 
-#: templates/high_ui/forms/update_email_alert.html:39
+#: templates/high_ui/forms/update_email_alert.html:47
 #: templates/high_ui/forms/update_project.html:42
 #: templates/high_ui/forms/update_project.html:102
 #: templates/high_ui/forms/update_project.html:162
 msgid "Enabled"
 msgstr "Actif"
 
-#: templates/high_ui/forms/update_email_alert.html:88
+#: templates/high_ui/forms/update_email_alert.html:96
 msgid ""
 "The <em>to contact</em> manager will recieve an email alert when the "
 "<em>remaining hours</em> of the contract reach the <em>hour threshold</em>."
@@ -1145,7 +1189,7 @@ msgstr ""
 "Le manager <em>à prévenir</em> recevra une alerte par email lorsque les "
 "<em>heures restantes</em> du contrat atteindra le <em>seuil d'heures</em>."
 
-#: templates/high_ui/forms/update_email_alert.html:89
+#: templates/high_ui/forms/update_email_alert.html:97
 #, python-format
 msgid ""
 "Enable the option if you want that a %(company)s's manager receive an email "
@@ -1174,8 +1218,8 @@ msgid "Modification of %(company)s %(counter)s issue #%(number)s"
 msgstr "Modification de la demande N°%(number)s en %(counter)s de %(company)s"
 
 #: templates/high_ui/forms/update_issue.html:13
-#: templates/high_ui/issue_details.html:17
-#: templates/high_ui/issue_details.html:29
+#: templates/high_ui/issue_details.html:25
+#: templates/high_ui/issue_details.html:37
 #: templates/high_ui/issue_details_header.html:9
 msgid "Issue #"
 msgstr "Demandes N°"
@@ -1329,13 +1373,7 @@ msgstr "Modifier mon mot de passe"
 msgid "Modify %(company)s project"
 msgstr "Modifier le projet de %(company)s"
 
-#: templates/high_ui/forms/update_projects.html:50
-#: templates/high_ui/forms/update_users.html:60
-#: templates/high_ui/forms/update_users.html:97
-msgid "Change nothing"
-msgstr "Ne rien changer"
-
-#: templates/high_ui/forms/update_user.html:153
+#: templates/high_ui/forms/update_user.html:161
 #: tests/views/users/test_update_profile.py:89
 #: tests/views/users/test_update_profile.py:112
 #: tests/views/users/test_update_profile.py:152
@@ -1350,7 +1388,7 @@ msgstr "Les modifications ont bien été prises en compte!"
 
 #: templates/high_ui/forms/update_users.html:49
 #: templates/high_ui/forms/update_users.html:87
-#: templates/high_ui/issue_details.html:59
+#: templates/high_ui/issue_details.html:67
 msgid "Operator"
 msgstr "Intervenant"
 
@@ -1362,69 +1400,75 @@ msgstr "demande de"
 msgid "#"
 msgstr "N°"
 
-#: templates/high_ui/issue_details.html:23
+#: templates/high_ui/issue_details.html:31
 msgid "Archive"
 msgstr "Archiver"
 
-#: templates/high_ui/issue_details.html:31
+#: templates/high_ui/issue_details.html:39
 msgid "Author"
 msgstr "Auteur"
 
-#: templates/high_ui/issue_details.html:35
+#: templates/high_ui/issue_details.html:43
 msgid "Date"
 msgstr "Date"
 
-#: templates/high_ui/issue_details.html:40
+#: templates/high_ui/issue_details.html:48
 msgid "Channel"
 msgstr "Canal"
 
-#: templates/high_ui/issue_details.html:45
+#: templates/high_ui/issue_details.html:53
 msgid "Details"
 msgstr "Détails"
 
-#: templates/high_ui/issue_details.html:50
-#: templates/high_ui/issue_details.html:88
+#: templates/high_ui/issue_details.html:58
+#: templates/high_ui/issue_details.html:96
 msgid "Attachment"
 msgstr "Pièce jointe"
 
-#: templates/high_ui/issue_details.html:63
+#: templates/high_ui/issue_details.html:71
 #: templates/high_ui/issue_details_header.html:13
 msgid "Activity"
 msgstr "Activité"
 
-#: templates/high_ui/issue_details.html:67
+#: templates/high_ui/issue_details.html:75
 #: templates/high_ui/issue_details_header.html:17
 msgid "Time spent"
 msgstr "Temps passé"
 
-#: templates/high_ui/issue_details.html:78
+#: templates/high_ui/issue_details.html:86
 msgid "Delivery"
 msgstr "Livraison"
 
-#: templates/high_ui/issue_details.html:83
+#: templates/high_ui/issue_details.html:91
 msgid "Comments"
 msgstr "Commentaires"
 
-#: templatetags/print_fields.py:41 templatetags/print_fields.py:44
+#: templatetags/print_fields.py:42 templatetags/print_fields.py:45
 #: tests/templatetags/test_print_field.py:90
 #: tests/templatetags/test_print_field.py:95
 msgid "project:"
 msgstr "projet&nbsp;:"
 
-#: templatetags/print_fields.py:43 tests/templatetags/test_print_field.py:105
+#: templatetags/print_fields.py:44 tests/templatetags/test_print_field.py:105
 msgid "projects:"
 msgstr "projets&nbsp;:"
 
-#: templatetags/print_fields.py:44 tests/templatetags/test_print_field.py:90
+#: templatetags/print_fields.py:45 tests/templatetags/test_print_field.py:90
 msgid "none"
 msgstr "aucun"
 
-#: templatetags/print_fields.py:65
+#: templatetags/print_fields.py:52
+#, fuzzy
+#| msgid "Issue #"
+msgid "Issue "
+msgstr "Demandes N°"
+
+#: templatetags/print_fields.py:80
 #, python-brace-format
 msgid "Add extra {duration}"
 msgstr "Ajout de {duration} supplémentaires"
 
-#: tests/views/test_project_views.py:433
+#: tests/views/test_project_views.py:415
 msgid "Email alert"
 msgstr "alerte par email"
 
@@ -1439,6 +1483,15 @@ msgstr "Seuil d'heures"
 #: views/project.py:212
 msgid "To contact"
 msgstr "À prévenir"
+
+#~ msgid ""
+#~ "Enter a custom color for the project header, with the hexadecimal format "
+#~ "like <em>#FF0000</em>. If you want the default color, leave the field "
+#~ "empty."
+#~ msgstr ""
+#~ "Entrer une couleur personnalisée pour le bandeau supérieur du projet, au "
+#~ "format héxadécimal par exemple <em>#FF0000</em>. Si vous voulez la "
+#~ "couleur par défaut, laisser ce champ vide."
 
 #~ msgid "Manage email alerts"
 #~ msgstr "Gestion des alertes par emails"

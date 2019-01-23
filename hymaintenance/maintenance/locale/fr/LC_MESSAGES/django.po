@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-15 10:23+0100\n"
+"POT-Creation-Date: 2019-01-23 10:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: forms/issue.py:49 tests/forms/test_issue_forms.py:99
-#: tests/forms/test_issue_forms.py:311
+#: forms/issue.py:49 tests/forms/test_issue_forms.py:100
+#: tests/forms/test_issue_forms.py:312
 #, python-format
 msgid "Invalid duration type: '%s'"
 msgstr "Unité invalide: '%s'"
@@ -84,7 +84,8 @@ msgid ""
 "           * if yes, send an alert email to the client"
 msgstr ""
 "Cette commande réalise sur chaque contrats :\n"
-"           * vérifie si le temps restants a atteint le nombre de minutes minimum\n"
+"           * vérifie si le temps restants a atteint le nombre de minutes "
+"minimum\n"
 "           * si oui, envoie une alerte par email au client"
 
 #: migrations/0010_auto_20180315_0012.py:17
@@ -234,21 +235,21 @@ msgstr "Canal d'entrée des demandes"
 msgid "Maintenance's Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
-#: tests/forms/test_credit_forms.py:22 tests/forms/test_issue_forms.py:65
-#: tests/forms/test_issue_forms.py:288
+#: tests/forms/test_credit_forms.py:22 tests/forms/test_issue_forms.py:66
+#: tests/forms/test_issue_forms.py:289
 #: tests/forms/test_other_models_forms.py:49
 #: tests/forms/test_project_forms.py:67 tests/forms/test_project_forms.py:310
 msgid "This field is required."
 msgstr "Ce champs est obligatoire."
 
-#: tests/forms/test_issue_forms.py:113 tests/forms/test_issue_forms.py:324
+#: tests/forms/test_issue_forms.py:114 tests/forms/test_issue_forms.py:325
 #: tests/forms/test_project_forms.py:228 tests/forms/test_project_forms.py:444
 #, python-format
 msgid "Ensure this value is greater than or equal to %(limit_value)s."
 msgstr ""
 "Assurez-vous que cette valeur est plus grande ou égale à %(limit_value)s."
 
-#: tests/forms/test_issue_forms.py:126 tests/forms/test_issue_forms.py:337
+#: tests/forms/test_issue_forms.py:127 tests/forms/test_issue_forms.py:338
 #: tests/forms/test_project_forms.py:238 tests/forms/test_project_forms.py:454
 msgid "Enter a whole number."
 msgstr "Entrez un nombre entier."
