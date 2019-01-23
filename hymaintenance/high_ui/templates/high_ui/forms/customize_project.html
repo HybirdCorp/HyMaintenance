@@ -11,14 +11,17 @@
 <link rel="stylesheet" href="/static/css/create.css" />
 <link rel="stylesheet" href="/static/css/create-project.css" />
 <script src="/static/js/segmented-selector.js"></script>
-{% if company.color %}
 <style>
+.form-group.custom-color-inactive .row-color, .form-group.custom-color-inactive .row-dark-font-color {
+    display: none;
+}
+{% if company.color %}
 .dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
     background-color: white;
     color: {{company.color}};
 }
-</style>
 {% endif %}
+</style>
 </head>
 <body>
 {% include "high_ui/company_details_header.html" %}
@@ -66,12 +69,32 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group customize-header custom-color-{% if company.color %}active{% else %}inactive{% endif %}">
                         <div class="group-title-container">
                             <div class="group-title">{% trans "Customize project header" %}</div>
                         </div>
 
-                        <div class="form-row {% if form.color.errors %}form-error{% endif %}">
+                        <div class="form-row {% if form.has_custom_color.errors %}form-error{% endif %}">
+                            {% if form.has_custom_color.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.has_custom_color.id_for_label}}">{{form.has_custom_color.label}} *</label>
+                            <section class="segmented-selector {{default_activity_type}} selector-has_custom_color">
+                                <a href="" class="active" data-selector-key="inactive" data-selector-value="False">{% trans "Default" %}</a>
+                                <a href="" class="inactive" data-selector-key="active" data-selector-value="True">{% trans "Customize" %}</a>
+                                {{form.has_custom_color}}
+                            </section>
+
+                            {% if form.has_custom_color.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.has_custom_color.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-row row-color {% if form.color.errors %}form-error{% endif %}">
                             {% if form.color.errors %}
                             <div class="form-row-wrapper">
                             {% endif %}
@@ -87,10 +110,7 @@
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
                         </div>
-                        <div class="help">
-                            <span>{% trans "Enter a custom color for the project header, with the hexadecimal format like <em>#FF0000</em>. If you want the default color, leave the field empty." %}</span>
-                        </div>
-                        <div class="form-row {% if form.dark_font_color.errors %}form-error{% endif %}">
+                        <div class="form-row row-dark-font-color {% if form.dark_font_color.errors %}form-error{% endif %}">
                             {% if form.dark_font_color.errors %}
                             <div class="form-row-wrapper">
                             {% endif %}
@@ -151,6 +171,15 @@
     {% include "high_ui/footer.html" with show_menu_client=True %}
     <script>
         var FontColorSelector = new SegmentedSelector (document.querySelector(".selector-dark_font_color"));
+        var HasCustomColorSelector = new SegmentedSelector (document.querySelector(".selector-has_custom_color"),
+                                                            function(currentKey, selectedKey) {
+                var currentActivation = "custom-color-" + currentKey;
+                var selectedActivation = "custom-color-" + selectedKey;
+
+                var parent = document.querySelector(".customize-header");
+                parent.className = parent.className.replace(currentActivation, selectedActivation);
+            }
+        );
     </script>
 </body>
 </html>

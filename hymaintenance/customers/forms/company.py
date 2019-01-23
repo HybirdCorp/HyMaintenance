@@ -12,10 +12,22 @@ from ..models import Company
 
 
 class ProjectCustomizeForm(forms.ModelForm):
+    has_custom_color = forms.BooleanField(
+        label=_("Header color"), required=False, initial=False, widget=forms.HiddenInput()
+    )
+
     class Meta:
         model = Company
-        fields = ("name", "contact", "logo", "color", "dark_font_color")
-        widgets = {"logo": HyClearableFileInput, "dark_font_color": forms.HiddenInput()}
+        fields = ("name", "contact", "logo", "dark_font_color", "color")
+        widgets = {
+            "logo": HyClearableFileInput,
+            "color": forms.TextInput(attrs={"type": "color"}),
+            "dark_font_color": forms.HiddenInput(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["has_custom_color"].initial = True if (self.instance.color) else False
 
     def clean_color(self):
         color = self.cleaned_data["color"]
@@ -24,7 +36,11 @@ class ProjectCustomizeForm(forms.ModelForm):
         return color
 
     def save(self):
+        form_data = self.cleaned_data
         old_company = Company.objects.get(id=self.instance.id)
+
+        if not form_data["has_custom_color"]:
+            self.instance.color = None
 
         project = super().save()
         if old_company.logo and old_company.logo != project.logo:
