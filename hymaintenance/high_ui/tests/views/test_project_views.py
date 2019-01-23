@@ -358,24 +358,6 @@ class ProjectDetailsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, subject)
 
-    def test_customize_project_header_display(self):
-        self.company.color = "#000"
-        with create_temporary_image() as tmp_file:
-            self.company.logo.save(os.path.basename(tmp_file.name), File(tmp_file))
-            self.company.save()
-            admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-            self.client.login(username=admin.email, password="azerty")
-            response = self.client.get(self.form_url, follow=True)
-
-            self.assertEqual(response.status_code, 200)
-            self.assertContains(response, '<div class="dashboard type-maintenance" style="background:#000;">')
-            self.assertContains(
-                response, '<div class="dashboard-logo"><img src="{}"/></div>'.format(self.company.logo.url)
-            )
-            self.company.color = None
-            self.company.logo = None
-            self.company.save()
-
     def test_staff_company_display_project_header(self):
         admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         self.client.login(username=admin.email, password="azerty")
@@ -862,7 +844,9 @@ class ProjectCustomizeViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
         response = self.client.post(
-            self.form_url, {"name": company_name, "contact": operator.pk, "color": color, "logo": None}, follow=True
+            self.form_url,
+            {"name": company_name, "contact": operator.pk, "has_custom_color": True, "color": color, "logo": None},
+            follow=True,
         )
 
         company = Company.objects.get(pk=self.company.pk)
@@ -870,3 +854,73 @@ class ProjectCustomizeViewTestCase(TestCase):
         self.assertEquals(company_name, company.name)
         self.assertEquals(color, company.color)
         self.assertEquals(operator, company.contact)
+
+
+class ProjectHeaderTestCase(TestCase):
+    def setUp(self):
+        self.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        self.company, self.contract, _, _ = create_project()
+        self.view_url = reverse("high_ui:project_details", args=[self.company.slug_name])
+        self.login_url = reverse("login") + "?next=" + self.view_url
+
+    def test_default_display(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.view_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<div class="dashboard type-maintenance" >')
+        self.assertNotContains(response, '<div class="dashboard-logo">')
+
+    def test_dark_font_and_custom_color_and_logo_display(self):
+        self.company.color = "#000"
+        self.company.dark_font_color = True
+        with create_temporary_image() as tmp_file:
+            self.company.logo.save(os.path.basename(tmp_file.name), File(tmp_file))
+            self.company.save()
+            self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+            response = self.client.get(self.view_url, follow=True)
+
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, '<div class="dashboard dark" style="background:#000;">')
+            self.assertContains(
+                response, '<div class="dashboard-logo"><img src="{}"/></div>'.format(self.company.logo.url)
+            )
+
+    def test_light_font_and_custom_color_and_logo_display(self):
+        self.company.color = "#000"
+        self.company.dark_font_color = False
+        with create_temporary_image() as tmp_file:
+            self.company.logo.save(os.path.basename(tmp_file.name), File(tmp_file))
+            self.company.save()
+            self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+            response = self.client.get(self.view_url, follow=True)
+
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, '<div class="dashboard light" style="background:#000;">')
+            self.assertContains(
+                response, '<div class="dashboard-logo"><img src="{}"/></div>'.format(self.company.logo.url)
+            )
+
+    def test_default_color_with_logo_display(self):
+        with create_temporary_image() as tmp_file:
+            self.company.logo.save(os.path.basename(tmp_file.name), File(tmp_file))
+            self.company.save()
+            self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+            response = self.client.get(self.view_url, follow=True)
+
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, '<div class="dashboard type-maintenance" >')
+            self.assertContains(
+                response, '<div class="dashboard-logo"><img src="{}"/></div>'.format(self.company.logo.url)
+            )
+
+    def test_light_font_and_custom_color_without_logo_display(self):
+        self.company.color = "#000"
+        self.company.dark_font_color = False
+        self.company.save()
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.view_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<div class="dashboard light" style="background:#000;">')
+        self.assertNotContains(response, '<div class="dashboard-logo">')
