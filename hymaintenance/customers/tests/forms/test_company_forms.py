@@ -39,7 +39,14 @@ class ProjectCustomizeFormTestCase(TestCase):
         super().tearDownClass()
 
     def __get_dict_for_post(self):
-        return {"name": self.company.name, "contact": self.user.pk, "color": "#000", "logo": None}
+        return {
+            "name": self.company.name,
+            "has_custom_color": True,
+            "contact": self.user.pk,
+            "dark_font_color": False,
+            "color": "#000",
+            "logo": None,
+        }
 
     def test_all_required_fields_by_sending_a_empty_update_form(self):
         form = ProjectCustomizeForm(instance=self.company, data={})
@@ -78,6 +85,15 @@ class ProjectCustomizeFormTestCase(TestCase):
             self.company.logo.delete()
             self.company.save()
 
+    def test_when_user_sends_with_default_color(self):
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["has_custom_color"] = False
+        form = ProjectCustomizeForm(instance=self.company, data=dict_for_post)
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        company = Company.objects.get(pk=self.company.pk)
+        self.assertEqual(None, company.color)
+
     def test_when_user_sends_an_six_characters_hexadecimal_color(self):
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["color"] = "#f0f0f0"
@@ -94,7 +110,7 @@ class ProjectCustomizeFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
         self.assertDictEqual(form.errors, {"color": [_("Invalid hexadecimal color code: '42'")]})
 
-    def test_when_user_sends_an_invalid_stringi_for_color(self):
+    def test_when_user_sends_an_invalid_string_for_color(self):
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["color"] = "000"
         form = ProjectCustomizeForm(instance=self.company, data=dict_for_post)
