@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-15 10:23+0100\n"
+"POT-Creation-Date: 2019-01-23 10:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,11 @@ msgstr "Permissions"
 msgid "Personal info"
 msgstr "Informations personnelles"
 
-#: forms/company.py:23
+#: forms/company.py:15
+msgid "Header color"
+msgstr "Couleur de l'en-tête"
+
+#: forms/company.py:29
 #, python-format
 msgid "Invalid hexadecimal color code: '%s'"
 msgstr "Code héxadécimal de couleur invalide: '%s'"
@@ -121,6 +125,10 @@ msgid "Color"
 msgstr "Couleur"
 
 #: models/company.py:27
+msgid "Font color"
+msgstr "Couleur de police"
+
+#: models/company.py:28
 msgid "Logo"
 msgstr "Logo"
 
@@ -189,11 +197,11 @@ msgstr "Sociétés dont l'utilisateur est opérateur"
 msgid "This field is required."
 msgstr "Ce champs est obligatoire."
 
-#: tests/forms/test_company_forms.py:95
+#: tests/forms/test_company_forms.py:104
 msgid "Invalid hexadecimal color code: '42'"
 msgstr "Code héxadécimal de couleur invalide: '42'"
 
-#: tests/forms/test_company_forms.py:102
+#: tests/forms/test_company_forms.py:111
 msgid "Invalid hexadecimal color code: '000'"
 msgstr "Code héxadécimal de couleur invalide: '000'"
 
