@@ -25,6 +25,63 @@
 {{maintenance_types.2.name}}
 {% endblock %}
 
+{% block number_hours_1 %}
+<div class="form-row row-credit {% if form.contract1_number_hours.errors %}form-error{% endif %}">
+    {% if form.contract1_number_hours.errors %}
+    <div class="form-row-wrapper">
+    {% endif %}
+
+    <label for="{{form.contract1_number_hours.id_for_label}}">{{form.contract1_number_hours.label}} *</label>
+    {{form.contract1_number_hours}}
+
+    {% if form.contract1_number_hours.errors %}
+    </div>
+    {% endif %}
+
+    {% for error in form.contract1_number_hours.errors %}
+    <div class="form-error-text">{{error|escape}}</div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block number_hours_2 %}
+<div class="form-row row-credit {% if form.contract2_number_hours.errors %}form-error{% endif %}">
+    {% if form.contract2_number_hours.errors %}
+    <div class="form-row-wrapper">
+    {% endif %}
+
+    <label for="{{form.contract2_number_hours.id_for_label}}">{{form.contract2_number_hours.label}} *</label>
+    {{form.contract2_number_hours}}
+
+    {% if form.contract2_number_hours.errors %}
+    </div>
+    {% endif %}
+
+    {% for error in form.contract2_number_hours.errors %}
+    <div class="form-error-text">{{error|escape}}</div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block number_hours_3 %}
+<div class="form-row row-credit {% if form.contract3_number_hours.errors %}form-error{% endif %}">
+    {% if form.contract3_number_hours.errors %}
+    <div class="form-row-wrapper">
+    {% endif %}
+
+    <label for="{{form.contract3_number_hours.id_for_label}}">{{form.contract3_number_hours.label}} *</label>
+    {{form.contract3_number_hours}}
+
+    {% if form.contract3_number_hours.errors %}
+    </div>
+    {% endif %}
+
+    {% for error in form.contract3_number_hours.errors %}
+    <div class="form-error-text">{{error|escape}}</div>
+    {% endfor %}
+</div>
+{% endblock %}
+
 {% block form_footer %}
 <button type="submit">{% trans "Create this project" %}</button>
 <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't create" %}</a></span>
