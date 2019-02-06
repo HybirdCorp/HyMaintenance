@@ -11,6 +11,7 @@ from maintenance.forms.project import INACTIF_CONTRACT_INPUT
 from maintenance.forms.project import ProjectCreateForm
 from maintenance.forms.project import ProjectUpdateForm
 from maintenance.models import MaintenanceContract
+from maintenance.models import MaintenanceCredit
 from maintenance.models import MaintenanceType
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 from maintenance.models.contract import CONSUMMED_TOTAL_TIME
@@ -96,7 +97,7 @@ class ProjectCreateFormTestCase(TestCase):
         self.assertFalse(is_valid)
         self.assertDictEqual(form.errors, {"__all__": [_("You have to create at least one contract on the project.")]})
 
-    def test_valid_form_create_a_support_contract(self):
+    def test_valid_form_create_a_consummed_time_support_contract(self):
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["contract1_visible"] = 1
         dict_for_post["contract1_total_type"] = CONSUMMED_TOTAL_TIME
@@ -110,6 +111,29 @@ class ProjectCreateFormTestCase(TestCase):
         self.assertEqual(1, Company.objects.all().count())
         self.assertEqual(
             1, MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=1, disabled=False).count()
+        )
+
+    def test_valid_form_create_a_available_time_support_contract(self):
+        number_hours = 100
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["contract1_visible"] = 1
+        dict_for_post["contract1_total_type"] = AVAILABLE_TOTAL_TIME
+        dict_for_post["contract1_number_hours"] = number_hours
+        form = ProjectCreateForm(data=dict_for_post)
+
+        is_valid = form.is_valid()
+        form.create_company_and_contracts()
+        company = Company.objects.get(name="Black Mesa")
+
+        self.assertTrue(is_valid)
+        self.assertEqual(1, Company.objects.all().count())
+        contracts = MaintenanceContract.objects.filter(company_id=company, maintenance_type_id=1, disabled=False)
+        self.assertEqual(1, contracts.count())
+        self.assertEqual(
+            1,
+            MaintenanceCredit.objects.filter(
+                company_id=company, contract=contracts.first(), hours_number=number_hours
+            ).count(),
         )
 
     def test_valid_form_create_a_maintenance_contract(self):
@@ -197,17 +221,12 @@ class ProjectCreateFormTestCase(TestCase):
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
-        self.assertEqual(
-            1,
-            MaintenanceContract.objects.filter(
-                company_id=company,
-                maintenance_type_id=1,
-                visible=False,
-                total_type=AVAILABLE_TOTAL_TIME,
-                number_hours=80,
-                disabled=False,
-            ).count(),
+        contracts = MaintenanceContract.objects.filter(
+            company_id=company, maintenance_type_id=1, visible=False, total_type=AVAILABLE_TOTAL_TIME, disabled=False
         )
+        self.assertEqual(1, contracts.count())
+        credits = MaintenanceCredit.objects.filter(contract=contracts.first(), company=company, hours_number=80)
+        self.assertEqual(1, credits.count())
 
     def test_invalid_form_create_already_existing_company(self):
         CompanyFactory.create(name="Black Mesa")
@@ -283,21 +302,18 @@ class ProjectUpdateFormTestCase(TestCase):
             "company_name": "Aperture Science",
             "contract1_visible": INACTIF_CONTRACT_INPUT,
             "contract1_total_type": 0,
-            "contract1_number_hours": 0,
             "contract1_date": datetime.date.today(),
             "contract1_counter_name": "Maintenance",
             "contract1_email_alert": False,
             "contract1_number_hours_min": 0,
             "contract2_visible": INACTIF_CONTRACT_INPUT,
             "contract2_total_type": 0,
-            "contract2_number_hours": 0,
             "contract2_date": datetime.date.today(),
             "contract2_counter_name": "Support",
             "contract2_email_alert": False,
             "contract2_number_hours_min": 0,
             "contract3_visible": INACTIF_CONTRACT_INPUT,
             "contract3_total_type": 0,
-            "contract3_number_hours": 0,
             "contract3_date": datetime.date.today(),
             "contract3_number_hours_min": 0,
             "contract3_counter_name": "Corrective",
@@ -324,9 +340,6 @@ class ProjectUpdateFormTestCase(TestCase):
                 "contract1_total_type": [expected],
                 "contract2_total_type": [expected],
                 "contract3_total_type": [expected],
-                "contract1_number_hours": [expected],
-                "contract2_number_hours": [expected],
-                "contract3_number_hours": [expected],
             },
         )
 
@@ -387,7 +400,6 @@ class ProjectUpdateFormTestCase(TestCase):
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["contract1_visible"] = 1
         dict_for_post["contract1_total_type"] = AVAILABLE_TOTAL_TIME
-        dict_for_post["contract1_number_hours"] = self.contract1.number_hours
         form = ProjectUpdateForm(company=self.company, data=dict_for_post)
 
         is_valid = form.is_valid()
@@ -404,7 +416,6 @@ class ProjectUpdateFormTestCase(TestCase):
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["contract1_visible"] = 0
         dict_for_post["contract1_total_type"] = AVAILABLE_TOTAL_TIME
-        dict_for_post["contract1_number_hours"] = 80
         form = ProjectUpdateForm(company=self.company, data=dict_for_post)
 
         is_valid = form.is_valid()
@@ -420,7 +431,6 @@ class ProjectUpdateFormTestCase(TestCase):
                 maintenance_type_id=1,
                 visible=False,
                 total_type=AVAILABLE_TOTAL_TIME,
-                number_hours=80,
                 disabled=False,
             ).count(),
         )
@@ -436,23 +446,23 @@ class ProjectUpdateFormTestCase(TestCase):
 
     def test_when_i_bound_a_update_form_with_under_min_number_hours_i_have_an_error(self):
         dict_for_post = self.__get_dict_for_post()
-        dict_for_post["contract1_number_hours"] = -10
+        dict_for_post["contract1_number_hours_min"] = -10
         form = ProjectUpdateForm(company=self.company, data=dict_for_post)
 
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
         expected = _("Ensure this value is greater than or equal to %(limit_value)s.") % {"limit_value": 0}
-        self.assertEqual(form.errors["contract1_number_hours"].as_text(), "* %s" % expected)
+        self.assertEqual(form.errors["contract1_number_hours_min"].as_text(), "* %s" % expected)
 
-    def test_when_i_bound_a_update_form_with_string_as_number_hours_i_have_an_error(self):
+    def test_when_i_bound_a_update_form_with_string_as_number_hours_min_i_have_an_error(self):
         dict_for_post = self.__get_dict_for_post()
-        dict_for_post["contract1_number_hours"] = "I'm a duration"
+        dict_for_post["contract1_number_hours_min"] = "I'm a duration"
         form = ProjectUpdateForm(company=self.company, data=dict_for_post)
 
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
         expected = _("Enter a whole number.")
-        self.assertEqual(form.errors["contract1_number_hours"], [expected])
+        self.assertEqual(form.errors["contract1_number_hours_min"], [expected])
 
     def test_when_i_send_a_contact(self):
         operator = OperatorUserFactory(first_name="Chell")
@@ -502,7 +512,6 @@ class ProjectUpdateFormTestCase(TestCase):
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["contract1_visible"] = 1
         dict_for_post["contract1_total_type"] = AVAILABLE_TOTAL_TIME
-        dict_for_post["contract1_number_hours"] = 80
         dict_for_post["contract1_email_alert"] = True
         dict_for_post["contract1_number_hours_min"] = 40
         dict_for_post["contract1_recipient"] = manager.pk
