@@ -34,7 +34,7 @@ class MaintenanceContract(models.Model):
     visible = models.BooleanField(_("Visible to manager"), default=True)
     disabled = models.BooleanField(_("Disable the contract"), default=False)
     start = models.DateField(_("Start Date"), default=datetime.date.today)
-    number_hours = models.PositiveIntegerField(_("Credited hours"), default=0)
+    number_hours = models.PositiveIntegerField(_("Credited hours"), null=True, blank=True)
     total_type = models.IntegerField(_("Counter type"), choices=TYPE_CHOICES, default=AVAILABLE_TOTAL_TIME)
     email_alert = models.BooleanField(_("Email alert"), default=False)
     number_hours_min = models.IntegerField(_("Credited hours Threshold"), default=0)
@@ -62,7 +62,7 @@ class MaintenanceContract(models.Model):
         hours_sum = hours_sum["hours_number__sum"]
         if hours_sum is None:
             hours_sum = 0
-        return int(self.number_hours) + hours_sum
+        return hours_sum
 
     def get_number_contract_minutes(self) -> int:
         return self.get_number_contract_hours() * 60
@@ -101,6 +101,4 @@ class MaintenanceContract(models.Model):
         credited = credited["hours_number__sum"]
         if credited is None:
             credited = 0
-        if self.start.month == date.month and self.start.year == date.year:
-            credited += self.number_hours
         return credited
