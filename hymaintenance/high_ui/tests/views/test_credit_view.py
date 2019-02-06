@@ -74,6 +74,7 @@ class CreditCreateViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_admin_can_post_form_to_add_credit(self):
+        self.assertEqual(1, MaintenanceCredit.objects.filter(contract=self.c1.pk, company=self.company).count())
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
         response = self.client.post(self.form_url, {"hours_number": 16, "contract": self.c1.pk}, follow=True)
@@ -82,9 +83,7 @@ class CreditCreateViewTestCase(TestCase):
             response, reverse("high_ui:project_details", kwargs={"company_name": self.company.slug_name})
         )
 
-        self.assertEqual(
-            16, MaintenanceCredit.objects.filter(contract=self.c1.pk, company=self.company).first().hours_number
-        )
+        self.assertEqual(2, MaintenanceCredit.objects.filter(contract=self.c1.pk, company=self.company).count())
 
     def test_create_form_has_good_contract_ids(self):
         company, c1, c2, c3 = create_project(

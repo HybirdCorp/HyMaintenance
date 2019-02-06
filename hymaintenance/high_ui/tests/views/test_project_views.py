@@ -542,7 +542,9 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         self.assertEqual("09/19", months[5].strftime("%m/%y"))
 
     def test_get_contract_month_info(self):
-        company, contract, _, _ = create_project(contract1={"start": datetime.date(2020, 2, 29)})
+        company, contract, _, _ = create_project(
+            contract1={"start": datetime.date(2020, 2, 29), "total_type": AVAILABLE_TOTAL_TIME, "number_hours": 20}
+        )
         MaintenanceIssueFactory(company=company, contract=contract, number_minutes=12, date=datetime.date(2020, 2, 29))
         month = datetime.date(2020, 2, 29)
 
