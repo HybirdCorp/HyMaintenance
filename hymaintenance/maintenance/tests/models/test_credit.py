@@ -1,3 +1,5 @@
+import datetime
+
 from django.test import TestCase
 from django.utils.timezone import now
 
@@ -13,10 +15,10 @@ class MaintenanceCreditTestCase(TestCase):
         self.assertEqual(1, MaintenanceCredit.objects.count())
 
     def test_print_maintenance_credit(self):
-        company, contract, _, _ = create_project(contract1={"number_hours": 40})
+        company, contract, _, _ = create_project(contract1={"start": datetime.date(2012, 12, 21), "number_hours": 40})
         self.assertEqual(1, MaintenanceCredit.objects.count())
         self.assertEqual(
-            "Black Mesa, the 06/02/2019 for Black Mesa , Maintenance and 40 hours",
+            "Black Mesa, the 21/12/2012 for Black Mesa , Maintenance and 40 hours",
             str(MaintenanceCredit.objects.all().first()),
         )
 
