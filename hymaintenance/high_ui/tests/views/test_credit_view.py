@@ -6,8 +6,6 @@ from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceCredit
-from maintenance.models.contract import AVAILABLE_TOTAL_TIME
-from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 from maintenance.models.credit import MaintenanceCreditChoices
 from maintenance.tests.factories import MaintenanceCreditFactory
 from maintenance.tests.factories import create_project
@@ -21,9 +19,7 @@ class CreditCreateViewTestCase(TestCase):
     def setUpTestData(cls):
         cls.user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.company, cls.c1, cls.c2, cls.c3 = create_project(
-            contract1={"total_type": AVAILABLE_TOTAL_TIME},
-            contract2={"total_type": AVAILABLE_TOTAL_TIME},
-            contract3={"total_type": CONSUMMED_TOTAL_TIME},
+            contract1={"credit_counter": True}, contract2={"credit_counter": True}, contract3={"credit_counter": False}
         )
         cls.form_url = reverse("high_ui:project-create_credit", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
@@ -88,9 +84,9 @@ class CreditCreateViewTestCase(TestCase):
     def test_create_form_has_good_contract_ids(self):
         company, c1, c2, c3 = create_project(
             company={"name": "Aperture Science"},
-            contract1={"total_type": AVAILABLE_TOTAL_TIME},
-            contract2={"total_type": AVAILABLE_TOTAL_TIME},
-            contract3={"total_type": CONSUMMED_TOTAL_TIME},
+            contract1={"credit_counter": True},
+            contract2={"credit_counter": True},
+            contract3={"credit_counter": False},
         )
         credit = MaintenanceCreditFactory(company=company, contract=c1)
         form_url = reverse("high_ui:project-update_credit", kwargs={"company_name": company.slug_name, "pk": credit.pk})
@@ -119,9 +115,7 @@ class CreditUpdateViewTestCase(TestCase):
     def setUpTestData(cls):
         cls.user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.company, cls.c1, cls.c2, cls.c3 = create_project(
-            contract1={"total_type": AVAILABLE_TOTAL_TIME},
-            contract2={"total_type": AVAILABLE_TOTAL_TIME},
-            contract3={"total_type": CONSUMMED_TOTAL_TIME},
+            contract1={"credit_counter": True}, contract2={"credit_counter": True}, contract3={"credit_counter": False}
         )
 
     def setUp(self):
@@ -191,9 +185,9 @@ class CreditUpdateViewTestCase(TestCase):
     def test_update_form_has_good_contract_ids(self):
         company, c1, c2, c3 = create_project(
             company={"name": "Aperture Science"},
-            contract1={"total_type": AVAILABLE_TOTAL_TIME},
-            contract2={"total_type": AVAILABLE_TOTAL_TIME},
-            contract3={"total_type": CONSUMMED_TOTAL_TIME},
+            contract1={"credit_counter": True},
+            contract2={"credit_counter": True},
+            contract3={"credit_counter": False},
         )
         credit = MaintenanceCreditFactory(company=company, contract=c1)
         form_url = reverse("high_ui:project-update_credit", kwargs={"company_name": company.slug_name, "pk": credit.pk})
@@ -221,7 +215,7 @@ class CreditDeleteViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        cls.company, cls.c1, cls.c2, cls.c3 = create_project(contract1={"total_type": AVAILABLE_TOTAL_TIME})
+        cls.company, cls.c1, cls.c2, cls.c3 = create_project(contract1={"credit_counter": True})
 
     def setUp(self):
         self.credit = MaintenanceCreditFactory(company=self.company, contract=self.c1, hours_number=8)

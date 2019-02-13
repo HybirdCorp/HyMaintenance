@@ -39,16 +39,27 @@ class MaintenanceContractTestCase(TestCase):
     def test_get_number_contract_hours(self):
         company = CompanyFactory()
         maintenance_type = get_default_maintenance_type()
-        contract = MaintenanceContractFactory(company=company, maintenance_type=maintenance_type, number_hours=2)
+        contract = MaintenanceContractFactory(
+            company=company, maintenance_type=maintenance_type, credit_counter=True, number_hours=2
+        )
         MaintenanceCreditFactory(company=company, contract=contract, hours_number=5)
         MaintenanceCreditFactory(company=company, contract=contract, hours_number=15)
 
         self.assertEqual(22, contract.get_number_contract_hours())
 
+    def test_get_number_contract_hours_on_wrong_type_of_contract(self):
+        company = CompanyFactory()
+        maintenance_type = get_default_maintenance_type()
+        contract = MaintenanceContractFactory(company=company, maintenance_type=maintenance_type)
+
+        self.assertEqual(None, contract.get_number_contract_hours())
+
     def test_get_number_contract_minutes(self):
         company = CompanyFactory()
         maintenance_type = get_default_maintenance_type()
-        contract = MaintenanceContractFactory(company=company, maintenance_type=maintenance_type, number_hours=2)
+        contract = MaintenanceContractFactory(
+            company=company, maintenance_type=maintenance_type, credit_counter=True, number_hours=2
+        )
         MaintenanceCreditFactory(company=company, contract=contract, hours_number=5)
         MaintenanceCreditFactory(company=company, contract=contract, hours_number=15)
 
@@ -59,7 +70,9 @@ class MaintenanceContractTestCase(TestCase):
         maintenance_type = get_default_maintenance_type()
         today = now()
         channel = IncomingChannelFactory()
-        contract = MaintenanceContractFactory(company=company, maintenance_type=maintenance_type, number_hours=42)
+        contract = MaintenanceContractFactory(
+            company=company, maintenance_type=maintenance_type, credit_counter=True, number_hours=42
+        )
         MaintenanceIssueFactory(company=company, contract=contract, incoming_channel=channel, number_minutes=10)
 
         MaintenanceIssueFactory(company=company, contract=contract, incoming_channel=channel, number_minutes=30)
@@ -79,7 +92,9 @@ class MaintenanceContractTestCase(TestCase):
         maintenance_type = get_default_maintenance_type()
         today = now()
         channel = IncomingChannelFactory()
-        contract = MaintenanceContractFactory(company=company, maintenance_type=maintenance_type, number_hours=42)
+        contract = MaintenanceContractFactory(
+            company=company, maintenance_type=maintenance_type, credit_counter=True, number_hours=42
+        )
         MaintenanceIssueFactory(company=company, contract=contract, incoming_channel=channel, number_minutes=30)
 
         MaintenanceIssueFactory(company=company, contract=contract, incoming_channel=channel, number_minutes=30)
@@ -137,7 +152,9 @@ class MaintenanceContractTestCase(TestCase):
     def test_get_number_remaining_minutes(self):
         company = CompanyFactory()
         maintenance_type = get_default_maintenance_type()
-        contract = MaintenanceContractFactory(company=company, maintenance_type=maintenance_type, number_hours=1)
+        contract = MaintenanceContractFactory(
+            company=company, maintenance_type=maintenance_type, credit_counter=True, number_hours=1
+        )
         MaintenanceCreditFactory(company=company, contract=contract, hours_number=1)
 
         MaintenanceIssueFactory(company=company, contract=contract, number_minutes=10)
@@ -146,7 +163,9 @@ class MaintenanceContractTestCase(TestCase):
     def test_get_number_remaining_hours(self):
         company = CompanyFactory()
         maintenance_type = get_default_maintenance_type()
-        contract = MaintenanceContractFactory(company=company, maintenance_type=maintenance_type, number_hours=2)
+        contract = MaintenanceContractFactory(
+            company=company, maintenance_type=maintenance_type, credit_counter=True, number_hours=2
+        )
         MaintenanceCreditFactory(company=company, contract=contract, hours_number=2)
 
         MaintenanceIssueFactory(company=company, contract=contract, number_minutes=60)
@@ -157,7 +176,7 @@ class MaintenanceContractTestCase(TestCase):
         maintenance_type = get_default_maintenance_type()
         today = now()
         contract = MaintenanceContractFactory(
-            company=company, maintenance_type=maintenance_type, number_hours=2, start=today
+            company=company, maintenance_type=maintenance_type, credit_counter=True, number_hours=2, start=today
         )
         MaintenanceCreditFactory(company=company, contract=contract, hours_number=5)
         MaintenanceCreditFactory(company=company, contract=contract, hours_number=15)
@@ -172,6 +191,7 @@ class MaintenanceContractTestCase(TestCase):
             company=company,
             maintenance_type=maintenance_type,
             number_hours=2,
+            credit_counter=True,
             start=datetime(day=1, month=today.month, year=today.year - 1),
         )
 
