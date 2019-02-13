@@ -56,13 +56,7 @@ class MaintenanceContract(models.Model):
         return self.counter_name if self.counter_name != "" else self.maintenance_type.name
 
     def get_number_contract_hours(self) -> int:
-        hours_sum = MaintenanceCredit.objects.filter(company=self.company, contract=self).aggregate(
-            models.Sum("hours_number")
-        )
-        hours_sum = hours_sum["hours_number__sum"]
-        if hours_sum is None:
-            hours_sum = 0
-        return hours_sum
+        return self.number_hours
 
     def get_number_contract_minutes(self) -> int:
         return self.get_number_contract_hours() * 60

@@ -1,6 +1,8 @@
 import datetime
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
@@ -27,6 +29,20 @@ class MaintenanceCredit(models.Model):
 
     def get_counter_name(self):
         return get_counter_name(self)
+
+
+@receiver(post_save, sender=MaintenanceCredit, dispatch_uid="update_number_hours")
+def update_number_hours(sender, instance, **kwargs):
+    instance.contract.number_hours = calcul_number_hours(contract=instance.contract)
+    instance.contract.save()
+
+
+def calcul_number_hours(contract):
+    hours_sum = MaintenanceCredit.objects.filter(contract=contract).aggregate(models.Sum("hours_number"))
+    hours_sum = hours_sum["hours_number__sum"]
+    if hours_sum is None:
+        hours_sum = 0
+    return hours_sum
 
 
 class MaintenanceCreditChoices(models.Model):
