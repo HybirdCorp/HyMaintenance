@@ -10,6 +10,7 @@ from ..models import MaintenanceContract
 from ..models import MaintenanceCredit
 from ..models import MaintenanceType
 from ..models.contract import AVAILABLE_TOTAL_TIME
+from ..models.credit import calcul_number_hours
 
 
 INACTIF_CONTRACT_INPUT = -1
@@ -215,6 +216,8 @@ class ProjectUpdateForm(ProjectForm):
         if contract.total_type != contract_total_type:
             contract_is_modified = True
             contract.total_type = contract_total_type
+            if contract.total_type == AVAILABLE_TOTAL_TIME:
+                contract.number_hours = calcul_number_hours(contract)
 
         contract_email_alert = self.cleaned_data[f"contract{index}_email_alert"]
         if contract.email_alert != contract_email_alert:
