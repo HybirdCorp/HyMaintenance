@@ -5,8 +5,6 @@ from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceContract
-from maintenance.models.contract import AVAILABLE_TOTAL_TIME
-from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 from maintenance.tests.factories import create_project
 
 
@@ -18,10 +16,10 @@ class EmailAlertUpdateViewTestCase(TestCase):
             contract1={
                 "email_alert": False,
                 "disabled": False,
-                "total_type": AVAILABLE_TOTAL_TIME,
+                "credit_counter": True,
                 "counter_name": cls.counter_name,
             },
-            contract2={"email_alert": False, "disabled": False, "total_type": CONSUMMED_TOTAL_TIME},
+            contract2={"email_alert": False, "disabled": False},
             contract3={"email_alert": False, "disabled": True},
         )
         cls.operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")

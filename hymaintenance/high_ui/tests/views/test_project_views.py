@@ -141,7 +141,7 @@ class ProjectUpdateViewTestCase(TestCase):
     def setUpTestData(cls):
 
         cls.user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        cls.company, _, _, _ = create_project()
+        cls.company, _, _, _ = create_project(contract1={"credit_counter": True})
 
         cls.form_url = reverse("high_ui:update_project", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
@@ -200,8 +200,7 @@ class ProjectUpdateViewTestCase(TestCase):
         company_name = "Aperture Science"
         # No support contract
         contract1_visible = INACTIF_CONTRACT_INPUT
-        contract1_total_type = 0
-        contract1_number_hours = 0
+        contract1_total_type = CONSUMMED_TOTAL_TIME
         contract1_email_alert = False
         contract1_number_hours_min = 0
 
@@ -209,14 +208,12 @@ class ProjectUpdateViewTestCase(TestCase):
         # available total time with 80 credited hours
         contract2_visible = 0  # FALSE
         contract2_total_type = AVAILABLE_TOTAL_TIME
-        contract2_number_hours = 80
         contract2_email_alert = True
         contract2_number_hours_min = 20
 
         # correction contract, visible for manager, consummed total time
         contract3_visible = 1  # TRUE
         contract3_total_type = CONSUMMED_TOTAL_TIME
-        contract3_number_hours = 0
         contract3_email_alert = False
         contract3_number_hours_min = 0
 
@@ -229,21 +226,18 @@ class ProjectUpdateViewTestCase(TestCase):
                 "contact": operator.pk,
                 "contract1_visible": contract1_visible,
                 "contract1_total_type": contract1_total_type,
-                "contract1_number_hours": contract1_number_hours,
                 "contract1_counter_name": "Maintenance",
                 "contract1_date": datetime.date.today(),
                 "contract1_email_alert": contract1_email_alert,
                 "contract1_number_hours_min": contract1_number_hours_min,
                 "contract2_visible": contract2_visible,
                 "contract2_total_type": contract2_total_type,
-                "contract2_number_hours": contract2_number_hours,
                 "contract2_counter_name": "Support",
                 "contract2_date": datetime.date.today(),
                 "contract2_email_alert": contract2_email_alert,
                 "contract2_number_hours_min": contract2_number_hours_min,
                 "contract3_visible": contract3_visible,
                 "contract3_total_type": contract3_total_type,
-                "contract3_number_hours": contract3_number_hours,
                 "contract3_counter_name": "Corrective",
                 "contract3_date": datetime.date.today(),
                 "contract3_email_alert": contract3_email_alert,
@@ -260,7 +254,9 @@ class ProjectUpdateViewTestCase(TestCase):
 
 class ProjectDetailsViewTestCase(TestCase):
     def setUp(self):
-        self.company, self.contract1, self.contract2, self.contract3 = create_project()
+        self.company, self.contract1, self.contract2, self.contract3 = create_project(
+            contract1={"credit_counter": True}
+        )
         self.form_url = reverse("high_ui:project_details", args=[self.company.slug_name])
         self.login_url = reverse("login") + "?next=" + self.form_url
 
@@ -333,8 +329,6 @@ class ProjectDetailsViewTestCase(TestCase):
 
     def test_display_extra_credit(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        self.contract1.total_type = AVAILABLE_TOTAL_TIME
-        self.contract1.save()
         MaintenanceCreditFactory(contract=self.contract1, company=self.company, hours_number=10, date=now().date())
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")

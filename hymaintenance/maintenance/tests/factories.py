@@ -14,6 +14,7 @@ from ..models import MaintenanceIssue
 from ..models import MaintenanceType
 from ..models.contract import AVAILABLE_TOTAL_TIME
 from ..models.contract import CONSUMMED_TOTAL_TIME
+from ..models.credit import calcul_number_hours
 
 
 def create_project(**kwargs):
@@ -69,14 +70,23 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
     company = factory.SubFactory(CompanyFactory)
     maintenance_type = factory.LazyFunction(get_default_maintenance_type)
     start = now()
-    number_hours = 0
+
+    class Params:
+        credit_counter = False
 
     @factory.lazy_attribute
     def total_type(self):
-        if self.number_hours > 0:
+        if self.credit_counter:
             return AVAILABLE_TOTAL_TIME
         else:
             return CONSUMMED_TOTAL_TIME
+
+    @factory.lazy_attribute
+    def number_hours(self):
+        if self.credit_counter:
+            return 20
+        else:
+            return None
 
     @factory.post_generation
     def create_credit(self, create, extracted, **kwargs):
@@ -86,8 +96,6 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
             MaintenanceCreditFactory(
                 hours_number=self.number_hours, contract=self, date=self.start, company=self.company
             )
-            self.number_hours = 0
-            self.save()
 
 
 class MaintenanceCreditFactory(factory.django.DjangoModelFactory):
@@ -96,8 +104,17 @@ class MaintenanceCreditFactory(factory.django.DjangoModelFactory):
 
     company = factory.SubFactory(CompanyFactory)
     date = now()
-    contract = factory.SubFactory(MaintenanceContractFactory)
+    contract = factory.SubFactory(MaintenanceContractFactory, credit_counter=True)
     hours_number = 10
+
+    @factory.post_generation
+    def update_number_hours(self, create, extracted, **kwargs):
+        if not create:
+            return
+        else:
+            number_hours = calcul_number_hours(self.contract)
+            self.contract.number_hours = number_hours
+            self.contract.save()
 
 
 class MaintenanceIssueFactory(factory.django.DjangoModelFactory):

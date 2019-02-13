@@ -4,8 +4,6 @@ from django.utils.translation import ugettext as _
 
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import OperatorUserFactory
-from maintenance.models.contract import AVAILABLE_TOTAL_TIME
-from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 from maintenance.tests.factories import MaintenanceConsumerFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import create_project
@@ -53,8 +51,7 @@ class PrettyPrintContractCounterTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.company, cls.available_contract, cls.consumed_contract, _ = create_project(
-            contract1={"number_hours": 1, "total_type": AVAILABLE_TOTAL_TIME},
-            contract2={"total_type": CONSUMMED_TOTAL_TIME},
+            contract1={"number_hours": 1, "credit_counter": True}, contract2={"credit_counter": False}
         )
 
     def test_print_available_time(self):
