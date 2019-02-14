@@ -24,19 +24,24 @@ class AdminOperatorUserFactory(MaintenanceUserFactory):
     is_staff = True
     is_superuser = True
     is_active = True
+    first_name = "GlaDOS"
 
 
 class AdminUserFactory(MaintenanceUserFactory):
     is_staff = False
     is_superuser = True
     is_active = True
+    first_name = "Cave"
+    last_name = "Johnson"
 
 
 class OperatorUserFactory(MaintenanceUserFactory):
     is_staff = True
     is_active = True
+    first_name = "Wheatley"
 
 
 class ManagerUserFactory(MaintenanceUserFactory):
     is_staff = False
     is_active = True
+    first_name = "Chell"
