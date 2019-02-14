@@ -54,6 +54,10 @@ class ProjectCustomizeFormTestCase(TestCase):
         expected = _("This field is required.")
         self.assertDictEqual(form.errors, {"name": [expected]})
 
+    def test_contact_queryset(self):
+        form = ProjectCustomizeForm(instance=self.company, data={})
+        self.assertEqual([self.user], list(form.fields["contact"]._queryset))
+
     def test_when_user_sends_valid_form(self):
         dict_for_post = self.__get_dict_for_post()
 

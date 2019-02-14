@@ -197,6 +197,7 @@ class ProjectUpdateViewTestCase(TestCase):
 
     def test_i_can_post_and_form_to_update_a_project(self):
         operator = OperatorUserFactory(first_name="Chell")
+        operator.operator_for.add(self.company)
         company_name = "Aperture Science"
         # No support contract
         contract1_visible = INACTIF_CONTRACT_INPUT

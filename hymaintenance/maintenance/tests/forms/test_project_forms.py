@@ -320,6 +320,12 @@ class ProjectUpdateFormTestCase(TestCase):
             "contract3_email_alert": False,
         }
 
+    def test_contact_queryset(self):
+        operator = OperatorUserFactory(first_name="Chell")
+        operator.operator_for.add(self.company)
+        form = ProjectUpdateForm(company=self.company, data={})
+        self.assertEqual([operator], list(form.fields["contact"]._queryset))
+
     def test_all_required_fields_by_sending_a_empty_update_form(self):
         form = ProjectUpdateForm(company=self.company, data={})
         self.assertFalse(form.is_valid())
@@ -466,6 +472,7 @@ class ProjectUpdateFormTestCase(TestCase):
 
     def test_when_i_send_a_contact(self):
         operator = OperatorUserFactory(first_name="Chell")
+        operator.operator_for.add(self.company)
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["contact"] = operator.pk
 
@@ -494,8 +501,7 @@ class ProjectUpdateFormTestCase(TestCase):
 
     def test_when_i_keep_the_same_contact(self):
         operator = OperatorUserFactory(first_name="Chell")
-        self.company.operator = operator
-        self.company.save()
+        operator.operator_for.add(self.company)
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["contact"] = operator.pk
 
