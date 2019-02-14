@@ -46,6 +46,7 @@
                                 <span class="dashboard-title">{% trans "Operators" %}</span>
                                 <span class="dashboard-value">{{company.managed_by.get_active_all_types_operator_users_queryset.count}}</span>
                             </div>
+                            {% if request.user.has_admin_permissions %}
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
                                     <a href="{% url 'high_ui:project-create_operator' company_name=company.slug_name %}" title="{% trans "Create a new operator and add them at the project" %}">{% trans "New" context "ms" %}</a>
@@ -56,6 +57,7 @@
                                     <a href="{% url 'high_ui:project-update_operators' company_name=company.slug_name %}" title="{% trans "Modify the project operator list" %}">{% trans "Modify the list" %}</a>
                                 </div>
                             </div>
+                            {% endif %}
                         </div>
                         <div class="project-users">
                             {% for maintainer in company.managed_by.get_active_all_types_operator_users_queryset %}
