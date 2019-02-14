@@ -8,21 +8,25 @@
         <span class="dashboard-title">{% trans "Projects" %}</span>
         <span class="dashboard-value">{{companies_number}}</span>
     </div>
+    {% if request.user.has_admin_permissions %}
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
             <a href="{% url 'high_ui:create_project' %}">{% trans "Add a project" %}</a>
         </div>
     </div>
+    {% endif %}
     <div class="dashboard-item" style="border-color: transparent; margin-left: 40px">
         <span class="dashboard-title">{% trans "Operators" %}</span>
         <span class="dashboard-value">{{all_types_operators_number}}</span>
     </div>
+    {% if request.user.has_admin_permissions %}
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
             <a href="{% url 'high_ui:create_operator' %}">{% trans "Create an operator" %}</a> {# TMP #}
             <a href="{% url 'high_ui:update_operators' %}">{% trans "Modify operator list" %}</a> {# TMP #}
         </div>
     </div>
+    {% endif %}
     <div class="dashboard-item dashboard-contact">
 	<span class="dashboard-title">{{general_info.name}}</span>
         <span class="dashboard-value"><a href='{% url 'high_ui:update_user' %}'>{% pretty_print_name request.user.first_name request.user.last_name %}</a></span>
