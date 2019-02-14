@@ -28,6 +28,7 @@ class ProjectCustomizeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["has_custom_color"].initial = True if (self.instance.color) else False
+        self.fields["contact"].queryset = self.instance.managed_by.all()
 
     def clean_color(self):
         color = self.cleaned_data["color"]

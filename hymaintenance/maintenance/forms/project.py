@@ -153,6 +153,7 @@ class ProjectUpdateForm(ProjectForm):
         super().__init__(*args, **kwargs)
         self.fields["company_name"].initial = self.company.name
         self.fields["contact"].initial = self.company.contact
+        self.fields["contact"].queryset = self.company.managed_by.all()
         self.fields["contract1_counter_name"].initial = self.contracts[0].get_counter_name()
         self.fields["contract2_counter_name"].initial = self.contracts[1].get_counter_name()
         self.fields["contract3_counter_name"].initial = self.contracts[2].get_counter_name()
