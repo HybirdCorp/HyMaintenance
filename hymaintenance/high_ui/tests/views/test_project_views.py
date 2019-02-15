@@ -86,6 +86,7 @@ class ProjectCreateViewTestCase(TestCase):
     def test_admin_can_post_form_to_create_a_project(self):
         operator = OperatorUserFactory(first_name="Chell")
         company_name = "Black Mesa"
+        displayed_month_number = 6
         # No support contract
         contract1_visible = INACTIF_CONTRACT_INPUT
         contract1_total_type = 0
@@ -108,6 +109,7 @@ class ProjectCreateViewTestCase(TestCase):
             self.form_url,
             {
                 "company_name": company_name,
+                "displayed_month_number": displayed_month_number,
                 "contact": operator.pk,
                 "contract1_visible": contract1_visible,
                 "contract1_total_type": contract1_total_type,
@@ -199,6 +201,7 @@ class ProjectUpdateViewTestCase(TestCase):
         operator = OperatorUserFactory(first_name="Chell")
         operator.operator_for.add(self.company)
         company_name = "Aperture Science"
+        displayed_month_number = 6
         # No support contract
         contract1_visible = INACTIF_CONTRACT_INPUT
         contract1_total_type = CONSUMMED_TOTAL_TIME
@@ -224,6 +227,7 @@ class ProjectUpdateViewTestCase(TestCase):
             self.form_url,
             {
                 "company_name": company_name,
+                "displayed_month_number": displayed_month_number,
                 "contact": operator.pk,
                 "contract1_visible": contract1_visible,
                 "contract1_total_type": contract1_total_type,
@@ -470,10 +474,12 @@ class GetContextDataProjectDetailsTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.months_nb = 6
+        company, _, _, _ = create_project()
+        cls.view = ProjectDetailsView()
+        cls.view.company = company
 
     def test_last_months_in_the_middle_of_the_year(self):
-        view = ProjectDetailsView()
-        months = view.get_last_months(datetime.date(2018, 6, 1))
+        months = self.view.get_last_months(datetime.date(2018, 6, 1))
 
         self.assertEqual(self.months_nb, len(months))
 
@@ -485,8 +491,7 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         self.assertEqual("01/18", months[5].strftime("%m/%y"))
 
     def test_last_months_at_the_beginning_of_the_year(self):
-        view = ProjectDetailsView()
-        months = view.get_last_months(datetime.date(2018, 2, 1))
+        months = self.view.get_last_months(datetime.date(2018, 2, 1))
 
         self.assertEqual(self.months_nb, len(months))
 
@@ -498,8 +503,7 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         self.assertEqual("09/17", months[5].strftime("%m/%y"))
 
     def test_last_months_at_the_end_of_a_month(self):
-        view = ProjectDetailsView()
-        months = view.get_last_months(datetime.date(2018, 12, 31))
+        months = self.view.get_last_months(datetime.date(2018, 12, 31))
 
         self.assertEqual(self.months_nb, len(months))
 
@@ -511,8 +515,7 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         self.assertEqual("07/18", months[5].strftime("%m/%y"))
 
     def test_last_months_at_the_end_of_february(self):
-        view = ProjectDetailsView()
-        months = view.get_last_months(datetime.date(2018, 2, 28))
+        months = self.view.get_last_months(datetime.date(2018, 2, 28))
 
         self.assertEqual(self.months_nb, len(months))
 
@@ -524,8 +527,7 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         self.assertEqual("09/17", months[5].strftime("%m/%y"))
 
     def test_last_months_at_the_end_of_february_leap_year(self):
-        view = ProjectDetailsView()
-        months = view.get_last_months(datetime.date(2020, 2, 29))
+        months = self.view.get_last_months(datetime.date(2020, 2, 29))
 
         self.assertEqual(self.months_nb, len(months))
 
@@ -544,6 +546,7 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         month = datetime.date(2020, 2, 29)
 
         view = ProjectDetailsView()
+        view.company = company
         contract_info = view.get_contract_month_informations(month, contract)
         self.assertEqual((contract, 12, 20), contract_info)
 
@@ -553,6 +556,7 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         contracts = MaintenanceContract.objects.filter(company=company)
 
         view = ProjectDetailsView()
+        view.company = company
         contracts_info = view.get_contracts_month_informations(month, contracts)
         self.assertEqual(3, len(contracts_info))
 
@@ -561,6 +565,7 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         contracts = MaintenanceContract.objects.filter(company=company)
 
         view = ProjectDetailsView()
+        view.company = company
         months = view.get_last_months(datetime.date(2020, 2, 29))
         activities = view.get_activities(months, contracts)
         self.assertEqual(6, len(activities))

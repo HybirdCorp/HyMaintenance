@@ -29,6 +29,7 @@ class ProjectCreateFormTestCase(TestCase):
         maintenance_types = MaintenanceType.objects.order_by("id")
         return {
             "company_name": "Black Mesa",
+            "displayed_month_number": 6,
             "contract1_visible": INACTIF_CONTRACT_INPUT,
             "contract1_total_type": 0,
             "contract1_number_hours": 0,
@@ -70,6 +71,7 @@ class ProjectCreateFormTestCase(TestCase):
             form.errors,
             {
                 "company_name": [expected],
+                "displayed_month_number": [expected],
                 "contract1_counter_name": [expected],
                 "contract2_counter_name": [expected],
                 "contract3_counter_name": [expected],
@@ -300,6 +302,7 @@ class ProjectUpdateFormTestCase(TestCase):
     def __get_dict_for_post():
         return {
             "company_name": "Aperture Science",
+            "displayed_month_number": 6,
             "contract1_visible": INACTIF_CONTRACT_INPUT,
             "contract1_total_type": 0,
             "contract1_date": datetime.date.today(),
@@ -334,6 +337,7 @@ class ProjectUpdateFormTestCase(TestCase):
             form.errors,
             {
                 "company_name": [expected],
+                "displayed_month_number": [expected],
                 "contract1_counter_name": [expected],
                 "contract2_counter_name": [expected],
                 "contract3_counter_name": [expected],
