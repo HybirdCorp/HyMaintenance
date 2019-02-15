@@ -26,6 +26,7 @@ class Company(models.Model):
     color = models.CharField(_("Color"), null=True, blank=True, max_length=10)
     dark_font_color = models.BooleanField(_("Font color"), default=False)
     logo = models.ImageField(_("Logo"), null=True, blank=True, max_length=200, upload_to=_get_logo_file_path)
+    displayed_month_number = models.PositiveIntegerField(default=6)
 
     def __str__(self):
         return self.name

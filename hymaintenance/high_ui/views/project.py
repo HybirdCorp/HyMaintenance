@@ -118,11 +118,10 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
             contract__in=contracts, company_id=self.company, date__month=month.month, date__year=month.year
         )
 
-    @staticmethod
-    def get_last_months(start=datetime.now()):
+    def get_last_months(self, start=datetime.now()):
         last_month = start - timedelta(days=(start.day + 1))
         months = [start, last_month]
-        for i in range(4):
+        for i in range(self.company.displayed_month_number - 2):
             last_month = last_month - timedelta(days=31)
             months.append(last_month)
         return months
