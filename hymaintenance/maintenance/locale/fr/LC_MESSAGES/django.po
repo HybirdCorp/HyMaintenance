@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-23 10:02+0100\n"
+"POT-Creation-Date: 2019-02-15 16:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,56 +24,60 @@ msgstr ""
 msgid "Invalid duration type: '%s'"
 msgstr "Unité invalide: '%s'"
 
-#: forms/project.py:19 models/contract.py:32 models/credit.py:12
+#: forms/project.py:22 models/contract.py:32 models/credit.py:14
 #: models/issue.py:40
 msgid "Company"
 msgstr "Société"
 
-#: forms/project.py:21
+#: forms/project.py:24
 msgid "Contact"
 msgstr "Contact"
 
-#: forms/project.py:26 forms/project.py:27 forms/project.py:28
+#: forms/project.py:29
+msgid "Historic"
+msgstr "Historique"
+
+#: forms/project.py:30 forms/project.py:31 forms/project.py:32
 msgid "Counter name"
 msgstr "Nom du compteur"
 
-#: forms/project.py:29 forms/project.py:30 forms/project.py:31
+#: forms/project.py:33 forms/project.py:34 forms/project.py:35
 #: models/contract.py:36
 msgid "Start Date"
 msgstr "Date de début"
 
-#: forms/project.py:32 forms/project.py:33 forms/project.py:34
+#: forms/project.py:36 forms/project.py:37 forms/project.py:38
 msgid "Counter"
 msgstr "Compteur"
 
-#: forms/project.py:35 forms/project.py:36 forms/project.py:37
+#: forms/project.py:39 forms/project.py:40 forms/project.py:41
 #: models/contract.py:38
 msgid "Counter type"
 msgstr "Type de compteur"
 
-#: forms/project.py:39 forms/project.py:42 forms/project.py:45
+#: forms/project.py:45 tests/forms/test_project_forms.py:100
+msgid "You have to create at least one contract on the project."
+msgstr "Vous devez créer au moins un contrat sur le projet."
+
+#: forms/project.py:47 forms/project.py:50 forms/project.py:53
 #: models/contract.py:37
 msgid "Credited hours"
 msgstr "Heures créditées"
 
-#: forms/project.py:50 tests/forms/test_project_forms.py:97
-msgid "You have to create at least one contract on the project."
-msgstr "Vous devez créer au moins un contrat sur le projet."
-
-#: forms/project.py:68 forms/project.py:219
-#: tests/forms/test_project_forms.py:219 tests/forms/test_project_forms.py:435
+#: forms/project.py:72 forms/project.py:191
+#: tests/forms/test_project_forms.py:240 tests/forms/test_project_forms.py:468
 msgid "This company already exists."
 msgstr "Cette société existe déjà."
 
-#: forms/project.py:162 forms/project.py:163 forms/project.py:164
+#: forms/project.py:136 forms/project.py:137 forms/project.py:138
 msgid "Email Alert"
 msgstr ""
 
-#: forms/project.py:166 forms/project.py:169 forms/project.py:172
+#: forms/project.py:140 forms/project.py:143 forms/project.py:146
 msgid "Hour threshold"
 msgstr ""
 
-#: forms/project.py:174 forms/project.py:175 forms/project.py:176
+#: forms/project.py:148 forms/project.py:149 forms/project.py:150
 msgid "To contact"
 msgstr "À Contacter"
 
@@ -134,23 +138,23 @@ msgstr "Alert par email"
 msgid "Credited hours Threshold"
 msgstr "Seuil des heures créditées"
 
-#: models/credit.py:13
+#: models/credit.py:15
 msgid "Effective date"
 msgstr "Date effective"
 
-#: models/credit.py:15
+#: models/credit.py:17
 msgid "Activity type"
 msgstr "Type de l'activité"
 
-#: models/credit.py:17
+#: models/credit.py:19
 msgid "Quantity"
 msgstr "Quantité"
 
-#: models/credit.py:18 models/issue.py:62
+#: models/credit.py:20 models/issue.py:62
 msgid "Subject"
 msgstr "Sujet"
 
-#: models/credit.py:33
+#: models/credit.py:49
 msgid "Value"
 msgstr "Valeur"
 
@@ -238,19 +242,19 @@ msgstr "Canal d'entrée des demandes"
 #: tests/forms/test_credit_forms.py:22 tests/forms/test_issue_forms.py:66
 #: tests/forms/test_issue_forms.py:289
 #: tests/forms/test_other_models_forms.py:49
-#: tests/forms/test_project_forms.py:67 tests/forms/test_project_forms.py:310
+#: tests/forms/test_project_forms.py:69 tests/forms/test_project_forms.py:335
 msgid "This field is required."
 msgstr "Ce champs est obligatoire."
 
 #: tests/forms/test_issue_forms.py:114 tests/forms/test_issue_forms.py:325
-#: tests/forms/test_project_forms.py:228 tests/forms/test_project_forms.py:444
+#: tests/forms/test_project_forms.py:249 tests/forms/test_project_forms.py:477
 #, python-format
 msgid "Ensure this value is greater than or equal to %(limit_value)s."
 msgstr ""
 "Assurez-vous que cette valeur est plus grande ou égale à %(limit_value)s."
 
 #: tests/forms/test_issue_forms.py:127 tests/forms/test_issue_forms.py:338
-#: tests/forms/test_project_forms.py:238 tests/forms/test_project_forms.py:454
+#: tests/forms/test_project_forms.py:259 tests/forms/test_project_forms.py:487
 msgid "Enter a whole number."
 msgstr "Entrez un nombre entier."
 
