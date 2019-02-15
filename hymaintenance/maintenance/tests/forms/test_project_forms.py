@@ -391,6 +391,19 @@ class ProjectUpdateFormTestCase(TestCase):
         self.assertEqual(1, Company.objects.all().count())
         self.assertEqual(1, MaintenanceContract.objects.filter(company_id=company, counter_name="Experiment").count())
 
+    def test_valid_form_update_displayed_month_number(self):
+        dict_for_post = self.__get_dict_for_post()
+        dict_for_post["displayed_month_number"] = 12
+        form = ProjectUpdateForm(company=self.company, data=dict_for_post)
+
+        is_valid = form.is_valid()
+        form.update_company_and_contracts()
+
+        self.assertTrue(is_valid)
+
+        self.company.refresh_from_db()
+        self.assertEqual(12, self.company.displayed_month_number)
+
     def test_valid_form_update_contract_start_date(self):
         dict_for_post = self.__get_dict_for_post()
         dict_for_post["contract1_date"] = datetime.date(2012, 12, 21)
