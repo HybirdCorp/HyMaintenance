@@ -32,6 +32,7 @@
                     <div class="form-group">
                         <div class="group-title-container">
                             {% block form_title %}{% endblock %}
+                            <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
                         </div>
                         <div class="form-row {% if form.company_name.errors %}form-error{% endif %}">
                             {% if form.company_name.errors %}
@@ -65,6 +66,7 @@
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
                         </div>
+                        <div class="show-more-container">
                         <div class="form-row {% if form.displayed_month_number.errors %}form-error{% endif %}">
                             {% if form.displayed_month_number.errors %}
                             <div class="form-row-wrapper">
@@ -72,6 +74,7 @@
 
                             <label for="{{form.displayed_month_number.id_for_label}}">{{form.displayed_month_number.label}}</label>
                             {{form.displayed_month_number}}
+                            &nbsp;months
 
                             {% if form.displayed_month_number.errors %}
                             </div>
@@ -80,6 +83,10 @@
                             {% for error in form.displayed_month_number.errors %}
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
+                        </div>
+                        <div class="help help-displayed_month_number">
+                            <span>{% blocktrans %}<em>Historic</em> is how many months will be displayed on the project's details page.{% endblocktrans %}</span>
+                        </div>
                         </div>
                     </div>
 
