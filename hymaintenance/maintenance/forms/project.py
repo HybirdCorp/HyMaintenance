@@ -115,7 +115,8 @@ class ProjectCreateForm(ProjectForm):
 
     def create_company_and_contracts(self, operator=None):
         company_name = self.cleaned_data["company_name"]
-        company = Company.objects.create(name=company_name)
+        displayed_month_number = self.cleaned_data["displayed_month_number"]
+        company = Company.objects.create(name=company_name, displayed_month_number=displayed_month_number)
 
         if self.cleaned_data["contact"] is not None:
             company.contact = self.cleaned_data["contact"]
@@ -249,6 +250,11 @@ class ProjectUpdateForm(ProjectForm):
         company_contact = self.cleaned_data["contact"]
         if self.company.contact != company_contact:
             self.company.contact = company_contact
+            company_is_modified = True
+
+        company_displayed_month_number = self.cleaned_data["displayed_month_number"]
+        if self.company.displayed_month_number != company_displayed_month_number:
+            self.company.displayed_month_number = company_displayed_month_number
             company_is_modified = True
 
         if company_is_modified:
