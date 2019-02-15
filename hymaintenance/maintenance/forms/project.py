@@ -26,6 +26,7 @@ class ProjectForm(forms.Form):
         widget=forms.Select,
         queryset=MaintenanceUser.objects.get_active_operator_users_queryset(),
     )
+    displayed_month_number = forms.IntegerField(label=_("Historic"), required=True, widget=forms.TextInput(), initial=6)
     contract1_counter_name = forms.CharField(label=_("Counter name"), max_length=255, required=True)
     contract2_counter_name = forms.CharField(label=_("Counter name"), max_length=255, required=True)
     contract3_counter_name = forms.CharField(label=_("Counter name"), max_length=255, required=True)

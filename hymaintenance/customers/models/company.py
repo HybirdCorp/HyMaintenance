@@ -49,10 +49,29 @@ class Company(models.Model):
             if old_name != self.name:
                 self.slug_name = self.slugify_company_name()
                 super().save(
-                    update_fields=["name", "slug_name", "contact", "is_archived", "logo", "color", "dark_font_color"]
+                    update_fields=[
+                        "name",
+                        "slug_name",
+                        "displayed_month_number",
+                        "contact",
+                        "is_archived",
+                        "logo",
+                        "color",
+                        "dark_font_color",
+                    ]
                 )
             else:
-                super().save(update_fields=["name", "contact", "is_archived", "logo", "color", "dark_font_color"])
+                super().save(
+                    update_fields=[
+                        "name",
+                        "displayed_month_number",
+                        "contact",
+                        "is_archived",
+                        "logo",
+                        "color",
+                        "dark_font_color",
+                    ]
+                )
         else:
             self.slug_name = self.slugify_company_name()
             super().save(*args, **kwargs)
