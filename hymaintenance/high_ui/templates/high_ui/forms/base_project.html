@@ -65,6 +65,22 @@
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
                         </div>
+                        <div class="form-row {% if form.displayed_month_number.errors %}form-error{% endif %}">
+                            {% if form.displayed_month_number.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{form.displayed_month_number.id_for_label}}">{{form.displayed_month_number.label}}</label>
+                            {{form.displayed_month_number}}
+
+                            {% if form.displayed_month_number.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.displayed_month_number.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <div class="form-group activation-active counter-total email-alert-disabled">
