@@ -415,7 +415,9 @@
 
                 if (selectedActivation === "activation-inactive") {
                     var creditInput = parent.querySelector(".row-credit input");
-                    creditInput.required = false;
+                    if (creditInput) {
+                        creditInput.required = false;
+                    }
                 }
             }.bind(null, activationType));
         }
