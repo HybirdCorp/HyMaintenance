@@ -20,11 +20,18 @@
                         <span class="dashboard-title">{% trans "Account" %}</span>
                         <span class="dashboard-value"><a href="{{company.get_absolute_url}}" title="{% blocktrans %}Access to {{company}} details{% endblocktrans %}">{{company}}</a></span>
                     </div>
+                    {% if request.user.has_admin_permissions %}
                     <div class="dashboard-item dashboard-button">
                         <div class="dashboard-value">
                             <a href="{% url 'high_ui:update_project' company_name=company.slug_name %}">{% trans "Modify" %}</a> {# TMP #}
                         </div>
                     </div>
+                    <div class="dashboard-button">
+                        <div class="dashboard-value">
+                            <a href="{% url 'high_ui:customize_project' company_name=company.slug_name %}">{% trans "Customize" context "fp" %}</a> {# TMP #}
+                        </div>
+                    </div>
+                    {% endif %}
                     <div style="flex: 1"></div>
                     {% for contract in company.contracts.filter_enabled %}
                     <div class="dashboard-item">

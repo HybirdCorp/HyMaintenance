@@ -14,6 +14,7 @@
     {% endfor %}
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
+        <a href="{% url 'high_ui:project-create_issue' company_name=company.slug_name %}">{% trans "Register an issue" %}</a>
             {% if add_credits %}
                 {% if request.user.has_operator_or_admin_permissions %}
                 <a href='{% url 'high_ui:project-create_credit' company_name=company.slug_name %}'>{% trans "Add hours" %}</a>
