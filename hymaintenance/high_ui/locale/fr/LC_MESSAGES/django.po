@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-15 17:01+0100\n"
+"POT-Creation-Date: 2019-02-18 14:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -191,7 +191,7 @@ msgstr "Modifier les valeurs de crédits par défaut"
 msgid "%(name)s's users"
 msgstr "Utilisateurs de %(name)s"
 
-#: templates/high_ui/admin.html:91 templates/high_ui/dashboard.html:46
+#: templates/high_ui/admin.html:91 templates/high_ui/dashboard.html:53
 #: templates/high_ui/dashboard_header.html:19
 msgid "Operators"
 msgstr "Intervenants"
@@ -201,8 +201,8 @@ msgid "Create a new operator"
 msgstr "Créer un nouvel intervenant"
 
 #: templates/high_ui/admin.html:96 templates/high_ui/admin.html:119
-#: templates/high_ui/dashboard.html:52 templates/high_ui/dashboard.html:78
-#: templates/high_ui/dashboard.html:104
+#: templates/high_ui/dashboard.html:59 templates/high_ui/dashboard.html:85
+#: templates/high_ui/dashboard.html:111
 msgctxt "ms"
 msgid "New"
 msgstr "Nouveau"
@@ -212,8 +212,8 @@ msgid "Modify the operator list"
 msgstr "Modifier la liste des intervenants"
 
 #: templates/high_ui/admin.html:101 templates/high_ui/admin.html:124
-#: templates/high_ui/dashboard.html:57 templates/high_ui/dashboard.html:83
-#: templates/high_ui/dashboard.html:109
+#: templates/high_ui/dashboard.html:64 templates/high_ui/dashboard.html:90
+#: templates/high_ui/dashboard.html:116
 msgid "Modify the list"
 msgstr "Modifier la liste"
 
@@ -380,39 +380,44 @@ msgstr "Tableau de bord %(name)s"
 msgid "Access to %(company)s details"
 msgstr "Accéder aux détails de %(company)s"
 
-#: templates/high_ui/dashboard.html:37
+#: templates/high_ui/dashboard.html:31
+msgctxt "fp"
+msgid "Customize"
+msgstr "Personnaliser"
+
+#: templates/high_ui/dashboard.html:44
 msgid "Register an issue"
 msgstr "Enregistrer une demande"
 
-#: templates/high_ui/dashboard.html:52
+#: templates/high_ui/dashboard.html:59
 msgid "Create a new operator and add them at the project"
 msgstr "Créer un nouvel intervenant et l'ajouter à ce projet"
 
-#: templates/high_ui/dashboard.html:57
+#: templates/high_ui/dashboard.html:64
 msgid "Modify the project operator list"
 msgstr "Modifier la liste des intervenants de ce projet"
 
-#: templates/high_ui/dashboard.html:73
+#: templates/high_ui/dashboard.html:80
 msgid "Managers"
 msgstr "Managers"
 
-#: templates/high_ui/dashboard.html:78
+#: templates/high_ui/dashboard.html:85
 msgid "Create a new manager and add them to the project"
 msgstr "Créer un nouveau manager et l'ajouter à ce projet"
 
-#: templates/high_ui/dashboard.html:83
+#: templates/high_ui/dashboard.html:90
 msgid "Modify the project manager list"
 msgstr "Modifier la liste des managers de ce projet"
 
-#: templates/high_ui/dashboard.html:99
+#: templates/high_ui/dashboard.html:106
 msgid "Employees"
 msgstr "Salariés"
 
-#: templates/high_ui/dashboard.html:104
+#: templates/high_ui/dashboard.html:111
 msgid "Create a new employee and add them to the project"
 msgstr "Créer un nouveau salarié et l'ajouter à ce projet"
 
-#: templates/high_ui/dashboard.html:109
+#: templates/high_ui/dashboard.html:116
 msgid "Modify the project salary list"
 msgstr "Modifier la liste des salariés de ce projet"
 
@@ -882,7 +887,8 @@ msgid "Default"
 msgstr "Par défaut"
 
 #: templates/high_ui/forms/customize_project.html:85
-msgid "Customize"
+msgctxt "fs"
+msgid "Customized"
 msgstr "Personnalisée"
 
 #: templates/high_ui/forms/customize_project.html:120
