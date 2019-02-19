@@ -1,6 +1,7 @@
 import datetime
 
 from django.db import models
+from django.db.models import F
 from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
@@ -16,7 +17,7 @@ CONSUMMED_TOTAL_TIME = 1
 
 class MaintenanceContractQuerySet(models.QuerySet):
     def filter_enabled(self):
-        return self.filter(disabled=False)
+        return self.filter(disabled=False).order_by(F("maintenance_type__id").asc())
 
     def filter_enabled_with_available_total_time(self):
         return self.filter(disabled=False, total_type=AVAILABLE_TOTAL_TIME)
