@@ -18,10 +18,8 @@ class ConsumerCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Cre
     form_class = MaintenanceConsumerModelForm
     template_name = "high_ui/forms/create_consumer.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(get_context_previous_page(self.request))
-        return context
+    def previous_page(self):
+        return get_context_previous_page(self.request)["previous_page"]
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -36,10 +34,8 @@ class ManagerUserCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, 
     form_class = ManagerUserCreateForm
     template_name = "high_ui/forms/create_manager.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(get_context_previous_page(self.request))
-        return context
+    def previous_page(self):
+        return get_context_previous_page(self.request)["previous_page"]
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -71,10 +67,8 @@ class OperatorUserCreateViewWithCompany(ViewWithCompany, IsAdminTestMixin, Creat
     form_class = OperatorUserCreateFormWithCompany
     template_name = "high_ui/forms/create_company_operator.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(get_context_previous_page(self.request))
-        return context
+    def previous_page(self):
+        return get_context_previous_page(self.request)["previous_page"]
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

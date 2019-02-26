@@ -33,10 +33,9 @@ class ConsumerCreateViewTestCase(TestCase):
         view.request = request
         view.user = self.admin
         view.object = MaintenanceUser
-        view.company = self.company
 
-        context = view.get_context_data()
-        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
+        previous_page = view.previous_page()
+        self.assertEqual(reverse("high_ui:dashboard"), previous_page)
 
     def test_manager_cannot_get_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
@@ -106,10 +105,9 @@ class ManagerUserCreateViewTestCase(TestCase):
         view.request = request
         view.user = self.admin
         view.object = MaintenanceUser
-        view.company = self.company
 
-        context = view.get_context_data()
-        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
+        previous_page = view.previous_page()
+        self.assertEqual(reverse("high_ui:dashboard"), previous_page)
 
     def test_manager_cannot_get_create_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -186,8 +184,8 @@ class OperatorUserCreateViewTestCase(TestCase):
         view.user = self.admin
         view.object = MaintenanceUser
 
-        context = view.get_context_data()
-        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
+        previous_page = view.previous_page()
+        self.assertEqual(reverse("high_ui:dashboard"), previous_page)
 
     def test_manager_cannot_get_create_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -254,10 +252,9 @@ class OperatorUserCreateViewWithCompanyTestCase(TestCase):
         view.request = request
         view.user = self.admin
         view.object = MaintenanceUser
-        view.company = self.company
 
-        context = view.get_context_data()
-        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
+        previous_page = view.previous_page()
+        self.assertEqual(reverse("high_ui:dashboard"), previous_page)
 
     def test_manager_cannot_get_create_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -325,8 +322,8 @@ class AdminUserCreateViewTestCase(TestCase):
         view.user = self.admin
         view.object = MaintenanceUser
 
-        context = view.get_context_data()
-        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
+        previous_page = view.previous_page()
+        self.assertEqual(reverse("high_ui:dashboard"), previous_page)
 
     def test_operator_cannot_see_the_admin_page(self):
         operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
