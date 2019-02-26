@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.views.generic import View
 
 from customers.models import Company
@@ -14,6 +15,13 @@ from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 def get_maintenance_types():
     context = {"maintenance_types": MaintenanceType.objects.all().order_by("id")}
     return context
+
+
+def get_context_previous_page(request):
+    previous_page = request.META.get("HTTP_REFERER")
+    if not previous_page or reverse("login") in previous_page:
+        previous_page = reverse("high_ui:dashboard")
+    return {"previous_page": previous_page}
 
 
 def get_context_data_dashboard_header(user):
