@@ -15,5 +15,5 @@
 
 {% block form_footer %}
 <button type="submit">{% trans "Add this admin" %}</button>
-<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't add" %}</a></span>
+<span class="cancel">{% trans "or" %} <a href="{{view.previous_page}}">{% trans "Don't add" %}</a></span>
 {% endblock %}

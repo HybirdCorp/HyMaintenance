@@ -14,12 +14,18 @@ from ..base import IsAdminTestMixin
 from ..base import IsAtLeastAllowedOperatorTestMixin
 from ..base import ViewWithCompany
 from ..base import get_context_data_dashboard_header
+from ..base import get_context_previous_page
 
 
 class ConsumersListUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, FormView):
     form_class = MaintenanceConsumersListUpdateForm
     template_name = "high_ui/forms/update_consumers.html"
     success_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_previous_page(self.request))
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -35,6 +41,11 @@ class ManagerUsersListUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMi
     form_class = ManagerUsersListUpdateForm
     template_name = "high_ui/forms/update_managers.html"
     success_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_previous_page(self.request))
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -56,6 +67,7 @@ class OperatorUsersListUpdateViewWithCompany(ViewWithCompany, IsAdminTestMixin, 
         context[
             "all_type_operators_number"
         ] = MaintenanceUser.objects.get_active_all_types_operator_users_queryset().count()
+        context.update(get_context_previous_page(self.request))
         return context
 
     def get_form_kwargs(self):
@@ -80,6 +92,7 @@ class OperatorUsersListUpdateView(IsAdminTestMixin, TemplateView):
         context["archived_users_number"] = (
             MaintenanceUser.objects.get_operator_users_queryset().count() - context["active_users_number"]
         )
+        context.update(get_context_previous_page(self.request))
         return context
 
 
@@ -113,6 +126,7 @@ class AdminUsersListUpdateView(IsAdminTestMixin, TemplateView):
         context["archived_users_number"] = (
             MaintenanceUser.objects.get_admin_users_queryset().count() - context["active_users_number"]
         )
+        context.update(get_context_previous_page(self.request))
         return context
 
 

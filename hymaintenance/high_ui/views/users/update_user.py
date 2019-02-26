@@ -16,12 +16,18 @@ from ..base import IsAdminTestMixin
 from ..base import IsAtLeastAllowedOperatorTestMixin
 from ..base import ViewWithCompany
 from ..base import get_context_data_dashboard_header
+from ..base import get_context_previous_page
 
 
 class ConsumerUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, UpdateView):
     form_class = MaintenanceConsumerModelForm
     template_name = "high_ui/forms/update_consumer.html"
     model = MaintenanceConsumer
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_previous_page(self.request))
+        return context
 
     def get_object(self, queryset=None):
         return self.get_queryset().get(id=self.kwargs.get("pk"))
@@ -46,6 +52,11 @@ class MaintenanceUserUpdateView(TemplateView):
     def get_password_form(*args, **kwargs):
         form = SetPasswordForm(*args, **kwargs)
         return form
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_previous_page(self.request))
+        return context
 
     def get(self, request, *args, **kwargs):
         user = self.get_object()
@@ -107,6 +118,7 @@ class OperatorUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_previous_page(self.request))
         return context
 
     @staticmethod
@@ -136,6 +148,7 @@ class AdminUserUpdateView(IsAdminTestMixin, MaintenanceUserUpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_previous_page(self.request))
         return context
 
     @staticmethod

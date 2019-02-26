@@ -23,6 +23,7 @@ from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedManagerTestMixin
 from .base import ViewWithCompany
 from .base import get_context_data_dashboard_header
+from .base import get_context_previous_page
 from .base import get_maintenance_types
 
 
@@ -35,6 +36,7 @@ class ProjectCreateView(IsAdminTestMixin, FormView):
         context = super().get_context_data(**kwargs)
         context.update(get_maintenance_types())
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_previous_page(self.request))
         return context
 
     def form_valid(self, form):
@@ -51,6 +53,7 @@ class ProjectUpdateView(IsAdminTestMixin, ViewWithCompany, FormView):
         context = super().get_context_data(**kwargs)
         context.update(get_maintenance_types())
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_previous_page(self.request))
         return context
 
     def get_form_kwargs(self):
@@ -176,6 +179,7 @@ class ProjectListArchiveView(IsAdminTestMixin, FormView):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
         context["projects_number"] = Company.objects.filter(is_archived=False).count()
+        context.update(get_context_previous_page(self.request))
         return context
 
     def form_valid(self, form):
@@ -192,6 +196,7 @@ class ProjectListUnarchiveView(IsAdminTestMixin, FormView):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
         context["projects_number"] = Company.objects.filter(is_archived=True).count()
+        context.update(get_context_previous_page(self.request))
         return context
 
     def form_valid(self, form):
@@ -218,6 +223,7 @@ class EmailAlertUpdateView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Fo
         context = super().get_context_data(**kwargs)
         context.update(get_maintenance_types())
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_previous_page(self.request))
         return context
 
     def get_form_kwargs(self):
@@ -247,6 +253,7 @@ class ProjectCustomizeView(IsAdminTestMixin, ViewWithCompany, UpdateView):
         context = super().get_context_data(**kwargs)
         context.update(get_maintenance_types())
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_previous_page(self.request))
         return context
 
     def get_object(self, queryset=None):
