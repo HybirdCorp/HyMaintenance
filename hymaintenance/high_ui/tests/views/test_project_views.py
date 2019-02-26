@@ -23,6 +23,7 @@ from maintenance.tests.factories import create_project
 from toolkit.tests import create_temporary_image
 
 from ...views.project import ProjectCreateView
+from ...views.project import ProjectCustomizeView
 from ...views.project import ProjectDetailsView
 from ...views.project import ProjectListArchiveView
 from ...views.project import ProjectListUnarchiveView
@@ -37,7 +38,7 @@ class ProjectCreateViewTestCase(TestCase):
         cls.form_url = reverse("high_ui:create_project")
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
-    def test_get_context_data_maintenance_types(self):
+    def test_get_context_data(self):
         factory = RequestFactory()
         request = factory.get(self.form_url)
         request.user = self.user
@@ -47,6 +48,7 @@ class ProjectCreateViewTestCase(TestCase):
 
         context = view.get_context_data()
         self.assertEqual(3, len(context["maintenance_types"]))
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)
@@ -148,7 +150,7 @@ class ProjectUpdateViewTestCase(TestCase):
         cls.form_url = reverse("high_ui:update_project", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
-    def test_get_context_data_maintenance_types(self):
+    def test_get_context_data(self):
         factory = RequestFactory()
         request = factory.get(self.form_url)
         request.user = self.user
@@ -159,6 +161,7 @@ class ProjectUpdateViewTestCase(TestCase):
 
         context = view.get_context_data()
         self.assertEqual(3, len(context["maintenance_types"]))
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)
@@ -701,6 +704,7 @@ class ProjectListArchiveViewTestCase(TestCase):
         context = view.get_context_data()
         self.assertIn("projects_number", context.keys())
         self.assertEqual(1, context["projects_number"])
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)
@@ -761,6 +765,7 @@ class ProjectListUnunarchiveViewTestCase(TestCase):
         context = view.get_context_data()
         self.assertIn("projects_number", context.keys())
         self.assertEqual(1, context["projects_number"])
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)
@@ -807,6 +812,19 @@ class ProjectCustomizeViewTestCase(TestCase):
 
         cls.form_url = reverse("high_ui:customize_project", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.user
+        view = ProjectCustomizeView()
+        view.company = self.company
+        view.object = self.company
+        view.request = request
+        view.user = self.user
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)

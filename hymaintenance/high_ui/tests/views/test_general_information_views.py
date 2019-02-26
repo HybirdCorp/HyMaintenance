@@ -1,10 +1,12 @@
 
+from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
 
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
+from high_ui.views.general_information import GeneralInformationUpdateView
 
 from ...models import GeneralInformation
 
@@ -15,6 +17,18 @@ class GeneralInformationUpdateViewTestCase(TestCase):
         cls.admin = AdminUserFactory(email="barney.calhoun@blackmesa.com", password="azerty")
         cls.form_url = reverse("high_ui:update_infos")
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = GeneralInformationUpdateView()
+        view.request = request
+        view.user = self.admin
+        view.object = GeneralInformation.objects.all().first()
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)

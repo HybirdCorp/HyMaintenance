@@ -1,3 +1,4 @@
+from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
 
@@ -6,6 +7,11 @@ from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
+from high_ui.views.users.create_user import AdminUserCreateView
+from high_ui.views.users.create_user import ConsumerCreateView
+from high_ui.views.users.create_user import ManagerUserCreateView
+from high_ui.views.users.create_user import OperatorUserCreateView
+from high_ui.views.users.create_user import OperatorUserCreateViewWithCompany
 from maintenance.models import MaintenanceConsumer
 
 
@@ -13,11 +19,24 @@ class ConsumerCreateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
 
-        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
         cls.company = CompanyFactory()
         cls.form_url = reverse("high_ui:project-create_consumer", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_previous_page(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = ConsumerCreateView()
+        view.request = request
+        view.user = self.admin
+        view.object = MaintenanceUser
+        view.company = self.company
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_manager_cannot_get_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
@@ -78,6 +97,19 @@ class ManagerUserCreateViewTestCase(TestCase):
         cls.company = CompanyFactory()
         cls.form_url = reverse("high_ui:project-create_manager", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_previous_page(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = ManagerUserCreateView()
+        view.request = request
+        view.user = self.admin
+        view.object = MaintenanceUser
+        view.company = self.company
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_manager_cannot_get_create_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -145,6 +177,18 @@ class OperatorUserCreateViewTestCase(TestCase):
         cls.form_url = reverse("high_ui:create_operator")
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
+    def test_previous_page(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = OperatorUserCreateView()
+        view.request = request
+        view.user = self.admin
+        view.object = MaintenanceUser
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
+
     def test_manager_cannot_get_create_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
@@ -202,6 +246,19 @@ class OperatorUserCreateViewWithCompanyTestCase(TestCase):
         cls.form_url = reverse("high_ui:project-create_operator", kwargs={"company_name": cls.company.slug_name})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
+    def test_previous_page(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = OperatorUserCreateViewWithCompany()
+        view.request = request
+        view.user = self.admin
+        view.object = MaintenanceUser
+        view.company = self.company
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
+
     def test_manager_cannot_get_create_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
@@ -258,6 +315,18 @@ class AdminUserCreateViewTestCase(TestCase):
         cls.admin = AdminUserFactory(email="barney.calhoun@blackmesa.com", password="azerty")
         cls.form_url = reverse("high_ui:create_admin")
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_previous_page(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = AdminUserCreateView()
+        view.request = request
+        view.user = self.admin
+        view.object = MaintenanceUser
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_operator_cannot_see_the_admin_page(self):
         operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")

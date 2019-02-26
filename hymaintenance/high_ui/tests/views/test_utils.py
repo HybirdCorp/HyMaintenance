@@ -1,4 +1,6 @@
+from django.test import RequestFactory
 from django.test import TestCase
+from django.urls import reverse
 
 from customers.tests.factories import AdminOperatorUserFactory
 from customers.tests.factories import AdminUserFactory
@@ -8,6 +10,7 @@ from maintenance.tests.factories import create_project
 
 from ...views.base import get_context_data_dashboard_header
 from ...views.base import get_context_data_project_header
+from ...views.base import get_context_previous_page
 from ...views.base import get_maintenance_types
 
 
@@ -15,6 +18,28 @@ class GetMaintenanceTypesTestCase(TestCase):
     def test_get_all_maintenance_types(self):
         context = get_maintenance_types()
         self.assertEqual(3, context["maintenance_types"].count())
+
+
+class PreviousPageFunctiorTestCase(TestCase):
+    def test_default_previous_page(self):
+        admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        factory = RequestFactory()
+        request = factory.get(reverse("high_ui:create_operator"))
+        request.user = admin
+        context = get_context_previous_page(request)
+
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
+
+    def test_previous_page(self):
+        previous_page = reverse("high_ui:admin")
+        admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        factory = RequestFactory()
+        request = factory.get(reverse("high_ui:create_operator"))
+        request.user = admin
+        request.META["HTTP_REFERER"] = previous_page
+        context = get_context_previous_page(request)
+
+        self.assertEqual(previous_page, context["previous_page"])
 
 
 class DashboardGetContextDataFunctionsTestCase(TestCase):

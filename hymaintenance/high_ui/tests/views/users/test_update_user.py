@@ -1,3 +1,4 @@
+from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
@@ -10,6 +11,11 @@ from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceConsumer
 from maintenance.tests.factories import MaintenanceConsumerFactory
 
+from ....views.users.update_user import AdminUserUpdateView
+from ....views.users.update_user import ConsumerUpdateView
+from ....views.users.update_user import ManagerUserUpdateView
+from ....views.users.update_user import OperatorUserUpdateView
+from ....views.users.update_user import OperatorUserUpdateViewWithCompany
 from ...utils import SetDjangoLanguage
 
 
@@ -17,7 +23,7 @@ class ConsumerUpdateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
 
-        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
         cls.company = CompanyFactory()
         cls.consumer = MaintenanceConsumerFactory(name="Chell", company=cls.company)
@@ -25,6 +31,19 @@ class ConsumerUpdateViewTestCase(TestCase):
             "high_ui:project-update_consumer", kwargs={"company_name": cls.company.slug_name, "pk": cls.consumer.pk}
         )
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = ConsumerUpdateView()
+        view.request = request
+        view.user = self.admin
+        view.company = self.company
+        view.object = self.consumer
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_manager_cannot_get_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty", company=self.company)
@@ -89,6 +108,19 @@ class ManagerUserUpdateViewTestCase(TestCase):
             "high_ui:project-update_manager", kwargs={"company_name": cls.company.slug_name, "pk": cls.manager.pk}
         )
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = ManagerUserUpdateView()
+        view.request = request
+        view.user = self.admin
+        view.company = self.company
+        view.object = self.manager
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -197,6 +229,19 @@ class OperatorUserUpdateViewTestCase(TestCase):
         cls.form_url = reverse("high_ui:update_operator", kwargs={"pk": cls.operator.pk})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = OperatorUserUpdateView()
+        view.request = request
+        view.user = self.admin
+        view.company = self.company
+        view.object = self.operator
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
+
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
@@ -270,6 +315,19 @@ class OperatorUserUpdateViewWithCompanyTestCase(TestCase):
         )
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = OperatorUserUpdateViewWithCompany()
+        view.request = request
+        view.user = self.admin
+        view.company = self.company
+        view.object = self.operator
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
+
     def test_manager_cannot_get_update_form(self):
         ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
 
@@ -336,6 +394,18 @@ class AdminUserUpdateViewTestCase(TestCase):
         cls.modified_admin = AdminUserFactory(email="chell@aperture-science.com")
         cls.form_url = reverse("high_ui:update_admin", kwargs={"pk": cls.modified_admin.pk})
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = AdminUserUpdateView()
+        view.request = request
+        view.user = self.admin
+        view.object = self.modified_admin
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_operator_cannot_see_the_admin_page(self):
         operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")

@@ -1,3 +1,4 @@
+from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
 
@@ -6,6 +7,8 @@ from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceContract
 from maintenance.tests.factories import create_project
+
+from ...views.project import EmailAlertUpdateView
 
 
 class EmailAlertUpdateViewTestCase(TestCase):
@@ -26,6 +29,18 @@ class EmailAlertUpdateViewTestCase(TestCase):
         cls.operator.operator_for.add(cls.company)
         cls.form_url = reverse("high_ui:project-update_email_alert", args=[cls.company.slug_name])
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.operator
+        view = EmailAlertUpdateView()
+        view.request = request
+        view.company = self.company
+        view.user = self.operator
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)

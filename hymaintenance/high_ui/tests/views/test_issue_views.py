@@ -23,7 +23,9 @@ from maintenance.tests.factories import create_project
 from toolkit.tests import create_temporary_file
 from toolkit.tests import create_temporary_image
 
+from ...views.issue import IssueCreateView
 from ...views.issue import IssueListUnarchiveView
+from ...views.issue import IssueUpdateView
 from ..utils import SetDjangoLanguage
 
 
@@ -61,6 +63,19 @@ class IssueCreateViewTestCase(TestCase):
             "duration_type": "hours",
             "duration": 2,
         }
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = IssueCreateView()
+        view.request = request
+        view.user = self.admin
+        view.company = self.company
+        view.object = MaintenanceIssue
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)
@@ -210,6 +225,19 @@ class IssueUpdateViewTestCase(TestCase):
             "duration_type": "hours",
             "duration": 2,
         }
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.admin
+        view = IssueUpdateView()
+        view.request = request
+        view.user = self.admin
+        view.company = self.company
+        view.object = self.issue
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)
@@ -521,6 +549,7 @@ class IssueListUnunarchiveViewTestCase(TestCase):
         context = view.get_context_data()
         self.assertIn("issues_number", context.keys())
         self.assertEqual(1, context["issues_number"])
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)
