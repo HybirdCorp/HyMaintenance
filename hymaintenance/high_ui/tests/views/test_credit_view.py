@@ -10,6 +10,7 @@ from maintenance.models.credit import MaintenanceCreditChoices
 from maintenance.tests.factories import MaintenanceCreditFactory
 from maintenance.tests.factories import create_project
 
+from ...views.credit import CreditChoicesUpdateView
 from ...views.credit import CreditCreateView
 from ...views.credit import CreditUpdateView
 
@@ -32,7 +33,6 @@ class CreditCreateViewTestCase(TestCase):
         view.request = request
         view.company = self.company
         view.object = self.company
-        view.hours_step = 8
         view.user = self.user
 
         context = view.get_context_data()
@@ -40,6 +40,7 @@ class CreditCreateViewTestCase(TestCase):
         self.assertIn(self.c1, context["available_time_contracts"])
         self.assertIn(self.c2, context["available_time_contracts"])
         self.assertNotIn(self.c3, context["available_time_contracts"])
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)
@@ -98,7 +99,6 @@ class CreditCreateViewTestCase(TestCase):
         view.request = request
         view.company = company
         view.object = company
-        view.hours_step = 8
         view.user = self.user
 
         context = view.get_context_data()
@@ -133,7 +133,6 @@ class CreditUpdateViewTestCase(TestCase):
         view.request = request
         view.company = self.company
         view.object = self.company
-        view.hours_step = 8
         view.user = self.user
 
         context = view.get_context_data()
@@ -141,6 +140,7 @@ class CreditUpdateViewTestCase(TestCase):
         self.assertIn(self.c1, context["available_time_contracts"])
         self.assertIn(self.c2, context["available_time_contracts"])
         self.assertNotIn(self.c3, context["available_time_contracts"])
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)
@@ -273,6 +273,17 @@ class CreditChoicesUpdateViewTestCase(TestCase):
         cls.user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.form_url = reverse("high_ui:admin-update_credits")
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.user
+        view = CreditChoicesUpdateView()
+        view.request = request
+        view.user = self.user
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)

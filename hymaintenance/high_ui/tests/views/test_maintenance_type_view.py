@@ -1,9 +1,11 @@
+from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
 
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
+from high_ui.views.maintenance_type import MaintenanceTypeUpdateView
 from maintenance.models.other_models import MaintenanceType
 
 
@@ -13,6 +15,17 @@ class MaintenanceTypeUpdateViewTestCase(TestCase):
         cls.user = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         cls.form_url = reverse("high_ui:update_maintenance_types")
         cls.login_url = reverse("login") + "?next=" + cls.form_url
+
+    def test_get_context_data(self):
+        factory = RequestFactory()
+        request = factory.get(self.form_url)
+        request.user = self.user
+        view = MaintenanceTypeUpdateView()
+        view.request = request
+        view.user = self.user
+
+        context = view.get_context_data()
+        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
 
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)
