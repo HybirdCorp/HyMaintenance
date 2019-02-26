@@ -30,12 +30,8 @@ class UpdateProfileTestCase(TestCase):
         factory = RequestFactory()
         request = factory.get(self.form_url)
         request.user = self.admin
-        view = UserUpdateView()
-        view.request = request
-        view.user = self.admin
-
-        context = view.get_context_data()
-        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
+        response = UserUpdateView.as_view()(request)
+        self.assertEqual(reverse("high_ui:dashboard"), response.context_data["previous_page"])
 
     def test_staff_company_display_update_form_header(self):
         self.client.login(username=self.admin.email, password="azerty")
