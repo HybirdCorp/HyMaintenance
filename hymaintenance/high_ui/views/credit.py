@@ -16,6 +16,7 @@ from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedOperatorTestMixin
 from .base import ViewWithCompany
 from .base import get_context_data_dashboard_header
+from .base import get_context_previous_page
 
 
 class CreditCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
@@ -27,6 +28,7 @@ class CreditCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Creat
         context["available_time_contracts"] = context["contracts"].filter(total_type=AVAILABLE_TOTAL_TIME)
         hours_numbers = (credit_choice.value for credit_choice in MaintenanceCreditChoices.objects.all().order_by("id"))
         context.update({"hours_numbers": list(hours_numbers)})
+        context.update(get_context_previous_page(self.request))
         return context
 
     def get_form_kwargs(self):
@@ -54,6 +56,7 @@ class CreditUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Updat
         context["available_time_contracts"] = context["contracts"].filter(total_type=AVAILABLE_TOTAL_TIME)
         hours_numbers = (credit_choice.value for credit_choice in MaintenanceCreditChoices.objects.all().order_by("id"))
         context.update({"hours_numbers": list(hours_numbers)})
+        context.update(get_context_previous_page(self.request))
         return context
 
     def get_success_url(self):
@@ -87,6 +90,7 @@ class CreditChoicesUpdateView(IsAdminTestMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_previous_page(self.request))
         return context
 
     def get_form_kwargs(self):

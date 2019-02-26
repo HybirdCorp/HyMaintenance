@@ -11,11 +11,17 @@ from ..base import IsAdminTestMixin
 from ..base import IsAtLeastAllowedOperatorTestMixin
 from ..base import ViewWithCompany
 from ..base import get_context_data_dashboard_header
+from ..base import get_context_previous_page
 
 
 class ConsumerCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
     form_class = MaintenanceConsumerModelForm
     template_name = "high_ui/forms/create_consumer.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_previous_page(self.request))
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -29,6 +35,11 @@ class ConsumerCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Cre
 class ManagerUserCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
     form_class = ManagerUserCreateForm
     template_name = "high_ui/forms/create_manager.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_previous_page(self.request))
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -46,7 +57,11 @@ class OperatorUserCreateView(IsAdminTestMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_previous_page(self.request))
         return context
+
+    def previous_page(self):
+        return get_context_previous_page(self.request)["previous_page"]
 
     def get_success_url(self):
         return reverse("high_ui:dashboard")
@@ -55,6 +70,11 @@ class OperatorUserCreateView(IsAdminTestMixin, CreateView):
 class OperatorUserCreateViewWithCompany(ViewWithCompany, IsAdminTestMixin, CreateView):
     form_class = OperatorUserCreateFormWithCompany
     template_name = "high_ui/forms/create_company_operator.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_previous_page(self.request))
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -72,7 +92,11 @@ class AdminUserCreateView(IsAdminTestMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_previous_page(self.request))
         return context
+
+    def previous_page(self):
+        return get_context_previous_page(self.request)["previous_page"]
 
     def get_success_url(self):
         return reverse("high_ui:admin")

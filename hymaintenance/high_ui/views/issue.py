@@ -17,11 +17,17 @@ from .base import IsAtLeastAllowedManagerTestMixin
 from .base import IsAtLeastAllowedOperatorTestMixin
 from .base import ViewWithCompany
 from .base import get_context_data_dashboard_header
+from .base import get_context_previous_page
 
 
 class IssueCreateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, CreateView):
     form_class = MaintenanceIssueCreateForm
     template_name = "high_ui/forms/create_issue.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_previous_page(self.request))
+        return context
 
     def get_success_url(self):
         return self.company.get_absolute_url()
@@ -36,6 +42,11 @@ class IssueUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Update
     form_class = MaintenanceIssueUpdateForm
     template_name = "high_ui/forms/update_issue.html"
     model = MaintenanceIssue
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_previous_page(self.request))
+        return context
 
     def get_object(self, queryset=None):
         issue = get_object_or_404(
@@ -96,6 +107,7 @@ class IssueListUnarchiveView(ViewWithCompany, IsAdminTestMixin, FormView):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
         context["issues_number"] = MaintenanceIssue.objects.filter(is_deleted=True, company=self.company).count()
+        context.update(get_context_previous_page(self.request))
         return context
 
     def get_form_kwargs(self):

@@ -6,6 +6,7 @@ from ..forms import GeneralInformationModelForm
 from ..models import GeneralInformation
 from .base import IsAdminTestMixin
 from .base import get_context_data_dashboard_header
+from .base import get_context_previous_page
 
 
 class GeneralInformationUpdateView(IsAdminTestMixin, UpdateView):
@@ -22,4 +23,5 @@ class GeneralInformationUpdateView(IsAdminTestMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
+        context.update(get_context_previous_page(self.request))
         return context

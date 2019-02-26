@@ -19,7 +19,7 @@
 
 {% block profile_form_footer %}
 <button type="submit">{% trans "Modify my informations" %}</button>
-<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
+<span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't Modify" %}</a></span>
 {% endblock %}
 
 {% block password_form_title %}
@@ -28,5 +28,5 @@
 
 {% block password_form_footer %}
 <button type="submit">{% trans "Modify my password" %}</button>
-<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
+<span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't Modify" %}</a></span>
 {% endblock %}

@@ -7,12 +7,19 @@ from django.views.generic import TemplateView
 from customers.forms.users.user_profile import MaintenanceUserProfileUpdateForm
 from customers.forms.users.user_profile import StaffUserProfileUpdateForm
 
+from ..base import get_context_previous_page
+
 
 class UserUpdateView(LoginRequiredMixin, TemplateView):
     template_name = "high_ui/forms/update_profile.html"
 
     def get_object(self):
         return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_context_previous_page(self.request))
+        return context
 
     @staticmethod
     def get_password_form(*args, **kwargs):

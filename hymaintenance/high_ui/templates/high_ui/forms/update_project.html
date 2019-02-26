@@ -15,7 +15,7 @@
 
 {% block form_footer %}
 <button type="submit">{% trans "Modify this project" %}</button>
-<span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Don't Modify" %}</a></span>
+<span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't Modify" %}</a></span>
 {% endblock %}
 
 {% block form_counter_name_1 %}

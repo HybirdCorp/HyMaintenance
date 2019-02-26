@@ -57,7 +57,7 @@
                     </div>
                     <div class="form-footer">
                         {% block archive_form_footer %}{% endblock %}
-                        <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Change nothing" %}</a></span>
+                        <span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Change nothing" %}</a></span>
                     </div>
                 </form>
                 {% endif %}
@@ -94,7 +94,7 @@
                     </div>
                     <div class="form-footer">
                         {% block unarchive_form_footer %}{% endblock %}
-                        <span class="cancel">{% trans "or" %} <a href="#" onclick="window.history.back()">{% trans "Change nothing" %}</a></span>
+                        <span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Change nothing" %}</a></span>
                     </div>
                 </form>
                 {% endif %}
