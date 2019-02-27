@@ -19,9 +19,6 @@ class MaintenanceContractQuerySet(models.QuerySet):
     def filter_enabled(self):
         return self.filter(disabled=False).order_by(F("maintenance_type__id").asc())
 
-    def filter_enabled_with_available_total_time(self):
-        return self.filter(disabled=False, total_type=AVAILABLE_TOTAL_TIME)
-
 
 class MaintenanceContract(models.Model):
     TYPE_CHOICES = (
