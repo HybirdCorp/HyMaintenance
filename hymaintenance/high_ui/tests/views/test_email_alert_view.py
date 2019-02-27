@@ -14,16 +14,10 @@ from ...views.project import EmailAlertUpdateView
 class EmailAlertUpdateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.counter_name = "Experiments"
-        cls.company, cls.contract, _, _ = create_project(
-            contract1={
-                "email_alert": False,
-                "disabled": False,
-                "credit_counter": True,
-                "counter_name": cls.counter_name,
-            },
-            contract2={"email_alert": False, "disabled": False},
-            contract3={"email_alert": False, "disabled": True},
+        cls.company, cls.contract1, cls.contract2, cls.contract3 = create_project(
+            contract1={"email_alert": False, "disabled": False, "credit_counter": True},
+            contract2={"email_alert": False, "disabled": True},
+            contract3={"email_alert": False, "credit_counter": True, "visible": False},
         )
         cls.operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
         cls.operator.operator_for.add(cls.company)
@@ -88,14 +82,34 @@ class EmailAlertUpdateViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_formset_displays_the_right_contract(self):
+    def test_formset_displays_the_right_contract_to_staff(self):
         self.client.login(username="chell@aperture-science.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertContains(
+            response, '<input type="hidden" name="form-TOTAL_FORMS" value="2" id="id_form-TOTAL_FORMS" />'
+        )
+        self.assertContains(
+            response,
+            '<input type="hidden" name="form-0-id" value="{}" readonly id="id_form-0-id" />'.format(self.contract1.id),
+        )
+        self.assertContains(
+            response,
+            '<input type="hidden" name="form-1-id" value="{}" readonly id="id_form-1-id" />'.format(self.contract3.id),
+        )
+
+    def test_formset_displays_the_right_contract_to_manager(self):
+        ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
         self.assertContains(
             response, '<input type="hidden" name="form-TOTAL_FORMS" value="1" id="id_form-TOTAL_FORMS" />'
         )
-        self.assertContains(response, self.counter_name)
+        self.assertContains(
+            response,
+            '<input type="hidden" name="form-0-id" value="{}" readonly id="id_form-0-id" />'.format(self.contract1.id),
+        )
 
     def test_update_right_contract_with_the_formset(self):
         hours_min = 10
@@ -108,7 +122,7 @@ class EmailAlertUpdateViewTestCase(TestCase):
                 "form-TOTAL_FORMS": "1",
                 "form-INITIAL_FORMS": "1",
                 "form-MAX_NUM_FORMS": "",
-                "form-0-id": self.contract.id,
+                "form-0-id": self.contract1.id,
                 "form-0-email_alert": True,
                 "form-0-number_hours_min": hours_min,
                 "form-0-recipient": manager.id,
@@ -117,7 +131,7 @@ class EmailAlertUpdateViewTestCase(TestCase):
         )
 
         self.assertRedirects(response, reverse("high_ui:dashboard"))
-        contract = MaintenanceContract.objects.get(id=self.contract.id)
+        contract = MaintenanceContract.objects.get(id=self.contract1.id)
         self.assertTrue(contract.email_alert)
         self.assertEqual(manager, contract.recipient)
         self.assertEqual(hours_min, contract.number_hours_min)
