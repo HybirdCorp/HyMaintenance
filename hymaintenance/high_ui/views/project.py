@@ -228,9 +228,14 @@ class EmailAlertUpdateView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Fo
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs["queryset"] = self.company.contracts.filter(disabled=False, total_type=AVAILABLE_TOTAL_TIME).order_by(
-            "maintenance_type_id"
-        )
+        if self.user.has_operator_or_admin_permissions():
+            kwargs["queryset"] = self.company.contracts.filter(
+                disabled=False, total_type=AVAILABLE_TOTAL_TIME
+            ).order_by("maintenance_type_id")
+        else:
+            kwargs["queryset"] = self.company.contracts.filter(
+                disabled=False, total_type=AVAILABLE_TOTAL_TIME, visible=True
+            ).order_by("maintenance_type_id")
         return kwargs
 
     def get_form(self):
