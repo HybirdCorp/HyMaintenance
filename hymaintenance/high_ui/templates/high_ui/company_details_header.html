@@ -12,21 +12,23 @@
         <span class="dashboard-value">{% pretty_print_contract_counter contract %}</span>
     </div>
     {% endfor %}
+    {% if request.user.has_operator_or_admin_permissions or add_credits %}
     <div class="dashboard-item dashboard-button">
         <div class="dashboard-value">
-        <a href="{% url 'high_ui:project-create_issue' company_name=company.slug_name %}">{% trans "Register an issue" %}</a>
-            {% if add_credits %}
-                {% if request.user.has_operator_or_admin_permissions %}
-                <a href='{% url 'high_ui:project-create_credit' company_name=company.slug_name %}'>{% trans "Add hours" %}</a>
-                {% else %}
-                <a href='{% url 'high_ui:project-contact' company_name=company.slug_name %}'>{% trans "Buy hours" %}</a>
-                {% endif %}
+            {% if request.user.has_operator_or_admin_permissions %}
+            <a href="{% url 'high_ui:project-create_issue' company_name=company.slug_name %}">{% trans "Register an issue" %}</a>
             {% endif %}
-            {% if contracts.filter_enabled_with_available_total_time.count %}
+            {% if add_credits %}
+            {% if request.user.has_operator_or_admin_permissions %}
+            <a href='{% url 'high_ui:project-create_credit' company_name=company.slug_name %}'>{% trans "Add hours" %}</a>
+            {% else %}
+            <a href='{% url 'high_ui:project-contact' company_name=company.slug_name %}'>{% trans "Buy hours" %}</a>
+            {% endif %}
             <a href='{% url 'high_ui:project-update_email_alert' company_name=company.slug_name %}'>{% trans "Email alerts" %}</a>
             {% endif %}
         </div>
     </div>
+    {% endif %}
 
     <div class="dashboard-item dashboard-contact">
     {% if not request.user.has_operator_or_admin_permissions %}
