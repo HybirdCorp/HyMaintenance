@@ -443,6 +443,24 @@ class ProjectDetailsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _("Email alerts"))
 
+    def test_no_add_issue_button(self):
+        ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, _("Register an issue"))
+
+    def test_add_issue_button(self):
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Register an issue"))
+
 
 class MonthDisplayInFrenchTestCase(TestCase):
     def test_month_display_in_french(self):
