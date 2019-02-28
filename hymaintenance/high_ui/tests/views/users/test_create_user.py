@@ -18,7 +18,6 @@ from maintenance.models import MaintenanceConsumer
 class ConsumerCreateViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
         cls.company = CompanyFactory()
@@ -28,11 +27,7 @@ class ConsumerCreateViewTestCase(TestCase):
     def test_previous_page(self):
         factory = RequestFactory()
         request = factory.get(self.form_url)
-        request.user = self.admin
-        view = ConsumerCreateView()
-        view.request = request
-        view.user = self.admin
-        view.object = MaintenanceUser
+        view = ConsumerCreateView(request=request, user=self.admin, object=MaintenanceUser)
 
         previous_page = view.previous_page()
         self.assertEqual(reverse("high_ui:dashboard"), previous_page)
@@ -100,11 +95,7 @@ class ManagerUserCreateViewTestCase(TestCase):
     def test_previous_page(self):
         factory = RequestFactory()
         request = factory.get(self.form_url)
-        request.user = self.admin
-        view = ManagerUserCreateView()
-        view.request = request
-        view.user = self.admin
-        view.object = MaintenanceUser
+        view = ManagerUserCreateView(request=request, user=self.admin, object=MaintenanceUser)
 
         previous_page = view.previous_page()
         self.assertEqual(reverse("high_ui:dashboard"), previous_page)
@@ -178,19 +169,15 @@ class OperatorUserCreateViewTestCase(TestCase):
     def test_previous_page(self):
         factory = RequestFactory()
         request = factory.get(self.form_url)
-        request.user = self.admin
-        view = OperatorUserCreateView()
-        view.request = request
-        view.user = self.admin
-        view.object = MaintenanceUser
+        view = OperatorUserCreateView(request=request, user=self.admin, object=MaintenanceUser)
 
         previous_page = view.previous_page()
         self.assertEqual(reverse("high_ui:dashboard"), previous_page)
 
     def test_manager_cannot_get_create_form(self):
-        ManagerUserFactory(email="chell@aperture-science.com", password="azerty")
+        ManagerUserFactory(email="chchellell@aperture-science.com", password="azerty")
 
-        self.client.login(username="chell@aperture-science.com", password="azerty")
+        self.client.login(username="@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
         self.assertRedirects(response, self.login_url)
@@ -237,7 +224,6 @@ class OperatorUserCreateViewTestCase(TestCase):
 class OperatorUserCreateViewWithCompanyTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-
         cls.admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
         cls.company = CompanyFactory()
@@ -247,11 +233,8 @@ class OperatorUserCreateViewWithCompanyTestCase(TestCase):
     def test_previous_page(self):
         factory = RequestFactory()
         request = factory.get(self.form_url)
-        request.user = self.admin
-        view = OperatorUserCreateViewWithCompany()
-        view.request = request
-        view.user = self.admin
-        view.object = MaintenanceUser
+
+        view = OperatorUserCreateViewWithCompany(request=request, user=self.admin, object=MaintenanceUser)
 
         previous_page = view.previous_page()
         self.assertEqual(reverse("high_ui:dashboard"), previous_page)
@@ -316,11 +299,7 @@ class AdminUserCreateViewTestCase(TestCase):
     def test_previous_page(self):
         factory = RequestFactory()
         request = factory.get(self.form_url)
-        request.user = self.admin
-        view = AdminUserCreateView()
-        view.request = request
-        view.user = self.admin
-        view.object = MaintenanceUser
+        view = AdminUserCreateView(request=request, user=self.admin, object=MaintenanceUser)
 
         previous_page = view.previous_page()
         self.assertEqual(reverse("high_ui:dashboard"), previous_page)
