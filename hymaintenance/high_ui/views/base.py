@@ -2,7 +2,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import View
 
 from customers.models import Company
 from customers.models import MaintenanceUser
@@ -52,7 +51,7 @@ def get_context_data_project_header(user, company):
     return context
 
 
-class ViewWithCompany(View):
+class ViewWithCompany:
     slug_url_kwarg = "company_name"
     slug_field = "slug_name"
 
