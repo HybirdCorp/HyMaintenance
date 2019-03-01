@@ -54,14 +54,19 @@ def get_context_data_project_header(user, company):
 class ViewWithCompany:
     slug_url_kwarg = "company_name"
     slug_field = "slug_name"
+    _company = None
 
-    def dispatch(self, request, *args, **kwargs):
-        self.company = self.get_company()
-        return super().dispatch(request, *args, **kwargs)
+    @property
+    def company(self):
+        if not self._company:
+            self._company = get_object_or_404(
+                Company, is_archived=False, slug_name=self.kwargs.get(self.slug_url_kwarg)
+            )
+        return self._company
 
-    def get_company(self):
-        company = get_object_or_404(Company, is_archived=False, slug_name=self.kwargs.get(self.slug_url_kwarg))
-        return company
+    @company.setter
+    def company(self, value):
+        self._company = value
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

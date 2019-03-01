@@ -77,6 +77,7 @@ class ConsumerUpdateViewTestCase(TestCase):
 
     def test_get_form_when_company_does_not_exist(self):
         not_used_name = "not_used_company_slug_name"
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         test_url = reverse(
             "high_ui:project-update_consumer", kwargs={"company_name": not_used_name, "pk": self.consumer.pk}
         )
