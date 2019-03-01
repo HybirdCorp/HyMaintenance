@@ -160,7 +160,6 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailsView, self).get_context_data(**kwargs)
-        self.company = self.object
         contracts = context["contracts"]
 
         months = self.get_last_months()
