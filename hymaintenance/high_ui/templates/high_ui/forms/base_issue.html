@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/static/css/date-picker.css" />
 <script src="/static/js/segmented-selector.js"></script>
 <script src="/static/js/date-picker.js"></script>
+<script src="/static/js/fast_click.js"></script>
 {% if company.color %}
 <style>
 .disabled_consumer, .disabled_operator {
@@ -356,7 +357,7 @@
             var field= document.getElementById('{{form.resolution_description_file.id_for_label}}');
             field.value= field.defaultValue;
         };
-
+        new ForbiddenFastClick(document);
     </script>
 </body>
 </html>

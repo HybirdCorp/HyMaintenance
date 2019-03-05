@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/static/css/create.css" />
 <link rel="stylesheet" href="/static/css/edit-list.css" />
 <link rel="stylesheet" href="/static/css/edit-operators.css" />
+<script src="/static/js/fast_click.js"></script>
 </head>
 <body>
     {% include "high_ui/dashboard_header.html" %}
@@ -117,6 +118,7 @@
                 }
             }, false);
         }
+        new ForbiddenFastClick(document);
     </script>
 </body>
 </html>

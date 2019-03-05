@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/static/css/create.css" />
 <link rel="stylesheet" href="/static/css/create-project.css" />
 <script src="/static/js/segmented-selector.js"></script>
+<script src="/static/js/fast_click.js"></script>
 <style>
 .form-group.custom-color-inactive .row-color, .form-group.custom-color-inactive .row-dark-font-color {
     display: none;
@@ -180,6 +181,7 @@
                 parent.className = parent.className.replace(currentActivation, selectedActivation);
             }
         );
+        new ForbiddenFastClick(document);
     </script>
 </body>
 </html>

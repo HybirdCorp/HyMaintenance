@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="/static/css/date-picker.css" />
 <script src="/static/js/segmented-selector.js"></script>
 <script src="/static/js/date-picker.js"></script>
+    <script src="/static/js/fast_click.js"></script>
 </head>
 <body>
     {% include "high_ui/dashboard_header.html" %}
@@ -152,6 +153,7 @@
             var fieldId = dateFields[i];
             new DatePicker(document.getElementById(fieldId));
         }
+        new ForbiddenFastClick(document);
     </script>
 </body>
 </html>
