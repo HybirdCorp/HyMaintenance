@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="/static/css/form.css" />
 <link rel="stylesheet" href="/static/css/create.css" />
 <link rel="stylesheet" href="/static/css/edit-list.css" />
-<script src="/static/js/fast_click.js"></script>
 </head>
 <body>
     {% include "high_ui/dashboard_header.html" %}
@@ -56,8 +55,6 @@
         </div>
     </div>
     {% include "high_ui/footer.html" with show_menu_client=True %}
-    <script>
-        new ForbiddenFastClick(document);
-    </script>
+    <script src="/static/js/fast_click.js"></script>
 </body>
 </html>

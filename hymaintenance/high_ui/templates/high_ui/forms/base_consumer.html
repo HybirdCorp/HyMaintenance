@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="/static/css/style.css" />
 <link rel="stylesheet" href="/static/css/form.css" />
 <link rel="stylesheet" href="/static/css/create.css" />
-<script src="/static/js/fast_click.js"></script>
 {% if company.color %}
 <style>
 .dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
@@ -67,8 +66,6 @@
         </div>
     </div>
     {% include "high_ui/footer.html" with show_menu_client=True %}
-    <script>
-        new ForbiddenFastClick(document);
-    </script>
+    <script src="/static/js/fast_click.js"></script>
 </body>
 </html>
