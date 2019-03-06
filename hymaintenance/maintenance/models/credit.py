@@ -1,6 +1,7 @@
 import datetime
 
 from django.db import models
+from django.db.models.signals import post_delete
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
@@ -32,7 +33,13 @@ class MaintenanceCredit(models.Model):
 
 
 @receiver(post_save, sender=MaintenanceCredit, dispatch_uid="update_credited_hours")
-def update_credited_hours(sender, instance, **kwargs):
+def update_credited_hours_after_save(sender, instance, **kwargs):
+    instance.contract.credited_hours = calcul_credited_hours(contract=instance.contract)
+    instance.contract.save()
+
+
+@receiver(post_delete, sender=MaintenanceCredit, dispatch_uid="update_credited_hours")
+def update_credited_hours_after_delete(sender, instance, **kwargs):
     instance.contract.credited_hours = calcul_credited_hours(contract=instance.contract)
     instance.contract.save()
 
