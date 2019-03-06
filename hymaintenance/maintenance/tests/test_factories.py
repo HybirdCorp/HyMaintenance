@@ -33,4 +33,4 @@ class MaintenanceCreditFactoryTestCase(TestCase):
 
     def test_update_number_credit(self):
         credit = MaintenanceCreditFactory(hours_number=20)
-        self.assertEqual(40, credit.contract.number_hours)
+        self.assertEqual(40, credit.contract.credited_hours)

@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
-from toolkit.email import is_number_hours_min_exceeded
+from toolkit.email import is_credited_hours_min_exceeded
 from toolkit.email import send_email_alert
 from toolkit.forms import HyClearableFileInput
 
@@ -58,7 +58,7 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
         self.instance.number_minutes = number_minutes
 
         issue = super().save(commit)
-        if is_number_hours_min_exceeded(form_data["contract"]):
+        if is_credited_hours_min_exceeded(form_data["contract"]):
             send_email_alert(form_data["contract"])
         return issue
 

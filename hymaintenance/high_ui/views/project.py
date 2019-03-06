@@ -206,13 +206,13 @@ class ProjectListUnarchiveView(IsAdminTestMixin, FormView):
 class EmailAlertUpdateView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, FormView):
     form_class = modelformset_factory(
         MaintenanceContract,
-        fields=["email_alert", "number_hours_min", "recipient", "id"],
+        fields=["email_alert", "credited_hours_min", "recipient", "id"],
         widgets={
             "email_alert": forms.HiddenInput(),
-            "number_hours_min": forms.TextInput(),
+            "credited_hours_min": forms.TextInput(),
             "id": forms.HiddenInput(attrs={"readonly": True}),
         },
-        labels={"number_hours_min": _("Hour threshold"), "recipient": _("To contact")},
+        labels={"credited_hours_min": _("Hour threshold"), "recipient": _("To contact")},
         extra=0,
     )
     template_name = "high_ui/forms/update_email_alert.html"

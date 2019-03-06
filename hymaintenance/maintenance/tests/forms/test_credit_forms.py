@@ -23,7 +23,7 @@ class MaintenanceCreditCreateFormTestCase(TestCase):
         self.assertDictEqual(form.errors, {"contract": [expected], "hours_number": [expected]})
 
     def test_create_credit_with_create_form(self):
-        self.assertEqual(20, self.contract.number_hours)
+        self.assertEqual(20, self.contract.credited_hours)
         self.assertEqual(1, MaintenanceCredit.objects.filter(company=self.company, contract=self.contract).count())
         hours_number = 10
         form = MaintenanceCreditCreateForm(
@@ -32,7 +32,7 @@ class MaintenanceCreditCreateFormTestCase(TestCase):
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         self.contract.refresh_from_db()
-        self.assertEqual(30, self.contract.number_hours)
+        self.assertEqual(30, self.contract.credited_hours)
         self.assertEqual(2, MaintenanceCredit.objects.filter(company=self.company, contract=self.contract).count())
 
 
@@ -48,4 +48,4 @@ class MaintenanceCreditUpdateFormTestCase(TestCase):
         self.assertEqual(hours_number, updated_credit.hours_number)
         self.assertEqual(c2, updated_credit.contract)
         c2.refresh_from_db()
-        self.assertEqual(30, c2.number_hours)
+        self.assertEqual(30, c2.credited_hours)

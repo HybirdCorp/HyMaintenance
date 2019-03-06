@@ -10,7 +10,7 @@ from ..models import MaintenanceContract
 from ..models import MaintenanceCredit
 from ..models import MaintenanceType
 from ..models.contract import AVAILABLE_TOTAL_TIME
-from ..models.credit import calcul_number_hours
+from ..models.credit import calcul_credited_hours
 
 
 INACTIF_CONTRACT_INPUT = -1
@@ -43,13 +43,13 @@ class ProjectForm(forms.Form):
 
 class ProjectCreateForm(ProjectForm):
     error_messages = {"no_contract": _("You have to create at least one contract on the project.")}
-    contract1_number_hours = forms.IntegerField(
+    contract1_credited_hours = forms.IntegerField(
         label=_("Credited hours"), min_value=0, initial=0, widget=forms.TextInput()
     )
-    contract2_number_hours = forms.IntegerField(
+    contract2_credited_hours = forms.IntegerField(
         label=_("Credited hours"), min_value=0, initial=0, widget=forms.TextInput()
     )
-    contract3_number_hours = forms.IntegerField(
+    contract3_credited_hours = forms.IntegerField(
         label=_("Credited hours"), min_value=0, initial=0, widget=forms.TextInput()
     )
 
@@ -90,7 +90,7 @@ class ProjectCreateForm(ProjectForm):
         contract_disabled = True if form_contract_visible == -1 else False
         contract_visible = bool(form_contract_visible) if form_contract_visible != -1 else False
 
-        contract_number_hours = self.cleaned_data[f"contract{index}_number_hours"]
+        contract_credited_hours = self.cleaned_data[f"contract{index}_credited_hours"]
         contract_total_type = self.cleaned_data[f"contract{index}_total_type"]
         contract_date = self.cleaned_data[f"contract{index}_date"]
         contract_counter_name = self.cleaned_data[f"contract{index}_counter_name"]
@@ -110,7 +110,7 @@ class ProjectCreateForm(ProjectForm):
 
         if contract_total_type == AVAILABLE_TOTAL_TIME:
             MaintenanceCredit.objects.create(
-                company=company, contract=contract, date=contract_date, hours_number=contract_number_hours
+                company=company, contract=contract, date=contract_date, hours_number=contract_credited_hours
             )
 
     def create_company_and_contracts(self, operator=None):
@@ -136,13 +136,13 @@ class ProjectUpdateForm(ProjectForm):
     contract1_email_alert = forms.BooleanField(label=_("Email Alert"), required=False, widget=forms.HiddenInput())
     contract2_email_alert = forms.BooleanField(label=_("Email Alert"), required=False, widget=forms.HiddenInput())
     contract3_email_alert = forms.BooleanField(label=_("Email Alert"), required=False, widget=forms.HiddenInput())
-    contract1_number_hours_min = forms.IntegerField(
+    contract1_credited_hours_min = forms.IntegerField(
         label=_("Hour threshold"), required=False, min_value=0, initial=0, widget=forms.TextInput()
     )
-    contract2_number_hours_min = forms.IntegerField(
+    contract2_credited_hours_min = forms.IntegerField(
         label=_("Hour threshold"), required=False, min_value=0, initial=0, widget=forms.TextInput()
     )
-    contract3_number_hours_min = forms.IntegerField(
+    contract3_credited_hours_min = forms.IntegerField(
         label=_("Hour threshold"), required=False, min_value=0, initial=0, widget=forms.TextInput()
     )
     contract1_recipient = forms.ModelChoiceField(label=_("To contact"), empty_label=None, required=False, queryset=None)
@@ -178,9 +178,9 @@ class ProjectUpdateForm(ProjectForm):
         self.fields["contract1_email_alert"].initial = self.contracts[0].email_alert
         self.fields["contract2_email_alert"].initial = self.contracts[1].email_alert
         self.fields["contract3_email_alert"].initial = self.contracts[2].email_alert
-        self.fields["contract1_number_hours_min"].initial = self.contracts[0].number_hours_min
-        self.fields["contract2_number_hours_min"].initial = self.contracts[1].number_hours_min
-        self.fields["contract3_number_hours_min"].initial = self.contracts[2].number_hours_min
+        self.fields["contract1_credited_hours_min"].initial = self.contracts[0].credited_hours_min
+        self.fields["contract2_credited_hours_min"].initial = self.contracts[1].credited_hours_min
+        self.fields["contract3_credited_hours_min"].initial = self.contracts[2].credited_hours_min
         self.fields["contract1_recipient"].initial = self.contracts[0].recipient
         self.fields["contract2_recipient"].initial = self.contracts[1].recipient
         self.fields["contract3_recipient"].initial = self.contracts[2].recipient
@@ -220,17 +220,17 @@ class ProjectUpdateForm(ProjectForm):
             contract_is_modified = True
             contract.total_type = contract_total_type
             if contract.total_type == AVAILABLE_TOTAL_TIME:
-                contract.number_hours = calcul_number_hours(contract)
+                contract.credited_hours = calcul_credited_hours(contract)
 
         contract_email_alert = self.cleaned_data[f"contract{index}_email_alert"]
         if contract.email_alert != contract_email_alert:
             contract_is_modified = True
             contract.email_alert = contract_email_alert
 
-        contract_number_hours_min = self.cleaned_data[f"contract{index}_number_hours_min"]
-        if contract.number_hours_min != contract_number_hours_min:
+        contract_credited_hours_min = self.cleaned_data[f"contract{index}_credited_hours_min"]
+        if contract.credited_hours_min != contract_credited_hours_min:
             contract_is_modified = True
-            contract.number_hours_min = contract_number_hours_min
+            contract.credited_hours_min = contract_credited_hours_min
 
         contract_recipient = self.cleaned_data[f"contract{index}_recipient"]
         if contract.recipient != contract_recipient:

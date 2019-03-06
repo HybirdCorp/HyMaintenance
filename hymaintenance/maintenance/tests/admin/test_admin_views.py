@@ -41,7 +41,7 @@ class AdminMaintenanceViewTestCase(TestCase):
 
         company = CompanyFactory()
         maintenance_type = get_default_maintenance_type()
-        contract = MaintenanceContractFactory(company=company, maintenance_type=maintenance_type, number_hours=2)
+        contract = MaintenanceContractFactory(company=company, maintenance_type=maintenance_type, credited_hours=2)
         credit = MaintenanceCreditFactory(company=company, contract=contract, hours_number=5)
         channel = IncomingChannelFactory()
         consumer = MaintenanceConsumerFactory()

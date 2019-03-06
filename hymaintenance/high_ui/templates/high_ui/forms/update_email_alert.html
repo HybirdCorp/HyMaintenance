@@ -56,19 +56,19 @@
                             {% endfor %}
                         </div>
                         
-                        <div class="form-row row-credit-min {% if sub_form.number_hours_min.errors %}form-error{% endif %}">
-                            {% if sub_form.number_hours_min.errors %}
+                        <div class="form-row row-credit-min {% if sub_form.credited_hours_min.errors %}form-error{% endif %}">
+                            {% if sub_form.credited_hours_min.errors %}
                             <div class="form-row-wrapper">
                             {% endif %}
                         
-                            <label for="{{sub_form.number_hours_min.id_for_label}}">{{sub_form.number_hours_min.label}} *</label>
-                            {{sub_form.number_hours_min}}
+                            <label for="{{sub_form.credited_hours_min.id_for_label}}">{{sub_form.credited_hours_min.label}} *</label>
+                            {{sub_form.credited_hours_min}}
                         
-                            {% if sub_form.number_hours_min.errors %}
+                            {% if sub_form.credited_hours_min.errors %}
                             </div>
                             {% endif %}
                         
-                            {% for error in sub_form.number_hours_min.errors %}
+                            {% for error in sub_form.credited_hours_min.errors %}
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
                         </div>

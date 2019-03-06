@@ -21,7 +21,7 @@ class MaintenanceContractAdmin(admin.ModelAdmin):
     list_display = (
         "company",
         "start",
-        "number_hours",
+        "credited_hours",
         "maintenance_type",
         "get_number_contract_hours",
         "get_number_consumed_hours",

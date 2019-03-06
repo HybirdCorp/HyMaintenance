@@ -14,7 +14,7 @@ from ..models import MaintenanceIssue
 from ..models import MaintenanceType
 from ..models.contract import AVAILABLE_TOTAL_TIME
 from ..models.contract import CONSUMMED_TOTAL_TIME
-from ..models.credit import calcul_number_hours
+from ..models.credit import calcul_credited_hours
 
 
 def create_project(**kwargs):
@@ -82,7 +82,7 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
             return CONSUMMED_TOTAL_TIME
 
     @factory.lazy_attribute
-    def number_hours(self):
+    def credited_hours(self):
         if self.credit_counter:
             return 20
         else:
@@ -94,7 +94,7 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
             return
         if self.total_type == AVAILABLE_TOTAL_TIME:
             MaintenanceCreditFactory(
-                hours_number=self.number_hours, contract=self, date=self.start, company=self.company
+                hours_number=self.credited_hours, contract=self, date=self.start, company=self.company
             )
 
 
@@ -108,12 +108,12 @@ class MaintenanceCreditFactory(factory.django.DjangoModelFactory):
     hours_number = 10
 
     @factory.post_generation
-    def update_number_hours(self, create, extracted, **kwargs):
+    def update_credited_hours(self, create, extracted, **kwargs):
         if not create:
             return
         else:
-            number_hours = calcul_number_hours(self.contract)
-            self.contract.number_hours = number_hours
+            credited_hours = calcul_credited_hours(self.contract)
+            self.contract.credited_hours = credited_hours
             self.contract.save()
 
 

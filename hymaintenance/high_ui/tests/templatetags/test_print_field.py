@@ -51,7 +51,7 @@ class PrettyPrintContractCounterTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.company, cls.available_contract, cls.consumed_contract, _ = create_project(
-            contract1={"number_hours": 1, "credit_counter": True}, contract2={"credit_counter": False}
+            contract1={"credited_hours": 1, "credit_counter": True}, contract2={"credit_counter": False}
         )
 
     def test_print_available_time(self):
