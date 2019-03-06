@@ -31,13 +31,13 @@ class MaintenanceCredit(models.Model):
         return get_counter_name(self)
 
 
-@receiver(post_save, sender=MaintenanceCredit, dispatch_uid="update_number_hours")
-def update_number_hours(sender, instance, **kwargs):
-    instance.contract.number_hours = calcul_number_hours(contract=instance.contract)
+@receiver(post_save, sender=MaintenanceCredit, dispatch_uid="update_credited_hours")
+def update_credited_hours(sender, instance, **kwargs):
+    instance.contract.credited_hours = calcul_credited_hours(contract=instance.contract)
     instance.contract.save()
 
 
-def calcul_number_hours(contract):
+def calcul_credited_hours(contract):
     hours_sum = MaintenanceCredit.objects.filter(contract=contract).aggregate(models.Sum("hours_number"))
     hours_sum = hours_sum["hours_number__sum"]
     if hours_sum is None:

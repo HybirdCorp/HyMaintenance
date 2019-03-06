@@ -124,7 +124,7 @@ class EmailAlertUpdateViewTestCase(TestCase):
                 "form-MAX_NUM_FORMS": "",
                 "form-0-id": self.contract1.id,
                 "form-0-email_alert": True,
-                "form-0-number_hours_min": hours_min,
+                "form-0-credited_hours_min": hours_min,
                 "form-0-recipient": manager.id,
             },
             follow=True,
@@ -134,4 +134,4 @@ class EmailAlertUpdateViewTestCase(TestCase):
         contract = MaintenanceContract.objects.get(id=self.contract1.id)
         self.assertTrue(contract.email_alert)
         self.assertEqual(manager, contract.recipient)
-        self.assertEqual(hours_min, contract.number_hours_min)
+        self.assertEqual(hours_min, contract.credited_hours_min)

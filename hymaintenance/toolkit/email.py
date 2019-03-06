@@ -14,9 +14,9 @@ Please contact {sender} to add credits on your contract.
 {name} team"""
 
 
-def is_number_hours_min_exceeded(contract):
+def is_credited_hours_min_exceeded(contract):
     if contract.total_type == AVAILABLE_TOTAL_TIME and contract.email_alert:
-        return contract.get_number_remaining_hours() <= contract.number_hours_min
+        return contract.get_number_remaining_hours() <= contract.credited_hours_min
     return False
 
 

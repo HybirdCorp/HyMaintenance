@@ -8,7 +8,7 @@ from customers.tests.factories import OperatorUserFactory
 from high_ui.models import GeneralInformation
 from high_ui.tests.utils import SetDjangoLanguage
 from toolkit.email import create_email_alert
-from toolkit.email import is_number_hours_min_exceeded
+from toolkit.email import is_credited_hours_min_exceeded
 
 from ..forms.issue import MaintenanceIssueCreateForm
 from ..models.contract import AVAILABLE_TOTAL_TIME
@@ -23,77 +23,77 @@ class IsNumberHoursMinExceededTestCase(TestCase):
     def test_when_credited_hours_is_under_min(self):
         _, contract, _, _ = create_project(
             contract1={
-                "number_hours": 10,
-                "number_hours_min": 20,
+                "credited_hours": 10,
+                "credited_hours_min": 20,
                 "total_type": AVAILABLE_TOTAL_TIME,
                 "email_alert": True,
             }
         )
-        self.assertTrue(is_number_hours_min_exceeded(contract))
+        self.assertTrue(is_credited_hours_min_exceeded(contract))
 
     def test_when_credited_hours_equals_min(self):
         _, contract, _, _ = create_project(
             contract1={
-                "number_hours": 10,
-                "number_hours_min": 10,
+                "credited_hours": 10,
+                "credited_hours_min": 10,
                 "total_type": AVAILABLE_TOTAL_TIME,
                 "email_alert": True,
             }
         )
-        self.assertTrue(is_number_hours_min_exceeded(contract))
+        self.assertTrue(is_credited_hours_min_exceeded(contract))
 
     def test_when_remaining_hours_reachs_min(self):
         company, contract, _, _ = create_project(
             contract1={
-                "number_hours": 12,
-                "number_hours_min": 10,
+                "credited_hours": 12,
+                "credited_hours_min": 10,
                 "total_type": AVAILABLE_TOTAL_TIME,
                 "email_alert": True,
             }
         )
         MaintenanceIssueFactory(company=company, contract=contract, number_minutes=120)
-        self.assertTrue(is_number_hours_min_exceeded(contract))
+        self.assertTrue(is_credited_hours_min_exceeded(contract))
 
     def test_when_credited_hours_is_under_min_but_not_alert(self):
         _, contract, _, _ = create_project(
             contract1={
-                "number_hours": 10,
-                "number_hours_min": 20,
+                "credited_hours": 10,
+                "credited_hours_min": 20,
                 "total_type": AVAILABLE_TOTAL_TIME,
                 "email_alert": False,
             }
         )
-        self.assertFalse(is_number_hours_min_exceeded(contract))
+        self.assertFalse(is_credited_hours_min_exceeded(contract))
 
     def test_when_credited_hours_is_over_min(self):
         _, contract, _, _ = create_project(
             contract1={
-                "number_hours": 20,
-                "number_hours_min": 10,
+                "credited_hours": 20,
+                "credited_hours_min": 10,
                 "total_type": AVAILABLE_TOTAL_TIME,
                 "email_alert": True,
             }
         )
-        self.assertFalse(is_number_hours_min_exceeded(contract))
+        self.assertFalse(is_credited_hours_min_exceeded(contract))
 
     def test_when_contract_is_consummed_total_type(self):
         _, contract, _, _ = create_project(
-            contract1={"number_hours": 0, "number_hours_min": 0, "total_type": CONSUMMED_TOTAL_TIME}
+            contract1={"credited_hours": 0, "credited_hours_min": 0, "total_type": CONSUMMED_TOTAL_TIME}
         )
-        self.assertFalse(is_number_hours_min_exceeded(contract))
+        self.assertFalse(is_credited_hours_min_exceeded(contract))
 
     def test_when_contract_is_consummed_total_type_with_wrong_parameters(self):
         _, contract, _, _ = create_project(
-            contract1={"number_hours": 10, "number_hours_min": 20, "total_type": CONSUMMED_TOTAL_TIME}
+            contract1={"credited_hours": 10, "credited_hours_min": 20, "total_type": CONSUMMED_TOTAL_TIME}
         )
-        self.assertFalse(is_number_hours_min_exceeded(contract))
+        self.assertFalse(is_credited_hours_min_exceeded(contract))
 
 
 class CreateEmailAlertTestCase(TestCase):
     def test_there_is_contact(self):
         with SetDjangoLanguage("en"):
             operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-            company, contract, _, _ = create_project(contract1={"number_hours": 10}, company={"contact": operator})
+            company, contract, _, _ = create_project(contract1={"credited_hours": 10}, company={"contact": operator})
             MaintenanceIssueFactory(company=company, contract=contract, number_minutes=20)
             manager = ManagerUserFactory(
                 email="cave.johnson@aperture-science.com", first_name="Cave", last_name="Johnson", password="azerty"
@@ -117,7 +117,7 @@ company team""",
 
     def test_there_is_not_contact(self):
         with SetDjangoLanguage("en"):
-            company, contract, _, _ = create_project(contract1={"number_hours": 10})
+            company, contract, _, _ = create_project(contract1={"credited_hours": 10})
             MaintenanceIssueFactory(company=company, contract=contract, number_minutes=20)
             manager = ManagerUserFactory(
                 email="cave.johnson@aperture-science.com", first_name="Cave", last_name="Johnson", password="azerty"
@@ -146,8 +146,8 @@ class SendEmailAlertTestCase(TestCase):
         self.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
         self.company, self.contract, _, _ = create_project(
             contract1={
-                "number_hours": 20,
-                "number_hours_min": 10,
+                "credited_hours": 20,
+                "credited_hours_min": 10,
                 "total_type": AVAILABLE_TOTAL_TIME,
                 "email_alert": True,
             }

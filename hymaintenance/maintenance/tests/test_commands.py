@@ -17,8 +17,8 @@ class SendEmailAlertsCommandTestCase(TestCase):
         )
         _, contract, _, _ = create_project(
             contract1={
-                "number_hours": 10,
-                "number_hours_min": 20,
+                "credited_hours": 10,
+                "credited_hours_min": 20,
                 "total_type": AVAILABLE_TOTAL_TIME,
                 "recipient": manager,
                 "email_alert": True,
@@ -35,8 +35,8 @@ class SendEmailAlertsCommandTestCase(TestCase):
         )
         _, _, _, _ = create_project(
             contract1={
-                "number_hours": 10,
-                "number_hours_min": 20,
+                "credited_hours": 10,
+                "credited_hours_min": 20,
                 "total_type": AVAILABLE_TOTAL_TIME,
                 "recipient": manager,
                 "email_alert": True,
@@ -44,8 +44,8 @@ class SendEmailAlertsCommandTestCase(TestCase):
         )
         _, _, _, _ = create_project(
             contract1={
-                "number_hours": 10,
-                "number_hours_min": 20,
+                "credited_hours": 10,
+                "credited_hours_min": 20,
                 "total_type": AVAILABLE_TOTAL_TIME,
                 "recipient": manager,
                 "email_alert": True,
@@ -62,8 +62,8 @@ class SendEmailAlertsCommandTestCase(TestCase):
         )
         _, _, _, _ = create_project(
             contract1={
-                "number_hours": 20,
-                "number_hours_min": 10,
+                "credited_hours": 20,
+                "credited_hours_min": 10,
                 "total_type": AVAILABLE_TOTAL_TIME,
                 "recipient": manager,
             }

@@ -26,16 +26,20 @@ class MaintenanceContract(models.Model):
         (CONSUMMED_TOTAL_TIME, _("Consummed total time")),
     )
 
-    counter_name = models.CharField(_("Name of counter"), max_length=255, default="")
     company = models.ForeignKey(Company, verbose_name=_("Company"), on_delete=models.PROTECT, related_name="contracts")
+    start = models.DateField(_("Start Date"), default=datetime.date.today)
+
     maintenance_type = models.ForeignKey(MaintenanceType, on_delete=models.PROTECT, related_name="contracts")
+    counter_name = models.CharField(_("Name of counter"), max_length=255, default="")
+
     visible = models.BooleanField(_("Visible to manager"), default=True)
     disabled = models.BooleanField(_("Disable the contract"), default=False)
-    start = models.DateField(_("Start Date"), default=datetime.date.today)
-    number_hours = models.PositiveIntegerField(_("Credited hours"), null=True, blank=True)
+
     total_type = models.IntegerField(_("Counter type"), choices=TYPE_CHOICES, default=AVAILABLE_TOTAL_TIME)
+    credited_hours = models.PositiveIntegerField(_("Credited hours"), null=True, blank=True)
+
     email_alert = models.BooleanField(_("Email alert"), default=False)
-    number_hours_min = models.IntegerField(_("Credited hours Threshold"), default=0)
+    credited_hours_min = models.IntegerField(_("Credited hours Threshold"), default=0)
     recipient = models.ForeignKey(
         to="customers.MaintenanceUser",
         on_delete=models.PROTECT,
@@ -54,7 +58,7 @@ class MaintenanceContract(models.Model):
         return self.counter_name if self.counter_name != "" else self.maintenance_type.name
 
     def get_number_contract_hours(self) -> int:
-        return self.number_hours
+        return self.credited_hours
 
     def get_number_contract_minutes(self) -> int:
         return self.get_number_contract_hours() * 60
