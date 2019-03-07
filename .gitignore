@@ -92,9 +92,12 @@ ENV/
 .idea/
 
 # issues attachments folder
-hymaintenance/maintenance/media/*
-!hymaintenance/maintenance/media/upload
-hymaintenance/maintenance/media/upload/*
+hymaintenance/media/*
+!hymaintenance/media/upload
+hymaintenance/media/upload/*
+
+# static folder
+hymaintenance/static/*
 
 # don't ignore git keep file
 !.keep
