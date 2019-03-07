@@ -170,7 +170,7 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">{% trans "This counter can be renamed to replace the" %} <em>{{maintenance_types.0.name}}</em>{% trans "default name" %}</div>
+                            <div class="help">{%  blocktrans with mtype=maintenance_types.0.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
 
                             <div class="form-row {% if form.contract1_date.errors %}form-error{% endif %}">
                                 <label for="{{form.contract1_date.id_for_label}}">{{form.contract1_date.label}}</label>
@@ -268,7 +268,7 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">{% trans "This counter can be renamed to replace the" %} <em>{{maintenance_types.1.name}}</em>{% trans "default name" %}</div>
+                            <div class="help">{%  blocktrans with mtype=maintenance_types.1.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
 
                             <div class="form-row {% if form.contract2_date.errors %}form-error{% endif %}">
                                 <label for="{{form.contract2_date.id_for_label}}">{{form.contract2_date.label}}</label>
@@ -366,7 +366,7 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">{% trans "This counter can be renamed to replace the" %} <em>{{maintenance_types.2.name}}</em>{% trans "default name" %}</div>
+                            <div class="help">{%  blocktrans with mtype=maintenance_types.2.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
 
                             <div class="form-row {% if form.contract3_date.errors %}form-error{% endif %}">
                                 <label for="{{form.contract3_date.id_for_label}}">{{form.contract3_date.label}}</label>

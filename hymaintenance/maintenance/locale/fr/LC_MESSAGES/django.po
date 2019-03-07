@@ -71,11 +71,11 @@ msgstr "Cette société existe déjà."
 
 #: forms/project.py:136 forms/project.py:137 forms/project.py:138
 msgid "Email Alert"
-msgstr ""
+msgstr "Email alerte"
 
 #: forms/project.py:140 forms/project.py:143 forms/project.py:146
 msgid "Hour threshold"
-msgstr ""
+msgstr "Seuil d'heures"
 
 #: forms/project.py:148 forms/project.py:149 forms/project.py:150
 msgid "To contact"
@@ -132,7 +132,7 @@ msgstr "Désactive le contrat"
 
 #: models/contract.py:39
 msgid "Email alert"
-msgstr "Alert par email"
+msgstr "Email alerte"
 
 #: models/contract.py:40
 msgid "Credited hours Threshold"
