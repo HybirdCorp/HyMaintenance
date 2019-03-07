@@ -92,7 +92,7 @@
 
                     <div class="form-group activation-active counter-total email-alert-disabled">
                         <div class="group-title-container">
-                            <div class="group-title">{% trans "Counter" %} {% block form_counter_name_1 %}{% endblock %}</div>
+                            <div class="group-title">{% trans "Counter" %} {{ form.contract1_counter_name.initial }}</div>
                             <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
                         </div>
 
@@ -148,7 +148,7 @@
 
                         <div class="help help-credit">
                             <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
-                            <span class="counter-credit">{% blocktrans with name=general_info.name mtype=maintenance_types.0.name %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
+                            <span class="counter-credit">{% blocktrans with name=general_info.name mtype=form.contract1_counter_name.initial %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
 
                         {% block email_alert_1 %}{% endblock %}
@@ -190,7 +190,7 @@
 
                     <div class="form-group activation-active counter-total email-alert-disabled">
                         <div class="group-title-container">
-                            <div class="group-title">{% trans "Counter" %} {% block form_counter_name_2 %}{% endblock %}</div>
+                            <div class="group-title">{% trans "Counter" %} {{ form.contract2_counter_name.initial }}</div>
                             <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
                         </div>
 
@@ -246,7 +246,7 @@
 
                         <div class="help help-credit">
                             <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
-                            <span class="counter-credit">{% blocktrans with name=general_info.name mtype=maintenance_types.1.name %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
+                            <span class="counter-credit">{% blocktrans with name=general_info.name mtype=form.contract2_counter_name.initial %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
 
                         {% block email_alert_2 %}{% endblock %}
@@ -288,7 +288,7 @@
 
                     <div class="form-group activation-active counter-total email-alert-disabled">
                         <div class="group-title-container">
-                            <div class="group-title">{% trans "Counter" %} {% block form_counter_name_3 %}{% endblock %}</div>
+                            <div class="group-title">{% trans "Counter" %} {{ form.contract3_counter_name.initial }}</div>
                             <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
                         </div>
 
@@ -344,7 +344,7 @@
 
                         <div class="help help-credit">
                             <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
-                            <span class="counter-credit">{% blocktrans with name=general_info.name mtype=maintenance_types.2.name %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
+                            <span class="counter-credit">{% blocktrans with name=general_info.name mtype=form.contract3_counter_name.initial %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
 
                         {% block email_alert_3 %}{% endblock %}

@@ -13,18 +13,6 @@
 <div class="group-title">{% trans "New project" %}</div>
 {% endblock %}
 
-{% block form_counter_name_1 %}
-{{maintenance_types.0.name}}
-{% endblock %}
-
-{% block form_counter_name_2 %}
-{{maintenance_types.1.name}}
-{% endblock %}
-
-{% block form_counter_name_3 %}
-{{maintenance_types.2.name}}
-{% endblock %}
-
 {% block credited_hours_1 %}
 <div class="form-row row-credit {% if form.contract1_credited_hours.errors %}form-error{% endif %}">
     {% if form.contract1_credited_hours.errors %}
