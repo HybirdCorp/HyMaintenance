@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-18 14:32+0100\n"
+"POT-Creation-Date: 2019-03-07 16:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -164,9 +164,9 @@ msgid "Update general information"
 msgstr "Mettre à jour les informations générales"
 
 #: templates/high_ui/admin.html:33 templates/high_ui/admin.html:52
-#: templates/high_ui/admin.html:69 templates/high_ui/dashboard.html:25
-#: templates/high_ui/issue_details.html:28 tests/views/test_issue_views.py:424
-#: tests/views/test_issue_views.py:433 tests/views/test_issue_views.py:441
+#: templates/high_ui/admin.html:69 templates/high_ui/dashboard.html:26
+#: templates/high_ui/issue_details.html:28 tests/views/test_issue_views.py:452
+#: tests/views/test_issue_views.py:461 tests/views/test_issue_views.py:469
 msgid "Modify"
 msgstr "Modifier"
 
@@ -298,43 +298,49 @@ msgstr "Compte"
 #: templates/high_ui/dashboard_header.html:5
 #: templates/high_ui/issue_details.html:24 templates/high_ui/user_header.html:6
 #: templates/high_ui/user_header.html:8
-#: tests/views/users/test_update_profile.py:35
-#: tests/views/users/test_update_profile.py:42
-#: tests/views/users/test_update_profile.py:56
-#: tests/views/users/test_update_profile.py:63
+#: tests/views/users/test_update_profile.py:44
+#: tests/views/users/test_update_profile.py:51
+#: tests/views/users/test_update_profile.py:65
+#: tests/views/users/test_update_profile.py:72
 msgid "Return to dashboard"
 msgstr "Retour à l'accueil"
 
 #: templates/high_ui/company_details_header.html:19
+#: templates/high_ui/dashboard.html:44 tests/views/test_project_views.py:453
+#: tests/views/test_project_views.py:462
+msgid "Register an issue"
+msgstr "Enregistrer une demande"
+
+#: templates/high_ui/company_details_header.html:23
 #: templates/high_ui/forms/create_credit.html:9
 #: templates/high_ui/forms/create_credit.html:30
-#: tests/views/test_project_views.py:387 tests/views/test_project_views.py:413
+#: tests/views/test_project_views.py:390 tests/views/test_project_views.py:416
 msgid "Add hours"
 msgstr "Ajouter des crédits"
 
-#: templates/high_ui/company_details_header.html:21
-#: tests/views/test_project_views.py:398
+#: templates/high_ui/company_details_header.html:25
+#: tests/views/test_project_views.py:401
 msgid "Buy hours"
 msgstr "Commander des heures"
 
-#: templates/high_ui/company_details_header.html:25
-#: tests/views/test_project_views.py:441
+#: templates/high_ui/company_details_header.html:27
+#: tests/views/test_project_views.py:444
 msgid "Email alerts"
 msgstr "alertes par email"
 
-#: templates/high_ui/company_details_header.html:32
+#: templates/high_ui/company_details_header.html:35
 #: templates/high_ui/issue_details_header.html:22
 msgid "Your Contact"
 msgstr "Votre Contact"
 
-#: templates/high_ui/company_details_header.html:42
+#: templates/high_ui/company_details_header.html:45
 #: templates/high_ui/dashboard_header.html:39
 #: templates/high_ui/issue_details_header.html:32
 #: templates/high_ui/user_header.html:18
 msgid "Quit the application"
 msgstr "Quitter l'application"
 
-#: templates/high_ui/company_details_header.html:42
+#: templates/high_ui/company_details_header.html:45
 #: templates/high_ui/dashboard_header.html:39
 #: templates/high_ui/issue_details_header.html:32
 #: templates/high_ui/user_header.html:18
@@ -384,10 +390,6 @@ msgstr "Accéder aux détails de %(company)s"
 msgctxt "fp"
 msgid "Customize"
 msgstr "Personnaliser"
-
-#: templates/high_ui/dashboard.html:44
-msgid "Register an issue"
-msgstr "Enregistrer une demande"
 
 #: templates/high_ui/dashboard.html:59
 msgid "Create a new operator and add them at the project"
@@ -574,7 +576,7 @@ msgstr "Afficher plus de détails pour ce compteur"
 #: templates/high_ui/forms/base_project.html:194
 #: templates/high_ui/forms/base_project.html:292
 msgid "Display more details"
-msgstr "Afficher plus de détail"
+msgstr "Afficher plus de détails"
 
 #: templates/high_ui/forms/base_project.html:77
 msgid "months"
@@ -625,9 +627,9 @@ msgid ""
 "<em>usable by %(name)s's operators</em> on the dashboard and for register "
 "new issues. "
 msgstr ""
-"Ce compteur sera <em>visible par les managers</em> du projet, et "
-"<em>utilisable par les intervenants de %(name)s</em> dans le tableaux de "
-"bord et pour enregistrer des demandes."
+"Ce compteur sera <em>visible par les managers</em> du projet et "
+"<em>utilisable par les intervenants de %(name)s</em> dépuis le tableau de "
+"bord."
 
 #: templates/high_ui/forms/base_project.html:123
 #: templates/high_ui/forms/base_project.html:221
@@ -638,8 +640,7 @@ msgid ""
 "%(name)s's operators</em> on the dashboard and for register new issues."
 msgstr ""
 "Ce compteur sera <em>invisible aux managers</em>, mais <em>utilisable par "
-"les intervenants de %(name)s</em> dans les tableaux de bord et pour "
-"enregistrer des demandes."
+"les intervenants de %(name)s</em> depuis le tableau de bord."
 
 #: templates/high_ui/forms/base_project.html:124
 #: templates/high_ui/forms/base_project.html:222
@@ -686,14 +687,11 @@ msgstr ""
 #: templates/high_ui/forms/base_project.html:173
 #: templates/high_ui/forms/base_project.html:271
 #: templates/high_ui/forms/base_project.html:369
-msgid "This counter can be renamed to replace the"
-msgstr "Ce compteur peut être renommé pour remplacer son nom par défaut de "
-
-#: templates/high_ui/forms/base_project.html:173
-#: templates/high_ui/forms/base_project.html:271
-#: templates/high_ui/forms/base_project.html:369
-msgid "default name"
-msgstr "Nom par défaut"
+msgid ""
+"This counter can be renamed to replace the default name <em>%(mtype)s</em>."
+msgstr ""
+"Ce compteur peut être renommé pour remplacer son nom par défaut, <em>"
+"%(mtype)s</em>."
 
 #: templates/high_ui/forms/base_project.html:187
 #: templates/high_ui/forms/base_project.html:285
@@ -960,7 +958,7 @@ msgstr ""
 #, python-format
 msgid "Select the single %(name)s's deleted issues to turn it active:"
 msgstr ""
-"Sélectionner l'unique demande supprimée de %(name)s pour le rendre "
+"Sélectionner l'unique demande supprimée de %(name)s pour la rendre "
 "active&nbsp;:"
 
 #: templates/high_ui/forms/unarchive_issues.html:50
@@ -1196,7 +1194,7 @@ msgstr "Modifier cette configuration"
 #: templates/high_ui/forms/update_email_alert.html:37
 #, python-format
 msgid "%(name)s's email-alert configuration"
-msgstr "Configuration des alertes par email de %(name)s"
+msgstr "Configuration des alertes email pour le contrat %(name)s"
 
 #: templates/high_ui/forms/update_email_alert.html:47
 #: templates/high_ui/forms/update_project.html:42
@@ -1219,8 +1217,8 @@ msgid ""
 "Enable the option if you want that a %(company)s's manager receive an email "
 "alert when there are a few credits left on the %(counter)s contract."
 msgstr ""
-"Activez cette option si vous souhaitez qu'un manage de %(company)sreçoive "
-"une alerte par email lorsqu'il reste peu de créditssur le contrat de "
+"Activez cette option si vous souhaitez qu'un manager de %(company)s reçoive "
+"une alerte par email lorsqu'il reste peu de crédits sur le contrat de "
 "%(counter)s."
 
 #: templates/high_ui/forms/update_infos.html:5
@@ -1398,15 +1396,15 @@ msgid "Modify %(company)s project"
 msgstr "Modifier le projet de %(company)s"
 
 #: templates/high_ui/forms/update_user.html:161
-#: tests/views/users/test_update_profile.py:89
-#: tests/views/users/test_update_profile.py:112
-#: tests/views/users/test_update_profile.py:152
-#: tests/views/users/test_update_user.py:138
-#: tests/views/users/test_update_user.py:163
-#: tests/views/users/test_update_user.py:237
-#: tests/views/users/test_update_user.py:255
-#: tests/views/users/test_update_user.py:310
-#: tests/views/users/test_update_user.py:328
+#: tests/views/users/test_update_profile.py:98
+#: tests/views/users/test_update_profile.py:121
+#: tests/views/users/test_update_profile.py:161
+#: tests/views/users/test_update_user.py:171
+#: tests/views/users/test_update_user.py:196
+#: tests/views/users/test_update_user.py:283
+#: tests/views/users/test_update_user.py:301
+#: tests/views/users/test_update_user.py:369
+#: tests/views/users/test_update_user.py:387
 msgid "Modifications have been registered!"
 msgstr "Les modifications ont bien été prises en compte!"
 
@@ -1490,21 +1488,27 @@ msgstr "Demande"
 msgid "Add extra {duration}"
 msgstr "Ajout de {duration} supplémentaires"
 
-#: tests/views/test_project_views.py:429
+#: tests/views/test_project_views.py:432
 msgid "Email alert"
-msgstr "alerte par email"
+msgstr "Alerte par email"
 
-#: tests/views/users/test_update_user.py:380
+#: tests/views/users/test_update_user.py:451
 msgid "Les modifications ont bien été prises en compte!"
 msgstr "Les modifications ont bien été prises en compte!"
 
-#: views/project.py:211
+#: views/project.py:215
 msgid "Hour threshold"
 msgstr "Seuil d'heures"
 
-#: views/project.py:211
+#: views/project.py:215
 msgid "To contact"
 msgstr "À prévenir"
+
+#~ msgid "This counter can be renamed to replace the"
+#~ msgstr "Ce compteur peut être renommé pour remplacer son nom par défaut de "
+
+#~ msgid "default name"
+#~ msgstr "Nom par défaut"
 
 #~ msgid ""
 #~ "Enter a custom color for the project header, with the hexadecimal format "
@@ -1623,13 +1627,6 @@ msgstr "À prévenir"
 
 #~ msgid "credited hours"
 #~ msgstr "heures créditées"
-
-#~ msgid ""
-#~ "This counter can be renamed to replace the <em>%(maintenance_types.1."
-#~ "name)s</em> default name"
-#~ msgstr ""
-#~ "Ce compteur peut être renommé pour remplacer son nom par défaut de <em>"
-#~ "%(maintenance_types.1.name)</em>."
 
 #~ msgid "heures"
 #~ msgstr "heures"
