@@ -1,4 +1,4 @@
-function ForbiddenFastClick () {
+function preventFastClick () {
     var forms = document.querySelectorAll("form");
     for (var i = 0; i < forms.length; ++i) {
         var form = forms[i];
@@ -11,4 +11,4 @@ function ForbiddenFastClick () {
         });
     }
 }
-ForbiddenFastClick();
+preventFastClick();
