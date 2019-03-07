@@ -60,9 +60,6 @@ class OperatorUserCreateView(IsAdminTestMixin, CreateView):
         context.update(get_context_previous_page(self.request))
         return context
 
-    def previous_page(self):
-        return get_context_previous_page(self.request)["previous_page"]
-
     def get_success_url(self):
         return reverse("high_ui:dashboard")
 
@@ -94,9 +91,6 @@ class AdminUserCreateView(IsAdminTestMixin, CreateView):
         context.update(get_context_data_dashboard_header(self.user))
         context.update(get_context_previous_page(self.request))
         return context
-
-    def previous_page(self):
-        return get_context_previous_page(self.request)["previous_page"]
 
     def get_success_url(self):
         return reverse("high_ui:admin")
