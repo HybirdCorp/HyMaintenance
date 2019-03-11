@@ -1,7 +1,7 @@
 {% load static %}
 {% load i18n print_fields %}
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
 {% block page_title %}{% endblock %}
 <meta charset="utf-8" />
@@ -11,6 +11,13 @@
 <link rel="stylesheet" href="/static/css/create.css" />
 <link rel="stylesheet" href="/static/css/edit-list.css" />
 <link rel="stylesheet" href="/static/css/edit-operators.css" />
+<style>
+.help em {
+    font-style: normal;
+    font-weight: 600;
+    color: #2f2f2f;
+}
+</style>
 </head>
 <body>
     {% include "high_ui/dashboard_header.html" %}
@@ -22,6 +29,13 @@
                         {% block form_title %}{% endblock %}
                     </div>
                 </div>
+                {%  if admins_list %}
+                <span class="help">
+                    <p>{% blocktrans %}The operators of your HyMaintenance are all <em>administrators</em> with operator function, who are: {{ admins_list }}.{% endblocktrans %}</p>
+                    <p>{% blocktrans %}Administrator can't be update with this form.{% endblocktrans %}</p>
+                    <p>{% blocktrans %}Please use the <em><a href"{{ admin_url }}">administration page</a></em> if you want to update administrators with operator function no not.{% endblocktrans %}</p>
+                </span>
+                {%  endif %}
                 {% if active_users_number %}
                 <form action="{% block archive_form_post_url %}{% endblock %}" method="post">
                     {% csrf_token %}

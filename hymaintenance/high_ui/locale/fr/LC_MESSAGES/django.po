@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-07 16:50+0100\n"
+"POT-Creation-Date: 2019-03-11 14:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -612,9 +612,9 @@ msgstr "Invisible aux clients"
 #: templates/high_ui/forms/base_project.html:206
 #: templates/high_ui/forms/base_project.html:304
 #: templates/high_ui/forms/update_email_alert.html:46
-#: templates/high_ui/forms/update_project.html:41
-#: templates/high_ui/forms/update_project.html:101
-#: templates/high_ui/forms/update_project.html:161
+#: templates/high_ui/forms/update_project.html:29
+#: templates/high_ui/forms/update_project.html:89
+#: templates/high_ui/forms/update_project.html:149
 msgid "Disabled"
 msgstr "Inactif"
 
@@ -687,6 +687,7 @@ msgstr ""
 #: templates/high_ui/forms/base_project.html:173
 #: templates/high_ui/forms/base_project.html:271
 #: templates/high_ui/forms/base_project.html:369
+#, python-format
 msgid ""
 "This counter can be renamed to replace the default name <em>%(mtype)s</em>."
 msgstr ""
@@ -715,7 +716,7 @@ msgstr "Ajouter cet admin"
 #: templates/high_ui/forms/create_issue.html:20
 #: templates/high_ui/forms/create_manager.html:20
 #: templates/high_ui/forms/create_operator.html:18
-#: templates/high_ui/forms/create_project.html:87
+#: templates/high_ui/forms/create_project.html:75
 #: templates/high_ui/forms/customize_project.html:164
 #: templates/high_ui/forms/unarchive_issues.html:51
 #: templates/high_ui/forms/update_admin.html:22
@@ -740,8 +741,8 @@ msgstr "Ajouter cet admin"
 #: templates/high_ui/forms/update_profile.html:31
 #: templates/high_ui/forms/update_project.html:18
 #: templates/high_ui/forms/update_projects.html:50
-#: templates/high_ui/forms/update_users.html:60
-#: templates/high_ui/forms/update_users.html:97
+#: templates/high_ui/forms/update_users.html:74
+#: templates/high_ui/forms/update_users.html:111
 msgid "or"
 msgstr "ou"
 
@@ -834,11 +835,11 @@ msgstr "Ajouter cet intervenant"
 msgid "New project"
 msgstr "Nouveau projet"
 
-#: templates/high_ui/forms/create_project.html:86
+#: templates/high_ui/forms/create_project.html:74
 msgid "Create this project"
 msgstr "créer ce projet"
 
-#: templates/high_ui/forms/create_project.html:87
+#: templates/high_ui/forms/create_project.html:75
 msgid "Don't create"
 msgstr "Ne pas créer"
 
@@ -967,8 +968,8 @@ msgstr "Activer cette demande"
 
 #: templates/high_ui/forms/unarchive_issues.html:51
 #: templates/high_ui/forms/update_projects.html:50
-#: templates/high_ui/forms/update_users.html:60
-#: templates/high_ui/forms/update_users.html:97
+#: templates/high_ui/forms/update_users.html:74
+#: templates/high_ui/forms/update_users.html:111
 msgid "Change nothing"
 msgstr "Ne rien changer"
 
@@ -1197,9 +1198,9 @@ msgid "%(name)s's email-alert configuration"
 msgstr "Configuration des alertes email pour le contrat %(name)s"
 
 #: templates/high_ui/forms/update_email_alert.html:47
-#: templates/high_ui/forms/update_project.html:42
-#: templates/high_ui/forms/update_project.html:102
-#: templates/high_ui/forms/update_project.html:162
+#: templates/high_ui/forms/update_project.html:30
+#: templates/high_ui/forms/update_project.html:90
+#: templates/high_ui/forms/update_project.html:150
 msgid "Enabled"
 msgstr "Actif"
 
@@ -1408,8 +1409,30 @@ msgstr "Modifier le projet de %(company)s"
 msgid "Modifications have been registered!"
 msgstr "Les modifications ont bien été prises en compte!"
 
-#: templates/high_ui/forms/update_users.html:49
-#: templates/high_ui/forms/update_users.html:87
+#: templates/high_ui/forms/update_users.html:34
+#, python-format
+msgid ""
+"The operators of your HyMaintenance are all <em>administrators</em> with "
+"operator function, who are: %(admins_list)s."
+msgstr ""
+"Les seuls intervenants de votre plateforme HyMaintenance sont des <em>administrateurs</em> avec"
+"avec le rôle d'intervenant, qui sont : %(admins_list)s."
+
+#: templates/high_ui/forms/update_users.html:35
+msgid "Administrator can't be update with this form."
+msgstr "En temps qu'administrateurs ils ne sont pas modifiables via ce formulaire."
+
+#: templates/high_ui/forms/update_users.html:36
+#, python-format
+msgid ""
+"Please use the <em><a href\"%(admin_url)s\">administration page</a></em> if "
+"you want to update administrators with operator function no not."
+msgstr ""
+"Veuillez utiliser la <em><a href\"%(admin_url)s\">vue d'administration</a></em> si"
+"vous souhaitez modifier les administrateurs avec ou sans rôle intervenant."
+
+#: templates/high_ui/forms/update_users.html:63
+#: templates/high_ui/forms/update_users.html:101
 #: templates/high_ui/issue_details.html:67
 msgid "Operator"
 msgstr "Intervenant"
