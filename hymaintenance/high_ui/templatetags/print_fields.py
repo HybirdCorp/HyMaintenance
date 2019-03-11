@@ -39,24 +39,24 @@ def print_operator_projects(operator_id):
     if projects:
         projects_names = [project.name for project in projects]
         if len(projects_names) == 1:
-            return mark_safe(_("project:") + " " + projects_names[0])
+            return format_html(_("project: {}"), projects_names[0])
         else:
-            return mark_safe(_("projects:") + " " + ", ".join(projects_names))
-    return mark_safe(_("project:") + " " + _("none"))
+            return format_html(_("projects: {}"), ", ".join(projects_names))
+    return format_html(_("project: none"))
 
 
 @register.filter
 def print_issue_number_and_type(issue_id):
     issue = MaintenanceIssue.objects.get(id=issue_id)
-    return mark_safe(
-        _("Issue ") + str(issue.company_issue_number) + ": " + issue.get_counter_name() + " (" + str(issue.date) + ")"
+    return format_html(
+        _("Issue {}: {} ({})"), str(issue.company_issue_number), issue.get_counter_name(), str(issue.date)
     )
 
 
 @register.filter
 def print_issue_subject(issue_id):
     issue = MaintenanceIssue.objects.get(id=issue_id)
-    return mark_safe(issue.subject)
+    return format_html(issue.subject)
 
 
 @register.filter
