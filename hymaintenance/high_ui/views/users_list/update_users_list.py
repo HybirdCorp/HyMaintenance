@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 
@@ -93,6 +94,12 @@ class OperatorUsersListUpdateView(IsAdminTestMixin, TemplateView):
             MaintenanceUser.objects.get_operator_users_queryset().count() - context["active_users_number"]
         )
         context.update(get_context_previous_page(self.request))
+
+        if context["archived_users_number"] + context["active_users_number"] == 0:
+            context["admin_url"] = reverse("high_ui:admin")
+            context["admins_list"] = ", ".join(
+                [admin.get_full_name() for admin in MaintenanceUser.objects.get_active_admin_users_queryset()]
+            )
         return context
 
 
