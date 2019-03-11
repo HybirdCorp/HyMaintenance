@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 {%  if admins_list %}
-                <span class="help">
+                <span class="help no-operator">
                     <p>{% blocktrans %}The operators of your HyMaintenance are all <em>administrators</em> with operator function, who are: {{ admins_list }}.{% endblocktrans %}</p>
                     <p>{% blocktrans %}Administrator can't be update with this form.{% endblocktrans %}</p>
                     <p>{% blocktrans %}Please use the <em><a href"{{ admin_url }}">administration page</a></em> if you want to update administrators with operator function no not.{% endblocktrans %}</p>

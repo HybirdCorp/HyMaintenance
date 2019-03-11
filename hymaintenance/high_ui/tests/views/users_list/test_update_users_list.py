@@ -239,6 +239,32 @@ class OperatorUsersListUpdateViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_no_form_get_if_no_operator(self):
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertContains(response, '<span class="help no-operator">')
+        self.assertNotContains(response, "/high_ui/operators/archive/")
+        self.assertNotContains(response, "/high_ui/operators/unarchive/")
+
+    def test_archive_form_if_active_operators(self):
+        OperatorUserFactory(is_active=True)
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertNotContains(response, '<span class="help no-operator">')
+        self.assertContains(response, "/high_ui/operators/archive/")
+        self.assertNotContains(response, "/high_ui/operators/unarchive/")
+
+    def test_unarchive_form_if_archived_operators(self):
+        OperatorUserFactory(is_active=False)
+        self.client.login(username=self.admin.email, password="azerty")
+        response = self.client.get(self.form_url, follow=True)
+
+        self.assertNotContains(response, '<span class="help no-operator">')
+        self.assertNotContains(response, "/high_ui/operators/archive/")
+        self.assertContains(response, "/high_ui/operators/unarchive/")
+
     def test_post_archive_operators_form(self):
         op_id = 2
         op_email = "chell@aperture-science.com"
