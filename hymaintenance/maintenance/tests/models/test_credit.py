@@ -27,3 +27,22 @@ class MaintenanceCreditTestCase(TestCase):
     def test_print_maintenance_credit_choices(self):
         choice = MaintenanceCreditChoices.objects.all().first()
         self.assertEqual("8", str(choice))
+
+    def test_contract_credited_hours_update(self):
+        company, contract, _, _ = create_project(
+            contract1={"start": datetime.date(2012, 12, 21), "credit_counter": True}
+        )
+        self.assertEqual(20, contract.credited_hours)
+
+        credit = MaintenanceCredit.objects.create(company=company, date=now(), contract=contract, hours_number=40)
+        contract.refresh_from_db()
+        self.assertEqual(60, contract.credited_hours)
+
+        credit.hours_number = 80
+        credit.save()
+        contract.refresh_from_db()
+        self.assertEqual(100, contract.credited_hours)
+
+        credit.delete()
+        contract.refresh_from_db()
+        self.assertEqual(20, contract.credited_hours)
