@@ -3,6 +3,9 @@ import os
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.db import transaction
+from django.db.models.signals import post_delete
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
@@ -139,3 +142,25 @@ class MaintenanceIssue(models.Model):
                 Company.objects.filter(id=self.company_id).values_list("issues_counter", flat=True).first()
             )
         super().save(*args, **kwargs)
+
+
+@receiver(post_save, sender=MaintenanceIssue, dispatch_uid="update_consumed_minutes")
+def update_consumed_minutes_after_save(sender, instance, **kwargs):
+    instance.contract.consumed_minutes = calcul_consumed_minutes(contract=instance.contract)
+    instance.contract.save()
+
+
+@receiver(post_delete, sender=MaintenanceIssue, dispatch_uid="update_consumed_minutes")
+def update_consumed_minutes_after_delete(sender, instance, **kwargs):
+    instance.contract.consumed_minutes = calcul_consumed_minutes(contract=instance.contract)
+    instance.contract.save()
+
+
+def calcul_consumed_minutes(contract):
+    minutes_sum = MaintenanceIssue.objects.filter(contract=contract, is_deleted=False).aggregate(
+        models.Sum("number_minutes")
+    )
+    minutes_sum = minutes_sum["number_minutes__sum"]
+    if minutes_sum is None:
+        minutes_sum = 0
+    return minutes_sum
