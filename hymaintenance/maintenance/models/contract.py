@@ -37,6 +37,7 @@ class MaintenanceContract(models.Model):
 
     total_type = models.IntegerField(_("Counter type"), choices=TYPE_CHOICES, default=AVAILABLE_TOTAL_TIME)
     credited_hours = models.PositiveIntegerField(_("Credited hours"), null=True, blank=True)
+    consumed_minutes = models.PositiveIntegerField(_("Credited hours"), default=0)
 
     email_alert = models.BooleanField(_("Email alert"), default=False)
     credited_hours_min = models.IntegerField(_("Credited hours Threshold"), default=0)
