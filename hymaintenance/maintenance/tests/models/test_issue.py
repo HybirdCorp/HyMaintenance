@@ -103,3 +103,20 @@ class MaintenanceIssueTestCase(TestCase):
         self.assertFalse(issue.is_deleted)
         issue.archive()
         self.assertTrue(MaintenanceIssue.objects.get(pk=issue.pk).is_deleted)
+
+    def test_contract_consumed_minutes_update(self):
+        company, contract, _, _ = create_project()
+        self.assertEqual(0, contract.consumed_minutes)
+
+        issue = MaintenanceIssue.objects.create(company=company, date=now(), contract=contract, number_minutes=40)
+        contract.refresh_from_db()
+        self.assertEqual(40, contract.consumed_minutes)
+
+        issue.number_minutes = 80
+        issue.save()
+        contract.refresh_from_db()
+        self.assertEqual(80, contract.consumed_minutes)
+
+        issue.delete()
+        contract.refresh_from_db()
+        self.assertEqual(0, contract.consumed_minutes)
