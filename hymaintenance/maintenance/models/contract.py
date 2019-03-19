@@ -65,11 +65,7 @@ class MaintenanceContract(models.Model):
         return self.get_number_contract_hours() * 60
 
     def get_number_consumed_minutes(self) -> int:
-        consumed = MaintenanceIssue.objects.filter(company=self.company, contract=self, is_deleted=False).aggregate(
-            models.Sum("number_minutes")
-        )
-        consumed = consumed["number_minutes__sum"]
-        return consumed if consumed is not None else 0
+        return self.consumed_minutes
 
     def get_number_consumed_hours(self) -> float:
         return self.get_number_consumed_minutes() / 60
