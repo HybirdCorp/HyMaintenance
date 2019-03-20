@@ -58,7 +58,7 @@ class PrettyPrintContractCounterTestCase(TestCase):
         MaintenanceIssueFactory(company=self.company, contract=self.available_contract, number_minutes=10)
         self.assertEqual("50m /&nbsp;1h", pretty_print_contract_counter(self.available_contract))
 
-    def test_print_comsummed_time(self):
+    def test_print_comsumed_time(self):
         MaintenanceIssueFactory(company=self.company, contract=self.consumed_contract, number_minutes=10)
         self.assertEqual("10m", pretty_print_contract_counter(self.consumed_contract))
 
