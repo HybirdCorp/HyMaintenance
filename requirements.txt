@@ -11,12 +11,10 @@ django-grappelli==2.11.1
 django-ordered-model==1.4.3
 factory-boy==2.10.0
 Faker==0.9.0
-flake8==3.5.0
+invoke==1.2.0
 ipython==6.2.1
 ipython-genutils==0.2.0
-isort==4.3.4
 jedi==0.12.1
-mccabe==0.6.1
 parso==0.3.1
 pexpect==4.6.0
 pickleshare==0.7.4
