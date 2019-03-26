@@ -52,7 +52,7 @@ class MaintenanceContractTestCase(TestCase):
         maintenance_type = get_default_maintenance_type()
         contract = MaintenanceContractFactory(company=company, maintenance_type=maintenance_type)
 
-        self.assertEqual(None, contract.get_number_contract_hours())
+        self.assertEqual(0, contract.get_number_contract_hours())
 
     def test_get_number_contract_minutes(self):
         company = CompanyFactory()

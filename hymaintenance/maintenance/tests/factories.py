@@ -75,7 +75,7 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def total_type(self):
-        if self.credit_counter:
+        if self.credit_counter or self.credited_hours:
             return AVAILABLE_TOTAL_TIME
         else:
             return CONSUMMED_TOTAL_TIME
