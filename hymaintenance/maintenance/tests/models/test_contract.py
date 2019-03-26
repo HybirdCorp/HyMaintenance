@@ -199,3 +199,30 @@ class MaintenanceContractTestCase(TestCase):
         MaintenanceCreditFactory(company=company, contract=contract, hours_number=15)
 
         self.assertEqual(20, contract.get_number_credited_hours_in_month(today))
+
+    def test_get_current_issues(self):
+        time1 = datetime(day=1, month=2, year=2021)
+        time2 = datetime(day=1, month=1, year=2021)
+        company, contract, _, _ = create_project(contract1={"reset_date": time1})
+        issue = MaintenanceIssueFactory(contract=contract, date=time1)
+        MaintenanceIssueFactory(contract=contract, is_deleted=True, date=time1)
+        MaintenanceIssueFactory(date=time2)
+        self.assertEqual([issue], contract.get_current_issue())
+
+    def test_update_times_in_save_contract(self):
+        time1 = datetime(day=1, month=2, year=2021)
+        time2 = datetime(day=1, month=1, year=2021)
+
+        company, contract, _, _ = create_project(contract1={"credited_hours": 10})
+        self.assertEqual(10, contract.credited_hours)
+        self.assertEqual(0, contract.consumed_minutes)
+
+        MaintenanceIssueFactory(contract=contract, date=time2, number_minutes=60)
+        contract.refresh_from_db()
+        self.assertEqual(60, contract.consumed_minutes)
+
+        contract.reset_date = time1
+        contract.save()
+        contract.refresh_from_db()
+        self.assertEqual(0, contract.consumed_minutes)
+        self.assertEqual(10, contract.credited_hours)
