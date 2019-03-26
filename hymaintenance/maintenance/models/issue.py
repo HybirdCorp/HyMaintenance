@@ -157,9 +157,7 @@ def update_consumed_minutes_after_delete(sender, instance, **kwargs):
 
 
 def calcul_consumed_minutes(contract):
-    minutes_sum = MaintenanceIssue.objects.filter(contract=contract, is_deleted=False).aggregate(
-        models.Sum("number_minutes")
-    )
+    minutes_sum = contract.get_current_issues().aggregate(models.Sum("number_minutes"))
     minutes_sum = minutes_sum["number_minutes__sum"]
     if minutes_sum is None:
         minutes_sum = 0
