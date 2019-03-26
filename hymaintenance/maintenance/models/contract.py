@@ -7,7 +7,9 @@ from django.utils.translation import ugettext_lazy as _
 from customers.models import Company
 
 from .credit import MaintenanceCredit
+from .credit import calcul_credited_hours
 from .issue import MaintenanceIssue
+from .issue import calcul_consumed_minutes
 from .other_models import MaintenanceType
 
 
@@ -36,6 +38,7 @@ class MaintenanceContract(models.Model):
     disabled = models.BooleanField(_("Disable the contract"), default=False)
 
     total_type = models.IntegerField(_("Counter type"), choices=TYPE_CHOICES, default=AVAILABLE_TOTAL_TIME)
+    reset_date = models.DateField(_("Start Date"), null=True, blank=True)
     credited_hours = models.PositiveIntegerField(_("Credited hours"), null=True, blank=True)
     consumed_minutes = models.PositiveIntegerField(_("Credited hours"), default=0)
 
@@ -54,6 +57,12 @@ class MaintenanceContract(models.Model):
 
     def __str__(self):
         return "%s , %s" % (self.company, self.maintenance_type)
+
+    def get_current_issues(self):
+        issues = MaintenanceIssue.objects.filter(contract=self, is_deleted=False)
+        if self.reset_date:
+            issues = issues.exclude(date__lt=self.reset_date)
+        return issues
 
     def get_counter_name(self):
         return self.counter_name if self.counter_name != "" else self.maintenance_type.name
@@ -95,3 +104,9 @@ class MaintenanceContract(models.Model):
         if credited is None:
             credited = 0
         return credited
+
+    def save(self, *args, **kwargs):
+        if self.id is not None:
+            self.consumed_minutes = calcul_consumed_minutes(contract=self)
+            self.credited_hours = calcul_credited_hours(contract=self)
+        super().save(*args, **kwargs)
