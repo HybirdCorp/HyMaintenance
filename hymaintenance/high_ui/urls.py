@@ -22,6 +22,7 @@ from .views.project import ProjectCustomizeView
 from .views.project import ProjectDetailsView
 from .views.project import ProjectListArchiveView
 from .views.project import ProjectListUnarchiveView
+from .views.project import ProjectResetCountersView
 from .views.project import ProjectUpdateView
 from .views.users.create_user import AdminUserCreateView
 from .views.users.create_user import ConsumerCreateView
@@ -142,5 +143,10 @@ urlpatterns = [
     path(r"admins/unarchive/", AdminUsersListUnarchiveView.as_view(), name="unarchive_admins"),
     path(
         r"projects/<slug:company_name>/email-alert/", EmailAlertUpdateView.as_view(), name="project-update_email_alert"
+    ),
+    path(
+        r"projects/<slug:company_name>/reset-counters/",
+        ProjectResetCountersView.as_view(),
+        name="project-reset_counters",
     ),
 ]

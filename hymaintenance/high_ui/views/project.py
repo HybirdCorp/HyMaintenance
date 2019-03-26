@@ -18,9 +18,11 @@ from maintenance.models import MaintenanceContract
 from maintenance.models import MaintenanceCredit
 from maintenance.models import MaintenanceIssue
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
+from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 
 from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedManagerTestMixin
+from .base import IsAtLeastAllowedOperatorTestMixin
 from .base import ViewWithCompany
 from .base import get_context_data_dashboard_header
 from .base import get_context_previous_page
@@ -247,6 +249,39 @@ class EmailAlertUpdateView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Fo
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+
+class ProjectResetCountersView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, FormView):
+    form_class = modelformset_factory(
+        MaintenanceContract, fields=["reset_date", "id"], labels={"reset_date": _("Reset date")}, extra=0
+    )
+    template_name = "high_ui/forms/reset_contracts.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_maintenance_types())
+        context.update(get_context_previous_page(self.request))
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["queryset"] = self.company.contracts.filter(disabled=False, total_type=CONSUMMED_TOTAL_TIME).order_by(
+            "maintenance_type_id"
+        )
+        return kwargs
+
+    def get_form(self):
+        formset = super().get_form()
+        for form in formset:
+            form.counter_name = form.instance.get_counter_name()
+        return formset
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.company.get_absolute_url()
 
 
 class ProjectCustomizeView(IsAdminTestMixin, ViewWithCompany, UpdateView):

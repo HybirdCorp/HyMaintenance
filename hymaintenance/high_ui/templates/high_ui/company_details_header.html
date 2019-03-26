@@ -19,12 +19,17 @@
             <a href="{% url 'high_ui:project-create_issue' company_name=company.slug_name %}">{% trans "Register an issue" %}</a>
             {% endif %}
             {% if add_credits %}
-            {% if request.user.has_operator_or_admin_permissions %}
-            <a href='{% url 'high_ui:project-create_credit' company_name=company.slug_name %}'>{% trans "Add hours" %}</a>
-            {% else %}
-            <a href='{% url 'high_ui:project-contact' company_name=company.slug_name %}'>{% trans "Buy hours" %}</a>
+                {% if request.user.has_operator_or_admin_permissions %}
+                    <a href='{% url 'high_ui:project-create_credit' company_name=company.slug_name %}'>{% trans "Add hours" %}</a>
+                {% else %}
+                    <a href='{% url 'high_ui:project-contact' company_name=company.slug_name %}'>{% trans "Buy hours" %}</a>
+                {% endif %}
+                <a href='{% url 'high_ui:project-update_email_alert' company_name=company.slug_name %}'>{% trans "Email alerts" %}</a>
             {% endif %}
-            <a href='{% url 'high_ui:project-update_email_alert' company_name=company.slug_name %}'>{% trans "Email alerts" %}</a>
+            {% if reset_counter %}
+                {% if request.user.has_operator_or_admin_permissions %}
+                    <a href='{% url 'high_ui:project-reset_counters' company_name=company.slug_name %}'>{% trans "Reset counter" %}</a>
+                {% endif %}
             {% endif %}
         </div>
     </div>
