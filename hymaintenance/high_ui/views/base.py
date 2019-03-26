@@ -9,6 +9,7 @@ from customers.models.user import get_companies_of_operator
 from maintenance.models import MaintenanceContract
 from maintenance.models import MaintenanceType
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
+from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 
 
 def get_maintenance_types():
@@ -46,6 +47,9 @@ def get_context_data_project_header(user, company):
         ).order_by("maintenance_type__pk")
     context["add_credits"] = (
         True if context["contracts"].filter(total_type=AVAILABLE_TOTAL_TIME, disabled=False).count() else False
+    )
+    context["reset_counter"] = (
+        True if context["contracts"].filter(total_type=CONSUMMED_TOTAL_TIME, disabled=False).count() else False
     )
     context["company"] = company
     return context

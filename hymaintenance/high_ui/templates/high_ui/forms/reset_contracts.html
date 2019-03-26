@@ -1,0 +1,91 @@
+{% load static %}
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance {{general_info.name}} &mdash; {% blocktrans %}Reset {{company}}'s counter{% endblocktrans %}</title> {# TMP #}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/create-project.css" />
+<link rel="stylesheet" href="/static/css/date-picker.css" />
+<script src="/static/js/segmented-selector.js"></script>
+<script src="/static/js/date-picker.js"></script>
+{% if company.color %}
+<style>
+.dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
+    background-color: white;
+    color: {{company.color}};
+}
+</style>
+{% endif %}
+</head>
+<body>
+    {% include "high_ui/company_details_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content">
+                    {{form.management_form}}
+                    {% for sub_form in form %}
+                    <div class="form-group email-alert-disabled">
+
+                        <div class="group-title-container">
+                            <div class="group-title">{% blocktrans with name=sub_form.counter_name %}{{name}}'s counter reset{% endblocktrans %}</div>
+                        </div>
+                        <div class="form-row row-reset_date {% if sub_form.reset_date.errors %}form-error{% endif %}">
+                            {% if sub_form.reset_date.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+                        
+                            <label for="{{sub_form.reset_date.id_for_label}}">{{sub_form.reset_date.label}} *</label>
+                            {{sub_form.reset_date}}
+                        
+                            {% if sub_form.reset_date.errors %}
+                            </div>
+                            {% endif %}
+                        
+                            {% for error in sub_form.reset_date.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        {{sub_form.id}}
+
+                        <div class="help">
+                            <span>{% blocktrans with company=company.name counter=sub_form.counter_name %}Enable the option if you want that a {{company}}'s manager receive an email alert when there are a few credits left on the {{counter}} contract.{% endblocktrans %}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% if form.non_field_errors %}
+                    <div class="form-error">
+                        {% for error in form.non_field_errors %}
+                            <p><i>{{ error }}</i></p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-footer">
+                        <button type="submit">{% trans "Modify this configuration" %}</button>
+                        <span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't Modify" %}</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script>
+        // setup date pickers
+        var dateFields = [{% for sub_form in form  %}"{{ sub_form.reset_date.id_for_label }}", {% endfor %}];
+        for (var i = 0; i < dateFields.length; ++i) {
+            var fieldId = dateFields[i];
+            new DatePicker(document.getElementById(fieldId));
+        }
+    </script>
+    <script src="/static/js/fast_click.js"></script>
+</body>
+</html>
