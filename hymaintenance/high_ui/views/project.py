@@ -253,7 +253,11 @@ class EmailAlertUpdateView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Fo
 
 class ProjectResetCountersView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, FormView):
     form_class = modelformset_factory(
-        MaintenanceContract, fields=["reset_date", "id"], labels={"reset_date": _("Reset date")}, extra=0
+        MaintenanceContract,
+        fields=["reset_date", "id"],
+        widgets={"id": forms.HiddenInput(attrs={"readonly": True})},
+        labels={"reset_date": _("Reset date")},
+        extra=0,
     )
     template_name = "high_ui/forms/reset_contracts.html"
 
