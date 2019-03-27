@@ -207,7 +207,7 @@ class MaintenanceContractTestCase(TestCase):
         issue = MaintenanceIssueFactory(contract=contract, date=time1)
         MaintenanceIssueFactory(contract=contract, is_deleted=True, date=time1)
         MaintenanceIssueFactory(date=time2)
-        self.assertEqual([issue], contract.get_current_issue())
+        self.assertEqual([issue], list(contract.get_current_issues()))
 
     def test_update_times_in_save_contract(self):
         time1 = datetime(day=1, month=2, year=2021)
