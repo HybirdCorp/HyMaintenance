@@ -5,6 +5,7 @@ from tempfile import TemporaryFile
 from django.conf import settings
 from django.core.files import File
 from django.test import TestCase
+from django.utils.timezone import datetime
 from django.utils.timezone import now
 
 from customers.tests.factories import OperatorUserFactory
@@ -120,3 +121,13 @@ class MaintenanceIssueTestCase(TestCase):
         issue.delete()
         contract.refresh_from_db()
         self.assertEqual(0, contract.consumed_minutes)
+
+    def test_contract_consumed_minutes_update_when_old_issues(self):
+        time1 = datetime(day=1, month=2, year=2021)
+        time2 = datetime(day=19, month=1, year=2021)
+        company, contract, _, _ = create_project(contract1={"annual_recurrence": True, "reset_date": time1})
+
+        MaintenanceIssue.objects.create(company=company, date=time1, contract=contract, number_minutes=40)
+        MaintenanceIssue.objects.create(company=company, date=time2, contract=contract, number_minutes=20 * 60 + 40)
+        contract.refresh_from_db()
+        self.assertEqual(80, contract.consumed_minutes)
