@@ -45,10 +45,14 @@ def update_credited_hours_after_delete(sender, instance, **kwargs):
 
 
 def calcul_credited_hours(contract):
-    hours_sum = MaintenanceCredit.objects.filter(contract=contract).aggregate(models.Sum("hours_number"))
+    hours_sum = contract.get_current_credits().aggregate(models.Sum("hours_number"))
     hours_sum = hours_sum["hours_number__sum"]
     if hours_sum is None:
         hours_sum = 0
+    if contract.is_available_time_counter():
+        delta_time = contract.get_delta_credits_minutes()
+        if delta_time > 0:
+            hours_sum = hours_sum + delta_time / 60
     return hours_sum
 
 
