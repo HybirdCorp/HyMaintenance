@@ -161,4 +161,8 @@ def calcul_consumed_minutes(contract):
     minutes_sum = minutes_sum["number_minutes__sum"]
     if minutes_sum is None:
         minutes_sum = 0
+    if contract.is_available_time_counter():
+        delta_time = contract.get_delta_credits_minutes()
+        if delta_time < 0:
+            minutes_sum = minutes_sum - delta_time
     return minutes_sum
