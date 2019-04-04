@@ -12,8 +12,10 @@ from ..models import MaintenanceContract
 from ..models import MaintenanceCredit
 from ..models import MaintenanceIssue
 from ..models import MaintenanceType
+from ..models.contract import ANNUAL
 from ..models.contract import AVAILABLE_TOTAL_TIME
 from ..models.contract import CONSUMMED_TOTAL_TIME
+from ..models.contract import MONTHLY
 
 
 def create_project(**kwargs):
@@ -69,9 +71,24 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
     company = factory.SubFactory(CompanyFactory)
     maintenance_type = factory.LazyFunction(get_default_maintenance_type)
     start = now()
+    reset_date = None
 
     class Params:
         credit_counter = False
+        annual_recurrence = factory.Trait(
+            total_type=AVAILABLE_TOTAL_TIME,
+            hours_to_credit=20,
+            credited_hours=20,
+            credit_recurrence=ANNUAL,
+            recurrence_start_date=now().date(),
+        )
+        monthly_recurrence = factory.Trait(
+            total_type=AVAILABLE_TOTAL_TIME,
+            hours_to_credit=20,
+            credited_hours=20,
+            credit_recurrence=MONTHLY,
+            recurrence_start_date=now().date(),
+        )
 
     @factory.lazy_attribute
     def total_type(self):
