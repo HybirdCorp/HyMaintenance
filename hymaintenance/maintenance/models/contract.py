@@ -1,3 +1,5 @@
+from calendar import monthrange
+
 from django.db import models
 from django.db.models import F
 from django.utils.timezone import datetime
@@ -238,7 +240,5 @@ def is_valid_date(day, month, year):
 
 
 def get_last_day_of_the_month(month, year):
-    day = 31
-    while not is_valid_date(day, month, year):
-        day -= 1
-    return day
+    _, last_day = monthrange(year, month)
+    return last_day
