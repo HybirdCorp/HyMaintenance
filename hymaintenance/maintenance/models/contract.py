@@ -26,6 +26,9 @@ class MaintenanceContractQuerySet(models.QuerySet):
     def filter_enabled(self):
         return self.filter(disabled=False).order_by(F("maintenance_type__id").asc())
 
+    def filter_enabled_and_available_counter(self):
+        return self.filter(disabled=False, total_type=AVAILABLE_TOTAL_TIME).order_by(F("maintenance_type__id").asc())
+
 
 class MaintenanceContract(models.Model):
     TYPE_CHOICES = (
@@ -48,6 +51,7 @@ class MaintenanceContract(models.Model):
 
     reset_date = models.DateField(_("Last reset date"), null=True, blank=True)
 
+    has_credit_recurrence = models.BooleanField(_("Recurrence"), default=False)
     recurrence_start_date = models.DateField(_("Credit-recurrence start date"), null=True, blank=True)
     recurrence_last_date = models.DateField(_("Credit-recurrence last date"), null=True, blank=True)
     recurrence_next_date = models.DateField(_("Credit-recurrence next date"), null=True, blank=True)
@@ -80,13 +84,10 @@ class MaintenanceContract(models.Model):
         return self.total_type == CONSUMMED_TOTAL_TIME
 
     def has_annual_credit_recurrence(self):
-        return self.credit_recurrence == ANNUAL
+        return self.has_credit_recurrence and self.credit_recurrence == ANNUAL
 
     def has_monthly_credit_recurrence(self):
-        return self.credit_recurrence == MONTHLY
-
-    def has_credit_recurrence(self):
-        return self.credit_recurrence is not None
+        return self.has_credit_recurrence and self.credit_recurrence == MONTHLY
 
     def get_current_issues(self):
         issues = MaintenanceIssue.objects.filter(contract=self, is_deleted=False)
@@ -182,32 +183,38 @@ class MaintenanceContract(models.Model):
             return None
 
     def remove_recurrence(self):
-        self.credit_recurrence = None
+        self.has_credit_recurrence = False
         self.save()
 
     def set_annual_recurrence(self):
+        self.has_credit_recurrence = True
         self.credit_recurrence = ANNUAL
-        self.set_recurrence_dates()
+        self.set_recurrence_dates_and_create_all_old_credit_occurrences()
         self.save()
 
     def set_monthly_recurrence(self):
+        self.has_credit_recurrence = True
         self.credit_recurrence = MONTHLY
-        self.set_recurrence_dates()
+        self.set_recurrence_dates_and_create_all_old_credit_occurrences()
         self.save()
 
-    def set_recurrence_dates(self):
-        if now().date() >= self.recurrence_start_date:
-            self.recurrence_last_date = self.recurrence_next_date = self.recurrence_start_date
-            self.recurrence_next_date = self.get_recurrence_next_date()
-        else:
+    def set_recurrence_dates_and_create_all_old_credit_occurrences(self, now_date=None):
+        if now_date is None:
+            now_date = now().date()
+        old_contract = MaintenanceContract.objects.get(id=self.id)
+        if self.has_credit_recurrence and (
+            self.recurrence_next_date is None or self.recurrence_start_date != old_contract.recurrence_start_date
+        ):
             self.recurrence_next_date = self.recurrence_start_date
+            while self.recurrence_next_date <= now_date:
+                create_old_occurrence_credit(self.recurrence_next_date, self)
+                self.recurrence_last_date = self.recurrence_next_date
+                self.recurrence_next_date = self.get_recurrence_next_date()
 
     def save(self, *args, **kwargs):
         if self.id is not None:
             self.consumed_minutes = calcul_consumed_minutes(contract=self)
             self.credited_hours = calcul_credited_hours(contract=self)
-        if self.has_credit_recurrence() and self.recurrence_next_date is None:
-            self.set_recurrence_dates()
         super().save(*args, **kwargs)
 
 
@@ -219,7 +226,7 @@ def get_next_month_date(start_date, old_date):
     next_day = start_date.day
     if not is_valid_date(next_day, next_month, next_year):
         next_day = get_last_day_of_the_month(next_month, next_year)
-    return datetime(day=next_day, month=next_month, year=next_year)
+    return datetime(day=next_day, month=next_month, year=next_year).date()
 
 
 def get_next_year_date(start_date, old_date):
@@ -227,7 +234,7 @@ def get_next_year_date(start_date, old_date):
     next_day = start_date.day
     if not is_valid_date(next_day, old_date.month, next_year):
         next_day = get_last_day_of_the_month(old_date.month, next_year)
-    return datetime(day=next_day, month=old_date.month, year=next_year)
+    return datetime(day=next_day, month=old_date.month, year=next_year).date()
 
 
 def is_valid_date(day, month, year):
@@ -242,3 +249,13 @@ def is_valid_date(day, month, year):
 def get_last_day_of_the_month(month, year):
     _, last_day = monthrange(year, month)
     return last_day
+
+
+def create_old_occurrence_credit(date, contract):
+    MaintenanceCredit.objects.create(
+        contract=contract,
+        company=contract.company,
+        date=date,
+        hours_number=contract.hours_to_credit,
+        subject=_("{}'s credit recurrence".format(date.strftime("%B"))),
+    )
