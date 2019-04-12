@@ -3,6 +3,7 @@ from django.utils.timezone import datetime
 from django.utils.timezone import now
 
 from customers.tests.factories import CompanyFactory
+from maintenance.models import MaintenanceCredit
 
 from ...models import MaintenanceContract
 from ...models.contract import get_next_month_date
@@ -317,6 +318,7 @@ class MaintenanceContractTestCase(TestCase):
         )
         contract1.recurrence_next_date = contract1.get_recurrence_next_date()
         contract1.save()
+        contract1.refresh_from_db()
         self.assertEqual(28, contract1.recurrence_next_date.day)
         self.assertEqual(2, contract1.recurrence_next_date.month)
         self.assertEqual(2021, contract1.recurrence_next_date.year)
@@ -381,8 +383,7 @@ class MaintenanceContractTestCase(TestCase):
         contract.remove_recurrence()
         contract.refresh_from_db()
 
-        self.assertIsNone(contract.credit_recurrence)
-        self.assertIsNone(contract.reset_date)
+        self.assertFalse(contract.has_credit_recurrence)
 
     def test_get_delta_credits_minutes_when_no_reset_date(self):
         company, contract, _, _ = create_project()
@@ -418,6 +419,19 @@ class MaintenanceContractTestCase(TestCase):
         MaintenanceIssueFactory(contract=contract, company=company, number_minutes=60, date=time1)
 
         self.assertEqual(20 * 60 - 60, contract.get_delta_credits_minutes())
+
+    def test_set_recurrence_dates_and_create_all_old_credit_occurrences(self):
+        time1 = datetime(day=1, month=5, year=2021).date()
+        time2 = datetime(day=1, month=10, year=2021).date()
+        company, contract, _, _ = create_project(contract1={"monthly_recurrence": True, "recurrence_start_date": time1})
+        self.assertEqual(1, MaintenanceCredit.objects.filter(contract=contract).count())
+        contract.recurrence_next_date = None
+        contract.save()
+        contract.set_recurrence_dates_and_create_all_old_credit_occurrences(now_date=time2)
+        self.assertEqual(7, MaintenanceCredit.objects.filter(contract=contract).count())
+        self.assertEqual(1, contract.recurrence_next_date.day)
+        self.assertEqual(11, contract.recurrence_next_date.month)
+        self.assertEqual(2021, contract.recurrence_next_date.year)
 
 
 class NextDateTestCase(TestCase):

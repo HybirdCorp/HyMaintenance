@@ -1,7 +1,9 @@
 
 import factory
 
+from django.utils.timezone import datetime
 from django.utils.timezone import now
+from django.utils.timezone import utc
 
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import OperatorUserFactory
@@ -72,10 +74,12 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
     maintenance_type = factory.LazyFunction(get_default_maintenance_type)
     start = now()
     reset_date = None
+    has_credit_recurrence = False
 
     class Params:
         credit_counter = False
         annual_recurrence = factory.Trait(
+            has_credit_recurrence=True,
             total_type=AVAILABLE_TOTAL_TIME,
             hours_to_credit=20,
             credited_hours=20,
@@ -83,6 +87,7 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
             recurrence_start_date=now().date(),
         )
         monthly_recurrence = factory.Trait(
+            has_credit_recurrence=True,
             total_type=AVAILABLE_TOTAL_TIME,
             hours_to_credit=20,
             credited_hours=20,
@@ -112,6 +117,11 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
             MaintenanceCreditFactory(
                 hours_number=self.credited_hours, contract=self, date=self.start, company=self.company
             )
+        if self.has_credit_recurrence:
+            self.set_recurrence_dates_and_create_all_old_credit_occurrences(
+                datetime(day=21, month=12, year=2012, tzinfo=utc).date()
+            )
+            self.save()
 
 
 class MaintenanceCreditFactory(factory.django.DjangoModelFactory):
