@@ -65,3 +65,21 @@
 .form-group.email-alert-enabled .help-email-alert > span:not(.email-alert-enabled) {
     display: none;
 }
+
+/* credit-recurrence state machine */
+
+.form-group.has-credit-recurrence-disabled .row-credit-recurrence,
+.form-group.has-credit-recurrence-disabled .row-recurrence-start-date,
+.form-group.has-credit-recurrence-disabled .row-hours-to-credit {
+    display: none;
+}
+
+.form-group.has-credit-recurrence-disabled .help-has-credit-recurrence > span:not(.has-credit-recurrence-disabled),
+.form-group.has-credit-recurrence-enabled .help-has-credit-recurrence > span:not(.has-credit-recurrence-enabled) {
+    display: none;
+}
+
+.form-group.has-credit-recurrence-disabled .help-recurrence-next-date > span:not(.has-credit-recurrence-disabled),
+.form-group.has-credit-recurrence-enabled .help-recurrence-next-date > span:not(.has-credit-recurrence-enabled) {
+    display: none;
+}

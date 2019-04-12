@@ -14,6 +14,8 @@ from customers.forms.project import ProjectListUnarchiveForm
 from customers.models import Company
 from maintenance.forms.project import ProjectCreateForm
 from maintenance.forms.project import ProjectUpdateForm
+from maintenance.forms.recurrence import RecurrenceContractsModelForm
+from maintenance.formsets.recurrence import RecurrenceContractsModelFormSet
 from maintenance.models import MaintenanceContract
 from maintenance.models import MaintenanceCredit
 from maintenance.models import MaintenanceIssue
@@ -281,6 +283,33 @@ class ProjectResetCountersView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixi
         return formset
 
     def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.company.get_absolute_url()
+
+
+class ProjectCreditRecurrenceUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, FormView):
+    form_class = modelformset_factory(
+        model=MaintenanceContract, formset=RecurrenceContractsModelFormSet, form=RecurrenceContractsModelForm, extra=0
+    )
+    template_name = "high_ui/forms/update_credit_recurrence.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_maintenance_types())
+        context.update(get_context_previous_page(self.request))
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["company"] = self.company
+        return kwargs
+
+    def form_valid(self, form):
+        for sub_form in form:
+            sub_form.instance.set_recurrence_dates_and_create_all_old_credit_occurrences()
         form.save()
         return super().form_valid(form)
 
