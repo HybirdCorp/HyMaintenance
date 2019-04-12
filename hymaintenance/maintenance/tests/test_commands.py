@@ -15,7 +15,7 @@ from .factories import create_project
 
 class SendEmailAlertsCommandTestCase(TestCase):
     @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
-    def test_if_email_alert_is_sended_when_minimum_is_reached(self):
+    def test_if_email_alert_is_sent_when_minimum_is_reached(self):
         manager = ManagerUserFactory(
             email="cave.johnson@aperture-science.com", first_name="Cave", last_name="Johnson", password="azerty"
         )
@@ -33,7 +33,7 @@ class SendEmailAlertsCommandTestCase(TestCase):
         self.assertEqual(1, len(mail.outbox))
 
     @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
-    def test_if_email_alerts_are_sended_when_minimum_is_reached_multiple_contracts(self):
+    def test_if_email_alerts_are_sent_when_minimum_is_reached_multiple_contracts(self):
         manager = ManagerUserFactory(
             email="cave.johnson@aperture-science.com", first_name="Cave", last_name="Johnson", password="azerty"
         )
@@ -60,7 +60,7 @@ class SendEmailAlertsCommandTestCase(TestCase):
         self.assertEqual(2, len(mail.outbox))
 
     @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
-    def test_if_email_alert_is_not_sended_when_minimum_is_not_reached(self):
+    def test_if_email_alert_is_not_sent_when_minimum_is_not_reached(self):
         manager = ManagerUserFactory(
             email="cave.johnson@aperture-science.com", first_name="Cave", last_name="Johnson", password="azerty"
         )
@@ -79,9 +79,9 @@ class SendEmailAlertsCommandTestCase(TestCase):
 
 class RecurrenceCommandTestCase(TestCase):
     def test_annual_recurrence_reached(self):
-        time = datetime(day=1, month=2, year=2021, tzinfo=utc)
-        _, contract, _, _ = create_project(contract1={"annual_recurrence": True, "recurrence_start_date": time.date()})
-        check_and_apply_credit_recurrence(time.date())
+        time = datetime(day=1, month=2, year=2021, tzinfo=utc).date()
+        _, contract, _, _ = create_project(contract1={"annual_recurrence": True, "recurrence_start_date": time})
+        check_and_apply_credit_recurrence(time)
         contract.refresh_from_db()
 
         self.assertEqual(1, contract.recurrence_next_date.day)
@@ -89,9 +89,9 @@ class RecurrenceCommandTestCase(TestCase):
         self.assertEqual(2022, contract.recurrence_next_date.year)
 
     def test_monthly_recurrence_reached(self):
-        time = datetime(day=1, month=2, year=2021, tzinfo=utc)
-        _, contract, _, _ = create_project(contract1={"monthly_recurrence": True, "recurrence_start_date": time.date()})
-        check_and_apply_credit_recurrence(time.date())
+        time = datetime(day=1, month=2, year=2021, tzinfo=utc).date()
+        _, contract, _, _ = create_project(contract1={"monthly_recurrence": True, "recurrence_start_date": time})
+        check_and_apply_credit_recurrence(time)
         contract.refresh_from_db()
 
         self.assertEqual(1, contract.recurrence_next_date.day)
@@ -99,25 +99,26 @@ class RecurrenceCommandTestCase(TestCase):
         self.assertEqual(2021, contract.recurrence_next_date.year)
 
     def test_annual_monthly_recurrence_not_reached(self):
-        time1 = datetime(day=1, month=2, year=2021, tzinfo=utc)
-        time2 = datetime(day=19, month=1, year=2021, tzinfo=utc)
+        time1 = datetime(day=1, month=2, year=2021, tzinfo=utc).date()
+        time2 = datetime(day=19, month=2, year=2021, tzinfo=utc).date()
         _, contract1, contract2, _ = create_project(
-            contract1={"annual_recurrence": True, "recurrence_start_date": time1.date()},
-            contract2={"monthly_recurrence": True, "recurrence_start_date": time1.date()},
+            contract1={"annual_recurrence": True, "recurrence_start_date": time2},
+            contract2={"monthly_recurrence": True, "recurrence_start_date": time2},
         )
-        check_and_apply_credit_recurrence(time2.date())
+        check_and_apply_credit_recurrence(time1)
         contract1.refresh_from_db()
         contract2.refresh_from_db()
 
-        self.assertEqual(time1.date(), contract1.recurrence_next_date)
-        self.assertEqual(time1.date(), contract2.recurrence_next_date)
+        self.assertEqual(time2, contract1.recurrence_next_date)
+        self.assertEqual(time2, contract2.recurrence_next_date)
 
     def test_run_recurrence_command(self):
         now_date = now().date()
         _, contract, _, _ = create_project(contract1={"annual_recurrence": True, "recurrence_start_date": now_date})
+        next_date = contract.get_recurrence_next_date()
         call_command("recurrence")
         contract.refresh_from_db()
 
-        self.assertEqual(now_date.day, contract.recurrence_next_date.day)
-        self.assertEqual(now_date.month, contract.recurrence_next_date.month)
-        self.assertEqual(now_date.year + 1, contract.recurrence_next_date.year)
+        self.assertEqual(next_date.day, contract.recurrence_next_date.day)
+        self.assertEqual(next_date.month, contract.recurrence_next_date.month)
+        self.assertEqual(next_date.year, contract.recurrence_next_date.year)
