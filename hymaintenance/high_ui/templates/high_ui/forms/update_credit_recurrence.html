@@ -1,0 +1,182 @@
+{% load static %}
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance {{general_info.name}} &mdash; {% blocktrans %}Modify {{company}} credit recurrence{% endblocktrans %}</title> {# TMP #}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/create-project.css" />
+<link rel="stylesheet" href="/static/css/date-picker.css" />
+<script src="/static/js/segmented-selector.js"></script>
+<script src="/static/js/date-picker.js"></script>
+{% if company.color %}
+<style>
+.dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
+    background-color: white;
+    color: {{company.color}};
+}
+</style>
+{% endif %}
+</head>
+<body>
+    {% include "high_ui/company_details_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content">
+                    {{form.management_form}}
+                    {% for sub_form in form %}
+                    <div class="form-group has-credit-recurrence-disabled">
+
+                        <div class="group-title-container">
+                            <div class="group-title">{% blocktrans with name=sub_form.counter_name %}{{name}}'s credit-recurrence configuration{% endblocktrans %}</div>
+                        </div>
+                        <div class="form-row row-has-credit-recurrence {% if sub_form.has_credit_recurrence.errors %}form-error{% endif %}">
+                            {% if sub_form.has_credit_recurrence.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{sub_form.has_credit_recurrence.id_for_label}}">{{sub_form.has_credit_recurrence.label}} *</label>
+                            <section class="segmented-selector {{maintenance_types.0.css_class}}">
+                                <a href="" class="active" data-selector-key="disabled" data-selector-value="False" title="">{% trans "Disabled" %}</a>
+                                <a href="" class="inactive" data-selector-key="enabled" data-selector-value="True" title="">{% trans "Enabled" %}</a>
+                                {{sub_form.has_credit_recurrence}}
+                            </section>
+                            {% if sub_form.has_credit_recurrence.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in sub_form.has_credit_recurrence.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-row row-credit-recurrence {% if sub_form.credit_recurrence.errors %}form-error{% endif %}">
+                            {% if sub_form.credit_recurrence.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{sub_form.credit_recurrence.id_for_label}}">{{sub_form.credit_recurrence.label}} *</label>
+                            <section class="segmented-selector {{maintenance_types.0.css_class}}">
+                                <a href="" class="active" data-selector-key="monthly" data-selector-value="0" title="">{% trans "Monthly" %}</a>
+                                <a href="" class="inactive" data-selector-key="annual" data-selector-value="1" title="">{% trans "Annual" %}</a>
+                                {{sub_form.credit_recurrence}}
+                            </section>
+                            {% if sub_form.credit_recurrence.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in sub_form.credit_recurrence.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-row row-recurrence-start-date {% if sub_form.recurrence_start_date.errors %}form-error{% endif %}">
+                            {% if sub_form.recurrence_start_date.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+                        
+                            <label for="{{sub_form.recurrence_start_date.id_for_label}}">{{sub_form.recurrence_start_date.label}} *</label>
+                            {{sub_form.recurrence_start_date}}
+                        
+                            {% if sub_form.recurrence_start_date.errors %}
+                            </div>
+                            {% endif %}
+                        
+                            {% for error in sub_form.recurrence_start_date.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-row row-hours-to-credit {% if sub_form.hours_to_credit.errors %}form-error{% endif %}">
+                            {% if sub_form.hours_to_credit.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+                            <label for="{{sub_form.hours_to_credit.id_for_label}}">{{sub_form.hours_to_credit.label}} *</label>
+                            {{sub_form.hours_to_credit}}
+
+                            {% if sub_form.hours_to_credit.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in sub_form.hours_to_credit.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        {% if sub_form.recurrence_next_date.initial %}
+                        <div class="help help-recurrence-next-date">
+                            <span class="has-credit-recurrence-enabled"><em>{% blocktrans with date=sub_form.recurrence_next_date.initial %}Prochaine occurence programmée : {{ date }}{% endblocktrans %}</em></span>
+                        </div>
+                        {% endif %}
+
+                        {{sub_form.id}}
+
+                        <div class="help help-has-credit-recurrence">
+                            <span class="has-credit-recurrence-disabled">{% blocktrans %}Si vous activez la récurrence de crédit, tous les mois ou années, votre contract sera crédité du nombre d'heures souhaités.{% endblocktrans %}</span>
+                            <span class="has-credit-recurrence-enabled">{% blocktrans %}Attention, les crédits ultérieures à aujourd'hui ne seront pas créées automatiquement.{% endblocktrans %}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% if form.non_field_errors %}
+                    <div class="form-error">
+                        {% for error in form.non_field_errors %}
+                            <p><i>{{ error }}</i></p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-footer">
+                        <button type="submit">{% trans "Modify this configuration" %}</button>
+                        <span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't Modify" %}</a></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script>
+        var hasRecurrences = document.querySelectorAll(".form-row.row-has-credit-recurrence");
+        for (var i = 0; i < hasRecurrences.length; ++i) {
+            var hasRecurrence = hasRecurrences[i];
+            new SegmentedSelector(hasRecurrence.querySelector(".segmented-selector"),
+                                  function (node, currentKey, selectedKey) {
+                var currentType = "has-credit-recurrence-" + currentKey;
+                var selectedType = "has-credit-recurrence-" + selectedKey;
+
+                var parent = node.parentElement;
+                parent.className = parent.className.replace(currentType, selectedType);
+
+                var hoursToCreditInput = parent.querySelector(".row-hours-to-credit input");
+                hoursToCreditInput.required = selectedType === "has-credit-recurrence-enabled";
+
+                var recurrenceStartDateInput = parent.querySelector(".row-recurrence-start-date input");
+                recurrenceStartDateInput.required = selectedType === "has-credit-recurrence-enabled";
+
+                var creditRecurrenceInput = parent.querySelector(".row-credit-recurrence input");
+                creditRecurrenceInput.required = selectedType === "has-credit-recurrence-enabled";
+            }.bind(null, hasRecurrence));
+        }
+        var creditRecurrences = document.querySelectorAll(".form-row.row-credit-recurrence");
+        for (var i = 0; i < creditRecurrences.length; ++i) {
+            var creditRecurrence = creditRecurrences[i];
+            new SegmentedSelector(creditRecurrence.querySelector(".segmented-selector"),
+                                  function (node, currentKey, selectedKey) {
+            }.bind(null, hasRecurrence));
+        }
+        var dateFields = document.querySelectorAll(".row-recurrence-start-date input");
+        for (var i = 0; i < dateFields.length; ++i) {
+            var fieldId = dateFields[i].id;
+            new DatePicker(document.getElementById(fieldId));
+        }
+    </script>
+    <script src="/static/js/fast_click.js"></script>
+</body>
+</html>
