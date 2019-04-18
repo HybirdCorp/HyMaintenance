@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block page_title %}
-<title>Maintenance {{general_info.name}} &mdash; {% blocktrans with name=company.name %}Modify credits of {{name}}{% endblocktrans %}</title>
+<title>HyMaintenance {{general_info.name}} &mdash; {% blocktrans with name=company.name %}Modify credits of {{name}}{% endblocktrans %}</title>
 {% endblock %}
 
 {% block form_title %}
@@ -32,4 +32,18 @@
 {% block form_footer %}
 <button type="submit">{% trans "Modify credits" %}</button>
 <span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't Modify" %}</a></span>
+{% endblock %}
+
+{% block delete %}
+<form action="{% url 'high_ui:project-delete_credit' company_name=maintenancecredit.company.slug_name pk=maintenancecredit.id %}">
+    <div class="form-group reactivate-form form-group-collapsable form-group-collapsed">
+        <div class="group-title-container">
+            <div class="group-title">{% trans "Delete the credit" %}</div>
+        </div>
+    </div>
+    <div class="form-footer">
+        <button type="submit">{% trans "Delete" %}</button>
+        <span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't delete" %}</a></span>
+    </div>
+</form>
 {% endblock %}

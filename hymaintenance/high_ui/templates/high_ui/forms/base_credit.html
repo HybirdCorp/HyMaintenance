@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="/static/css/style.css" />
 <link rel="stylesheet" href="/static/css/form.css" />
 <link rel="stylesheet" href="/static/css/buy.css" />
+<link rel="stylesheet" href="/static/css/edit-list.css" />
+<link rel="stylesheet" href="/static/css/edit-operators.css" />
 <script src="/static/js/segmented-selector.js"></script>
 </head>
 <style>
@@ -26,82 +28,87 @@
 {% include "high_ui/company_details_header.html" %}
     <div class="content-container">
         <div class="content">
-            <form action="" method="post">
-                {% csrf_token %}
-                <div class="form-content auto-min-height">
-                    <div class="form-group">
-                        <div class="group-title-container">
-                            {% block form_title %}{% endblock %}
-                            <label>{% trans "Client account" %}</label>
-                            <span>{{company}}</span>
-                        </div>
-                        <div class="form-row">
-                            <label for="{{form.hours_number.id_for_label}}">{{form.hours_number.label}} *</label>
-                            <section class="segmented-selector {{default_activity_type}} selector-hours_number">
-                            {% block hours_number_a %}{% endblock %}
-                            </section>
-                        </div>
-                        <div class="form-row form-row-custom-hours-number {% if form.hours_number.errors %}form-error{% endif %}">
-                            {% if form.hours_number.errors %}
-                            <div class="form-row-wrapper">
-                            {% endif %}
-
-			    <label for="{{form.hours_number.id_for_label}}"></label>
-                            {{form.hours_number}}&nbsp;H
-
-                            {% if form.hours_number.errors %}
-                            </div>
-                            {% endif %}
-
-                            {% for error in form.hours_number.errors %}
-                            <div class="form-error-text">{{error|escape}}</div>
-                            {% endfor %}
-                        </div>
-
-                        <div class="form-row">
-                            <label for="{{form.contract.id_for_label}}">{{form.contract.label}} *</label>
-                            <section class="segmented-selector {{default_activity_type}} selector-activity-type">
-                                {% for contract in available_time_contracts %}
-                                <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
-                                   data-selector-key="{{contract.maintenance_type.css_class}}"
-                                   data-selector-value="{{contract.id}}"
-                                   title="{% blocktrans with mtype=contract.get_counter_name %}{{mtype}}-type activity{% endblocktrans %}">{{contract.get_counter_name}}</a>
-                                {% endfor %}
-                                {{form.contract}}
-                            </section>
-                        </div>
-
-                        <div class="form-row form-label-row {% if form.subject.errors %}form-error{% endif %}">
-                            {% if form.subject.errors %}
-                            <div class="form-row-wrapper">
-                            {% endif %}
-
-                            <label for="{{form.subject.id_for_label}}">{{form.subject.label}} {% trans "(optional)" %}</label>
-                            {{form.subject}}
-
-                            {% if form.subject.errors %}
-                            </div>
-                            {% endif %}
-
-                            {% for error in form.subject.errors %}
-                            <div class="form-error-text">{{error|escape}}</div>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    {% if form.non_field_errors %}
-                    <div>
-                        {% for error in form.non_field_errors %}
-                            <p><i>{{ error }}</i></p>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
-                    <div class="form-footer">
-                        {% block form_footer %}{% endblock %}
+            <div class="form-content">
+                <div class="form-intro">
+                    <div class="group-title-container">
+                        {% block form_title %}{% endblock %}
+                        <label>{% trans "Client account" %}</label>
+                        <span>{{company}}</span>
                     </div>
                 </div>
-            </form>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="form-group archive-group form-group-collapsable">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <label for="{{form.hours_number.id_for_label}}">{{form.hours_number.label}} *</label>
+                                <section class="segmented-selector {{default_activity_type}} selector-hours_number">
+                                {% block hours_number_a %}{% endblock %}
+                                </section>
+                            </div>
+                            <div class="form-row form-row-custom-hours-number {% if form.hours_number.errors %}form-error{% endif %}">
+                                {% if form.hours_number.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
+
+                                <label for="{{form.hours_number.id_for_label}}"></label>
+                                {{form.hours_number}}&nbsp;H
+
+                                {% if form.hours_number.errors %}
+                                </div>
+                                {% endif %}
+
+                                {% for error in form.hours_number.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="form-row">
+                                <label for="{{form.contract.id_for_label}}">{{form.contract.label}} *</label>
+                                <section class="segmented-selector {{default_activity_type}} selector-activity-type">
+                                    {% for contract in available_time_contracts %}
+                                    <a href="" class="{% if forloop.first %}active{% else %}inactive{% endif %}"
+                                       data-selector-key="{{contract.maintenance_type.css_class}}"
+                                       data-selector-value="{{contract.id}}"
+                                       title="{% blocktrans with mtype=contract.get_counter_name %}{{mtype}}-type activity{% endblocktrans %}">{{contract.get_counter_name}}</a>
+                                    {% endfor %}
+                                    {{form.contract}}
+                                </section>
+                            </div>
+
+                            <div class="form-row form-label-row {% if form.subject.errors %}form-error{% endif %}">
+                                {% if form.subject.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
+
+                                <label for="{{form.subject.id_for_label}}">{{form.subject.label}} {% trans "(optional)" %}</label>
+                                {{form.subject}}
+
+                                {% if form.subject.errors %}
+                                </div>
+                                {% endif %}
+
+                                {% for error in form.subject.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        {% if form.non_field_errors %}
+                        <div>
+                            {% for error in form.non_field_errors %}
+                                <p><i>{{ error }}</i></p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <div class="form-footer">
+                            {% block form_footer %}{% endblock %}
+                        </div>
+                    </div>
+                </form>
+                {% block delete %}{% endblock %}
+            </div>
         </div>
     </div>
     {% endwith %}
@@ -121,12 +128,27 @@
                                                           function (currentKey, selectedKey) {
             var currentType = currentKey;
             var selectedType = selectedKey;
-  
+
             var typeDependentElements = document.querySelectorAll("." + currentType);
             for (var j = 0; j < typeDependentElements.length; ++j) {
                 typeDependentElements[j].className = typeDependentElements[j].className.replace(currentType, selectedType);
             }
         });
+
+        var collapsableTriggers = document.querySelectorAll("form .group-title");
+        for (var i = 0; i < collapsableTriggers.length; ++i) {
+            var trigger = collapsableTriggers[i];
+            trigger.addEventListener("click", function(e) {
+                var className = "form-group-collapsed";
+
+                var collapsable = this.parentElement.parentElement;
+                if (collapsable.className.indexOf(className) === -1) {
+                    collapsable.className += " " + className;
+                } else {
+                    collapsable.className = collapsable.className.replace(className, "");
+                }
+            }, false);
+        }
     </script>
     <script src="/static/js/fast_click.js"></script>
 </body>
