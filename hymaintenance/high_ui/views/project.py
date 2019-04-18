@@ -134,30 +134,30 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
         return months
 
     @staticmethod
-    def get_contract_month_informations(month, contract):
+    def get_contract_month_information(month, contract):
         return (
             contract,
             contract.get_number_consumed_minutes_in_month(month),
             contract.get_number_credited_hours_in_month(month),
         )
 
-    def get_contracts_month_informations(self, month, contracts):
+    def get_contracts_month_information(self, month, contracts):
         info_contracts = []
         for contract in contracts:
-            info_contracts.append(self.get_contract_month_informations(month, contract))
+            info_contracts.append(self.get_contract_month_information(month, contract))
         return info_contracts
 
     def get_activities(self, months, contracts):
         activities = []
         for month in months:
-            info_contract = self.get_contracts_month_informations(month, contracts)
+            info_contract = self.get_contracts_month_information(month, contracts)
             activities.append((month, info_contract))
         return activities
 
     def get_history(self, months, contracts):
         history = []
         for month in months:
-            info_contract = self.get_contracts_month_informations(month, contracts)
+            info_contract = self.get_contracts_month_information(month, contracts)
             issues_count, info_events = self.get_ordered_issues_and_credits(month, contracts)
             history.append((month, issues_count, info_contract, info_events))
         return history

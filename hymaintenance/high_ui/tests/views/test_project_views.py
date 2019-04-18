@@ -443,7 +443,7 @@ class ProjectDetailsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _("Email alerts"))
 
-    def test_no_add_issue_button(self):
+    def test_manager_has_no_add_issue_button(self):
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
@@ -452,7 +452,17 @@ class ProjectDetailsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, _("Register an issue"))
 
-    def test_add_issue_button(self):
+    def test_operator_has_add_issue_button(self):
+        operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Register an issue"))
+
+    def test_admin_has_add_issue_button(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
@@ -460,6 +470,34 @@ class ProjectDetailsViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _("Register an issue"))
+
+    def test_manager_has_no_add_recurrence_button(self):
+        ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty", company=self.company)
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, _("Manage recurrence"))
+
+    def test_operator_has_add_recurrence_button(self):
+        operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        operator.operator_for.add(self.company)
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Manage recurrence"))
+
+    def test_admin_has_add_recurrence_button(self):
+        AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _("Manage recurrence"))
 
 
 class MonthDisplayInFrenchTestCase(TestCase):
@@ -568,7 +606,7 @@ class GetContextDataProjectDetailsTestCase(TestCase):
 
         view = ProjectDetailsView()
         view.company = company
-        contract_info = view.get_contract_month_informations(month, contract)
+        contract_info = view.get_contract_month_information(month, contract)
         self.assertEqual((contract, 12, 20), contract_info)
 
     def test_get_contracts_month_info(self):
@@ -578,7 +616,7 @@ class GetContextDataProjectDetailsTestCase(TestCase):
 
         view = ProjectDetailsView()
         view.company = company
-        contracts_info = view.get_contracts_month_informations(month, contracts)
+        contracts_info = view.get_contracts_month_information(month, contracts)
         self.assertEqual(3, len(contracts_info))
 
     def test_get_activities(self):
