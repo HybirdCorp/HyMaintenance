@@ -156,7 +156,13 @@
                         </div>
                         <div class="project-users">
                             {% for project in active_projects %}
-                            <div><a href='{% url 'high_ui:admin-project-unarchive_issues' company_name=project.slug_name %}'>{{project.name}}</a></div>
+                            <div>
+                                {% if project.archived_issues_number %}
+                                <a href='{% url 'high_ui:admin-project-unarchive_issues' company_name=project.slug_name %}'>{{project.name}}</a>
+                                {% else %}
+                                    {{project.name}}
+                                {% endif %}
+                            </div>
                             {% endfor %}
                         </div>
                     </div>

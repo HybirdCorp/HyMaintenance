@@ -82,6 +82,9 @@ class Company(models.Model):
     def get_active_operators_choices(self):
         return [(operator.pk, operator.get_full_name()) for operator in self.managed_by.filter(is_active=True)]
 
+    def archived_issues_number(self):
+        return self.maintenanceissue_set.filter(is_deleted=True).count()
+
     def archive(self):
         self.is_archived = True
         self.save()

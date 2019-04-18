@@ -4,6 +4,8 @@ from django.urls import reverse
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
+from maintenance.tests.factories import MaintenanceIssueFactory
+from maintenance.tests.factories import create_project
 
 
 class AdminTestCase(TestCase):
@@ -43,3 +45,19 @@ class AdminTestCase(TestCase):
         response = self.client.get(self.page_url)
 
         self.assertEqual(response.status_code, 200)
+
+    def test_link_to_unarchive_archived_project_issues(self):
+        company, contract, _, _ = create_project(company={"name": "Black Mesa"})
+        MaintenanceIssueFactory(contract=contract, company=company, is_deleted=True)
+        company, contract, _, _ = create_project(company={"name": "Aperture Science"})
+
+        admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        self.client.login(username=admin.email, password="azerty")
+        response = self.client.get(self.page_url)
+
+        print(str(response.content).replace("\\n", "\n"))
+
+        self.assertContains(response, "<a href='/high_ui/admin/projects/black-mesa/issues/'>Black Mesa</a>")
+        self.assertNotContains(
+            response, "<a href='/high_ui/admin/projects/aperture-science/issues/'>Aperture Science</a>"
+        )
