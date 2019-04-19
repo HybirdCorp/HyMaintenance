@@ -55,7 +55,9 @@ class MaintenanceContract(models.Model):
     recurrence_start_date = models.DateField(_("Credit-recurrence start date"), null=True, blank=True)
     recurrence_last_date = models.DateField(_("Credit-recurrence last date"), null=True, blank=True)
     recurrence_next_date = models.DateField(_("Credit-recurrence next date"), null=True, blank=True)
-    credit_recurrence = models.IntegerField(_("Recurrence period"), choices=RECURRENCE_CHOICES, null=True, blank=True)
+    credit_recurrence = models.IntegerField(
+        _("Credit-recurrence frequency"), choices=RECURRENCE_CHOICES, null=True, blank=True
+    )
     hours_to_credit = models.PositiveIntegerField(_("Hours to credit"), null=True, blank=True)
 
     credited_hours = models.PositiveIntegerField(_("Credited hours"), null=True, blank=True)

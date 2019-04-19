@@ -112,15 +112,15 @@
 
                         {% if sub_form.recurrence_next_date.initial %}
                         <div class="help help-recurrence-next-date">
-                            <span class="has-credit-recurrence-enabled"><em>{% blocktrans with date=sub_form.recurrence_next_date.initial %}Prochaine occurence programmée : {{ date }}{% endblocktrans %}</em></span>
+                            <span class="has-credit-recurrence-enabled"><em>{% blocktrans with date=sub_form.recurrence_next_date.initial %}Next scheduled occurrence: {{ date }}{% endblocktrans %}</em></span>
                         </div>
                         {% endif %}
 
                         {{sub_form.id}}
 
                         <div class="help help-has-credit-recurrence">
-                            <span class="has-credit-recurrence-disabled">{% blocktrans %}Si vous activez la récurrence de crédit, tous les mois ou années, votre contract sera crédité du nombre d'heures souhaités.{% endblocktrans %}</span>
-                            <span class="has-credit-recurrence-enabled">{% blocktrans %}Attention, les crédits ultérieures à aujourd'hui ne seront pas créées automatiquement.{% endblocktrans %}</span>
+                            <span class="has-credit-recurrence-disabled">{% blocktrans %}If you activate the credit's recurrence, each month or year, hours will be credited to your contract.{% endblocktrans %}</span>
+                            <span class="has-credit-recurrence-enabled">{% blocktrans %}Caution, outdated credit won't be automatically create.{% endblocktrans %}</span>
                         </div>
                     </div>
                     {% endfor %}

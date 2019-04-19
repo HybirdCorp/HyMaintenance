@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-12 10:48+0100\n"
+"POT-Creation-Date: 2019-04-19 10:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -307,7 +307,7 @@ msgstr "Retour à l'accueil"
 
 #: templates/high_ui/company_details_header.html:19
 #: templates/high_ui/dashboard.html:44 tests/views/test_project_views.py:453
-#: tests/views/test_project_views.py:462
+#: tests/views/test_project_views.py:463 tests/views/test_project_views.py:472
 msgid "Register an issue"
 msgstr "Enregistrer une demande"
 
@@ -318,29 +318,37 @@ msgstr "Enregistrer une demande"
 msgid "Add hours"
 msgstr "Ajouter des crédits"
 
-#: templates/high_ui/company_details_header.html:25
+#: templates/high_ui/company_details_header.html:24
+msgid "Manage recurrence"
+msgstr "Gestion récurrence"
+
+#: templates/high_ui/company_details_header.html:26
 #: tests/views/test_project_views.py:401
 msgid "Buy hours"
 msgstr "Commander des heures"
 
-#: templates/high_ui/company_details_header.html:27
+#: templates/high_ui/company_details_header.html:28
 #: tests/views/test_project_views.py:444
 msgid "Email alerts"
 msgstr "alertes par email"
 
-#: templates/high_ui/company_details_header.html:35
+#: templates/high_ui/company_details_header.html:32
+msgid "Reset counter"
+msgstr "Réinitialiser compteur"
+
+#: templates/high_ui/company_details_header.html:41
 #: templates/high_ui/issue_details_header.html:22
 msgid "Your Contact"
 msgstr "Votre Contact"
 
-#: templates/high_ui/company_details_header.html:45
+#: templates/high_ui/company_details_header.html:51
 #: templates/high_ui/dashboard_header.html:39
 #: templates/high_ui/issue_details_header.html:32
 #: templates/high_ui/user_header.html:18
 msgid "Quit the application"
 msgstr "Quitter l'application"
 
-#: templates/high_ui/company_details_header.html:45
+#: templates/high_ui/company_details_header.html:51
 #: templates/high_ui/dashboard_header.html:39
 #: templates/high_ui/issue_details_header.html:32
 #: templates/high_ui/user_header.html:18
@@ -524,12 +532,12 @@ msgstr ""
 msgid "Archive this projects"
 msgstr "Archiver ces projets"
 
-#: templates/high_ui/forms/base_credit.html:68
+#: templates/high_ui/forms/base_credit.html:73
 #, python-format
 msgid "%(mtype)s-type activity"
 msgstr "activité de type %(mtype)s"
 
-#: templates/high_ui/forms/base_credit.html:79
+#: templates/high_ui/forms/base_credit.html:84
 msgid "(optional)"
 msgstr "(optionnel)"
 
@@ -611,6 +619,7 @@ msgstr "Invisible aux clients"
 #: templates/high_ui/forms/base_project.html:108
 #: templates/high_ui/forms/base_project.html:206
 #: templates/high_ui/forms/base_project.html:304
+#: templates/high_ui/forms/update_credit_recurrence.html:46
 #: templates/high_ui/forms/update_email_alert.html:46
 #: templates/high_ui/forms/update_project.html:29
 #: templates/high_ui/forms/update_project.html:89
@@ -718,6 +727,7 @@ msgstr "Ajouter cet admin"
 #: templates/high_ui/forms/create_operator.html:18
 #: templates/high_ui/forms/create_project.html:75
 #: templates/high_ui/forms/customize_project.html:164
+#: templates/high_ui/forms/reset_contracts.html:74
 #: templates/high_ui/forms/unarchive_issues.html:51
 #: templates/high_ui/forms/update_admin.html:22
 #: templates/high_ui/forms/update_admin.html:31
@@ -727,7 +737,9 @@ msgstr "Ajouter cet admin"
 #: templates/high_ui/forms/update_consumer.html:18
 #: templates/high_ui/forms/update_consumers.html:24
 #: templates/high_ui/forms/update_credit.html:34
+#: templates/high_ui/forms/update_credit.html:46
 #: templates/high_ui/forms/update_credit_choices.html:60
+#: templates/high_ui/forms/update_credit_recurrence.html:138
 #: templates/high_ui/forms/update_email_alert.html:112
 #: templates/high_ui/forms/update_infos.html:121
 #: templates/high_ui/forms/update_issue.html:20
@@ -912,6 +924,7 @@ msgid "Modify this project"
 msgstr "Modifier ce projet"
 
 #: templates/high_ui/forms/customize_project.html:164
+#: templates/high_ui/forms/reset_contracts.html:74
 #: templates/high_ui/forms/update_admin.html:22
 #: templates/high_ui/forms/update_admin.html:31
 #: templates/high_ui/forms/update_company_operator.html:24
@@ -921,6 +934,7 @@ msgstr "Modifier ce projet"
 #: templates/high_ui/forms/update_consumers.html:24
 #: templates/high_ui/forms/update_credit.html:34
 #: templates/high_ui/forms/update_credit_choices.html:60
+#: templates/high_ui/forms/update_credit_recurrence.html:138
 #: templates/high_ui/forms/update_email_alert.html:112
 #: templates/high_ui/forms/update_infos.html:121
 #: templates/high_ui/forms/update_issue.html:20
@@ -935,6 +949,34 @@ msgstr "Modifier ce projet"
 #: templates/high_ui/forms/update_project.html:18
 msgid "Don't Modify"
 msgstr "Ne pas modifier"
+
+#: templates/high_ui/forms/reset_contracts.html:6
+#, python-format
+msgid "Reset %(company)s's counter"
+msgstr "Réinitialiser des compteurs de %(company)s"
+
+#: templates/high_ui/forms/reset_contracts.html:37
+#, python-format
+msgid "%(name)s's counter reset"
+msgstr "Réinitialisation des compteurs de %(name)s"
+
+#: templates/high_ui/forms/reset_contracts.html:59
+#: templates/high_ui/forms/update_email_alert.html:97
+#, python-format
+msgid ""
+"Enable the option if you want that a %(company)s's manager receive an email "
+"alert when there are a few credits left on the %(counter)s contract."
+msgstr ""
+"Activez cette option si vous souhaitez qu'un manager de %(company)s reçoive "
+"une alerte par email lorsqu'il reste peu de crédits sur le contrat de "
+"%(counter)s."
+
+#: templates/high_ui/forms/reset_contracts.html:73
+#: templates/high_ui/forms/update_credit_choices.html:59
+#: templates/high_ui/forms/update_credit_recurrence.html:137
+#: templates/high_ui/forms/update_email_alert.html:111
+msgid "Modify this configuration"
+msgstr "Modifier cette configuration"
 
 #: templates/high_ui/forms/unarchive_issues.html:6
 #, python-format
@@ -1177,6 +1219,18 @@ msgstr "Modifier des crédits à %(name)s"
 msgid "Modify credits"
 msgstr "Modifier les crédits"
 
+#: templates/high_ui/forms/update_credit.html:41
+msgid "Delete the credit"
+msgstr "Supprimer le crédit"
+
+#: templates/high_ui/forms/update_credit.html:45
+msgid "Delete"
+msgstr "Supprimer"
+
+#: templates/high_ui/forms/update_credit.html:46
+msgid "Don't delete"
+msgstr "Ne pas supprimer"
+
 #: templates/high_ui/forms/update_credit_choices.html:6
 #: templates/high_ui/forms/update_email_alert.html:6
 #, python-format
@@ -1187,22 +1241,55 @@ msgstr "Modifier les alertes par email de %(company)s"
 msgid "Default credit's values"
 msgstr "Valeurs de crédits par défaut"
 
-#: templates/high_ui/forms/update_credit_choices.html:59
-#: templates/high_ui/forms/update_email_alert.html:111
-msgid "Modify this configuration"
-msgstr "Modifier cette configuration"
-
-#: templates/high_ui/forms/update_email_alert.html:37
+#: templates/high_ui/forms/update_credit_recurrence.html:6
 #, python-format
-msgid "%(name)s's email-alert configuration"
-msgstr "Configuration des alertes email pour le contrat %(name)s"
+msgid "Modify %(company)s credit recurrence"
+msgstr "Modifier la récurrence des crédits de %(company)s"
 
+#: templates/high_ui/forms/update_credit_recurrence.html:37
+#, python-format
+msgid "%(name)s's credit-recurrence configuration"
+msgstr "Configuration de la récurrence des crédits de %(name)s"
+
+#: templates/high_ui/forms/update_credit_recurrence.html:47
 #: templates/high_ui/forms/update_email_alert.html:47
 #: templates/high_ui/forms/update_project.html:30
 #: templates/high_ui/forms/update_project.html:90
 #: templates/high_ui/forms/update_project.html:150
 msgid "Enabled"
 msgstr "Actif"
+
+#: templates/high_ui/forms/update_credit_recurrence.html:66
+msgid "Monthly"
+msgstr "Mensuel"
+
+#: templates/high_ui/forms/update_credit_recurrence.html:67
+msgid "Annual"
+msgstr "Annuel"
+
+#: templates/high_ui/forms/update_credit_recurrence.html:115
+#, python-format
+msgid "Next scheduled occurrence: %(date)s"
+msgstr "Prochaine occurence programmée&nbsp;: %(date)s"
+
+#: templates/high_ui/forms/update_credit_recurrence.html:122
+msgid ""
+"If you activate the credit's recurrence, each month or year, hours will be "
+"credited to your contract."
+msgstr ""
+"Si vous activez la récurrence de crédit, tous les mois ou années, votre "
+"contract sera crédité du nombre d'heures souhaités."
+
+#: templates/high_ui/forms/update_credit_recurrence.html:123
+msgid "Caution, outdated credit won't be automatically create."
+msgstr ""
+"Attention, les crédits ultérieures à aujourd'hui ne seront pas créées "
+"automatiquement."
+
+#: templates/high_ui/forms/update_email_alert.html:37
+#, python-format
+msgid "%(name)s's email-alert configuration"
+msgstr "Configuration des alertes email pour le contrat %(name)s"
 
 #: templates/high_ui/forms/update_email_alert.html:96
 msgid ""
@@ -1211,16 +1298,6 @@ msgid ""
 msgstr ""
 "Le manager <em>à prévenir</em> recevra une alerte par email lorsque les "
 "<em>heures restantes</em> du contrat atteindra le <em>seuil d'heures</em>."
-
-#: templates/high_ui/forms/update_email_alert.html:97
-#, python-format
-msgid ""
-"Enable the option if you want that a %(company)s's manager receive an email "
-"alert when there are a few credits left on the %(counter)s contract."
-msgstr ""
-"Activez cette option si vous souhaitez qu'un manager de %(company)s reçoive "
-"une alerte par email lorsqu'il reste peu de crédits sur le contrat de "
-"%(counter)s."
 
 #: templates/high_ui/forms/update_infos.html:5
 msgid "Modify general information of"
@@ -1529,17 +1606,26 @@ msgstr "projets&nbsp;:"
 msgid "Email alert"
 msgstr "Alerte par email"
 
+#: tests/views/test_project_views.py:481 tests/views/test_project_views.py:491
+#: tests/views/test_project_views.py:500
+msgid "Recurrence"
+msgstr ""
+
 #: tests/views/users/test_update_user.py:451
 msgid "Les modifications ont bien été prises en compte!"
 msgstr "Les modifications ont bien été prises en compte!"
 
-#: views/project.py:215
+#: views/project.py:219
 msgid "Hour threshold"
 msgstr "Seuil d'heures"
 
-#: views/project.py:215
+#: views/project.py:219
 msgid "To contact"
 msgstr "À prévenir"
+
+#: views/project.py:261
+msgid "Reset date"
+msgstr "Remise à zéro le"
 
 #~ msgid "Issue "
 #~ msgstr "Demande"
