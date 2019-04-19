@@ -26,7 +26,7 @@ class RecurrenceContractsModelForm(forms.ModelForm):
             "has_credit_recurrence": forms.HiddenInput(),
             "hours_to_credit": forms.TextInput(),
         }
-        labels = {"recurrence_start_date": _("Start")}
+        labels = {"recurrence_start_date": _("Start"), "credit_recurrence": _("Frequency")}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
