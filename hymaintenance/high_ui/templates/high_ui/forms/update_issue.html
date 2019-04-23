@@ -19,3 +19,33 @@
 <button type="submit">{% trans "Modify this issue" %}</button>
 <span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't Modify" %}</a></span>
 {% endblock %}
+
+{% block disabled_consumers_checkbox %}
+<div class="form-row">
+    <label></label>
+    <input type="checkbox" name="disabled_consumers">
+    <span> {% trans "Display disable employees" %}</span>
+</div>
+{% endblock %}
+
+{% block disabled_operators_checkbox %}
+<div class="form-row">
+    <label></label>
+    <input type="checkbox" name="disabled_operators");">
+    <span> {% trans "Display disable operators" %}</span>
+</div>
+{% endblock %}
+
+{% block js_disabled_cons_op_checkbox %}
+disabledConsumersButton = document.querySelector("input[name='disabled_consumers']");
+disabledConsumersButton.addEventListener('change', function() {
+    var element = document.querySelector("div.form-row-author");
+    element.classList.toggle("disabled_consumers_hide");
+});
+
+disabledOperatorsButton = document.querySelector("input[name='disabled_operators']");
+disabledOperatorsButton.addEventListener('change', function() {
+    var element = document.querySelector("div.form-row-user-who-fix");
+    element.classList.toggle("disabled_operators_hide");
+});
+{% endblock %}
