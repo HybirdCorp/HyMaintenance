@@ -11,17 +11,17 @@
 <link rel="stylesheet" href="/static/css/date-picker.css" />
 <script src="/static/js/segmented-selector.js"></script>
 <script src="/static/js/date-picker.js"></script>
-{% if company.color %}
 <style>
-.disabled_consumer, .disabled_operator {
+ .disabled_consumers_hide > select > .disabled_consumer, .disabled_operators_hide > select > .disabled_operator {
     display: none;
 }
+{% if company.color %}
 .dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
     background-color: white;
     color: {{company.color}};
 }
-</style>
 {% endif %}
+</style>
 </head>
 <body>
 {% block header %}{% endblock %}
@@ -36,7 +36,7 @@
                             {% block form_title %}{% endblock %}
                         </div>
 
-                        <div class="form-row form-row-author {% if form.consumer_who_ask.errors %}form-error{% endif %}">
+                        <div class="form-row form-row-author disabled_consumers_hide {% if form.consumer_who_ask.errors %}form-error{% endif %}">
                             {% if form.consumer_who_ask.errors %}
                             <div class="form-row-wrapper">
                             {% endif %}
@@ -58,7 +58,7 @@
                         </div>
                         <div class="form-row">
                             <label></label>
-                            <input type="checkbox" name="disabled_consumers" onclick="toggleDisabledUsers(this, '.disabled_consumer');">
+                            <input type="checkbox" name="disabled_consumers">
                             <span> {% trans "Display disable employees" %}</span>
                         </div>
 
@@ -161,7 +161,7 @@
                             <div class="group-title">{% trans "Resolution" %}</div>
                         </div>
 
-                        <div class="form-row {% if form.user_who_fix.errors %}form-error{% endif %}">
+                        <div class="form-row form-row-user-who-fix disabled_operators_hide{% if form.user_who_fix.errors %}form-error{% endif %}">
                             {% if form.user_who_fix.errors %}
                             <div class="form-row-wrapper">
                             {% endif %}
@@ -183,7 +183,7 @@
                         </div>
                         <div class="form-row">
                             <label></label>
-                            <input type="checkbox" name="disabled_operators" onclick="toggleDisabledUsers(this, '.disabled_operator');">
+                            <input type="checkbox" name="disabled_operators");">
                             <span> {% trans "Display disable operators" %}</span>
                         </div>
 
@@ -333,19 +333,18 @@
             var fieldId = dateFields[i];
             new DatePicker(document.getElementById(fieldId));
         }
-        function toggleDisabledUsers(checkbox, css_class){
-            var elements = document.querySelectorAll(css_class);
-            if (checkbox.checked == true) {
-                for (var i = 0; i < elements.length; ++i) {
-                    elements[i].style.display = "block";
-                }
-            }
-            else {
-                for (var i = 0; i < elements.length; ++i) {
-                    elements[i].style.display = "none";
-                }
-            }
-        }
+
+        disabledConsumersButton = document.querySelector("input[name='disabled_consumers']");
+        disabledConsumersButton.addEventListener('change', function() {
+            var element = document.querySelector("div.form-row-author");
+            element.classList.toggle("disabled_consumers_hide");
+        });
+
+        disabledOperatorsButton = document.querySelector("input[name='disabled_operators']");
+        disabledOperatorsButton.addEventListener('change', function() {
+            var element = document.querySelector("div.form-row-user-who-fix");
+            element.classList.toggle("disabled_operators_hide");
+        });
 
         document.getElementById('{{form.context_description_file.id_for_label}}-reset').onclick= function() {
             var field= document.getElementById('{{form.context_description_file.id_for_label}}');
