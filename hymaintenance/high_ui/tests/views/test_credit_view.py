@@ -1,6 +1,7 @@
 from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
+from django.utils.timezone import now
 
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
@@ -74,7 +75,9 @@ class CreditCreateViewTestCase(TestCase):
         self.assertEqual(1, MaintenanceCredit.objects.filter(contract=self.c1.pk, company=self.company).count())
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.post(self.form_url, {"hours_number": 16, "contract": self.c1.pk}, follow=True)
+        response = self.client.post(
+            self.form_url, {"hours_number": 16, "contract": self.c1.pk, "date": now().date()}, follow=True
+        )
 
         self.assertRedirects(
             response, reverse("high_ui:project_details", kwargs={"company_name": self.company.slug_name})
@@ -173,7 +176,9 @@ class CreditUpdateViewTestCase(TestCase):
     def test_admin_can_post_form_to_update_credit(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
-        response = self.client.post(self.form_url, {"hours_number": 16, "contract": self.c2.pk}, follow=True)
+        response = self.client.post(
+            self.form_url, {"hours_number": 16, "contract": self.c2.pk, "date": now().date()}, follow=True
+        )
 
         self.assertRedirects(
             response, reverse("high_ui:project_details", kwargs={"company_name": self.company.slug_name})

@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
 from ...forms.credit import MaintenanceCreditCreateForm
@@ -20,14 +21,15 @@ class MaintenanceCreditCreateFormTestCase(TestCase):
         form = MaintenanceCreditCreateForm(company=self.company, data={})
         self.assertFalse(form.is_valid())
         expected = _("This field is required.")
-        self.assertDictEqual(form.errors, {"contract": [expected], "hours_number": [expected]})
+        self.assertDictEqual(form.errors, {"contract": [expected], "hours_number": [expected], "date": [expected]})
 
     def test_create_credit_with_create_form(self):
         self.assertEqual(20, self.contract.credited_hours)
         self.assertEqual(1, MaintenanceCredit.objects.filter(company=self.company, contract=self.contract).count())
         hours_number = 10
         form = MaintenanceCreditCreateForm(
-            company=self.company, data={"hours_number": hours_number, "contract": self.contract.pk}
+            company=self.company,
+            data={"hours_number": hours_number, "contract": self.contract.pk, "date": now().date()},
         )
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
@@ -41,7 +43,9 @@ class MaintenanceCreditUpdateFormTestCase(TestCase):
         company, c1, c2, _ = create_project(contract1={"credit_counter": True}, contract2={"credit_counter": True})
         credit = MaintenanceCreditFactory(company=company, contract=c1)
         hours_number = 10
-        form = MaintenanceCreditUpdateForm(instance=credit, data={"hours_number": hours_number, "contract": c2.pk})
+        form = MaintenanceCreditUpdateForm(
+            instance=credit, data={"hours_number": hours_number, "contract": c2.pk, "date": now().date()}
+        )
         self.assertTrue(form.is_valid(), form.errors)
         form.save()
         updated_credit = MaintenanceCredit.objects.get(pk=credit.pk)
