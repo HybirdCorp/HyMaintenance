@@ -56,11 +56,7 @@
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
                         </div>
-                        <div class="form-row">
-                            <label></label>
-                            <input type="checkbox" name="disabled_consumers">
-                            <span> {% trans "Display disable employees" %}</span>
-                        </div>
+                        {% block disabled_consumers_checkbox %}{% endblock %}
 
                         <div class="form-row {% if form.date.errors %}form-error{% endif %}">
                             {% if form.date.errors %}
@@ -181,11 +177,7 @@
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
                         </div>
-                        <div class="form-row">
-                            <label></label>
-                            <input type="checkbox" name="disabled_operators");">
-                            <span> {% trans "Display disable operators" %}</span>
-                        </div>
+                        {% block disabled_operators_checkbox %}{% endblock %}
 
                         <div class="form-row">
                             <label for="{{form.maintenance_type.id_for_label}}">{{form.contract.label}}</label>
@@ -334,18 +326,6 @@
             new DatePicker(document.getElementById(fieldId));
         }
 
-        disabledConsumersButton = document.querySelector("input[name='disabled_consumers']");
-        disabledConsumersButton.addEventListener('change', function() {
-            var element = document.querySelector("div.form-row-author");
-            element.classList.toggle("disabled_consumers_hide");
-        });
-
-        disabledOperatorsButton = document.querySelector("input[name='disabled_operators']");
-        disabledOperatorsButton.addEventListener('change', function() {
-            var element = document.querySelector("div.form-row-user-who-fix");
-            element.classList.toggle("disabled_operators_hide");
-        });
-
         document.getElementById('{{form.context_description_file.id_for_label}}-reset').onclick= function() {
             var field= document.getElementById('{{form.context_description_file.id_for_label}}');
             field.value= field.defaultValue;
@@ -355,6 +335,8 @@
             var field= document.getElementById('{{form.resolution_description_file.id_for_label}}');
             field.value= field.defaultValue;
         };
+
+        {% block js_disabled_cons_op_checkbox %}{% endblock %}
     </script>
     <script src="/static/js/fast_click.js"></script>
 </body>
