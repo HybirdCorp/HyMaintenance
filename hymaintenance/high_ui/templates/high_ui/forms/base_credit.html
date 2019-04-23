@@ -76,6 +76,23 @@
                                 </section>
                             </div>
 
+                            <div class="form-row form-date-row {% if form.date.errors %}form-error{% endif %}">
+                                {% if form.date.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
+
+                                <label for="{{form.date.id_for_label}}">{{form.date.label}}</label>
+                                {{form.date}}
+
+                                {% if form.date.errors %}
+                                </div>
+                                {% endif %}
+
+                                {% for error in form.date.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
+
                             <div class="form-row form-label-row {% if form.subject.errors %}form-error{% endif %}">
                                 {% if form.subject.errors %}
                                 <div class="form-row-wrapper">
