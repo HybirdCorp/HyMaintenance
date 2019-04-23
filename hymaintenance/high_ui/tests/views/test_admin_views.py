@@ -55,8 +55,6 @@ class AdminTestCase(TestCase):
         self.client.login(username=admin.email, password="azerty")
         response = self.client.get(self.page_url)
 
-        print(str(response.content).replace("\\n", "\n"))
-
         self.assertContains(response, "<a href='/high_ui/admin/projects/black-mesa/issues/'>Black Mesa</a>")
         self.assertNotContains(
             response, "<a href='/high_ui/admin/projects/aperture-science/issues/'>Aperture Science</a>"
