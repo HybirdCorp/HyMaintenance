@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-19 10:05+0200\n"
+"POT-Creation-Date: 2019-04-26 14:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -248,15 +248,15 @@ msgstr "Archiver ces projets actifs"
 msgid "Archive projects"
 msgstr "Archiver ces projets"
 
-#: templates/high_ui/admin.html:166
+#: templates/high_ui/admin.html:172
 msgid "Archived projects"
 msgstr "Projets archivés"
 
-#: templates/high_ui/admin.html:172
+#: templates/high_ui/admin.html:178
 msgid "Activate archived projects"
 msgstr "Réactiver des projets archivés"
 
-#: templates/high_ui/admin.html:172
+#: templates/high_ui/admin.html:178
 #: templates/high_ui/forms/unarchive_projects.html:5
 #: templates/high_ui/forms/unarchive_projects.html:9
 msgid "Activate projects"
@@ -319,6 +319,8 @@ msgid "Add hours"
 msgstr "Ajouter des crédits"
 
 #: templates/high_ui/company_details_header.html:24
+#: tests/views/test_project_views.py:481 tests/views/test_project_views.py:491
+#: tests/views/test_project_views.py:500
 msgid "Manage recurrence"
 msgstr "Gestion récurrence"
 
@@ -332,23 +334,23 @@ msgstr "Commander des heures"
 msgid "Email alerts"
 msgstr "alertes par email"
 
-#: templates/high_ui/company_details_header.html:32
+#: templates/high_ui/company_details_header.html:31
 msgid "Reset counter"
 msgstr "Réinitialiser compteur"
 
-#: templates/high_ui/company_details_header.html:41
+#: templates/high_ui/company_details_header.html:39
 #: templates/high_ui/issue_details_header.html:22
 msgid "Your Contact"
 msgstr "Votre Contact"
 
-#: templates/high_ui/company_details_header.html:51
+#: templates/high_ui/company_details_header.html:49
 #: templates/high_ui/dashboard_header.html:39
 #: templates/high_ui/issue_details_header.html:32
 #: templates/high_ui/user_header.html:18
 msgid "Quit the application"
 msgstr "Quitter l'application"
 
-#: templates/high_ui/company_details_header.html:51
+#: templates/high_ui/company_details_header.html:49
 #: templates/high_ui/dashboard_header.html:39
 #: templates/high_ui/issue_details_header.html:32
 #: templates/high_ui/user_header.html:18
@@ -537,38 +539,30 @@ msgstr "Archiver ces projets"
 msgid "%(mtype)s-type activity"
 msgstr "activité de type %(mtype)s"
 
-#: templates/high_ui/forms/base_credit.html:84
+#: templates/high_ui/forms/base_credit.html:101
 msgid "(optional)"
 msgstr "(optionnel)"
 
-#: templates/high_ui/forms/base_issue.html:62
-msgid "Display disable employees"
-msgstr "Proposer les salariés désactivés"
-
-#: templates/high_ui/forms/base_issue.html:92
+#: templates/high_ui/forms/base_issue.html:88
 msgid "Issue received by"
 msgstr "Demande reçue par"
 
-#: templates/high_ui/forms/base_issue.html:161
+#: templates/high_ui/forms/base_issue.html:157
 #: templates/high_ui/issue_details.html:65
 #: templates/high_ui/issue_details.html:80
 msgid "Resolution"
 msgstr "Résolution"
 
-#: templates/high_ui/forms/base_issue.html:187
-msgid "Display disable operators"
-msgstr "Proposer les intervenants désactivés"
-
-#: templates/high_ui/forms/base_issue.html:197
+#: templates/high_ui/forms/base_issue.html:189
 #, python-format
 msgid "'%(mtype)s'-type activity"
 msgstr "activité de type '%(mtype)s'"
 
-#: templates/high_ui/forms/base_issue.html:212
+#: templates/high_ui/forms/base_issue.html:204
 msgid "minutes"
 msgstr "minutes"
 
-#: templates/high_ui/forms/base_issue.html:213
+#: templates/high_ui/forms/base_issue.html:205
 msgid "hours"
 msgstr "heures"
 
@@ -961,15 +955,11 @@ msgid "%(name)s's counter reset"
 msgstr "Réinitialisation des compteurs de %(name)s"
 
 #: templates/high_ui/forms/reset_contracts.html:59
-#: templates/high_ui/forms/update_email_alert.html:97
-#, python-format
 msgid ""
-"Enable the option if you want that a %(company)s's manager receive an email "
-"alert when there are a few credits left on the %(counter)s contract."
-msgstr ""
-"Activez cette option si vous souhaitez qu'un manager de %(company)s reçoive "
-"une alerte par email lorsqu'il reste peu de crédits sur le contrat de "
-"%(counter)s."
+"Consumed and available times will be calculated from this date. Remaining "
+"available and consumed time will be added to the current total."
+msgstr "Les temps consommées et crédités seront calculés à partir de cette date. "
+"Le surplus de crédits ou de temps consommés sera reconduit."
 
 #: templates/high_ui/forms/reset_contracts.html:73
 #: templates/high_ui/forms/update_credit_choices.html:59
@@ -1299,6 +1289,16 @@ msgstr ""
 "Le manager <em>à prévenir</em> recevra une alerte par email lorsque les "
 "<em>heures restantes</em> du contrat atteindra le <em>seuil d'heures</em>."
 
+#: templates/high_ui/forms/update_email_alert.html:97
+#, python-format
+msgid ""
+"Enable the option if you want that a %(company)s's manager receive an email "
+"alert when there are a few credits left on the %(counter)s contract."
+msgstr ""
+"Activez cette option si vous souhaitez qu'un manager de %(company)s reçoive "
+"une alerte par email lorsqu'il reste peu de crédits sur le contrat de "
+"%(counter)s."
+
 #: templates/high_ui/forms/update_infos.html:5
 msgid "Modify general information of"
 msgstr "Modifier les informations générales de"
@@ -1327,6 +1327,14 @@ msgstr "Demandes N°"
 #: templates/high_ui/forms/update_issue.html:19
 msgid "Modify this issue"
 msgstr "Modifier cet demande"
+
+#: templates/high_ui/forms/update_issue.html:27
+msgid "Display disable employees"
+msgstr "Proposer les salariés désactivés"
+
+#: templates/high_ui/forms/update_issue.html:35
+msgid "Display disable operators"
+msgstr "Proposer les intervenants désactivés"
 
 #: templates/high_ui/forms/update_maintenance_type.html:5
 msgid "Modify default counters"
@@ -1606,11 +1614,6 @@ msgstr "projets&nbsp;:"
 msgid "Email alert"
 msgstr "Alerte par email"
 
-#: tests/views/test_project_views.py:481 tests/views/test_project_views.py:491
-#: tests/views/test_project_views.py:500
-msgid "Recurrence"
-msgstr ""
-
 #: tests/views/users/test_update_user.py:451
 msgid "Les modifications ont bien été prises en compte!"
 msgstr "Les modifications ont bien été prises en compte!"
@@ -1625,7 +1628,7 @@ msgstr "À prévenir"
 
 #: views/project.py:261
 msgid "Reset date"
-msgstr "Remise à zéro le"
+msgstr "Réinitialisé le"
 
 #~ msgid "Issue "
 #~ msgstr "Demande"

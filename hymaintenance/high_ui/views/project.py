@@ -20,7 +20,6 @@ from maintenance.models import MaintenanceContract
 from maintenance.models import MaintenanceCredit
 from maintenance.models import MaintenanceIssue
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
-from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 
 from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedManagerTestMixin
@@ -271,9 +270,7 @@ class ProjectResetCountersView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixi
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs["queryset"] = self.company.contracts.filter(disabled=False, total_type=CONSUMMED_TOTAL_TIME).order_by(
-            "maintenance_type_id"
-        )
+        kwargs["queryset"] = self.company.contracts.filter(disabled=False).order_by("maintenance_type_id")
         return kwargs
 
     def get_form(self):

@@ -27,10 +27,8 @@
                 {% endif %}
                 <a href='{% url 'high_ui:project-update_email_alert' company_name=company.slug_name %}'>{% trans "Email alerts" %}</a>
             {% endif %}
-            {% if reset_counter %}
-                {% if request.user.has_operator_or_admin_permissions %}
-                    <a href='{% url 'high_ui:project-reset_counters' company_name=company.slug_name %}'>{% trans "Reset counter" %}</a>
-                {% endif %}
+            {% if request.user.has_operator_or_admin_permissions %}
+                <a href='{% url 'high_ui:project-reset_counters' company_name=company.slug_name %}'>{% trans "Reset counter" %}</a>
             {% endif %}
         </div>
     </div>
