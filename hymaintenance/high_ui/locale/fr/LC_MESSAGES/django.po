@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 14:24+0200\n"
+"POT-Creation-Date: 2019-04-29 11:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -367,7 +367,7 @@ msgstr "Commander des crédits"
 
 #: templates/high_ui/contact.html:29
 #: templates/high_ui/forms/base_consumer.html:30
-#: templates/high_ui/forms/base_credit.html:35
+#: templates/high_ui/forms/base_credit.html:37
 #: templates/high_ui/forms/create_company_operator.html:14
 #: templates/high_ui/forms/create_issue.html:14
 #: templates/high_ui/forms/create_manager.html:14
@@ -534,12 +534,12 @@ msgstr ""
 msgid "Archive this projects"
 msgstr "Archiver ces projets"
 
-#: templates/high_ui/forms/base_credit.html:73
+#: templates/high_ui/forms/base_credit.html:75
 #, python-format
 msgid "%(mtype)s-type activity"
 msgstr "activité de type %(mtype)s"
 
-#: templates/high_ui/forms/base_credit.html:101
+#: templates/high_ui/forms/base_credit.html:103
 msgid "(optional)"
 msgstr "(optionnel)"
 
@@ -958,8 +958,9 @@ msgstr "Réinitialisation des compteurs de %(name)s"
 msgid ""
 "Consumed and available times will be calculated from this date. Remaining "
 "available and consumed time will be added to the current total."
-msgstr "Les temps consommées et crédités seront calculés à partir de cette date. "
-"Le surplus de crédits ou de temps consommés sera reconduit."
+msgstr ""
+"Les temps consommées et crédités seront calculés à partir de cette date. Le "
+"surplus de crédits ou de temps consommés sera reconduit."
 
 #: templates/high_ui/forms/reset_contracts.html:73
 #: templates/high_ui/forms/update_credit_choices.html:59
@@ -1271,9 +1272,9 @@ msgstr ""
 "contract sera crédité du nombre d'heures souhaités."
 
 #: templates/high_ui/forms/update_credit_recurrence.html:123
-msgid "Caution, outdated credit won't be automatically create."
+msgid "Caution, outdated credit will be automatically create."
 msgstr ""
-"Attention, les crédits ultérieures à aujourd'hui ne seront pas créées "
+"Attention, les crédits ultérieures à aujourd'hui seront créées "
 "automatiquement."
 
 #: templates/high_ui/forms/update_email_alert.html:37
@@ -1618,15 +1619,15 @@ msgstr "Alerte par email"
 msgid "Les modifications ont bien été prises en compte!"
 msgstr "Les modifications ont bien été prises en compte!"
 
-#: views/project.py:219
+#: views/project.py:218
 msgid "Hour threshold"
 msgstr "Seuil d'heures"
 
-#: views/project.py:219
+#: views/project.py:218
 msgid "To contact"
 msgstr "À prévenir"
 
-#: views/project.py:261
+#: views/project.py:260
 msgid "Reset date"
 msgstr "Réinitialisé le"
 
