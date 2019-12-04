@@ -1019,7 +1019,7 @@ msgstr ""
 #, python-format
 msgid "Select the single %(name)s's archived project to turn it active:"
 msgstr ""
-"Sélectionner l'unique projet actif de %(name)s pour le rendre inactif&nbsp;:"
+"Sélectionner l'unique projet inactif de %(name)s pour le rendre actif&nbsp;:"
 
 #: templates/high_ui/forms/unarchive_projects.html:21
 msgid "Activate this projects"
@@ -1446,8 +1446,8 @@ msgstr ""
 #, python-format
 msgid "Select the single %(name)s's archived operator to turn them active:"
 msgstr ""
-"Sélectionner l'unique intervenant actif de %(name)s pour le rendre "
-"inactif&nbsp;:"
+"Sélectionner l'unique intervenant inactif de %(name)s pour le rendre "
+"actif&nbsp;:"
 
 #: templates/high_ui/forms/update_operators.html:53
 msgid "Enable operators"
