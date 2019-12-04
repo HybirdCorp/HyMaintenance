@@ -589,8 +589,8 @@ msgid ""
 "<em>Historic</em> is how many months will be displayed on the project's "
 "details page."
 msgstr ""
-"La valeur <em>Historique</em> est le nombre de mois qui seront affichéssur "
-"la page détaillée du projet"
+"La valeur <em>Historique</em> est le nombre de mois qui seront affichés sur "
+"la page détaillée du projet."
 
 #: templates/high_ui/forms/base_project.html:95
 #: templates/high_ui/forms/base_project.html:193
