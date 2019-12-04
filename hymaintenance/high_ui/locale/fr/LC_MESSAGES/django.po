@@ -1502,7 +1502,7 @@ msgid ""
 "operator function, who are: %(admins_list)s."
 msgstr ""
 "Les seuls intervenants de votre plateforme HyMaintenance sont des "
-"<em>administrateurs</em> avecavec le rôle d'intervenant, qui sont : "
+"<em>administrateurs</em> avec le rôle d'intervenant, qui sont : "
 "%(admins_list)s."
 
 #: templates/high_ui/forms/update_users.html:35
