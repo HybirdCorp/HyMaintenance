@@ -78,13 +78,13 @@
                 {% if object.resolution_date %}
                 <div class="property-container">
                     <span class="property-key">{% trans "Resolution" %}</span>
-                    <span class="property-value">{{object.resolution_date|date:"d/m/Y à H\hi"}}</span>
+                    <span class="property-value">{{object.resolution_date|date:"d/m/Y"}}</span>
                 </div>
                 {% endif %}
                 {% if object.shipping_date %}
                 <div class="property-container">
                     <span class="property-key">{% trans "Delivery" %}</span>
-                    <span class="property-value">{{object.shipping_date|date:"d/m/Y à H\hi"}}</span>
+                    <span class="property-value">{{object.shipping_date|date:"d/m/Y"}}</span>
                 </div>
                 {% endif %}
                 <div class="property-container property-multiline">
