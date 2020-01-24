@@ -88,7 +88,7 @@ class CompanyTestCase(TestCase):
         operator2.operator_for.add(company)
 
         operators_choices = company.get_operators_choices()
-        self.assertEqual([(operator.pk, "Gordon Freeman"), (operator2.pk, "Cave Johnson")], operators_choices)
+        self.assertListEqual([(operator.pk, "Gordon Freeman"), (operator2.pk, "Cave Johnson")], operators_choices)
 
     def test_get_active_operators_choices(self):
         company = CompanyFactory()
