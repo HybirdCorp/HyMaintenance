@@ -87,15 +87,15 @@ class EmailAlertUpdateViewTestCase(TestCase):
         response = self.client.get(self.form_url)
 
         self.assertContains(
-            response, '<input type="hidden" name="form-TOTAL_FORMS" value="2" id="id_form-TOTAL_FORMS" />'
+            response, '<input type="hidden" name="form-TOTAL_FORMS" value="2" id="id_form-TOTAL_FORMS">'
         )
         self.assertContains(
             response,
-            '<input type="hidden" name="form-0-id" value="{}" readonly id="id_form-0-id" />'.format(self.contract1.id),
+            '<input type="hidden" name="form-0-id" value="{}" readonly id="id_form-0-id">'.format(self.contract1.id),
         )
         self.assertContains(
             response,
-            '<input type="hidden" name="form-1-id" value="{}" readonly id="id_form-1-id" />'.format(self.contract3.id),
+            '<input type="hidden" name="form-1-id" value="{}" readonly id="id_form-1-id">'.format(self.contract3.id),
         )
 
     def test_formset_displays_the_right_contract_to_manager(self):
@@ -104,11 +104,11 @@ class EmailAlertUpdateViewTestCase(TestCase):
         response = self.client.get(self.form_url)
 
         self.assertContains(
-            response, '<input type="hidden" name="form-TOTAL_FORMS" value="1" id="id_form-TOTAL_FORMS" />'
+            response, '<input type="hidden" name="form-TOTAL_FORMS" value="1" id="id_form-TOTAL_FORMS">'
         )
         self.assertContains(
             response,
-            '<input type="hidden" name="form-0-id" value="{}" readonly id="id_form-0-id" />'.format(self.contract1.id),
+            '<input type="hidden" name="form-0-id" value="{}" readonly id="id_form-0-id">'.format(self.contract1.id),
         )
 
     def test_update_right_contract_with_the_formset(self):

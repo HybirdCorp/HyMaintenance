@@ -157,6 +157,7 @@ class UpdateProfileTestCase(TestCase):
                 follow=True,
             )
 
+            print(str(response.content).replace("\\n", "\n"))
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, _("Modifications have been registered!"))
 
