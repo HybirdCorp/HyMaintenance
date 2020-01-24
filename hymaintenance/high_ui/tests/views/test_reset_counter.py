@@ -48,7 +48,7 @@ class ResetCounterUpdateViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_manager_cannot_seen_other_company_reset_counters(self):
         ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -56,7 +56,7 @@ class ResetCounterUpdateViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_can_seen_his_project_reset_counters(self):
         operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -73,7 +73,7 @@ class ResetCounterUpdateViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_seen_a_company_reset_counters(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")

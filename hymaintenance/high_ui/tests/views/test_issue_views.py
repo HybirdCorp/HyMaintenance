@@ -88,7 +88,7 @@ class IssueCreateViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_of_the_company_can_get_form(self):
         operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -105,7 +105,7 @@ class IssueCreateViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_get_form(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
@@ -250,7 +250,7 @@ class IssueUpdateViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_of_the_company_can_get_form(self):
         operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -267,7 +267,7 @@ class IssueUpdateViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_get_form(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
@@ -406,7 +406,7 @@ class IssueDetailViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.view_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_see_issue_details(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
@@ -495,7 +495,7 @@ class IssueArchiveViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.view_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
         self.assertFalse(MaintenanceIssue.objects.get(pk=self.issue.pk).is_deleted)
 
     def test_operator_of_the_company_can_archive_issue(self):
@@ -514,7 +514,7 @@ class IssueArchiveViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.view_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
         self.assertFalse(MaintenanceIssue.objects.get(pk=self.issue.pk).is_deleted)
 
     def test_admin_can_archive_issue(self):
@@ -562,7 +562,7 @@ class IssueListUnunarchiveViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_cannot_get_update_form(self):
         OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -570,7 +570,7 @@ class IssueListUnunarchiveViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_get_update_operator_form(self):
         self.client.login(username=self.admin.email, password="azerty")

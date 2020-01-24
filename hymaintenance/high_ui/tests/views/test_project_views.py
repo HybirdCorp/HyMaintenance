@@ -61,7 +61,7 @@ class ProjectCreateViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_cannot_get_create_form(self):
         OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -69,7 +69,7 @@ class ProjectCreateViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_get_create_form(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
@@ -174,7 +174,7 @@ class ProjectUpdateViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_cannot_get_update_form(self):
         operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -183,7 +183,7 @@ class ProjectUpdateViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_get_update_form(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
@@ -287,7 +287,7 @@ class ProjectDetailsViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_can_seen_his_company(self):
         operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -315,7 +315,7 @@ class ProjectDetailsViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_seen_a_company(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -773,7 +773,7 @@ class ProjectListArchiveViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_cannot_get_update_form(self):
         OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -781,7 +781,7 @@ class ProjectListArchiveViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_get_update_operator_form(self):
         self.client.login(username=self.admin.email, password="azerty")
@@ -834,7 +834,7 @@ class ProjectListUnunarchiveViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_cannot_get_update_form(self):
         OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -842,7 +842,7 @@ class ProjectListUnunarchiveViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_get_update_operator_form(self):
         self.client.login(username=self.admin.email, password="azerty")
@@ -893,7 +893,7 @@ class ProjectCustomizeViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_cannot_get_update_form(self):
         operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -902,7 +902,7 @@ class ProjectCustomizeViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_get_update_form(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
