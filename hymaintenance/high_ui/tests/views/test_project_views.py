@@ -921,7 +921,7 @@ class ProjectCustomizeViewTestCase(TestCase):
 
         response = self.client.post(
             self.form_url,
-            {"name": company_name, "contact": operator.pk, "has_custom_color": True, "color": color, "logo": None},
+            {"name": company_name, "contact": operator.pk, "has_custom_color": True, "color": color},
             follow=True,
         )
 
