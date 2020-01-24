@@ -144,7 +144,7 @@ class UpdateProfileTestCase(TestCase):
 
     def test_update_password_form(self):
         with SetDjangoLanguage("en"):
-            password = "qwertyuiop"
+            password = "The cake is a lie!"
             self.client.login(username=self.admin.email, password="azerty")
             response = self.client.post(
                 self.form_url,
@@ -157,7 +157,6 @@ class UpdateProfileTestCase(TestCase):
                 follow=True,
             )
 
-            print(str(response.content).replace("\\n", "\n"))
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, _("Modifications have been registered!"))
 
