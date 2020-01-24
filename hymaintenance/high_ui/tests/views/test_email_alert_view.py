@@ -55,7 +55,7 @@ class EmailAlertUpdateViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_can_seen_his_company_email_alert(self):
         operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -72,7 +72,7 @@ class EmailAlertUpdateViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_seen_a_company_email_alert(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")

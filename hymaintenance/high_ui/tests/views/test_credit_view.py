@@ -54,7 +54,7 @@ class CreditCreateViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_can_get_create_form(self):
         operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -156,7 +156,7 @@ class CreditUpdateViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_can_get_update_form(self):
         operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -241,7 +241,7 @@ class CreditDeleteViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
         self.assertEqual(self.credit, MaintenanceCredit.objects.get(pk=self.credit.pk))
 
     def test_operator_of_the_company_can_delete_credit(self):
@@ -260,7 +260,7 @@ class CreditDeleteViewTestCase(TestCase):
         self.client.login(username="chell@aperture-science.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
         self.assertEqual(self.credit, MaintenanceCredit.objects.get(pk=self.credit.pk))
 
     def test_admin_can_delete_credit(self):
@@ -301,7 +301,7 @@ class CreditChoicesUpdateViewTestCase(TestCase):
         self.client.login(username=manager.email, password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_cannot_get_update_form(self):
         operator = OperatorUserFactory(email="chell@aperture-science.com", password="azerty")
@@ -309,7 +309,7 @@ class CreditChoicesUpdateViewTestCase(TestCase):
         self.client.login(username=operator.email, password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_can_get_update_form(self):
         self.client.login(username=self.user.email, password="azerty")

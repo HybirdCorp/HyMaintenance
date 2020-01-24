@@ -39,7 +39,7 @@ class ContactViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_operator_can_seen_his_company_contact(self):
         operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -56,7 +56,7 @@ class ContactViewTestCase(TestCase):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(403, response.status_code)
 
     def test_admin_can_seen_a_company_contact(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")

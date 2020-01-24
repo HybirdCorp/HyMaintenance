@@ -42,7 +42,7 @@ class GeneralInformationUpdateViewTestCase(TestCase):
 
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_manager_cannot_see_update_general_info_form(self):
         manager = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -51,7 +51,7 @@ class GeneralInformationUpdateViewTestCase(TestCase):
 
         response = self.client.get(self.form_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_user_can_see_update_general_info_form(self):
         admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")

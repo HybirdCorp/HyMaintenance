@@ -26,7 +26,7 @@ class AdminTestCase(TestCase):
 
         response = self.client.get(self.page_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_manager_cannot_see_the_admin_page(self):
         manager = ManagerUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -35,7 +35,7 @@ class AdminTestCase(TestCase):
 
         response = self.client.get(self.page_url)
 
-        self.assertRedirects(response, self.login_url)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_user_can_see_the_admin_page(self):
         admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
