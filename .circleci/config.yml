@@ -31,9 +31,10 @@ jobs:
           name: Wait for db
           command: dockerize -wait tcp://localhost:5432 -timeout 120s
       - run: pip install tox
-      - run: pip install coveralls
       - run: tox -e "migrate"
       - run: tox -e "py36-django2.0"
+      - run: pip install coveralls
+      - run: pip install coverage==4.5.1
       - run: coveralls
 
 workflows:
