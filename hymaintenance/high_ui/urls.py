@@ -1,5 +1,3 @@
-
-
 from django.urls import path
 
 from .views.admin import AdminView
@@ -46,28 +44,38 @@ from .views.users_list.update_users_list import OperatorUsersListUnarchiveView
 from .views.users_list.update_users_list import OperatorUsersListUpdateView
 from .views.users_list.update_users_list import OperatorUsersListUpdateViewWithCompany
 
-
 app_name = "high_ui"
 
 urlpatterns = [
     path(r"", DashboardView.as_view(), name="dashboard"),
-    path(r"admin/", AdminView.as_view(), name="admin"),
+
+    path(r"account/update/", UserUpdateView.as_view(), name="update_user"),
+
     path(r"infos/update/", GeneralInformationUpdateView.as_view(), name="update_infos"),
-    path(r"admin/credits/update/", CreditChoicesUpdateView.as_view(), name="admin-update_credits"),
-    path(r"projects/<slug:company_name>/contact", ContactView.as_view(), name="project-contact"),
     path(r"counters/", MaintenanceTypeUpdateView.as_view(), name="update_maintenance_types"),
-    path(r"projects/<slug:company_name>/", ProjectDetailsView.as_view(), name="project_details"),
-    path(r"projects/", ProjectCreateView.as_view(), name="create_project"),
+    path(r"admin/", AdminView.as_view(), name="admin"),
+    path(r"admin/credits/update/", CreditChoicesUpdateView.as_view(), name="admin-update_credits"),
     path(r"admin/projects/archive/", ProjectListArchiveView.as_view(), name="archive_projects"),
     path(r"admin/projects/unarchive/", ProjectListUnarchiveView.as_view(), name="unarchive_projects"),
-    path(r"projects/<slug:company_name>/update/", ProjectUpdateView.as_view(), name="update_project"),
-    path(r"projects/<slug:company_name>/customize/", ProjectCustomizeView.as_view(), name="customize_project"),
-    path(r"projects/<slug:company_name>/issues/", IssueCreateView.as_view(), name="project-create_issue"),
     path(
         r"admin/projects/<slug:company_name>/issues/",
         IssueListUnarchiveView.as_view(),
         name="admin-project-unarchive_issues",
     ),
+
+    path(r"admins/", AdminUserCreateView.as_view(), name="create_admin"),
+    path(r"admins/update/", AdminUsersListUpdateView.as_view(), name="update_admins"),
+    path(r"admins/archive/", AdminUsersListArchiveView.as_view(), name="archive_admins"),
+    path(r"admins/unarchive/", AdminUsersListUnarchiveView.as_view(), name="unarchive_admins"),
+    path(r"admins/<int:pk>/update/", AdminUserUpdateView.as_view(), name="update_admin"),
+
+    path(r"projects/", ProjectCreateView.as_view(), name="create_project"),
+    path(r"projects/<slug:company_name>/", ProjectDetailsView.as_view(), name="project_details"),
+    path(r"projects/<slug:company_name>/contact", ContactView.as_view(), name="project-contact"),
+    path(r"projects/<slug:company_name>/update/", ProjectUpdateView.as_view(), name="update_project"),
+    path(r"projects/<slug:company_name>/customize/", ProjectCustomizeView.as_view(), name="customize_project"),
+    path(r"projects/<slug:company_name>/issues/", IssueCreateView.as_view(), name="project-create_issue"),
+
     path(
         r"projects/<slug:company_name>/issues/<int:company_issue_number>/",
         IssueDetailView.as_view(),
@@ -85,47 +93,41 @@ urlpatterns = [
     ),
     path(r"projects/<slug:company_name>/consumers/", ConsumerCreateView.as_view(), name="project-create_consumer"),
     path(
-        r"projects/<slug:company_name>/consumers/<int:pk>/update/",
-        ConsumerUpdateView.as_view(),
-        name="project-update_consumer",
-    ),
-    path(
         r"projects/<slug:company_name>/consumers/update/",
         ConsumersListUpdateView.as_view(),
         name="project-update_consumers",
     ),
+    path(
+        r"projects/<slug:company_name>/consumers/<int:pk>/update/",
+        ConsumerUpdateView.as_view(),
+        name="project-update_consumer",
+    ),
     path(r"projects/<slug:company_name>/managers/", ManagerUserCreateView.as_view(), name="project-create_manager"),
+    path(
+        r"projects/<slug:company_name>/managers/update/",
+        ManagerUsersListUpdateView.as_view(),
+        name="project-update_managers",
+    ),
     path(
         r"projects/<slug:company_name>/managers/<int:pk>/update/",
         ManagerUserUpdateView.as_view(),
         name="project-update_manager",
     ),
     path(
-        r"projects/<slug:company_name>/managers/update/",
-        ManagerUsersListUpdateView.as_view(),
-        name="project-update_managers",
-    ),
-    path(r"operators/", OperatorUserCreateView.as_view(), name="create_operator"),
-    path(
         r"projects/<slug:company_name>/operators/",
         OperatorUserCreateViewWithCompany.as_view(),
         name="project-create_operator",
-    ),
-    path(r"operators/<int:pk>/update/", OperatorUserUpdateView.as_view(), name="update_operator"),
-    path(
-        r"projects/<slug:company_name>/operators/<int:pk>/update/",
-        OperatorUserUpdateViewWithCompany.as_view(),
-        name="project-update_operator",
     ),
     path(
         r"projects/<slug:company_name>/operators/update/",
         OperatorUsersListUpdateViewWithCompany.as_view(),
         name="project-update_operators",
     ),
-    path(r"operators/update/", OperatorUsersListUpdateView.as_view(), name="update_operators"),
-    path(r"operators/archive/", OperatorUsersListArchiveView.as_view(), name="archive_operators"),
-    path(r"operators/unarchive/", OperatorUsersListUnarchiveView.as_view(), name="unarchive_operators"),
-    path(r"account/update/", UserUpdateView.as_view(), name="update_user"),
+    path(
+        r"projects/<slug:company_name>/operators/<int:pk>/update/",
+        OperatorUserUpdateViewWithCompany.as_view(),
+        name="project-update_operator",
+    ),
     path(r"projects/<slug:company_name>/credits/", CreditCreateView.as_view(), name="project-create_credit"),
     path(
         r"projects/<slug:company_name>/credits/<int:pk>/update/",
@@ -137,11 +139,6 @@ urlpatterns = [
         CreditDeleteView.as_view(),
         name="project-delete_credit",
     ),
-    path(r"admins/", AdminUserCreateView.as_view(), name="create_admin"),
-    path(r"admins/<int:pk>/update/", AdminUserUpdateView.as_view(), name="update_admin"),
-    path(r"admins/update/", AdminUsersListUpdateView.as_view(), name="update_admins"),
-    path(r"admins/archive/", AdminUsersListArchiveView.as_view(), name="archive_admins"),
-    path(r"admins/unarchive/", AdminUsersListUnarchiveView.as_view(), name="unarchive_admins"),
     path(
         r"projects/<slug:company_name>/email-alert/", EmailAlertUpdateView.as_view(), name="project-update_email_alert"
     ),
@@ -155,4 +152,10 @@ urlpatterns = [
         ProjectCreditRecurrenceUpdateView.as_view(),
         name="project-update_credit_recurrence",
     ),
+
+    path(r"operators/", OperatorUserCreateView.as_view(), name="create_operator"),
+    path(r"operators/update/", OperatorUsersListUpdateView.as_view(), name="update_operators"),
+    path(r"operators/archive/", OperatorUsersListArchiveView.as_view(), name="archive_operators"),
+    path(r"operators/unarchive/", OperatorUsersListUnarchiveView.as_view(), name="unarchive_operators"),
+    path(r"operators/<int:pk>/update/", OperatorUserUpdateView.as_view(), name="update_operator"),
 ]
