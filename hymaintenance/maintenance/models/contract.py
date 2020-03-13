@@ -22,12 +22,18 @@ MONTHLY = 0
 ANNUAL = 1
 
 
-class MaintenanceContractQuerySet(models.QuerySet):
+class MaintenanceContractManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().select_related('maintenance_type').order_by(F("maintenance_type__id").asc())
+
     def filter_enabled(self):
-        return self.filter(disabled=False).order_by(F("maintenance_type__id").asc())
+        return self.get_queryset().filter(disabled=False)
+
+    def filter_enabled_and_visible(self):
+        return self.get_queryset().filter(disabled=False, visible=True)
 
     def filter_enabled_and_available_counter(self):
-        return self.filter(disabled=False, total_type=AVAILABLE_TOTAL_TIME).order_by(F("maintenance_type__id").asc())
+        return self.get_queryset().filter(disabled=False, total_type=AVAILABLE_TOTAL_TIME)
 
 
 class MaintenanceContract(models.Model):
@@ -74,7 +80,7 @@ class MaintenanceContract(models.Model):
         limit_choices_to={"is_staff": False, "is_superuser": False},
     )
 
-    objects = MaintenanceContractQuerySet.as_manager()
+    objects = MaintenanceContractManager()
 
     def __str__(self):
         return "%s , %s" % (self.company, self.maintenance_type)

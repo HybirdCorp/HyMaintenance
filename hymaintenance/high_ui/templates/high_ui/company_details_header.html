@@ -6,7 +6,7 @@
         <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="{% trans "Return to dashboard" %}">{{company.name}}</a></span>
     </div>
 
-    {% for contract in contracts.filter_enabled %}
+    {% for contract in contracts %}
     <div class="dashboard-item">
         <span class="dashboard-title">{{contract.get_counter_name}}</span>
         <span class="dashboard-value">{% pretty_print_contract_counter contract %}</span>

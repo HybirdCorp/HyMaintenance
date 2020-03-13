@@ -37,13 +37,9 @@ def get_context_data_dashboard_header(user):
 def get_context_data_project_header(user, company):
     context = {}
     if user.has_operator_or_admin_permissions():
-        context["contracts"] = MaintenanceContract.objects.filter(company=company, disabled=False).order_by(
-            "maintenance_type__pk"
-        )
+        context["contracts"] = MaintenanceContract.objects.filter_enabled().filter(company=company)
     else:
-        context["contracts"] = MaintenanceContract.objects.filter(
-            company=company, visible=True, disabled=False
-        ).order_by("maintenance_type__pk")
+        context["contracts"] = MaintenanceContract.objects.filter_enabled_and_visible().filter(company=company)
     context["add_credits"] = (
         True if context["contracts"].filter(total_type=AVAILABLE_TOTAL_TIME, disabled=False).count() else False
     )
