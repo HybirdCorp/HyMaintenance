@@ -47,7 +47,7 @@ class ViewsPerformancesTestCase(TestCase):
             "high_ui:dashboard"
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(1256):
+        with self.assertNumQueries(1091):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -130,7 +130,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(13):
+        with self.assertNumQueries(10):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -186,7 +186,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(505):
+        with self.assertNumQueries(495):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -199,7 +199,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(15):
+        with self.assertNumQueries(7):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -212,7 +212,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(40):
+        with self.assertNumQueries(29):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -225,7 +225,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(18):
+        with self.assertNumQueries(10):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -238,7 +238,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(45):
+        with self.assertNumQueries(35):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -252,7 +252,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(21):
+        with self.assertNumQueries(17):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -266,7 +266,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(48):
+        with self.assertNumQueries(42):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -279,7 +279,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(15):
+        with self.assertNumQueries(7):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -292,7 +292,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(18):
+        with self.assertNumQueries(10):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -306,7 +306,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(17):
+        with self.assertNumQueries(9):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -319,7 +319,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(15):
+        with self.assertNumQueries(7):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -332,7 +332,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(18):
+        with self.assertNumQueries(10):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -346,7 +346,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(16):
+        with self.assertNumQueries(8):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -359,7 +359,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(15):
+        with self.assertNumQueries(7):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -372,7 +372,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(18):
+        with self.assertNumQueries(10):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -386,7 +386,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(16):
+        with self.assertNumQueries(8):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -399,7 +399,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(17):
+        with self.assertNumQueries(11):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -413,7 +413,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(18):
+        with self.assertNumQueries(12):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -426,7 +426,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(18):
+        with self.assertNumQueries(10):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -439,7 +439,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(19):
+        with self.assertNumQueries(8):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -452,7 +452,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(16):
+        with self.assertNumQueries(8):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
