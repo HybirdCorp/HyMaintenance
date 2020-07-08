@@ -537,20 +537,6 @@ class IssueListUnunarchiveViewTestCase(TestCase):
         self.issue1 = MaintenanceIssueFactory(subject="archive", company=self.company, is_deleted=True)
         self.issue2 = MaintenanceIssueFactory(subject="active", company=self.company)
 
-    def test_get_context_data(self):
-        factory = RequestFactory()
-        request = factory.get(self.form_url)
-        request.user = self.admin
-        view = IssueListUnarchiveView()
-        view.request = request
-        view.user = self.admin
-        view.company = self.company
-
-        context = view.get_context_data()
-        self.assertIn("issues_number", context.keys())
-        self.assertEqual(1, context["issues_number"])
-        self.assertEqual(reverse("high_ui:dashboard"), context["previous_page"])
-
     def test_unlogged_user_cannot_see_the_page(self):
         response = self.client.get(self.form_url)
 
