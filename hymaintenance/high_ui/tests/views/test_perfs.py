@@ -139,7 +139,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(91):
+        with self.assertNumQueries(11):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
