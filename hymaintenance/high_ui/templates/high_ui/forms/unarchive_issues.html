@@ -24,11 +24,13 @@
                         </div>
 
                         <div>
+                            {% with form.issues.field.choices|length as issues_number %}
                             {% if issues_number > 1%}
                             <span class="list-intro">{% blocktrans with name=company.name %}Select issues that you want to be active, among the {{issues_number}} deleted {{name}}'s issues:{% endblocktrans %}</span>
                             {% else %}
                             <span class="list-intro">{% blocktrans with name=company.name %}Select the single {{name}}'s deleted issues to turn it active:{% endblocktrans %}</span>
                             {% endif %}
+                            {% endwith %}
                             <ul class="checkbox-list">
                             {% for value, label in form.issues.field.choices %}
                                 <li>
