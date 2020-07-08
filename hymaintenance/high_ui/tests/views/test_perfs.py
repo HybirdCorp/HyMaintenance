@@ -15,6 +15,7 @@ class ViewsPerformancesTestCase(TestCase):
         super().setUpClass()
         cls.admin = AdminOperatorUserFactory()
         operators = [cls.admin] + OperatorUserFactory.create_batch(size=5)
+        OperatorUserFactory.create_batch(is_active=False, size=5)
         for _ in range(5):
 
             company, contract1, contract2, contract3 = create_project()
@@ -159,7 +160,7 @@ class ViewsPerformancesTestCase(TestCase):
             "high_ui:update_admins"
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(12):
+        with self.assertNumQueries(10):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -481,7 +482,7 @@ class ViewsPerformancesTestCase(TestCase):
             "high_ui:update_operators",
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(24):
+        with self.assertNumQueries(13):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)

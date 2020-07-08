@@ -1,5 +1,5 @@
 {% load static %}
-{% load i18n print_fields %}
+{% load i18n %}
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
 <head>
@@ -58,9 +58,9 @@
                                         <div class="item-container">
                                             <a href='{% block archive_form_user_link %}{% endblock %}'>
                                             <div class="item-name">
-                                                {{label}}
+                                                {{label.0}}
                                             </div>
-                                            <div class="item-description">{% trans "Operator" %} <span class="typography dash">&mdash;</span> {{value|print_operator_projects}}</div>
+                                            <div class="item-description">{% trans "Operator" %} <span class="typography dash">&mdash;</span> {{label.1}}</div>
                                             </a>
                                         </div>
                                     </label>
@@ -96,9 +96,9 @@
                                         <input value="{{value}}" name="inactive_users" type="checkbox"> 
                                         <div class="item-container">
                                             <div class="item-name">
-                                                {{label}}
+                                                {{label.0}}
                                             </div>
-                                            <div class="item-description">{% trans "Operator" %} <span class="typography dash">&mdash;</span> {{value|print_operator_projects}}</div>
+                                            <div class="item-description">{% trans "Operator" %} <span class="typography dash">&mdash;</span> {{label.1}}</div>
                                         </div>
                                     </label>
                                 </li>
