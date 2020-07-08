@@ -80,7 +80,7 @@ class MaintenanceIssueUpdateForm(MaintenanceIssueCreateForm):
 class UnarchiveIssueModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
         name = "Issue {number}: {counter} ({date})".format(number=str(obj.company_issue_number),
-                                                                         counter=obj.get_counter_name(),
+                                                                         counter=obj.contract.counter_name,
                                                                          date=str(obj.date))
         description = format_html(obj.subject)
         return (name, description)
@@ -94,7 +94,7 @@ class MaintenanceIssueListUnarchiveForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields["issues"].queryset = MaintenanceIssue.objects.filter(
             is_deleted=True, company=self.company
-        ).order_by("date")
+        ).select_related("contract").order_by("date")
 
     def save(self):
         for issue in self.cleaned_data["issues"]:
