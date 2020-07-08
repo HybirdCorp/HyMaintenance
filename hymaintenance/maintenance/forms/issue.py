@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
 from customers.models import Company
@@ -76,8 +77,17 @@ class MaintenanceIssueUpdateForm(MaintenanceIssueCreateForm):
         self.fields["resolution_description_file"].required = False
 
 
+class UnarchiveIssueModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        name = "Issue {number}: {counter} ({date})".format(number=str(obj.company_issue_number),
+                                                                         counter=obj.get_counter_name(),
+                                                                         date=str(obj.date))
+        description = format_html(obj.subject)
+        return (name, description)
+
+
 class MaintenanceIssueListUnarchiveForm(forms.Form):
-    issues = forms.ModelMultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, queryset=None)
+    issues = UnarchiveIssueModelMultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, queryset=None)
 
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")

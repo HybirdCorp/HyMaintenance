@@ -9,7 +9,6 @@ from customers.models.user import get_companies_of_operator
 from maintenance.models.consumer import MaintenanceConsumer
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 from maintenance.models.contract import CONSUMMED_TOTAL_TIME
-from maintenance.models.issue import MaintenanceIssue
 from toolkit.pretty_print import pretty_print_minutes
 
 
@@ -43,20 +42,6 @@ def print_operator_projects(operator_id):
         else:
             return format_html(_("projects: {}"), ", ".join(projects_names))
     return format_html(_("project: none"))
-
-
-@register.filter
-def print_issue_number_and_type(issue_id):
-    issue = MaintenanceIssue.objects.get(id=issue_id)
-    return format_html(
-        _("Issue {}: {} ({})"), str(issue.company_issue_number), issue.get_counter_name(), str(issue.date)
-    )
-
-
-@register.filter
-def print_issue_subject(issue_id):
-    issue = MaintenanceIssue.objects.get(id=issue_id)
-    return format_html(issue.subject)
 
 
 @register.filter

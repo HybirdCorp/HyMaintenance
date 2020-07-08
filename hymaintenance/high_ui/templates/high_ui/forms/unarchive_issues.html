@@ -33,12 +33,10 @@
                             {% for value, label in form.issues.field.choices %}
                                 <li>
                                     <label>
-                                        <input value="{{value}}" name="issues" type="checkbox"> 
-                                        <div class="item-container">
-                                            <div class="item-name">
-                                                {{value|print_issue_number_and_type}}
-                                            </div>
-                                            <div class="item-description">{{value|print_issue_subject}}</div>
+                                        <input value="{{value}}" name="issues" type="checkbox">
+                                        <div class ="item-container">
+                                            <div class ="item-name">{{ label.0 }}</div>
+                                            <div class ="item-description" >{{ label.1 }}</div>
                                         </div>
                                     </label>
                                 </li>
