@@ -3,7 +3,7 @@ from django.urls import reverse
 
 from customers.tests.factories import AdminOperatorUserFactory, OperatorUserFactory, ManagerUserFactory
 from customers.models import Company, MaintenanceUser
-from maintenance.models import MaintenanceConsumer, MaintenanceCredit
+from maintenance.models import MaintenanceConsumer, MaintenanceCredit, MaintenanceIssue
 from maintenance.tests.factories import MaintenanceIssueFactory, create_project, \
     MaintenanceConsumerFactory, MaintenanceCreditFactory
 from random import choice
@@ -30,12 +30,21 @@ class ViewsPerformancesTestCase(TestCase):
                 contract=choice(contracts),
                 consumer_who_ask=choice(consumers),
                 user_who_fix=choice(operators),
-                size=100
+                size=80,
+            )
+            MaintenanceIssueFactory.create_batch(
+                company=company,
+                contract=choice(contracts),
+                consumer_who_ask=choice(consumers),
+                user_who_fix=choice(operators),
+                size=20,
+                is_deleted=True,
             )
             MaintenanceCreditFactory.create_batch(
                 company=company,
                 size=30
             )
+        print(MaintenanceIssue.objects.filter(is_deleted=True).count)
         cls.company = Company.objects.first()
         cls.consumer = MaintenanceConsumer.objects.filter(company=cls.company).first()
         cls.manager = MaintenanceUser.objects.filter(company=cls.company).first()
@@ -130,7 +139,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(10):
+        with self.assertNumQueries(91):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -186,7 +195,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(495):
+        with self.assertNumQueries(415):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
