@@ -57,7 +57,7 @@ class ViewsPerformancesTestCase(TestCase):
             "high_ui:dashboard"
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(1091):
+        with self.assertNumQueries(10):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)

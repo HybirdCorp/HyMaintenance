@@ -33,7 +33,7 @@
                     </div>
                     {% endif %}
                     <div style="flex: 1"></div>
-                    {% for contract in company.contracts.filter_enabled %}
+                    {% for contract in company.enabled_contracts %}
                     <div class="dashboard-item">
                         <span class="dashboard-title">{{contract.get_counter_name}}</span>
                         <span class="dashboard-value">{% pretty_print_contract_counter contract %}</span>
@@ -51,7 +51,7 @@
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
                                 <span class="dashboard-title">{% trans "Operators" %}</span>
-                                <span class="dashboard-value">{{company.managed_by.get_active_all_types_operator_users_queryset.count}}</span>
+                                <span class="dashboard-value">{{company.maintainers|length}}</span>
                             </div>
                             {% if request.user.has_admin_permissions %}
                             <div class="dashboard-item dashboard-button">
@@ -67,18 +67,18 @@
                             {% endif %}
                         </div>
                         <div class="project-users">
-                            {% for maintainer in company.managed_by.get_active_all_types_operator_users_queryset %}
-                            <div>{{maintainer.get_full_name}}</div>
+                            {% for maintainer in company.maintainers %}
+                            <div>{{maintainer}}</div>
                             {% endfor %}
                         </div>
                     </div>
 
                     <div class="project-user-list">
-                        {% with company.maintenanceuser_set.get_active_manager_users_queryset as managers %}
+                        {% with company.managers as managers %}
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
                                 <span class="dashboard-title">{% trans "Managers" %}</span>
-                                <span class="dashboard-value">{{managers.count}}</span>
+                                <span class="dashboard-value">{{managers|length}}</span>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
@@ -100,11 +100,11 @@
                     </div>
 
                     <div class="project-user-list">
-                        {% with company.maintenanceconsumer_set.get_used_consumers as consumers %}
+                        {% with company.consumers as consumers %}
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
                                 <span class="dashboard-title">{% trans "Employees" %}</span>
-                                <span class="dashboard-value">{{consumers.count}}</span>
+                                <span class="dashboard-value">{{consumers|length}}</span>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
