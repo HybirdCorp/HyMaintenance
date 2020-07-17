@@ -25,7 +25,7 @@
     {% endif %}
 
     <label for="{{form.contract1_email_alert.id_for_label}}">{{form.contract1_email_alert.label}}</label>
-    <section class="segmented-selector {{maintenance_types.0.css_class}}">
+    <section class="segmented-selector {{maintenance_type.css_class}}">
         <a href="" class="active" data-selector-key="disabled" data-selector-value="False" title="">{% trans "Disabled" %}</a>
         <a href="" class="inactive" data-selector-key="enabled" data-selector-value="True" title="">{% trans "Enabled" %}</a>
         {{form.contract1_email_alert}}
@@ -85,7 +85,7 @@
     {% endif %}
 
     <label for="{{form.contract2_email_alert.id_for_label}}">{{form.contract2_email_alert.label}}</label>
-    <section class="segmented-selector {{maintenance_types.1.css_class}}">
+    <section class="segmented-selector {{maintenance_type.css_class}}">
         <a href="" class="active" data-selector-key="disabled" data-selector-value="False" title="">{% trans "Disabled" %}</a>
         <a href="" class="inactive" data-selector-key="enabled" data-selector-value="True" title="">{% trans "Enabled" %}</a>
         {{form.contract2_email_alert}}
@@ -145,7 +145,7 @@
     {% endif %}
 
     <label for="{{form.contract3_email_alert.id_for_label}}">{{form.contract3_email_alert.label}}</label>
-    <section class="segmented-selector {{maintenance_types.2.css_class}}">
+    <section class="segmented-selector {{maintenance_types.css_class}}">
         <a href="" class="active" data-selector-key="disabled" data-selector-value="False" title="">{% trans "Disabled" %}</a>
         <a href="" class="inactive" data-selector-key="enabled" data-selector-value="True" title="">{% trans "Enabled" %}</a>
         {{form.contract3_email_alert}}

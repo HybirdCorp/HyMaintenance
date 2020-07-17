@@ -54,16 +54,10 @@ class ProjectCreateForm(ProjectForm):
     )
 
     def __init__(self, *args, **kwargs):
-        maintenance_types = MaintenanceType.objects.order_by("id")
         if not kwargs.get("initial"):
             kwargs["initial"] = {}
-        kwargs["initial"].update(
-            {
-                "contract1_counter_name": maintenance_types[0].name,
-                "contract2_counter_name": maintenance_types[1].name,
-                "contract3_counter_name": maintenance_types[2].name,
-            }
-        )
+        for index, maintenance_type in enumerate(MaintenanceType.objects.order_by("id").values_list("name", flat=True)):
+            kwargs["initial"]["contract" + str(index + 1) + "_counter_name"] = maintenance_type
         super().__init__(*args, **kwargs)
 
     def clean_company_name(self):
@@ -151,39 +145,26 @@ class ProjectUpdateForm(ProjectForm):
 
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
-        self.contracts = list(self.company.contracts.order_by("maintenance_type_id"))
+        self.contracts = self.company.contracts.order_by("maintenance_type_id").select_related("recipient")
         super().__init__(*args, **kwargs)
-        self.fields["company_name"].initial = self.company.name
-        self.fields["contact"].initial = self.company.contact
-        self.fields["contact"].queryset = self.company.managed_by.all()
-        self.fields["contract1_counter_name"].initial = self.contracts[0].get_counter_name()
-        self.fields["contract2_counter_name"].initial = self.contracts[1].get_counter_name()
-        self.fields["contract3_counter_name"].initial = self.contracts[2].get_counter_name()
-        self.fields["contract1_date"].initial = self.contracts[0].start
-        self.fields["contract2_date"].initial = self.contracts[1].start
-        self.fields["contract3_date"].initial = self.contracts[2].start
-        self.fields["contract1_visible"].initial = -1 if self.contracts[0].disabled else int(self.contracts[0].visible)
-        self.fields["contract2_visible"].initial = -1 if self.contracts[1].disabled else int(self.contracts[1].visible)
-        self.fields["contract3_visible"].initial = -1 if self.contracts[2].disabled else int(self.contracts[2].visible)
-        self.fields["contract1_total_type"].initial = self.contracts[0].total_type
-        self.fields["contract2_total_type"].initial = self.contracts[1].total_type
-        self.fields["contract3_total_type"].initial = self.contracts[2].total_type
-
         recipients = MaintenanceUser.objects.filter(
             is_staff=False, is_superuser=False, company=self.company, is_active=True
         )
-        self.fields["contract1_recipient"].queryset = recipients
-        self.fields["contract2_recipient"].queryset = recipients
-        self.fields["contract3_recipient"].queryset = recipients
-        self.fields["contract1_email_alert"].initial = self.contracts[0].email_alert
-        self.fields["contract2_email_alert"].initial = self.contracts[1].email_alert
-        self.fields["contract3_email_alert"].initial = self.contracts[2].email_alert
-        self.fields["contract1_credited_hours_min"].initial = self.contracts[0].credited_hours_min
-        self.fields["contract2_credited_hours_min"].initial = self.contracts[1].credited_hours_min
-        self.fields["contract3_credited_hours_min"].initial = self.contracts[2].credited_hours_min
-        self.fields["contract1_recipient"].initial = self.contracts[0].recipient
-        self.fields["contract2_recipient"].initial = self.contracts[1].recipient
-        self.fields["contract3_recipient"].initial = self.contracts[2].recipient
+        self.fields["company_name"].initial = self.company.name
+        self.fields["contact"].initial = self.company.contact
+        self.fields["contact"].queryset = self.company.managed_by.all()
+        for index, contract in enumerate(self.contracts):
+            self.fields["contract" + str(index + 1) + "_counter_name"].initial = self.contracts[
+                index].get_counter_name()
+            self.fields["contract" + str(index + 1) + "_date"].initial = self.contracts[index].start
+            self.fields["contract" + str(index + 1) + "_visible"].initial = -1 if self.contracts[
+                index].disabled else int(self.contracts[index].visible)
+            self.fields["contract" + str(index + 1) + "_total_type"].initial = self.contracts[index].total_type
+            self.fields["contract" + str(index + 1) + "_recipient"].queryset = recipients
+            self.fields["contract" + str(index + 1) + "_email_alert"].initial = self.contracts[index].email_alert
+            self.fields["contract" + str(index + 1) + "_credited_hours_min"].initial = self.contracts[
+                index].credited_hours_min
+            self.fields["contract" + str(index + 1) + "_recipient"].initial = self.contracts[index].recipient
 
     def clean_company_name(self):
         company_name = self.cleaned_data["company_name"]

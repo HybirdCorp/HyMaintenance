@@ -90,6 +90,7 @@
                         </div>
                     </div>
 
+                {% with maintenance_types.0 as maintenancetype %}
                     <div class="form-group activation-active counter-total email-alert-disabled">
                         <div class="group-title-container">
                             <div class="group-title">{% trans "Counter" %} {{ form.contract1_counter_name.initial }}</div>
@@ -102,7 +103,7 @@
                             {% endif %}
 
 			                <label for="{{form.contract1_visible.id_for_label}}">{{form.contract1_visible.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.0.css_class}}">
+                            <section class="segmented-selector {{maintenancetype.css_class}}">
                                 <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">{% trans "Visible to everyone" %}</a>
                                 <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">{% trans "Invisible to managers" %}</a>
                                 <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">{% trans "Disabled" %}</a>
@@ -130,7 +131,7 @@
                             {% endif %}
 
 			                <label for="{{form.contract1_total_type.id_for_label}}">{{form.contract1_total_type.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.0.css_class}}">
+                            <section class="segmented-selector {{maintenancetype.css_class}}">
                                 <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">{% trans "Available total time" %}</a>
                                 <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">{% trans "Consumed total time" %}</a>
 				            {{form.contract1_total_type}}
@@ -170,7 +171,7 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">{%  blocktrans with mtype=maintenance_types.0.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
+                            <div class="help">{%  blocktrans with mtype=maintenancetype.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
 
                             <div class="form-row {% if form.contract1_date.errors %}form-error{% endif %}">
                                 <label for="{{form.contract1_date.id_for_label}}">{{form.contract1_date.label}}</label>
@@ -187,7 +188,8 @@
                             <div class="help">{% trans "Date when the contract begin." %}</div>
                         </div>
                     </div>
-
+            {% endwith %}
+            {% with maintenance_types.1 as maintenancetype %}
                     <div class="form-group activation-active counter-total email-alert-disabled">
                         <div class="group-title-container">
                             <div class="group-title">{% trans "Counter" %} {{ form.contract2_counter_name.initial }}</div>
@@ -200,7 +202,7 @@
                             {% endif %}
 
 			                <label for="{{form.contract2_visible.id_for_label}}">{{form.contract2_visible.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.1.css_class}}">
+                            <section class="segmented-selector {{maintenancetype.css_class}}">
                                 <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">{% trans "Visible to everyone" %}</a>
                                 <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">{% trans "Invisible to managers" %}</a>
                                 <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">{% trans "Disabled" %}</a>
@@ -228,7 +230,7 @@
                             {% endif %}
 
 			                <label for="{{form.contract2_total_type.id_for_label}}">{{form.contract2_total_type.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.1.css_class}}">
+                            <section class="segmented-selector {{maintenancetype.css_class}}">
                                 <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">{% trans "Available total time" %}</a>
                                 <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">{% trans "Consumed total time" %}</a>
 				            {{form.contract2_total_type}}
@@ -268,7 +270,7 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">{%  blocktrans with mtype=maintenance_types.1.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
+                            <div class="help">{%  blocktrans with mtype=maintenancetype.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
 
                             <div class="form-row {% if form.contract2_date.errors %}form-error{% endif %}">
                                 <label for="{{form.contract2_date.id_for_label}}">{{form.contract2_date.label}}</label>
@@ -285,7 +287,8 @@
                             <div class="help">{% trans "Date when the contract begin." %}</div>
                         </div>
                     </div>
-
+            {% endwith %}
+            {% with maintenance_types.2 as maintenancetype %}
                     <div class="form-group activation-active counter-total email-alert-disabled">
                         <div class="group-title-container">
                             <div class="group-title">{% trans "Counter" %} {{ form.contract3_counter_name.initial }}</div>
@@ -298,7 +301,7 @@
                             {% endif %}
 
 			                <label for="{{form.contract3_visible.id_for_label}}">{{form.contract3_visible.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.2.css_class}}">
+                            <section class="segmented-selector {{maintenancetype.css_class}}">
                                 <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">{% trans "Visible to everyone" %}</a>
                                 <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">{% trans "Invisible to managers" %}</a>
                                 <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">{% trans "Disabled" %}</a>
@@ -326,7 +329,8 @@
                             {% endif %}
 
 			                <label for="{{form.contract3_total_type.id_for_label}}">{{form.contract3_total_type.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.2.css_class}}">
+                            <section class="segmented-selector {{
+                              .2.css_class}}">
                                 <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">{% trans "Available total time" %}</a>
                                 <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">{% trans "Consumed total time" %}</a>
 				            {{form.contract3_total_type}}
@@ -366,7 +370,7 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">{%  blocktrans with mtype=maintenance_types.2.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
+                            <div class="help">{%  blocktrans with mtype=maintenancetype.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
 
                             <div class="form-row {% if form.contract3_date.errors %}form-error{% endif %}">
                                 <label for="{{form.contract3_date.id_for_label}}">{{form.contract3_date.label}}</label>
@@ -383,7 +387,7 @@
                             <div class="help">{% trans "Date when the contract begin." %}</div>
                         </div>
                     </div>
-
+{% endwith %}
 
                     {% if form.non_field_errors %}
                     <div class="form-error">

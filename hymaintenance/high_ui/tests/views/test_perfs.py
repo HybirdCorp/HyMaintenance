@@ -183,7 +183,7 @@ class ViewsPerformancesTestCase(TestCase):
             "high_ui:create_project"
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(18):
+        with self.assertNumQueries(10):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -222,7 +222,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(29):
+        with self.assertNumQueries(20):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
