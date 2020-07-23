@@ -46,7 +46,14 @@ class IssueUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Update
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_context_previous_page(self.request))
+        context.update({"unused_consumers_ids": [consumer.id for consumer in self.company.maintenanceconsumer_set.filter(is_used=False)],
+                        "unused_operators_ids": [operator.id for operator in self.company.managed_by.filter(is_active=False)],})
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["company"] = self.company
+        return kwargs
 
     def get_object(self, queryset=None):
         issue = get_object_or_404(

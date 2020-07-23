@@ -2,8 +2,10 @@ from django.test import SimpleTestCase
 from django.test import TestCase
 from django.utils.translation import ugettext as _
 
+from customers.models import MaintenanceUser
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import OperatorUserFactory
+from maintenance.models import MaintenanceConsumer
 from maintenance.tests.factories import MaintenanceConsumerFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import create_project
@@ -108,16 +110,18 @@ class HideDisabledUsersTestCase(TestCase):
     def test_hide_disabled_consumers(self):
         consumer1 = MaintenanceConsumerFactory(is_used=True)
         consumer2 = MaintenanceConsumerFactory(is_used=False)
+        consumers = [consumer.id for consumer in MaintenanceConsumer.objects.filter(is_used=False)]
 
-        self.assertEqual("", hide_disabled_consumer(consumer1.id))
-        self.assertEqual('class="disabled_consumer"', hide_disabled_consumer(consumer2.id))
+        self.assertEqual("", hide_disabled_consumer(consumer1.id, consumers))
+        self.assertEqual("disabled_consumer", hide_disabled_consumer(consumer2.id, consumers))
 
     def test_hide_disabled_operators(self):
         operator1 = OperatorUserFactory(is_active=True)
         operator2 = OperatorUserFactory(is_active=False)
+        operators = [operator.id for operator in MaintenanceUser.objects.filter(is_active=False)]
 
-        self.assertEqual("", hide_disabled_operator(operator1.id))
-        self.assertEqual('class="disabled_operator"', hide_disabled_operator(operator2.id))
+        self.assertEqual("", hide_disabled_operator(operator1.id, operators))
+        self.assertEqual("disabled_operator", hide_disabled_operator(operator2.id, operators))
 
 
 class ExtraCreditSubjectTestCase(TestCase):

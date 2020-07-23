@@ -1,5 +1,5 @@
 {% extends 'high_ui/forms/base_issue.html' %}
-{% load i18n %}
+{% load i18n print_fields %}
 
 {% block page_title %}
 <title>Maintenance {{general_info.name}} &mdash; {% blocktrans with company=object.company.name counter=object.get_counter_name number=object.company_issue_number %}Modification of {{company}} {{counter}} issue #{{number}}{% endblocktrans %}</title> {# TMP #}
@@ -15,9 +15,12 @@
 <span>{{object.company.name}}</span>
 {% endblock %}
 
-{% block form_footer %}
-<button type="submit">{% trans "Modify this issue" %}</button>
-<span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't Modify" %}</a></span>
+{% block consumers_option %}
+  <option value="{{consumer_who_ask.data.value}}" class="{% hide_disabled_consumer consumer_who_ask.data.value unused_consumers_ids %}" {% if consumer_who_ask.data.selected %} selected{% endif %}>{{consumer_who_ask.data.label}}</option>
+{% endblock %}
+
+{% block operators_option %}
+  <option value="{{user_who_fix.data.value}}" class="{% hide_disabled_operator user_who_fix.data.value unused_operators_ids %}" {% if user_who_fix.data.selected %} selected{% endif %}>{{user_who_fix.data.label}}</option>
 {% endblock %}
 
 {% block disabled_consumers_checkbox %}
@@ -34,6 +37,11 @@
     <input type="checkbox" name="disabled_operators");">
     <span> {% trans "Display disable operators" %}</span>
 </div>
+{% endblock %}
+
+{% block form_footer %}
+<button type="submit">{% trans "Modify this issue" %}</button>
+<span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't Modify" %}</a></span>
 {% endblock %}
 
 {% block js_disabled_cons_op_checkbox %}

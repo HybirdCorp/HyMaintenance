@@ -35,16 +35,14 @@
                         <div class="group-title-container">
                             {% block form_title %}{% endblock %}
                         </div>
-
                         <div class="form-row form-row-author disabled_consumers_hide {% if form.consumer_who_ask.errors %}form-error{% endif %}">
                             {% if form.consumer_who_ask.errors %}
                             <div class="form-row-wrapper">
                             {% endif %}
-
                             <label for="{{form.consumer_who_ask.id_for_label}}">{{form.consumer_who_ask.label}}</label>
                             <select name="{{form.consumer_who_ask.name}}" id="{{form.consumer_who_ask.id_for_label}}">
                             {% for consumer_who_ask in form.consumer_who_ask %}
-                                <option value="{{consumer_who_ask.data.value}}" {{consumer_who_ask.data.value|hide_disabled_consumer}} {% if consumer_who_ask.data.selected %} selected{% endif %}>{{consumer_who_ask.data.label}}</option>
+                                {% block consumers_option %}{% endblock %}
                             {% endfor %}
                             </select>
 
@@ -165,7 +163,7 @@
                             <label for="{{form.user_who_fix.id_for_label}}">{{form.user_who_fix.label}}</label>
                             <select name="{{form.user_who_fix.name}}" id="{{form.user_who_fix.id_for_label}}">
                             {% for user_who_fix in form.user_who_fix %}
-                                <option value="{{user_who_fix.data.value}}" {{user_who_fix.data.value|hide_disabled_operator}} {% if user_who_fix.data.selected %} selected{% endif %}>{{user_who_fix.data.label}}</option>
+                                {% block operators_option %}{% endblock %}
                             {% endfor %}
                             </select>
 

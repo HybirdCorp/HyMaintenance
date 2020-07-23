@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import Case, When, Value
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
@@ -36,6 +37,14 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        """
+            @register.filter
+            def hide_disabled_consumer(consumer_id):
+                if consumer_id == "" or MaintenanceConsumer.objects.get(id=consumer_id).is_used:
+                    return ""
+                else:
+                    return mark_safe('class="disabled_consumer"')
+        """
         self.company = kwargs.pop("company")
         super(MaintenanceIssueCreateForm, self).__init__(*args, **kwargs)
 
@@ -66,11 +75,10 @@ class MaintenanceIssueCreateForm(forms.ModelForm):
 
 class MaintenanceIssueUpdateForm(MaintenanceIssueCreateForm):
     def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop("company")
         super(MaintenanceIssueCreateForm, self).__init__(*args, **kwargs)
-        self.company = Company.objects.get(id=self.instance.company_id)
-
-        self.fields["consumer_who_ask"].queryset = self.company.maintenanceconsumer_set.all()
-        self.fields["user_who_fix"].choices = self.company.get_operators_choices()
+        self.fields["consumer_who_ask"].queryset = self.instance.company.maintenanceconsumer_set.all()
+        self.fields["user_who_fix"].queryset = self.instance.company.managed_by.all()
         self.fields["duration_type"].initial = "minutes"
         self.fields["duration"].initial = self.instance.number_minutes
         self.fields["context_description_file"].required = False

@@ -248,7 +248,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(35):
+        with self.assertNumQueries(9):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -276,7 +276,7 @@ class ViewsPerformancesTestCase(TestCase):
             },
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(42):
+        with self.assertNumQueries(17):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)

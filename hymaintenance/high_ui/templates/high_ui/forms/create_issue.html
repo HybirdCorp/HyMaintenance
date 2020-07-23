@@ -1,5 +1,5 @@
 {% extends 'high_ui/forms/base_issue.html' %}
-{% load i18n %}
+{% load i18n print_fields %}
 
 {% block page_title %}
 <title>Maintenance {{general_info.name}} &mdash; {% blocktrans %}{{company}} new issue{% endblocktrans %}</title> {# TMP #}
@@ -13,6 +13,14 @@
 <div class="group-title">{% trans "New issue" %}</div>
 <label>{% trans "Client account" %}</label>
 <span>{{company.name}}</span>
+{% endblock %}
+
+{% block consumers_option %}
+  <option value="{{consumer_who_ask.data.value}}" {% if consumer_who_ask.data.selected %} selected{% endif %}>{{consumer_who_ask.data.label}}</option>
+{% endblock %}
+
+{% block operators_option %}
+  <option value="{{user_who_fix.data.value}}" {% if user_who_fix.data.selected %} selected{% endif %}>{{user_who_fix.data.label}}</option>
 {% endblock %}
 
 {% block form_footer %}

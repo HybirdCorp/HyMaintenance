@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
 
-from customers.tests.factories import OperatorUserFactory
+from customers.tests.factories import OperatorUserFactory, MaintenanceUserFactory
 from high_ui.tests.utils import SetDjangoLanguage
 from toolkit.tests import create_temporary_file
 
@@ -251,6 +251,7 @@ class IssueUpdateFormTestCase(TestCase):
             prefix="create-issue-view-", dir=os.path.join(settings.MEDIA_ROOT, "upload/")
         )
         cls.company, cls.contract, _, _ = create_project(company={"name": os.path.basename(cls.tmp_directory.name)})
+        cls.user.operator_for.add(cls.company)
         cls.channel = IncomingChannelFactory()
         cls.consumer = MaintenanceConsumerFactory(company=cls.company)
 
@@ -284,7 +285,7 @@ class IssueUpdateFormTestCase(TestCase):
         }
 
     def test_all_required_fields_by_sending_a_empty_update_form(self):
-        form = MaintenanceIssueUpdateForm(instance=self.issue, data={})
+        form = MaintenanceIssueUpdateForm(company=self.company, instance=self.issue, data={})
         self.assertFalse(form.is_valid())
         expected = _("This field is required.")
         self.assertDictEqual(
@@ -306,7 +307,7 @@ class IssueUpdateFormTestCase(TestCase):
 
             dict_for_post["duration_type"] = "years"
 
-            form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post)
+            form = MaintenanceIssueUpdateForm(company=self.company, instance=self.issue, data=dict_for_post)
             self.assertFalse(form.is_valid())
             self.assertEqual(1, len(form.errors))
             expected = _("Invalid duration type: '%s'") % dict_for_post["duration_type"]
@@ -319,7 +320,7 @@ class IssueUpdateFormTestCase(TestCase):
 
         dict_for_post["duration"] = "0"
 
-        form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post)
+        form = MaintenanceIssueUpdateForm(company=self.company, instance=self.issue, data=dict_for_post)
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
         expected = _("Ensure this value is greater than or equal to %(limit_value)s.") % {"limit_value": 1}
@@ -332,7 +333,7 @@ class IssueUpdateFormTestCase(TestCase):
 
         dict_for_post["duration"] = "I'm a duration"
 
-        form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post)
+        form = MaintenanceIssueUpdateForm(company=self.company, instance=self.issue, data=dict_for_post)
         self.assertFalse(form.is_valid())
         self.assertEqual(1, len(form.errors))
         expected = _("Enter a whole number.")
@@ -343,10 +344,10 @@ class IssueUpdateFormTestCase(TestCase):
         description = "Description of the Issue"
         dict_for_post = self.__get_dict_for_post(subject, description)
 
-        form = MaintenanceIssueUpdateForm(instance=self.issue, data=dict_for_post)
+        form = MaintenanceIssueUpdateForm(company=self.company, instance=self.issue, data=dict_for_post)
         is_valid = form.is_valid()
-        form.save()
         self.assertTrue(is_valid)
+        form.save()
         self.assertEqual(0, len(form.errors))
         self.assertEqual(
             1,
@@ -372,6 +373,7 @@ class IssueUpdateFormTestCase(TestCase):
             dict_for_post["context_description_file"] = tmp_file
 
             form = MaintenanceIssueUpdateForm(
+                company=self.company,
                 instance=self.issue,
                 data=dict_for_post,
                 files={
@@ -401,6 +403,7 @@ class IssueUpdateFormTestCase(TestCase):
             dict_for_post["resolution_description_file"] = resolution_file
 
             form = MaintenanceIssueUpdateForm(
+                company=self.company,
                 instance=self.issue,
                 data=dict_for_post,
                 files={
@@ -445,6 +448,7 @@ class IssueUpdateFormTestCase(TestCase):
                         "same_file_name", dict_for_post["resolution_description_file"].read()
                     ),
                 },
+                company = self.company
             )
             self.assertTrue(form.is_valid())
             self.assertTrue(form.save())
@@ -481,6 +485,7 @@ class IssueUpdateFormTestCase(TestCase):
                         "same_file_name", dict_for_post["resolution_description_file"].read()
                     ),
                 },
+                company = self.company
             )
             form.is_valid()
             form.save()
@@ -502,6 +507,7 @@ class IssueUpdateFormTestCase(TestCase):
                             "same_file_name", dict_for_post["resolution_description_file"].read()
                         ),
                     },
+                    company = self.company
                 )
 
                 self.assertTrue(form.is_valid())

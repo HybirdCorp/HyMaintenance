@@ -44,20 +44,20 @@ def print_operator_projects(operator_id):
     return format_html(_("project: none"))
 
 
-@register.filter
-def hide_disabled_consumer(consumer_id):
-    if consumer_id == "" or MaintenanceConsumer.objects.get(id=consumer_id).is_used:
+@register.simple_tag
+def hide_disabled_consumer(consumer_id, unused_consumers_ids):
+    if consumer_id == "" or consumer_id not in unused_consumers_ids:
         return ""
     else:
-        return mark_safe('class="disabled_consumer"')
+        return mark_safe("disabled_consumer")
 
 
-@register.filter
-def hide_disabled_operator(operator_id):
-    if operator_id == "" or MaintenanceUser.objects.get(id=operator_id).is_active:
+@register.simple_tag
+def hide_disabled_operator(operator_id, unused_operators_ids):
+    if operator_id == "" or operator_id not in unused_operators_ids:
         return ""
     else:
-        return mark_safe('class="disabled_operator"')
+        return mark_safe("disabled_operator")
 
 
 @register.simple_tag
