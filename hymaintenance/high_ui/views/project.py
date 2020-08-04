@@ -21,7 +21,7 @@ from maintenance.models import MaintenanceCredit
 from maintenance.models import MaintenanceIssue
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 
-from .base import IsAdminTestMixin
+from .base import IsAdminTestMixin, ViewWithCompanyBis
 from .base import IsAtLeastAllowedManagerTestMixin
 from .base import IsAtLeastAllowedOperatorTestMixin
 from .base import ViewWithCompany
@@ -69,7 +69,7 @@ class ProjectUpdateView(IsAdminTestMixin, ViewWithCompany, FormView):
         return super().form_valid(form)
 
 
-class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, DetailView):
+class ProjectDetailsView(ViewWithCompanyBis, IsAtLeastAllowedManagerTestMixin, DetailView):
     template_name = "high_ui/company_details.html"
     model = Company
     slug_url_kwarg = "company_name"
@@ -117,12 +117,12 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
             date__month=month.month,
             date__year=month.year,
             is_deleted=False,
-        )
+        ).select_related("contract__maintenance_type")
 
     def get_maintenance_credits(self, month, contracts):
         return MaintenanceCredit.objects.filter(
             contract__in=contracts, company_id=self.company, date__month=month.month, date__year=month.year
-        )
+        ).select_related("contract__maintenance_type")
 
     def get_last_months(self, start=datetime.now()):
         last_month = start - timedelta(days=(start.day + 1))
@@ -134,10 +134,20 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
 
     @staticmethod
     def get_contract_month_information(month, contract):
+        consumed_minutes = 0
+        for e in contract.consumed_minutes_by_months:
+            if e[0] == month.year and e[1] == month.month:
+                consumed_minutes = e[2]
+                break
+        credited_hours = 0
+        for e in contract.credited_hours_by_months:
+            if e[0] == month.year and e[1] == month.month:
+                credited_hours = e[2]
+                break
         return (
             contract,
-            contract.get_number_consumed_minutes_in_month(month),
-            contract.get_number_credited_hours_in_month(month),
+            consumed_minutes,
+            credited_hours,
         )
 
     def get_contracts_month_information(self, month, contracts):

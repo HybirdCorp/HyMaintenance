@@ -6,7 +6,7 @@ from django.urls import reverse
 from customers.models import Company
 from customers.models import MaintenanceUser
 from customers.models.user import get_companies_of_operator
-from maintenance.models import MaintenanceContract
+from maintenance.models import MaintenanceContract, MaintenanceCredit
 from maintenance.models import MaintenanceType
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 
@@ -47,6 +47,59 @@ def get_context_data_project_header(user, company):
     return context
 
 
+from datetime import datetime
+from datetime import timedelta
+def get_last_months(company, start=datetime.now()):
+    last_month = start - timedelta(days=(start.day + 1))
+    months = [start, last_month]
+    for i in range(company.displayed_month_number - 2):
+        last_month = last_month - timedelta(days=31)
+        months.append(last_month)
+    return months
+
+"""
+from django.db import models
+from .issue import MaintenanceIssue
+def get_number_consumed_minutes_in_month(contract, date: datetime.date) -> int:
+    consumed = MaintenanceIssue.objects.filter(
+        company=contract.company, date__month=date.month, date__year=date.year, contract=contract, is_deleted=False
+    ).aggregate(models.Sum("number_minutes"))
+    consumed = consumed["number_minutes__sum"]
+    return consumed if consumed is not None else 0
+"""
+
+from dateutil.relativedelta import relativedelta
+from django.db.models import Sum
+from maintenance.models import MaintenanceIssue
+def get_context_data_project_header_bis(user, company):
+    context = {}
+    min_date = (datetime.now() - relativedelta(months=company.displayed_month_number)).replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    if user.has_operator_or_admin_permissions():
+
+        context["contracts"] = MaintenanceContract.objects.filter_enabled().filter(company=company)
+    else:
+        context["contracts"] = MaintenanceContract.objects.filter_enabled().filter(company=company)
+
+    for contract in context["contracts"]:
+        contract.consumed_minutes_by_months = MaintenanceIssue.objects \
+            .filter(company=contract.company, contract=contract, date__gte=min_date, is_deleted=False) \
+            .values_list("date__year", "date__month") \
+            .annotate(consumed_minutes_by_months=Sum("number_minutes"), ) \
+            .order_by("date__year", "date__month")
+
+        contract.credited_hours_by_months = MaintenanceCredit.objects \
+            .filter(company=contract.company, contract=contract, date__gte=min_date) \
+            .values_list("date__year", "date__month") \
+            .annotate(consumed_minutes_by_months=Sum("hours_number"), ) \
+            .order_by("date__year", "date__month")
+
+    context["add_credits"] = (
+        True if context["contracts"].filter(total_type=AVAILABLE_TOTAL_TIME, disabled=False).count() else False
+    )
+    context["company"] = company
+    return context
+
+
 class ViewWithCompany:
     slug_url_kwarg = "company_name"
     slug_field = "slug_name"
@@ -68,6 +121,14 @@ class ViewWithCompany:
         context = super().get_context_data(**kwargs)
         user = self.request.user
         context.update(get_context_data_project_header(user, self.company))
+        return context
+
+
+class ViewWithCompanyBis(ViewWithCompany):
+      def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context.update(get_context_data_project_header_bis(user, self.company))
         return context
 
 
