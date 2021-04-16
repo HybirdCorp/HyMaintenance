@@ -5,7 +5,7 @@ click==6.7
 coverage==4.5.1
 decorator==4.3.0
 Django<3.0
-django-debug-toolbar==1.9.1
+django-debug-toolbar==1.11.1
 django-extensions==2.0.6
 django-grappelli==2.11.1
 django-ordered-model==1.4.3
