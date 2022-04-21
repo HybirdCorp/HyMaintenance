@@ -71,7 +71,6 @@ class MaintenanceContractFactory(factory.django.DjangoModelFactory):
 
     company = factory.SubFactory(CompanyFactory)
     maintenance_type = factory.LazyFunction(get_default_maintenance_type)
-    start = now()
     reset_date = None
     has_credit_recurrence = False
 

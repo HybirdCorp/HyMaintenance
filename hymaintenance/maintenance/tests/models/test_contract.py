@@ -1,9 +1,10 @@
+from customers.tests.factories import CompanyFactory
+from freezegun import freeze_time
+from maintenance.models import MaintenanceCredit
+
 from django.test import TestCase
 from django.utils.timezone import datetime
 from django.utils.timezone import now
-
-from customers.tests.factories import CompanyFactory
-from maintenance.models import MaintenanceCredit
 
 from ...models import MaintenanceContract
 from ...models.contract import get_next_month_date
@@ -357,13 +358,14 @@ class MaintenanceContractTestCase(TestCase):
         self.assertEqual(2, next_time.month)
         self.assertEqual(2025, next_time.year)
 
+    @freeze_time("2019-04-04")
     def test_get_recurrence_next_date(self):
-        time = datetime(day=2, month=12, year=2021).date()
+        start_date = datetime(day=2, month=12, year=2021).date()
         company, contract, _, _ = create_project()
         next_time = contract.get_recurrence_next_date()
         self.assertIsNone(next_time)
 
-        contract.recurrence_start_date = time
+        contract.recurrence_start_date = start_date
         contract.save()
         contract.set_annual_recurrence()
         next_time = contract.get_recurrence_next_date()

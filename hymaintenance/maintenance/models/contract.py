@@ -260,10 +260,12 @@ def get_last_day_of_the_month(month, year):
 
 
 def create_old_occurrence_credit(date, contract):
-    MaintenanceCredit.objects.create(
-        contract=contract,
-        company=contract.company,
-        date=date,
-        hours_number=contract.hours_to_credit,
-        subject=_("{}'s credit recurrence".format(date.strftime("%B"))),
-    )
+    hours_number = contract.hours_to_credit
+    if hours_number is not None and hours_number > 0:
+        MaintenanceCredit.objects.create(
+            contract=contract,
+            company=contract.company,
+            date=date,
+            hours_number=hours_number,
+            subject=_("{}'s credit recurrence".format(date.strftime("%B"))),
+        )
