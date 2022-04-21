@@ -2,13 +2,14 @@ import os
 from tempfile import TemporaryDirectory
 from tempfile import TemporaryFile
 
+from customers.tests.factories import OperatorUserFactory
+from freezegun import freeze_time
+
 from django.conf import settings
 from django.core.files import File
 from django.test import TestCase
 from django.utils.timezone import datetime
 from django.utils.timezone import now
-
-from customers.tests.factories import OperatorUserFactory
 
 from ...models import MaintenanceIssue
 from ..factories import IncomingChannelFactory
@@ -122,6 +123,7 @@ class MaintenanceIssueTestCase(TestCase):
         contract.refresh_from_db()
         self.assertEqual(0, contract.consumed_minutes)
 
+    @freeze_time("2019-04-04")
     def test_contract_consumed_minutes_update_when_old_issues(self):
         time1 = datetime(day=1, month=2, year=2021)
         time2 = datetime(day=19, month=1, year=2021)
