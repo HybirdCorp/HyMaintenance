@@ -1,8 +1,18 @@
 # HyMaintenance
 
-If you want to contribute, don't forget to add pre-commit hock.
+If you want to contribute, don't forget to add pre-commit hocks.
 ```
-cp precommit_script.py .git/hooks/pre-commit
+invoke install-precommit
+```
+
+To run lint checks (black, isort and flake8), run this command:
+```
+invoke lints
+```
+
+If needed, to apply black and isort proposed corrections run this command:
+```
+invoke autolints
 ```
 
 Here is the contribution workflow :
