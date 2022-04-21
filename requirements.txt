@@ -2,14 +2,11 @@ appdirs==1.4.3
 attrs==18.1.0
 black==18.6b2
 click==6.7
-coverage==4.5.1
 decorator==4.3.0
 Django<3.0
-django-debug-toolbar==1.9.1
 django-extensions==2.0.6
 django-grappelli==2.11.1
 django-ordered-model==1.4.3
-factory-boy==2.10.0
 Faker==0.9.0
 invoke==1.2.0
 ipython==6.2.1
@@ -24,8 +21,6 @@ prompt-toolkit==1.0.15
 psycopg2==2.7.4
 ptyprocess==0.6.0
 py==1.5.4
-pycodestyle==2.5.0
-pyflakes==2.1.1
 Pygments==2.2.0
 python-crontab==2.2.8
 python-dateutil==2.7.2
@@ -36,7 +31,6 @@ six==1.11.0
 sqlparse==0.2.4
 text-unidecode==1.2
 toml==0.9.4
-tox==2.9.1
 traitlets==4.3.2
 virtualenv==16.0.0
 wcwidth==0.1.7
