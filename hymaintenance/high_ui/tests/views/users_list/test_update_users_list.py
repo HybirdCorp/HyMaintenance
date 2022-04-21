@@ -1,7 +1,3 @@
-from django.test import RequestFactory
-from django.test import TestCase
-from django.urls import reverse
-
 from customers.models import MaintenanceUser
 from customers.tests.factories import AdminOperatorUserFactory
 from customers.tests.factories import AdminUserFactory
@@ -10,6 +6,10 @@ from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceConsumer
 from maintenance.tests.factories import MaintenanceConsumerFactory
+
+from django.test import RequestFactory
+from django.test import TestCase
+from django.urls import reverse
 
 from ....views.users_list.update_users_list import AdminUsersListUpdateView
 from ....views.users_list.update_users_list import OperatorUsersListUpdateView

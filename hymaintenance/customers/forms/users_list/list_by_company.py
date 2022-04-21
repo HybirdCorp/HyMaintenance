@@ -1,6 +1,6 @@
-from django import forms
-
 from toolkit.forms import UsersMultipleChoiceField
+
+from django import forms
 
 from ...models import MaintenanceUser
 

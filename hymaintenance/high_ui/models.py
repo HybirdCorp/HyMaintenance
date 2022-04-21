@@ -1,7 +1,7 @@
+from customers.fields import LowerCaseEmailField
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
-from customers.fields import LowerCaseEmailField
 
 
 class GeneralInformation(models.Model):

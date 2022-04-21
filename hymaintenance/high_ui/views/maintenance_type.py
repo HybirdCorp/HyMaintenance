@@ -1,7 +1,7 @@
+from maintenance.forms.other_models import MaintenanceTypeUpdateForm
+
 from django.urls import reverse
 from django.views.generic import FormView
-
-from maintenance.forms.other_models import MaintenanceTypeUpdateForm
 
 from .base import IsAdminTestMixin
 from .base import get_context_data_dashboard_header

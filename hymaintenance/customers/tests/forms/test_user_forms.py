@@ -1,6 +1,3 @@
-from django.test import TestCase
-from django.utils.translation import ugettext_lazy as _
-
 from customers.forms.users.create_user import AdminUserCreateForm
 from customers.forms.users.create_user import ManagerUserCreateForm
 from customers.forms.users.create_user import OperatorUserCreateForm
@@ -15,6 +12,9 @@ from customers.forms.users_list.list import OperatorUsersListArchiveForm
 from customers.forms.users_list.list import OperatorUsersListUnarchiveForm
 from customers.forms.users_list.list_by_company import ManagerUsersListUpdateForm
 from customers.forms.users_list.list_by_company import OperatorUsersListUpdateForm
+
+from django.test import TestCase
+from django.utils.translation import ugettext_lazy as _
 
 from ...models import MaintenanceUser
 from ..factories import AdminUserFactory

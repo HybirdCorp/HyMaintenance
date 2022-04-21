@@ -1,13 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
 
-from django import forms
-from django.forms import modelformset_factory
-from django.utils.translation import ugettext_lazy as _
-from django.views.generic import DetailView
-from django.views.generic import FormView
-from django.views.generic import UpdateView
-
 from customers.forms.company import ProjectCustomizeForm
 from customers.forms.project import ProjectListArchiveForm
 from customers.forms.project import ProjectListUnarchiveForm
@@ -20,6 +13,13 @@ from maintenance.models import MaintenanceContract
 from maintenance.models import MaintenanceCredit
 from maintenance.models import MaintenanceIssue
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
+
+from django import forms
+from django.forms import modelformset_factory
+from django.utils.translation import ugettext_lazy as _
+from django.views.generic import DetailView
+from django.views.generic import FormView
+from django.views.generic import UpdateView
 
 from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedManagerTestMixin

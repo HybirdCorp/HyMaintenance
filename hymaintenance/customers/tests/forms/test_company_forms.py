@@ -2,17 +2,16 @@ import os
 from shutil import rmtree
 from tempfile import TemporaryDirectory
 
+from customers.tests.factories import CompanyFactory
+from customers.tests.factories import OperatorUserFactory
 from PIL import Image
+from toolkit.tests import create_temporary_image
 
 from django.conf import settings
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.utils.translation import gettext as _
-
-from customers.tests.factories import CompanyFactory
-from customers.tests.factories import OperatorUserFactory
-from toolkit.tests import create_temporary_image
 
 from ...forms.company import ProjectCustomizeForm
 from ...forms.project import ProjectListArchiveForm

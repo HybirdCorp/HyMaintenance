@@ -1,12 +1,12 @@
-from django.test import SimpleTestCase
-from django.test import TestCase
-from django.utils.translation import ugettext as _
-
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.tests.factories import MaintenanceConsumerFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import create_project
+
+from django.test import SimpleTestCase
+from django.test import TestCase
+from django.utils.translation import ugettext as _
 
 from ...templatetags.print_fields import extra_credit_subject
 from ...templatetags.print_fields import hide_disabled_consumer

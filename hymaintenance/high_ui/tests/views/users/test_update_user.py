@@ -1,8 +1,3 @@
-from django.test import RequestFactory
-from django.test import TestCase
-from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
-
 from customers.models.user import MaintenanceUser
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
@@ -10,6 +5,11 @@ from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceConsumer
 from maintenance.tests.factories import MaintenanceConsumerFactory
+
+from django.test import RequestFactory
+from django.test import TestCase
+from django.urls import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from ....views.users.update_user import AdminUserUpdateView
 from ....views.users.update_user import ConsumerUpdateView

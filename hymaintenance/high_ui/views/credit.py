@@ -1,3 +1,9 @@
+from maintenance.forms.credit import MaintenanceCreditCreateForm
+from maintenance.forms.credit import MaintenanceCreditUpdateForm
+from maintenance.models import MaintenanceCredit
+from maintenance.models.contract import AVAILABLE_TOTAL_TIME
+from maintenance.models.credit import MaintenanceCreditChoices
+
 from django import forms
 from django.forms import modelformset_factory
 from django.urls import reverse
@@ -5,12 +11,6 @@ from django.views.generic import CreateView
 from django.views.generic import FormView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
-
-from maintenance.forms.credit import MaintenanceCreditCreateForm
-from maintenance.forms.credit import MaintenanceCreditUpdateForm
-from maintenance.models import MaintenanceCredit
-from maintenance.models.contract import AVAILABLE_TOTAL_TIME
-from maintenance.models.credit import MaintenanceCreditChoices
 
 from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedOperatorTestMixin

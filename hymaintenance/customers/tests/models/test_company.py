@@ -1,8 +1,8 @@
 
-from django.test import TestCase
-
 from maintenance.tests.factories import MaintenanceContractFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
+
+from django.test import TestCase
 
 from ...models import Company
 from ..factories import CompanyFactory

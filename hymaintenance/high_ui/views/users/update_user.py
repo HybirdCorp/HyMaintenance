@@ -1,16 +1,16 @@
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import SetPasswordForm
-from django.core.exceptions import SuspiciousOperation
-from django.urls import reverse
-from django.views.generic import TemplateView
-from django.views.generic import UpdateView
-
 from customers.forms.users.update_user import AdminUserUpdateForm
 from customers.forms.users.update_user import OperatorUserUpdateForm
 from customers.forms.users.user_base import MaintenanceUserModelForm
 from customers.models.user import MaintenanceUser
 from maintenance.forms.consumer import MaintenanceConsumerModelForm
 from maintenance.models import MaintenanceConsumer
+
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import SetPasswordForm
+from django.core.exceptions import SuspiciousOperation
+from django.urls import reverse
+from django.views.generic import TemplateView
+from django.views.generic import UpdateView
 
 from ..base import IsAdminTestMixin
 from ..base import IsAtLeastAllowedOperatorTestMixin

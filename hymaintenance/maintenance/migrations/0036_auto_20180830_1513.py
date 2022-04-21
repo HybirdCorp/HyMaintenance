@@ -2,12 +2,12 @@
 
 import datetime
 
+import maintenance.models.issue
+
 import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations
 from django.db import models
-
-import maintenance.models.issue
 
 
 class Migration(migrations.Migration):

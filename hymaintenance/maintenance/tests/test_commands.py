@@ -1,3 +1,5 @@
+from customers.tests.factories import ManagerUserFactory
+
 from django.core import mail
 from django.core.management import call_command
 from django.test import TestCase
@@ -5,8 +7,6 @@ from django.test.utils import override_settings
 from django.utils.timezone import datetime
 from django.utils.timezone import now
 from django.utils.timezone import utc
-
-from customers.tests.factories import ManagerUserFactory
 
 from ..management.commands.recurrence import check_and_apply_credit_recurrence
 from ..models.contract import AVAILABLE_TOTAL_TIME

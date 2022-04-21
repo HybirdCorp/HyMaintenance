@@ -1,11 +1,11 @@
-from django.urls import reverse
-from django.views.generic import CreateView
-
 from customers.forms.users.create_user import AdminUserCreateForm
 from customers.forms.users.create_user import ManagerUserCreateForm
 from customers.forms.users.create_user import OperatorUserCreateForm
 from customers.forms.users.create_user import OperatorUserCreateFormWithCompany
 from maintenance.forms.consumer import MaintenanceConsumerModelForm
+
+from django.urls import reverse
+from django.views.generic import CreateView
 
 from ..base import IsAdminTestMixin
 from ..base import IsAtLeastAllowedOperatorTestMixin

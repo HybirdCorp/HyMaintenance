@@ -1,12 +1,11 @@
 
 import factory
+from customers.tests.factories import CompanyFactory
+from customers.tests.factories import OperatorUserFactory
 
 from django.utils.timezone import datetime
 from django.utils.timezone import now
 from django.utils.timezone import utc
-
-from customers.tests.factories import CompanyFactory
-from customers.tests.factories import OperatorUserFactory
 
 from ..models import IncomingChannel
 from ..models import MaintenanceConsumer

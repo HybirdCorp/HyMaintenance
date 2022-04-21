@@ -1,12 +1,12 @@
 from calendar import monthrange
 
+from customers.models import Company
+
 from django.db import models
 from django.db.models import F
 from django.utils.timezone import datetime
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
-
-from customers.models import Company
 
 from .credit import MaintenanceCredit
 from .credit import calcul_credited_hours
@@ -24,7 +24,7 @@ ANNUAL = 1
 
 class MaintenanceContractManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().select_related('maintenance_type').order_by(F("maintenance_type__id").asc())
+        return super().get_queryset().select_related("maintenance_type").order_by(F("maintenance_type__id").asc())
 
     def filter_enabled(self):
         return self.get_queryset().filter(disabled=False)

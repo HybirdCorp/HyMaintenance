@@ -1,9 +1,9 @@
-from django.test import TestCase
-from django.utils.translation import ugettext_lazy as _
-
 from customers.tests.factories import AdminUserFactory
 from maintenance.forms.other_models import MaintenanceTypeUpdateForm
 from maintenance.models import MaintenanceType
+
+from django.test import TestCase
+from django.utils.translation import ugettext_lazy as _
 
 
 class MaintenanceTypeUpdateFormTestCase(TestCase):

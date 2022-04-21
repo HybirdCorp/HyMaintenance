@@ -1,12 +1,12 @@
-from django.test import RequestFactory
-from django.test import TestCase
-from django.urls import reverse
-
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from high_ui.views.maintenance_type import MaintenanceTypeUpdateView
 from maintenance.models.other_models import MaintenanceType
+
+from django.test import RequestFactory
+from django.test import TestCase
+from django.urls import reverse
 
 
 class MaintenanceTypeUpdateViewTestCase(TestCase):

@@ -4,14 +4,6 @@ from tempfile import TemporaryDirectory
 from tempfile import TemporaryFile
 from urllib.parse import urljoin
 
-from django.conf import settings
-from django.core.files import File
-from django.test import RequestFactory
-from django.test import TestCase
-from django.urls import reverse
-from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
-
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
@@ -23,8 +15,15 @@ from maintenance.tests.factories import create_project
 from toolkit.tests import create_temporary_file
 from toolkit.tests import create_temporary_image
 
+from django.conf import settings
+from django.core.files import File
+from django.test import RequestFactory
+from django.test import TestCase
+from django.urls import reverse
+from django.utils.timezone import now
+from django.utils.translation import ugettext_lazy as _
+
 from ...views.issue import IssueCreateView
-from ...views.issue import IssueListUnarchiveView
 from ...views.issue import IssueUpdateView
 from ..utils import SetDjangoLanguage
 

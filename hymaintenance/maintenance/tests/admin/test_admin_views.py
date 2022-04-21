@@ -1,11 +1,11 @@
 
 
+from customers.tests.factories import AdminUserFactory
+from customers.tests.factories import CompanyFactory
+
 from django.test import Client
 from django.test import TestCase
 from django.urls import reverse
-
-from customers.tests.factories import AdminUserFactory
-from customers.tests.factories import CompanyFactory
 
 from ..factories import IncomingChannelFactory
 from ..factories import MaintenanceConsumerFactory

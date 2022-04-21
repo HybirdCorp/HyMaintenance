@@ -1,10 +1,10 @@
-from django.test import TestCase
-from django.urls import reverse
-
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.tests.factories import create_project
+
+from django.test import TestCase
+from django.urls import reverse
 
 from ...models import GeneralInformation
 

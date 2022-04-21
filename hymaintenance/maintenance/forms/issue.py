@@ -1,11 +1,11 @@
-from django import forms
-from django.utils.html import format_html
-from django.utils.translation import ugettext_lazy as _
-
 from customers.models import Company
 from toolkit.email import is_credited_hours_min_exceeded
 from toolkit.email import send_email_alert
 from toolkit.forms import HyClearableFileInput
+
+from django import forms
+from django.utils.html import format_html
+from django.utils.translation import ugettext_lazy as _
 
 from ..models import MaintenanceIssue
 
@@ -79,9 +79,9 @@ class MaintenanceIssueUpdateForm(MaintenanceIssueCreateForm):
 
 class UnarchiveIssueModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
-        name = "Issue {number}: {counter} ({date})".format(number=str(obj.company_issue_number),
-                                                                         counter=obj.contract.counter_name,
-                                                                         date=str(obj.date))
+        name = "Issue {number}: {counter} ({date})".format(
+            number=str(obj.company_issue_number), counter=obj.contract.counter_name, date=str(obj.date)
+        )
         description = format_html(obj.subject)
         return (name, description)
 
@@ -92,9 +92,11 @@ class MaintenanceIssueListUnarchiveForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
         super().__init__(*args, **kwargs)
-        self.fields["issues"].queryset = MaintenanceIssue.objects.filter(
-            is_deleted=True, company=self.company
-        ).select_related("contract").order_by("date")
+        self.fields["issues"].queryset = (
+            MaintenanceIssue.objects.filter(is_deleted=True, company=self.company)
+            .select_related("contract")
+            .order_by("date")
+        )
 
     def save(self):
         for issue in self.cleaned_data["issues"]:
