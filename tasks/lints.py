@@ -17,11 +17,11 @@ def black(c, check=False):
 @task
 def isort(c, check=False):
     if check:
-        c.run(f"isort --recursive  --atomic --check-only {PNAME}", warn=True)
-        c.run("isort --recursive  --atomic --check-only tasks", warn=True)
+        c.run(f"isort --atomic --check-only {PNAME}", warn=True)
+        c.run("isort --atomic --check-only tasks", warn=True)
     else:
-        c.run(f"isort --recursive --atomic {PNAME}")
-        c.run("isort --recursive --atomic tasks")
+        c.run(f"isort --atomic {PNAME}")
+        c.run("isort --atomic tasks")
 
 
 @task
