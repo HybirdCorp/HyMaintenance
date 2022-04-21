@@ -1,14 +1,14 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.shortcuts import get_object_or_404
-from django.urls import reverse
-
 from customers.models import Company
 from customers.models import MaintenanceUser
 from customers.models.user import get_companies_of_operator
 from maintenance.models import MaintenanceContract
 from maintenance.models import MaintenanceType
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
 
 
 def get_maintenance_types():

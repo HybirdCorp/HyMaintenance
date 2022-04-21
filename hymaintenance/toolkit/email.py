@@ -1,9 +1,9 @@
-from django.core.mail import EmailMessage
-from django.utils.translation import gettext_lazy as _
-
 from high_ui.models import GeneralInformation
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 from toolkit.pretty_print import pretty_print_minutes
+
+from django.core.mail import EmailMessage
+from django.utils.translation import gettext_lazy as _
 
 
 email_content = """Hello {recipient},

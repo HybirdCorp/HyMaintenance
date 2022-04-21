@@ -1,8 +1,5 @@
 import datetime
 
-from django.test import TestCase
-from django.utils.translation import ugettext_lazy as _
-
 from customers.models import Company
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
@@ -15,6 +12,9 @@ from maintenance.models import MaintenanceCredit
 from maintenance.models import MaintenanceType
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 from maintenance.models.contract import CONSUMMED_TOTAL_TIME
+
+from django.test import TestCase
+from django.utils.translation import ugettext_lazy as _
 
 from ..factories import create_project
 

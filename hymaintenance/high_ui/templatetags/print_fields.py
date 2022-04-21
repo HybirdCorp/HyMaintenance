@@ -1,15 +1,15 @@
 
-from django.template import Library
-from django.utils.html import format_html
-from django.utils.html import mark_safe
-from django.utils.translation import gettext as _
-
 from customers.models.user import MaintenanceUser
 from customers.models.user import get_companies_of_operator
 from maintenance.models.consumer import MaintenanceConsumer
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 from toolkit.pretty_print import pretty_print_minutes
+
+from django.template import Library
+from django.utils.html import format_html
+from django.utils.html import mark_safe
+from django.utils.translation import gettext as _
 
 
 register = Library()

@@ -1,10 +1,10 @@
+from customers.models import Company
+from customers.models.user import get_active_companies_of_operator
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import F
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
-
-from customers.models import Company
-from customers.models.user import get_active_companies_of_operator
 
 from .base import get_context_data_dashboard_header
 

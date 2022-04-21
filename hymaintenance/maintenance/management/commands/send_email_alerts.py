@@ -1,9 +1,9 @@
-from django.core.management.base import BaseCommand
-from django.utils.translation import gettext as _
-
 from maintenance.models.contract import MaintenanceContract
 from toolkit.email import is_credited_hours_min_exceeded
 from toolkit.email import send_email_alert
+
+from django.core.management.base import BaseCommand
+from django.utils.translation import gettext as _
 
 
 class Command(BaseCommand):

@@ -1,14 +1,14 @@
-from django.test import RequestFactory
-from django.test import TestCase
-from django.urls import reverse
-from django.utils.timezone import now
-
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceContract
 from maintenance.models.contract import get_next_month_date
 from maintenance.tests.factories import create_project
+
+from django.test import RequestFactory
+from django.test import TestCase
+from django.urls import reverse
+from django.utils.timezone import now
 
 from ...views.project import EmailAlertUpdateView
 

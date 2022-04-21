@@ -1,10 +1,10 @@
 import datetime
 
-from django import forms
-from django.utils.translation import ugettext_lazy as _
-
 from customers.models import Company
 from customers.models import MaintenanceUser
+
+from django import forms
+from django.utils.translation import ugettext_lazy as _
 
 from ..models import MaintenanceContract
 from ..models import MaintenanceCredit

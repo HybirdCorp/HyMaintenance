@@ -2,12 +2,12 @@ import os
 from tempfile import TemporaryDirectory
 from tempfile import TemporaryFile
 
+from maintenance.tests.factories import MaintenanceIssueFactory
+from maintenance.tests.factories import create_project
+
 from django.conf import settings
 from django.core.files import File
 from django.test import TestCase
-
-from maintenance.tests.factories import MaintenanceIssueFactory
-from maintenance.tests.factories import create_project
 
 from ...templatetags.print_files import file_name
 

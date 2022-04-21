@@ -1,12 +1,20 @@
+from random import choice
+
+from customers.models import Company
+from customers.models import MaintenanceUser
+from customers.tests.factories import AdminOperatorUserFactory
+from customers.tests.factories import ManagerUserFactory
+from customers.tests.factories import OperatorUserFactory
+from maintenance.models import MaintenanceConsumer
+from maintenance.models import MaintenanceCredit
+from maintenance.models import MaintenanceIssue
+from maintenance.tests.factories import MaintenanceConsumerFactory
+from maintenance.tests.factories import MaintenanceCreditFactory
+from maintenance.tests.factories import MaintenanceIssueFactory
+from maintenance.tests.factories import create_project
+
 from django.test import TestCase
 from django.urls import reverse
-
-from customers.tests.factories import AdminOperatorUserFactory, OperatorUserFactory, ManagerUserFactory
-from customers.models import Company, MaintenanceUser
-from maintenance.models import MaintenanceConsumer, MaintenanceCredit, MaintenanceIssue
-from maintenance.tests.factories import MaintenanceIssueFactory, create_project, \
-    MaintenanceConsumerFactory, MaintenanceCreditFactory
-from random import choice
 
 
 class ViewsPerformancesTestCase(TestCase):
@@ -40,10 +48,7 @@ class ViewsPerformancesTestCase(TestCase):
                 size=20,
                 is_deleted=True,
             )
-            MaintenanceCreditFactory.create_batch(
-                company=company,
-                size=30
-            )
+            MaintenanceCreditFactory.create_batch(company=company, size=30)
         print(MaintenanceIssue.objects.filter(is_deleted=True).count)
         cls.company = Company.objects.first()
         cls.consumer = MaintenanceConsumer.objects.filter(company=cls.company).first()
@@ -52,9 +57,7 @@ class ViewsPerformancesTestCase(TestCase):
         cls.credit = MaintenanceCredit.objects.filter(company=cls.company).first()
 
     def test_dashboard_view(self):
-        url = reverse(
-            "high_ui:dashboard"
-        )
+        url = reverse("high_ui:dashboard")
         self.client.force_login(self.admin)
         with self.assertNumQueries(1091):
             response = self.client.get(url)
@@ -62,9 +65,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_account_update_view(self):
-        url = reverse(
-            "high_ui:update_user"
-        )
+        url = reverse("high_ui:update_user")
         self.client.force_login(self.admin)
         with self.assertNumQueries(3):
             response = self.client.get(url)
@@ -72,9 +73,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_update_info_view(self):
-        url = reverse(
-            "high_ui:update_infos"
-        )
+        url = reverse("high_ui:update_infos")
         self.client.force_login(self.admin)
         with self.assertNumQueries(6):
             response = self.client.get(url)
@@ -82,9 +81,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_maintenance_types_update_view(self):
-        url = reverse(
-            "high_ui:update_maintenance_types"
-        )
+        url = reverse("high_ui:update_maintenance_types")
         self.client.force_login(self.admin)
         with self.assertNumQueries(8):
             response = self.client.get(url)
@@ -92,9 +89,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_admin_view(self):
-        url = reverse(
-            "high_ui:admin"
-        )
+        url = reverse("high_ui:admin")
         self.client.force_login(self.admin)
         with self.assertNumQueries(11):
             response = self.client.get(url)
@@ -102,9 +97,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_admin_credit_name_update_view(self):
-        url = reverse(
-            "high_ui:admin-update_credits"
-        )
+        url = reverse("high_ui:admin-update_credits")
         self.client.force_login(self.admin)
         with self.assertNumQueries(6):
             response = self.client.get(url)
@@ -112,9 +105,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_admin_archive_projects_view(self):
-        url = reverse(
-            "high_ui:archive_projects"
-        )
+        url = reverse("high_ui:archive_projects")
         self.client.force_login(self.admin)
         with self.assertNumQueries(8):
             response = self.client.get(url)
@@ -122,9 +113,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_admin_unarchive_projects_view(self):
-        url = reverse(
-            "high_ui:unarchive_projects"
-        )
+        url = reverse("high_ui:unarchive_projects")
         self.client.force_login(self.admin)
         with self.assertNumQueries(7):
             response = self.client.get(url)
@@ -132,12 +121,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_admin_project_unarchive_issues_view(self):
-        url = reverse(
-            "high_ui:admin-project-unarchive_issues",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:admin-project-unarchive_issues", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(11):
             response = self.client.get(url)
@@ -145,9 +129,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_admin_create_view(self):
-        url = reverse(
-            "high_ui:create_admin"
-        )
+        url = reverse("high_ui:create_admin")
         self.client.force_login(self.admin)
         with self.assertNumQueries(5):
             response = self.client.get(url)
@@ -155,9 +137,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_admin_list_update_view(self):
-        url = reverse(
-            "high_ui:update_admins"
-        )
+        url = reverse("high_ui:update_admins")
         self.client.force_login(self.admin)
         with self.assertNumQueries(12):
             response = self.client.get(url)
@@ -165,12 +145,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_admin_update_view(self):
-        url = reverse(
-            "high_ui:update_admin",
-            kwargs={
-                "pk": self.admin.pk,
-            },
-        )
+        url = reverse("high_ui:update_admin", kwargs={"pk": self.admin.pk})
         self.client.force_login(self.admin)
         with self.assertNumQueries(6):
             response = self.client.get(url)
@@ -178,9 +153,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_create_view(self):
-        url = reverse(
-            "high_ui:create_project"
-        )
+        url = reverse("high_ui:create_project")
         self.client.force_login(self.admin)
         with self.assertNumQueries(18):
             response = self.client.get(url)
@@ -188,12 +161,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_detail_view(self):
-        url = reverse(
-            "high_ui:project_details",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project_details", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(415):
             response = self.client.get(url)
@@ -201,12 +169,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_contact_update_view(self):
-        url = reverse(
-            "high_ui:project-contact",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-contact", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(7):
             response = self.client.get(url)
@@ -214,12 +177,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_update_view(self):
-        url = reverse(
-            "high_ui:update_project",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:update_project", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(29):
             response = self.client.get(url)
@@ -227,12 +185,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_customize_view(self):
-        url = reverse(
-            "high_ui:customize_project",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:customize_project", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(10):
             response = self.client.get(url)
@@ -240,12 +193,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_issue_create_view(self):
-        url = reverse(
-            "high_ui:project-create_issue",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-create_issue", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(35):
             response = self.client.get(url)
@@ -254,11 +202,7 @@ class ViewsPerformancesTestCase(TestCase):
 
     def test_issue_detail_view(self):
         url = reverse(
-            "high_ui:project-issue_details",
-            kwargs={
-                "company_name": self.company.slug_name,
-                "company_issue_number": 1,
-            },
+            "high_ui:project-issue_details", kwargs={"company_name": self.company.slug_name, "company_issue_number": 1}
         )
         self.client.force_login(self.admin)
         with self.assertNumQueries(17):
@@ -268,11 +212,7 @@ class ViewsPerformancesTestCase(TestCase):
 
     def test_issue_update_view(self):
         url = reverse(
-            "high_ui:project-update_issue",
-            kwargs={
-                "company_name": self.company.slug_name,
-                "company_issue_number": 1,
-            },
+            "high_ui:project-update_issue", kwargs={"company_name": self.company.slug_name, "company_issue_number": 1}
         )
         self.client.force_login(self.admin)
         with self.assertNumQueries(42):
@@ -281,12 +221,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_consumer_create_view(self):
-        url = reverse(
-            "high_ui:project-create_consumer",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-create_consumer", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(7):
             response = self.client.get(url)
@@ -294,12 +229,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_consumer_list_update_view(self):
-        url = reverse(
-            "high_ui:project-update_consumers",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-update_consumers", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(10):
             response = self.client.get(url)
@@ -308,11 +238,7 @@ class ViewsPerformancesTestCase(TestCase):
 
     def test_project_consumer_update_view(self):
         url = reverse(
-            "high_ui:project-update_consumer",
-            kwargs={
-                "company_name": self.company.slug_name,
-                "pk": self.consumer.pk,
-            },
+            "high_ui:project-update_consumer", kwargs={"company_name": self.company.slug_name, "pk": self.consumer.pk}
         )
         self.client.force_login(self.admin)
         with self.assertNumQueries(9):
@@ -321,12 +247,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_manager_create_view(self):
-        url = reverse(
-            "high_ui:project-create_manager",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-create_manager", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(7):
             response = self.client.get(url)
@@ -334,12 +255,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_manager_list_update_view(self):
-        url = reverse(
-            "high_ui:project-update_managers",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-update_managers", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(10):
             response = self.client.get(url)
@@ -348,11 +264,7 @@ class ViewsPerformancesTestCase(TestCase):
 
     def test_project_manager_update_view(self):
         url = reverse(
-            "high_ui:project-update_manager",
-            kwargs={
-                "company_name": self.company.slug_name,
-                "pk": self.manager.pk,
-            },
+            "high_ui:project-update_manager", kwargs={"company_name": self.company.slug_name, "pk": self.manager.pk}
         )
         self.client.force_login(self.admin)
         with self.assertNumQueries(8):
@@ -361,12 +273,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_operator_create_view(self):
-        url = reverse(
-            "high_ui:project-create_operator",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-create_operator", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(7):
             response = self.client.get(url)
@@ -374,12 +281,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_operator_list_update_view(self):
-        url = reverse(
-            "high_ui:project-update_operators",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-update_operators", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(10):
             response = self.client.get(url)
@@ -388,11 +290,7 @@ class ViewsPerformancesTestCase(TestCase):
 
     def test_project_operator_update_view(self):
         url = reverse(
-            "high_ui:project-update_operator",
-            kwargs={
-                "company_name": self.company.slug_name,
-                "pk": self.admin.pk,
-            },
+            "high_ui:project-update_operator", kwargs={"company_name": self.company.slug_name, "pk": self.admin.pk}
         )
         self.client.force_login(self.admin)
         with self.assertNumQueries(8):
@@ -401,12 +299,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_credit_create_view(self):
-        url = reverse(
-            "high_ui:project-create_credit",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-create_credit", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(11):
             response = self.client.get(url)
@@ -415,11 +308,7 @@ class ViewsPerformancesTestCase(TestCase):
 
     def test_project_credit_update_view(self):
         url = reverse(
-            "high_ui:project-update_credit",
-            kwargs={
-                "company_name": self.company.slug_name,
-                "pk": self.credit.pk,
-            },
+            "high_ui:project-update_credit", kwargs={"company_name": self.company.slug_name, "pk": self.credit.pk}
         )
         self.client.force_login(self.admin)
         with self.assertNumQueries(12):
@@ -428,12 +317,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_email_alert_update_view(self):
-        url = reverse(
-            "high_ui:project-update_email_alert",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-update_email_alert", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(10):
             response = self.client.get(url)
@@ -441,12 +325,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_counter_reset_view(self):
-        url = reverse(
-            "high_ui:project-reset_counters",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-reset_counters", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(8):
             response = self.client.get(url)
@@ -454,12 +333,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_project_credit_recurrence_update_view(self):
-        url = reverse(
-            "high_ui:project-update_credit_recurrence",
-            kwargs={
-                "company_name": self.company.slug_name,
-            },
-        )
+        url = reverse("high_ui:project-update_credit_recurrence", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
         with self.assertNumQueries(8):
             response = self.client.get(url)
@@ -467,9 +341,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_operator_create_view(self):
-        url = reverse(
-            "high_ui:create_operator",
-        )
+        url = reverse("high_ui:create_operator")
         self.client.force_login(self.admin)
         with self.assertNumQueries(5):
             response = self.client.get(url)
@@ -477,9 +349,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_operator_list_update_view(self):
-        url = reverse(
-            "high_ui:update_operators",
-        )
+        url = reverse("high_ui:update_operators")
         self.client.force_login(self.admin)
         with self.assertNumQueries(24):
             response = self.client.get(url)
@@ -487,10 +357,7 @@ class ViewsPerformancesTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_operator_update_view(self):
-        url = reverse(
-            "high_ui:update_operator",
-            kwargs={"pk": self.operator.pk, },
-        )
+        url = reverse("high_ui:update_operator", kwargs={"pk": self.operator.pk})
         self.client.force_login(self.admin)
         with self.assertNumQueries(6):
             response = self.client.get(url)

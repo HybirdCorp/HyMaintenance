@@ -2,11 +2,10 @@ import os
 import re
 
 from PIL import Image
+from toolkit.forms import HyClearableFileInput
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-
-from toolkit.forms import HyClearableFileInput
 
 from ..models import Company
 

@@ -1,14 +1,14 @@
-from django.core import mail
-from django.test import TestCase
-from django.test.utils import override_settings
-from django.utils.timezone import now
-
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from high_ui.models import GeneralInformation
 from high_ui.tests.utils import SetDjangoLanguage
 from toolkit.email import create_email_alert
 from toolkit.email import is_credited_hours_min_exceeded
+
+from django.core import mail
+from django.test import TestCase
+from django.test.utils import override_settings
+from django.utils.timezone import now
 
 from ..forms.issue import MaintenanceIssueCreateForm
 from ..models.contract import AVAILABLE_TOTAL_TIME

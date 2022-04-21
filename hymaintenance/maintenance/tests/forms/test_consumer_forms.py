@@ -1,6 +1,6 @@
-from django.test import TestCase
-
 from customers.tests.factories import CompanyFactory
+
+from django.test import TestCase
 
 from ...forms.consumer import MaintenanceConsumerModelForm
 from ...forms.consumer import MaintenanceConsumersListUpdateForm

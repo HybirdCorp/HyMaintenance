@@ -1,7 +1,7 @@
+from maintenance.tests.factories import create_project
+
 from django.test import TestCase
 from django.urls import reverse
-
-from maintenance.tests.factories import create_project
 
 from ...models import GeneralInformation
 

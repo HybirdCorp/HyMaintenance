@@ -1,10 +1,10 @@
 from io import StringIO
 
+from high_ui.tests.utils import SetDjangoLanguage
+
 from django.core.management import call_command
 from django.test import TestCase
 from django.utils.translation import gettext as _
-
-from high_ui.tests.utils import SetDjangoLanguage
 
 from ..models.user import MaintenanceUser
 from .factories import AdminUserFactory

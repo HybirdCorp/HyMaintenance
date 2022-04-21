@@ -1,12 +1,12 @@
-from django.test import RequestFactory
-from django.test import TestCase
-from django.urls import reverse
-
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceContract
 from maintenance.tests.factories import create_project
+
+from django.test import RequestFactory
+from django.test import TestCase
+from django.urls import reverse
 
 from ...views.project import EmailAlertUpdateView
 

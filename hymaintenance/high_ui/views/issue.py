@@ -1,3 +1,8 @@
+from maintenance.forms.issue import MaintenanceIssueCreateForm
+from maintenance.forms.issue import MaintenanceIssueListUnarchiveForm
+from maintenance.forms.issue import MaintenanceIssueUpdateForm
+from maintenance.models import MaintenanceIssue
+
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -6,11 +11,6 @@ from django.views.generic import DetailView
 from django.views.generic import FormView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
-
-from maintenance.forms.issue import MaintenanceIssueCreateForm
-from maintenance.forms.issue import MaintenanceIssueListUnarchiveForm
-from maintenance.forms.issue import MaintenanceIssueUpdateForm
-from maintenance.models import MaintenanceIssue
 
 from .base import IsAdminTestMixin
 from .base import IsAtLeastAllowedManagerTestMixin

@@ -1,13 +1,6 @@
 import datetime
 import os
 
-from django.core.files import File
-from django.test import RequestFactory
-from django.test import TestCase
-from django.urls import reverse
-from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
-
 from customers.models import Company
 from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
@@ -21,6 +14,13 @@ from maintenance.tests.factories import MaintenanceCreditFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
 from maintenance.tests.factories import create_project
 from toolkit.tests import create_temporary_image
+
+from django.core.files import File
+from django.test import RequestFactory
+from django.test import TestCase
+from django.urls import reverse
+from django.utils.timezone import now
+from django.utils.translation import ugettext_lazy as _
 
 from ...views.project import ProjectCreateView
 from ...views.project import ProjectCustomizeView

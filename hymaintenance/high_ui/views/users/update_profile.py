@@ -1,11 +1,11 @@
+from customers.forms.users.user_profile import MaintenanceUserProfileUpdateForm
+from customers.forms.users.user_profile import StaffUserProfileUpdateForm
+
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import SuspiciousOperation
 from django.views.generic import TemplateView
-
-from customers.forms.users.user_profile import MaintenanceUserProfileUpdateForm
-from customers.forms.users.user_profile import StaffUserProfileUpdateForm
 
 from ..base import get_context_previous_page
 

@@ -44,13 +44,12 @@ from .views.users_list.update_users_list import OperatorUsersListUnarchiveView
 from .views.users_list.update_users_list import OperatorUsersListUpdateView
 from .views.users_list.update_users_list import OperatorUsersListUpdateViewWithCompany
 
+
 app_name = "high_ui"
 
 urlpatterns = [
     path(r"", DashboardView.as_view(), name="dashboard"),
-
     path(r"account/update/", UserUpdateView.as_view(), name="update_user"),
-
     path(r"infos/update/", GeneralInformationUpdateView.as_view(), name="update_infos"),
     path(r"counters/", MaintenanceTypeUpdateView.as_view(), name="update_maintenance_types"),
     path(r"admin/", AdminView.as_view(), name="admin"),
@@ -62,20 +61,17 @@ urlpatterns = [
         IssueListUnarchiveView.as_view(),
         name="admin-project-unarchive_issues",
     ),
-
     path(r"admins/", AdminUserCreateView.as_view(), name="create_admin"),
     path(r"admins/update/", AdminUsersListUpdateView.as_view(), name="update_admins"),
     path(r"admins/archive/", AdminUsersListArchiveView.as_view(), name="archive_admins"),
     path(r"admins/unarchive/", AdminUsersListUnarchiveView.as_view(), name="unarchive_admins"),
     path(r"admins/<int:pk>/update/", AdminUserUpdateView.as_view(), name="update_admin"),
-
     path(r"projects/", ProjectCreateView.as_view(), name="create_project"),
     path(r"projects/<slug:company_name>/", ProjectDetailsView.as_view(), name="project_details"),
     path(r"projects/<slug:company_name>/contact", ContactView.as_view(), name="project-contact"),
     path(r"projects/<slug:company_name>/update/", ProjectUpdateView.as_view(), name="update_project"),
     path(r"projects/<slug:company_name>/customize/", ProjectCustomizeView.as_view(), name="customize_project"),
     path(r"projects/<slug:company_name>/issues/", IssueCreateView.as_view(), name="project-create_issue"),
-
     path(
         r"projects/<slug:company_name>/issues/<int:company_issue_number>/",
         IssueDetailView.as_view(),
@@ -152,7 +148,6 @@ urlpatterns = [
         ProjectCreditRecurrenceUpdateView.as_view(),
         name="project-update_credit_recurrence",
     ),
-
     path(r"operators/", OperatorUserCreateView.as_view(), name="create_operator"),
     path(r"operators/update/", OperatorUsersListUpdateView.as_view(), name="update_operators"),
     path(r"operators/archive/", OperatorUsersListArchiveView.as_view(), name="archive_operators"),

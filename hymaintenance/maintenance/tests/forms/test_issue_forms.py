@@ -2,15 +2,15 @@ import os
 from shutil import rmtree
 from tempfile import TemporaryDirectory
 
+from customers.tests.factories import OperatorUserFactory
+from high_ui.tests.utils import SetDjangoLanguage
+from toolkit.tests import create_temporary_file
+
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
-
-from customers.tests.factories import OperatorUserFactory
-from high_ui.tests.utils import SetDjangoLanguage
-from toolkit.tests import create_temporary_file
 
 from ...forms.issue import MaintenanceIssueCreateForm
 from ...forms.issue import MaintenanceIssueListUnarchiveForm

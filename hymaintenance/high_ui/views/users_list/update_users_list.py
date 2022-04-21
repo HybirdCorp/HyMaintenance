@@ -1,7 +1,3 @@
-from django.urls import reverse
-from django.views.generic import FormView
-from django.views.generic import TemplateView
-
 from customers.forms.users_list.list import AdminUsersListArchiveForm
 from customers.forms.users_list.list import AdminUsersListUnarchiveForm
 from customers.forms.users_list.list import OperatorUsersListArchiveForm
@@ -10,6 +6,10 @@ from customers.forms.users_list.list_by_company import ManagerUsersListUpdateFor
 from customers.forms.users_list.list_by_company import OperatorUsersListUpdateForm
 from customers.models.user import MaintenanceUser
 from maintenance.forms.consumer import MaintenanceConsumersListUpdateForm
+
+from django.urls import reverse
+from django.views.generic import FormView
+from django.views.generic import TemplateView
 
 from ..base import IsAdminTestMixin
 from ..base import IsAtLeastAllowedOperatorTestMixin
