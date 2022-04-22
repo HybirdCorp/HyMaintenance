@@ -21,7 +21,7 @@ prompt-toolkit==1.0.15
 psycopg2==2.7.4
 ptyprocess==0.6.0
 py==1.5.4
-Pygments==2.2.0
+Pygments==2.7.4
 python-crontab==2.2.8
 python-dateutil==2.7.2
 pytz==2018.3
