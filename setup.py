@@ -1,22 +1,35 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
+from typing import Iterator
+
 import setuptools
 
 
-EXCLUDE_FROM_PACKAGES = []
+REQUIREMENTS_FOLDER = os.path.join(
+    os.path.dirname(__file__), "hymaintenance", "requirements")
 
-os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+
+def read_dependencies(filename: str) -> Iterator[str]:
+    """
+    Read a requirements file present in the `requirements` folder.
+    Those files are outputs of `pip-compile` from `pip-tools`.
+    Exclude comments, and pip flags.
+    """
+    filepath = os.path.join(REQUIREMENTS_FOLDER, filename)
+    with open(filepath) as _file:
+        req_content = _file.read().replace("\\\n", "").split("\n")
+
+    for line in req_content:
+        line = re.sub(r" *(#|--).*$", "", line.strip()).strip()
+        if line:
+            yield line
+
 
 setuptools.setup(
-    name='HyMaintenance',
-    version='0.1.0',
-    author="Hybird",
-    description="HyMaintenance",
-    author_email='',
-    url='',
-    license='',
-    packages=setuptools.find_packages(exclude=EXCLUDE_FROM_PACKAGES),
-    include_package_data=True,
-    zip_safe=False,
+    install_requires=list(read_dependencies("requirements.txt")),
+    extras_require={
+        'develop': list(read_dependencies("develop.txt")),
+    }
 )
