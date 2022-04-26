@@ -7,7 +7,6 @@ from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceConsumer
 from maintenance.models import MaintenanceCredit
-from maintenance.models import MaintenanceIssue
 from maintenance.tests.factories import MaintenanceConsumerFactory
 from maintenance.tests.factories import MaintenanceCreditFactory
 from maintenance.tests.factories import MaintenanceIssueFactory
@@ -49,7 +48,6 @@ class ViewsPerformancesTestCase(TestCase):
                 is_deleted=True,
             )
             MaintenanceCreditFactory.create_batch(company=company, size=30)
-        print(MaintenanceIssue.objects.filter(is_deleted=True).count)
         cls.company = Company.objects.first()
         cls.consumer = MaintenanceConsumer.objects.filter(company=cls.company).first()
         cls.manager = MaintenanceUser.objects.filter(company=cls.company).first()
