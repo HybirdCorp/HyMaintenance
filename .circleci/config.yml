@@ -33,9 +33,9 @@ jobs:
       - run: pip install tox
       - run: tox -e "migrate"
       - run: tox
-      - run: pip install coveralls
-      - run: pip install coverage==4.5.1
-      - run: coveralls
+#      - run: pip install coveralls
+#      - run: pip install coverage==4.5.1
+#      - run: coveralls
 
 workflows:
   version: 2
