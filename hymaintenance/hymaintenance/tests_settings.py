@@ -5,10 +5,6 @@ from .settings import *  # noqa: F403
 ALLOWED_HOSTS = ["*"]
 DEBUG = True
 
-RAVEN = "raven.contrib.django.raven_compat"
-if RAVEN in INSTALLED_APPS:  # noqa: F405
-    INSTALLED_APPS.remove(RAVEN)  # noqa: F405
-
 TEMPLATES[0]["OPTIONS"]["debug"] = True  # noqa: F405
 
 

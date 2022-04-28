@@ -16,30 +16,8 @@ It is designed by projects comprised of three different types of maintenance con
 
 ### Dependencies
 
-(exact versions are indicated in the file `requirements.txt`)
-```
-- Core
-    - Python 3.6+
-    - Django 2.0
-    - Factory Boy 2.10.0
-    - Python crontab 2.2.8
-    - Python dateutil 2.7.2
-- Dev
-    - Black 18.6b2
-    - Coverage 4.5.1
-    - Django debug toolbar 1.9.1
-    - Django extensions 2.0.6
-    - Django grappelli 2.11.1
-    - Django ordered model 1.4.3
-    - Flake8 3.5.0
-    - Pycodestyle 2.3.1
-    - Ipython 6.2.1
-    - Isort 4.3.4
-    - Psycopg2 2.7.4
-    - Pytz 2018.3
-    - Raven 6.6.0
-    - Tox 2.9.1
-```
+(exact versions are indicated in the file `hymaintenance/requirements/requirements.in`)
+
 
 ### Before HyMaintenance
 
