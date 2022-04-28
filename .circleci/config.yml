@@ -1,38 +1,105 @@
-version: 2
+version: 2.1
+
+django_env: &django_env
+  environment:
+    DJANGO_DB_USER: hymaintenance
+    DJANGO_DB: circle_test
+    DJANGO_DB_PASSWORD: password
+
+postgres_env: &postgres_env
+  environment:
+    POSTGRES_USER: hymaintenance
+    POSTGRES_DB: circle_test
+    POSTGRES_PASSWORD: password
+
+commands:
+  testing:
+    parameters:
+      req-file:
+        default: develop.in
+        type: string
+      action:
+        default: run-only-tests
+        type: string
+      setup-db:
+        default: true
+        type: boolean
+    steps:
+      - checkout
+      - restore_cache:
+          key: hym-venv-cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "hymaintenance/requirements/<< parameters.req-file >>" }}
+      - run:
+          name: Install invoke
+          command: pip install invoke
+      - run:
+          name: Install deps
+          command: |
+            python3 -m venv ~/venv
+            . ~/venv/bin/activate
+            pip install invoke
+            pip install -r hymaintenance/requirements/<< parameters.req-file >>
+            echo "source ~/venv/bin/activate" >> $BASH_ENV
+      - save_cache:
+          key: hym-venv-cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "hymaintenance/requirements/<< parameters.req-file >>" }}
+          paths:
+            - "~/venv"
+      - when:
+          condition: << parameters.setup-db >>
+          steps:
+            - run:
+                name: Install dockerize
+                command: wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-v0.6.1.tar.gz && rm dockerize-linux-amd64-v0.6.1.tar.gz
+            - run:
+                name: Wait for DB
+                command: dockerize -wait tcp://localhost:5432 -timeout 120s
+            - run:
+                name: Migrate DB
+                command: invoke migrate
+      - run:
+          name: Run tests
+          command: invoke << parameters.action >>
 
 jobs:
   lint:
     docker:
       - image: python:3.9
     steps:
-      - checkout
-      - run: pip install tox
-      - run: tox -e "lint"
+      - testing:
+          req-file: lint.in
+          action: lints
+          setup-db: false
 
-  test-HyM:
+  test-py37:
     docker:
-      - image: python:3.9
-        environment:
-          DJANGO_DB_USER: hymaintenance
-          DJANGO_DB: circle_test
-          DJANGO_DB_PASSWORD: password
+      - image: python:3.7
+        <<: *django_env
 
       - image: circleci/postgres:9.6.2-alpine
-        environment:
-          POSTGRES_USER: hymaintenance
-          POSTGRES_DB: circle_test
-          POSTGRES_PASSWORD: password
+        <<: *postgres_env
     steps:
-      - checkout
-      - run:
-          name: Install dockerize
-          command: wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-v0.6.1.tar.gz && rm dockerize-linux-amd64-v0.6.1.tar.gz
-      - run:
-          name: Wait for db
-          command: dockerize -wait tcp://localhost:5432 -timeout 120s
-      - run: pip install tox
-      - run: tox -e "migrate"
-      - run: tox
+      - testing
+
+  test-py38:
+    docker:
+      - image: python:3.8
+        <<: *django_env
+
+      - image: circleci/postgres:9.6.2-alpine
+        <<: *postgres_env
+    steps:
+      - testing
+
+  test-py39-and-coverage:
+    docker:
+      - image: python:3.9
+        <<: *django_env
+
+      - image: circleci/postgres:9.6.2-alpine
+        <<: *postgres_env
+    steps:
+      - testing:
+          req-file: develop.txt
+          action: run-tests-and-coverage
 #      - run: pip install coveralls
 #      - run: pip install coverage==4.5.1
 #      - run: coveralls
@@ -42,6 +109,12 @@ workflows:
   lint-and-test-HyM:
     jobs:
       - lint
-      - test-HyM:
+      - test-py37:
+          requires:
+            - lint
+      - test-py38:
+          requires:
+            - lint
+      - test-py39-and-coverage:
           requires:
             - lint
