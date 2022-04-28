@@ -1,6 +1,5 @@
 Django<3
 django-extensions
-invoke
 ipython
 Pillow
 python-crontab

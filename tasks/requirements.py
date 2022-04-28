@@ -26,3 +26,4 @@ def install_pip_tools(c):
 def update_req_txt(c):
     c.run("pip-compile --upgrade hymaintenance/requirements/develop.in")
     c.run("pip-compile --upgrade hymaintenance/requirements/requirements.in")
+    c.run("pip-compile --upgrade hymaintenance/requirements/lint.in")
