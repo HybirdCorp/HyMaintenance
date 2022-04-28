@@ -1,9 +1,7 @@
 -r requirements.in
-black
+-r lint.in
 coverage
 django-debug-toolbar
 factory-boy
-flake8
 freezegun
-isort
 tox
