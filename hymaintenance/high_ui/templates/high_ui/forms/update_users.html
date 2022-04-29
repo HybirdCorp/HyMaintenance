@@ -60,7 +60,7 @@
                                             <div class="item-name">
                                                 {{label}}
                                             </div>
-                                            <div class="item-description">{% trans "Operator" %} <span class="typography dash">&mdash;</span> {{value|print_operator_projects}}</div>
+                                            <div class="item-description">{% trans "Operator" %} <span class="typography dash">&mdash;</span> {{value|stringformat:'s'|print_operator_projects}}</div>
                                             </a>
                                         </div>
                                     </label>
@@ -98,7 +98,7 @@
                                             <div class="item-name">
                                                 {{label}}
                                             </div>
-                                            <div class="item-description">{% trans "Operator" %} <span class="typography dash">&mdash;</span> {{value|print_operator_projects}}</div>
+                                            <div class="item-description">{% trans "Operator" %} <span class="typography dash">&mdash;</span> {{value|stringformat:'s'|print_operator_projects}}</div>
                                         </div>
                                     </label>
                                 </li>

@@ -44,7 +44,7 @@
                             <label for="{{form.consumer_who_ask.id_for_label}}">{{form.consumer_who_ask.label}}</label>
                             <select name="{{form.consumer_who_ask.name}}" id="{{form.consumer_who_ask.id_for_label}}">
                             {% for consumer_who_ask in form.consumer_who_ask %}
-                                <option value="{{consumer_who_ask.data.value}}" {{consumer_who_ask.data.value|hide_disabled_consumer}} {% if consumer_who_ask.data.selected %} selected{% endif %}>{{consumer_who_ask.data.label}}</option>
+                                <option value="{{consumer_who_ask.data.value|stringformat:'s'}}" {{consumer_who_ask.data.value|stringformat:'s'|hide_disabled_consumer}} {% if consumer_who_ask.data.selected %} selected{% endif %}>{{consumer_who_ask.data.label}}</option>
                             {% endfor %}
                             </select>
 
