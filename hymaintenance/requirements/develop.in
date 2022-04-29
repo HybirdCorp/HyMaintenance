@@ -4,4 +4,3 @@ coverage
 django-debug-toolbar
 factory-boy
 freezegun
-tox
