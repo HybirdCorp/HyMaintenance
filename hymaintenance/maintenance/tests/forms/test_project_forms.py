@@ -370,7 +370,7 @@ class ProjectUpdateFormTestCase(TestCase):
 
         is_valid = form.is_valid()
         form.update_company_and_contracts()
-        company = Company.objects.get(name="Black Mesa")
+        company = Company.objects.get(name="Aperture Science")
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
@@ -385,7 +385,7 @@ class ProjectUpdateFormTestCase(TestCase):
 
         is_valid = form.is_valid()
         form.update_company_and_contracts()
-        company = Company.objects.get(name="Black Mesa")
+        company = Company.objects.get(name="Aperture Science")
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
@@ -411,7 +411,7 @@ class ProjectUpdateFormTestCase(TestCase):
 
         is_valid = form.is_valid()
         form.update_company_and_contracts()
-        company = Company.objects.get(name="Black Mesa")
+        company = Company.objects.get(name="Aperture Science")
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
@@ -427,7 +427,7 @@ class ProjectUpdateFormTestCase(TestCase):
 
         is_valid = form.is_valid()
         form.update_company_and_contracts()
-        company = Company.objects.get(name="Black Mesa")
+        company = Company.objects.get(name="Aperture Science")
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())
@@ -443,7 +443,7 @@ class ProjectUpdateFormTestCase(TestCase):
 
         is_valid = form.is_valid()
         form.update_company_and_contracts()
-        company = Company.objects.get(name="Black Mesa")
+        company = Company.objects.get(name="Aperture Science")
 
         self.assertTrue(is_valid)
         self.assertEqual(1, Company.objects.all().count())

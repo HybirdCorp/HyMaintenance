@@ -4,7 +4,7 @@
 #
 #    pip-compile hymaintenance/requirements/develop.in
 #
-asgiref==3.5.0
+asgiref==3.5.1
     # via django
 asttokens==2.0.5
     # via stack-data
@@ -18,12 +18,12 @@ coverage==6.3.2
     # via -r hymaintenance/requirements/develop.in
 decorator==5.1.1
     # via ipython
-django==3.1.14
+django==3.2.13
     # via
     #   -r hymaintenance/requirements/requirements.in
     #   django-debug-toolbar
     #   django-extensions
-django-debug-toolbar==3.2.4
+django-debug-toolbar==3.4.0
     # via -r hymaintenance/requirements/develop.in
 django-extensions==3.1.5
     # via -r hymaintenance/requirements/requirements.in
@@ -31,13 +31,13 @@ executing==0.8.3
     # via stack-data
 factory-boy==3.2.1
     # via -r hymaintenance/requirements/develop.in
-faker==13.6.0
+faker==13.7.0
     # via factory-boy
 flake8==4.0.1
     # via -r hymaintenance/requirements/lint.in
 freezegun==1.2.1
     # via -r hymaintenance/requirements/develop.in
-ipython==8.2.0
+ipython==8.3.0
     # via -r hymaintenance/requirements/requirements.in
 isort==5.10.1
     # via -r hymaintenance/requirements/lint.in
@@ -92,6 +92,8 @@ sqlparse==0.4.2
     #   django-debug-toolbar
 stack-data==0.2.0
     # via ipython
+tblib==1.7.0
+    # via -r hymaintenance/requirements/develop.in
 tomli==2.0.1
     # via black
 traitlets==5.1.1

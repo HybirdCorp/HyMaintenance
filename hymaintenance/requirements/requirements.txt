@@ -4,7 +4,7 @@
 #
 #    pip-compile hymaintenance/requirements/requirements.in
 #
-asgiref==3.5.0
+asgiref==3.5.1
     # via django
 asttokens==2.0.5
     # via stack-data
@@ -12,7 +12,7 @@ backcall==0.2.0
     # via ipython
 decorator==5.1.1
     # via ipython
-django==3.1.14
+django==3.2.13
     # via
     #   -r hymaintenance/requirements/requirements.in
     #   django-extensions
@@ -20,7 +20,7 @@ django-extensions==3.1.5
     # via -r hymaintenance/requirements/requirements.in
 executing==0.8.3
     # via stack-data
-ipython==8.2.0
+ipython==8.3.0
     # via -r hymaintenance/requirements/requirements.in
 jedi==0.18.1
     # via ipython
