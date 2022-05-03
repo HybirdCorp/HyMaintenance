@@ -21,6 +21,9 @@ commands:
       action:
         default: run-only-tests
         type: string
+      dj-version-sup:
+        default: "3.3"
+        type: string
       setup-db:
         default: true
         type: boolean
@@ -31,6 +34,16 @@ commands:
       - run:
           name: Install invoke
           command: pip install invoke
+      - when:
+          condition:
+            not:
+              equal: [ "3.3", << parameters.dj-version-sup >> ]
+          steps:
+            - run:
+                name: Change django version in requirement file
+                command: |
+                  export DJ_VERSION_SUP=<< parameters.dj-version-sup >>
+                  sed -i "s/Django<.*/Django<$DJ_VERSION_SUP/" hymaintenance/requirements/requirements.in
       - run:
           name: Install deps
           command: |
@@ -69,7 +82,7 @@ jobs:
           action: lints
           setup-db: false
 
-  test-py37:
+  test-py37-dj32:
     docker:
       - image: python:3.7
         <<: *django_env
@@ -79,7 +92,7 @@ jobs:
     steps:
       - testing
 
-  test-py38:
+  test-py38-dj32:
     docker:
       - image: python:3.8
         <<: *django_env
@@ -89,7 +102,31 @@ jobs:
     steps:
       - testing
 
-  test-py39-and-coverage:
+  test-py39-dj30:
+    docker:
+      - image: python:3.9
+        <<: *django_env
+
+      - image: circleci/postgres:9.6.2-alpine
+        <<: *postgres_env
+    steps:
+      - testing:
+          req-file: develop.in
+          dj-version-sup: "3.1"
+
+  test-py39-dj31:
+    docker:
+      - image: python:3.9
+        <<: *django_env
+
+      - image: circleci/postgres:9.6.2-alpine
+        <<: *postgres_env
+    steps:
+      - testing:
+          req-file: develop.in
+          dj-version-sup: "3.2"
+
+  test-py39-dj32-and-coverage:
     docker:
       - image: python:3.9
         <<: *django_env
@@ -109,12 +146,18 @@ workflows:
   lint-and-test-HyM:
     jobs:
       - lint
-      - test-py37:
+      - test-py37-dj32:
           requires:
             - lint
-      - test-py38:
+      - test-py38-dj32:
           requires:
             - lint
-      - test-py39-and-coverage:
+      - test-py39-dj30:
+          requires:
+            - lint
+      - test-py39-dj31:
+          requires:
+            - lint
+      - test-py39-dj32-and-coverage:
           requires:
             - lint
