@@ -253,6 +253,9 @@ class MaintenanceUser(AbstractBaseUser, PermissionsMixin):
     PASSWORD_MIN_LENGTH = 5
     REQUIRED_FIELDS = []
 
+    class Meta:
+        ordering = ('first_name', 'last_name')
+
     def get_full_name(self):
         """Returns the full name of the user."""
         return get_full_name(first_name=self.first_name, last_name=self.last_name)
