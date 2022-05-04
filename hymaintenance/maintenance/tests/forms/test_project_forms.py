@@ -296,7 +296,9 @@ class ProjectUpdateFormTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
-        cls.company, cls.contract1, cls.contract2, cls.contract3 = create_project()
+
+    def setUp(self):
+        self.company, self.contract1, self.contract2, self.contract3 = create_project()
 
     @staticmethod
     def __get_dict_for_post():
