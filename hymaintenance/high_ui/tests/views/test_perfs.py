@@ -89,7 +89,7 @@ class ViewsPerformancesTestCase(TestCase):
     def test_admin_view(self):
         url = reverse("high_ui:admin")
         self.client.force_login(self.admin)
-        with self.assertNumQueries(11):
+        with self.assertNumQueries(15):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)

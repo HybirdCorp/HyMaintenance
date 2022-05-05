@@ -19,21 +19,19 @@ class AdminView(IsAdminTestMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context.update(get_context_data_dashboard_header(self.user))
         context.update(get_maintenance_types())
-        context["admins"] = MaintenanceUser.objects.get_admin_users_queryset().annotate(users_number=Count("id"))
-        context["operators"] = MaintenanceUser.objects.get_active_operator_users_queryset().annotate(
-            users_number=Count("id")
-        )
-        context["active_projects"] = (
-            Company.objects.filter(is_archived=False)
-            .order_by("name")
-            .annotate(optimized_archived_issues_number=Count(Case(When(maintenanceissue__is_deleted=True, then=1))))
-            .annotate(projects_number=Count("id"))
-        )
-        context["archived_projects"] = (
-            Company.objects.filter(is_archived=True)
-            .order_by("name")
-            .annotate(optimized_archived_issues_number=Count(Case(When(maintenanceissue__is_deleted=True, then=1))))
-            .annotate(projects_number=Count("id"))
-        )
+
+        context["admins"] = MaintenanceUser.objects.get_admin_users_queryset()
+        context["admins_number"] = context["admins"].aggregate(Count("id"))["id__count"]
+
+        context["operators"] = MaintenanceUser.objects.get_active_operator_users_queryset()
+        context["operators_number"] = context["operators"].aggregate(Count("id"))["id__count"]
+
+        context["active_projects"] = Company.objects.filter(is_archived=False).order_by("name").annotate(
+            archived_issues_number=Count(Case(When(maintenanceissue__is_deleted=True, then=1))))
+        context["active_projects_number"] = context["active_projects"].aggregate(Count("id"))["id__count"]
+
+        context["archived_projects"] = Company.objects.filter(is_archived=True).order_by("name")
+        context["archived_projects_number"] = context["archived_projects"].aggregate(Count("id"))["id__count"]
+
         context["credit_choices"] = MaintenanceCreditChoices.objects.all().order_by("id")
         return context

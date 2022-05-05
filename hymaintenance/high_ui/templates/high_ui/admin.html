@@ -89,7 +89,7 @@
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
                                 <span class="dashboard-title">{% trans "Operators" %}</span>
-                                <span class="dashboard-value">{{operators.users_number}}</span>
+                                <span class="dashboard-value" id="operators_number">{{operators_number}}</span>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
@@ -112,7 +112,7 @@
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
                                 <span class="dashboard-title">{% trans "Administrators" %}</span>
-                                <span class="dashboard-value">{{admins.users_number}}</span>
+                                <span class="dashboard-value" id="admins_number">{{admins_number}}</span>
                             </div>
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
@@ -144,9 +144,9 @@
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
                                 <span class="dashboard-title">{% trans "Active projects" %}</span>
-                                <span class="dashboard-value">{{active_projects.projects_number}}</span>
+                                <span class="dashboard-value" id="active_projects_number">{{active_projects_number}}</span>
                             </div>
-                            {% if active_projects.projects_number %}
+                            {% if active_projects_number %}
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
                                     <a href="{% url 'high_ui:archive_projects' %}" title="{% trans "Archive active projects" %}">{% trans "Archive projects" %}</a>
@@ -157,7 +157,7 @@
                         <div class="project-users">
                             {% for project in active_projects %}
                             <div>
-                                {% if project.optimized_archived_issues_number %}
+                                {% if project.archived_issues_number %}
                                 <a href='{% url 'high_ui:admin-project-unarchive_issues' company_name=project.slug_name %}'>{{project.name}}</a>
                                 {% else %}
                                     {{project.name}}
@@ -170,9 +170,9 @@
                         <div class="dashboard">
                             <div class="dashboard-item project-detail">
                                 <span class="dashboard-title">{% trans "Archived projects" %}</span>
-                                <span class="dashboard-value">{{archived_projects.projects_number}}</span>
+                                <span class="dashboard-value" id="archived_projects_number">{{archived_projects_number}}</span>
                             </div>
-                            {% if archived_projects.projects_number %}
+                            {% if archived_projects_number %}
                             <div class="dashboard-item dashboard-button">
                                 <div class="dashboard-value">
                                     <a href="{% url 'high_ui:unarchive_projects' %}" title="{% trans "Activate archived projects" %}">{% trans "Activate projects" %}</a>
