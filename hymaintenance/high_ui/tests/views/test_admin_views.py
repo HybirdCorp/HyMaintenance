@@ -59,3 +59,22 @@ class AdminTestCase(TestCase):
         self.assertNotContains(
             response, "<a href='/high_ui/admin/projects/aperture-science/issues/'>Aperture Science</a>"
         )
+
+    def test_user_and_project_numbers_are_well_displayed(self):
+        company, contract, _, _ = create_project()
+        company, contract, _, _ = create_project(company={"is_archived": True})
+
+        admin = AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
+        OperatorUserFactory()
+        self.client.login(username=admin.email, password="azerty")
+        response = self.client.get(self.page_url)
+
+        op_span = '<span class="dashboard-value" id="operators_number">1</span>'
+        admin_span = '<span class="dashboard-value" id="admins_number">1</span>'
+        active_span = '<span class="dashboard-value" id="active_projects_number">1</span>'
+        archived_span = '<span class="dashboard-value" id="archived_projects_number">1</span>'
+
+        self.assertContains(response, op_span)
+        self.assertContains(response, admin_span)
+        self.assertContains(response, active_span)
+        self.assertContains(response, archived_span)
