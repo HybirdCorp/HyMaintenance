@@ -134,3 +134,22 @@ MEDIA_URL = "/media/"
 INTERNAL_IPS = ["127.0.0.1"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# Sentry.io
+SENTRY_DSN = os.getenv("SENTRY_DSN", None)
+if SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        traces_sample_rate=1.0,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+    )

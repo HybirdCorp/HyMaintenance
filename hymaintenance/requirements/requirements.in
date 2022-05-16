@@ -4,3 +4,4 @@ ipython
 Pillow
 python-crontab
 psycopg2<2.9
+sentry-sdk
