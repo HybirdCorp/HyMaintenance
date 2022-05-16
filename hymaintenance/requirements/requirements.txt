@@ -10,6 +10,8 @@ asttokens==2.0.5
     # via stack-data
 backcall==0.2.0
     # via ipython
+certifi==2021.10.8
+    # via sentry-sdk
 decorator==5.1.1
     # via ipython
 django==3.2.13
@@ -50,16 +52,20 @@ python-dateutil==2.8.2
     # via python-crontab
 pytz==2022.1
     # via django
+sentry-sdk==1.5.12
+    # via -r hymaintenance/requirements/requirements.in
 six==1.16.0
     # via python-dateutil
 sqlparse==0.4.2
     # via django
 stack-data==0.2.0
     # via ipython
-traitlets==5.1.1
+traitlets==5.2.0
     # via
     #   ipython
     #   matplotlib-inline
+urllib3==1.26.9
+    # via sentry-sdk
 wcwidth==0.2.5
     # via prompt-toolkit
 
