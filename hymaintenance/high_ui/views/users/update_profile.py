@@ -51,7 +51,9 @@ class UserUpdateView(LoginRequiredMixin, TemplateView):
         password_form = self.get_password_form(user)
 
         data = request.POST.copy()
-        form_mod = data.pop("form-mod", [None])[0]
+        form_mod = data.pop("form-mod", None)
+        if len(form_mod) > 0:
+            form_mod = form_mod[0]
 
         if form_mod == "profile":
             profile_form = self.get_profile_form(is_staff=is_staff, data=data, instance=user)

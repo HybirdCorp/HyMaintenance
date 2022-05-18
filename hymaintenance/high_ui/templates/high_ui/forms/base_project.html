@@ -92,6 +92,104 @@
 
                     <div class="form-group activation-active counter-total email-alert-disabled">
                         <div class="group-title-container">
+                            <div class="group-title">{% trans "Counter" %} {{ form.contract0_counter_name.initial }}</div>
+                            <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
+                        </div>
+
+                        <div class="form-row row-activation-type {% if form.contract0_visible.errors %}form-error{% endif %}">
+                            {% if form.contract0_visible.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+			                <label for="{{form.contract0_visible.id_for_label}}">{{form.contract0_visible.label}}</label>
+                            <section class="segmented-selector {{maintenance_types.0.css_class}}">
+                                <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">{% trans "Visible to everyone" %}</a>
+                                <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">{% trans "Invisible to managers" %}</a>
+                                <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">{% trans "Disabled" %}</a>
+				            {{form.contract0_visible}}
+                            </section>
+
+                            {% if form.contract0_visible.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.contract0_visible.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="help help-activation">
+                            <span class='activation-active'>{% blocktrans with name=general_info.name %}This counter will be <em>visible for managers</em> of the project, and <em>usable by {{name}}'s operators</em> on the dashboard and for register new issues. {% endblocktrans %}</span>
+
+                            <span class='activation-hidden'>{% blocktrans with name=general_info.name %}This counter will be <em>invisible for managers, but </em>usable by {{name}}'s operators</em> on the dashboard and for register new issues.{% endblocktrans %}</span>
+                            <span class='activation-inactive'>{% trans "This counter will be <em>disabled</em> for the project" %}</span>
+                        </div>
+
+                        <div class="form-row row-counter-type {% if form.contract0_total_type.errors %}form-error{% endif %}">
+                            {% if form.contract0_total_type.errors %}
+                            <div class="form-row-wrapper">
+                            {% endif %}
+
+			                <label for="{{form.contract0_total_type.id_for_label}}">{{form.contract0_total_type.label}}</label>
+                            <section class="segmented-selector {{maintenance_types.0.css_class}}">
+                                <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">{% trans "Available total time" %}</a>
+                                <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">{% trans "Consumed total time" %}</a>
+				            {{form.contract0_total_type}}
+                            </section>
+                            {% if form.contract0_total_type.errors %}
+                            </div>
+                            {% endif %}
+
+                            {% for error in form.contract0_total_type.errors %}
+                            <div class="form-error-text">{{error|escape}}</div>
+                            {% endfor %}
+                        </div>
+
+                        {% block credited_hours_0 %}{% endblock %}
+
+                        <div class="help help-credit">
+                            <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
+                            <span class="counter-credit">{% blocktrans with name=general_info.name mtype=form.contract0_counter_name.initial %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
+                        </div>
+
+                        {% block email_alert_0 %}{% endblock %}
+
+                        <div class="show-more-container">
+                            <div class="form-row {% if form.contract0_counter_name.errors %}form-error{% endif %}">
+                                {% if form.contract0_counter_name.errors %}
+                                <div class="form-row-wrapper">
+                                {% endif %}
+
+                                <label for="{{form.contract0_counter_name.id_for_label}}">{{form.contract0_counter_name.label}}</label>
+                                {{form.contract0_counter_name}}
+
+                                {% if form.contract0_counter_name.errors %}
+                                </div>
+                                {% endif %}
+
+                                {% for error in form.contract0_counter_name.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="help">{%  blocktrans with mtype=maintenance_types.0.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
+
+                            <div class="form-row {% if form.contract0_date.errors %}form-error{% endif %}">
+                                <label for="{{form.contract0_date.id_for_label}}">{{form.contract0_date.label}}</label>
+                                {{form.contract0_date}}
+
+                                {% if form.contract0_date.errors %}
+                                </div>
+                                {% endif %}
+
+                                {% for error in form.contract0_date.errors %}
+                                <div class="form-error-text">{{error|escape}}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="help">{% trans "Date when the contract begin." %}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group activation-active counter-total email-alert-disabled">
+                        <div class="group-title-container">
                             <div class="group-title">{% trans "Counter" %} {{ form.contract1_counter_name.initial }}</div>
                             <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
                         </div>
@@ -102,7 +200,7 @@
                             {% endif %}
 
 			                <label for="{{form.contract1_visible.id_for_label}}">{{form.contract1_visible.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.0.css_class}}">
+                            <section class="segmented-selector {{maintenance_types.1.css_class}}">
                                 <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">{% trans "Visible to everyone" %}</a>
                                 <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">{% trans "Invisible to managers" %}</a>
                                 <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">{% trans "Disabled" %}</a>
@@ -130,7 +228,7 @@
                             {% endif %}
 
 			                <label for="{{form.contract1_total_type.id_for_label}}">{{form.contract1_total_type.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.0.css_class}}">
+                            <section class="segmented-selector {{maintenance_types.1.css_class}}">
                                 <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">{% trans "Available total time" %}</a>
                                 <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">{% trans "Consumed total time" %}</a>
 				            {{form.contract1_total_type}}
@@ -170,7 +268,7 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">{%  blocktrans with mtype=maintenance_types.0.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
+                            <div class="help">{%  blocktrans with mtype=maintenance_types.1.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
 
                             <div class="form-row {% if form.contract1_date.errors %}form-error{% endif %}">
                                 <label for="{{form.contract1_date.id_for_label}}">{{form.contract1_date.label}}</label>
@@ -200,7 +298,7 @@
                             {% endif %}
 
 			                <label for="{{form.contract2_visible.id_for_label}}">{{form.contract2_visible.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.1.css_class}}">
+                            <section class="segmented-selector {{maintenance_types.2.css_class}}">
                                 <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">{% trans "Visible to everyone" %}</a>
                                 <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">{% trans "Invisible to managers" %}</a>
                                 <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">{% trans "Disabled" %}</a>
@@ -228,7 +326,7 @@
                             {% endif %}
 
 			                <label for="{{form.contract2_total_type.id_for_label}}">{{form.contract2_total_type.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.1.css_class}}">
+                            <section class="segmented-selector {{maintenance_types.2.css_class}}">
                                 <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">{% trans "Available total time" %}</a>
                                 <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">{% trans "Consumed total time" %}</a>
 				            {{form.contract2_total_type}}
@@ -268,7 +366,7 @@
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
-                            <div class="help">{%  blocktrans with mtype=maintenance_types.1.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
+                            <div class="help">{%  blocktrans with mtype=maintenance_types.2.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
 
                             <div class="form-row {% if form.contract2_date.errors %}form-error{% endif %}">
                                 <label for="{{form.contract2_date.id_for_label}}">{{form.contract2_date.label}}</label>
@@ -279,104 +377,6 @@
                                 {% endif %}
 
                                 {% for error in form.contract2_date.errors %}
-                                <div class="form-error-text">{{error|escape}}</div>
-                                {% endfor %}
-                            </div>
-                            <div class="help">{% trans "Date when the contract begin." %}</div>
-                        </div>
-                    </div>
-
-                    <div class="form-group activation-active counter-total email-alert-disabled">
-                        <div class="group-title-container">
-                            <div class="group-title">{% trans "Counter" %} {{ form.contract3_counter_name.initial }}</div>
-                            <a href="#" class="show-more" title="{% trans "Display more details about the counter" %}">{% trans "Display more details" %}</a>
-                        </div>
-
-                        <div class="form-row row-activation-type {% if form.contract3_visible.errors %}form-error{% endif %}">
-                            {% if form.contract3_visible.errors %}
-                            <div class="form-row-wrapper">
-                            {% endif %}
-
-			                <label for="{{form.contract3_visible.id_for_label}}">{{form.contract3_visible.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.2.css_class}}">
-                                <a href="" class="active" data-selector-key="active" data-selector-value="1" title="">{% trans "Visible to everyone" %}</a>
-                                <a href="" class="inactive" data-selector-key="hidden" data-selector-value="0" title="">{% trans "Invisible to managers" %}</a>
-                                <a href="" class="inactive" data-selector-key="inactive" data-selector-value="-1" title="">{% trans "Disabled" %}</a>
-				            {{form.contract3_visible}}
-                            </section>
-
-                            {% if form.contract3_visible.errors %}
-                            </div>
-                            {% endif %}
-
-                            {% for error in form.contract3_visible.errors %}
-                            <div class="form-error-text">{{error|escape}}</div>
-                            {% endfor %}
-                        </div>
-                        <div class="help help-activation">
-                            <span class='activation-active'>{% blocktrans with name=general_info.name %}This counter will be <em>visible for managers</em> of the project, and <em>usable by {{name}}'s operators</em> on the dashboard and for register new issues. {% endblocktrans %}</span>
-
-                            <span class='activation-hidden'>{% blocktrans with name=general_info.name %}This counter will be <em>invisible for managers, but </em>usable by {{name}}'s operators</em> on the dashboard and for register new issues.{% endblocktrans %}</span>
-                            <span class='activation-inactive'>{% trans "This counter will be <em>disabled</em> for the project" %}</span>
-                        </div>
-
-                        <div class="form-row row-counter-type {% if form.contract3_total_type.errors %}form-error{% endif %}">
-                            {% if form.contract3_total_type.errors %}
-                            <div class="form-row-wrapper">
-                            {% endif %}
-
-			                <label for="{{form.contract3_total_type.id_for_label}}">{{form.contract3_total_type.label}}</label>
-                            <section class="segmented-selector {{maintenance_types.2.css_class}}">
-                                <a href="" class="inactive" data-selector-key="credit" data-selector-value="0" title="">{% trans "Available total time" %}</a>
-                                <a href="" class="active" data-selector-key="total" data-selector-value="1" title="">{% trans "Consumed total time" %}</a>
-				            {{form.contract3_total_type}}
-                            </section>
-                            {% if form.contract3_total_type.errors %}
-                            </div>
-                            {% endif %}
-
-                            {% for error in form.contract3_total_type.errors %}
-                            <div class="form-error-text">{{error|escape}}</div>
-                            {% endfor %}
-                        </div>
-
-                        {% block credited_hours_3 %}{% endblock %}
-
-                        <div class="help help-credit">
-                            <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
-                            <span class="counter-credit">{% blocktrans with name=general_info.name mtype=form.contract3_counter_name.initial %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
-                        </div>
-
-                        {% block email_alert_3 %}{% endblock %}
-
-                        <div class="show-more-container">
-                            <div class="form-row {% if form.contract3_counter_name.errors %}form-error{% endif %}">
-                                {% if form.contract3_counter_name.errors %}
-                                <div class="form-row-wrapper">
-                                {% endif %}
-
-                                <label for="{{form.contract3_counter_name.id_for_label}}">{{form.contract3_counter_name.label}}</label>
-                                {{form.contract3_counter_name}}
-
-                                {% if form.contract3_counter_name.errors %}
-                                </div>
-                                {% endif %}
-
-                                {% for error in form.contract3_counter_name.errors %}
-                                <div class="form-error-text">{{error|escape}}</div>
-                                {% endfor %}
-                            </div>
-                            <div class="help">{%  blocktrans with mtype=maintenance_types.2.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
-
-                            <div class="form-row {% if form.contract3_date.errors %}form-error{% endif %}">
-                                <label for="{{form.contract3_date.id_for_label}}">{{form.contract3_date.label}}</label>
-                                {{form.contract3_date}}
-
-                                {% if form.contract3_date.errors %}
-                                </div>
-                                {% endif %}
-
-                                {% for error in form.contract3_date.errors %}
                                 <div class="form-error-text">{{error|escape}}</div>
                                 {% endfor %}
                             </div>
@@ -479,7 +479,7 @@
         }
 
         // setup date pickers
-        var dateFields = ["{{form.contract1_date.id_for_label}}", "{{form.contract2_date.id_for_label}}", "{{form.contract3_date.id_for_label}}"];
+        var dateFields = ["{{form.contract0_date.id_for_label}}", "{{form.contract1_date.id_for_label}}", "{{form.contract2_date.id_for_label}}"];
         for (var i = 0; i < dateFields.length; ++i) {
             var fieldId = dateFields[i];
             new DatePicker(document.getElementById(fieldId));

@@ -90,20 +90,20 @@ class ProjectCreateViewTestCase(TestCase):
         company_name = "Black Mesa"
         displayed_month_number = 6
         # No support contract
-        contract1_visible = INACTIF_CONTRACT_INPUT
-        contract1_total_type = 0
-        contract1_credited_hours = 0
+        contract0_visible = INACTIF_CONTRACT_INPUT
+        contract0_total_type = 0
+        contract0_credited_hours = 0
 
         # maintenance contract, not visible for manager,
         # available total time with 80 credited hours
-        contract2_visible = 0  # FALSE
-        contract2_total_type = AVAILABLE_TOTAL_TIME
-        contract2_credited_hours = 80
+        contract1_visible = 0  # FALSE
+        contract1_total_type = AVAILABLE_TOTAL_TIME
+        contract1_credited_hours = 80
 
         # correction contract, visible for manager, consummed total time
-        contract3_visible = 1  # TRUE
-        contract3_total_type = CONSUMMED_TOTAL_TIME
-        contract3_credited_hours = 0
+        contract2_visible = 1  # TRUE
+        contract2_total_type = CONSUMMED_TOTAL_TIME
+        contract2_credited_hours = 0
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
@@ -113,21 +113,21 @@ class ProjectCreateViewTestCase(TestCase):
                 "company_name": company_name,
                 "displayed_month_number": displayed_month_number,
                 "contact": operator.pk,
+                "contract0_visible": contract0_visible,
+                "contract0_total_type": contract0_total_type,
+                "contract0_credited_hours": contract0_credited_hours,
+                "contract0_counter_name": "Maintenance",
+                "contract0_date": datetime.date.today(),
                 "contract1_visible": contract1_visible,
                 "contract1_total_type": contract1_total_type,
                 "contract1_credited_hours": contract1_credited_hours,
-                "contract1_counter_name": "Maintenance",
+                "contract1_counter_name": "Support",
                 "contract1_date": datetime.date.today(),
                 "contract2_visible": contract2_visible,
                 "contract2_total_type": contract2_total_type,
                 "contract2_credited_hours": contract2_credited_hours,
-                "contract2_counter_name": "Support",
+                "contract2_counter_name": "Corrective",
                 "contract2_date": datetime.date.today(),
-                "contract3_visible": contract3_visible,
-                "contract3_total_type": contract3_total_type,
-                "contract3_credited_hours": contract3_credited_hours,
-                "contract3_counter_name": "Corrective",
-                "contract3_date": datetime.date.today(),
             },
             follow=True,
         )
@@ -206,23 +206,23 @@ class ProjectUpdateViewTestCase(TestCase):
         company_name = "Aperture Science"
         displayed_month_number = 6
         # No support contract
-        contract1_visible = INACTIF_CONTRACT_INPUT
-        contract1_total_type = CONSUMMED_TOTAL_TIME
-        contract1_email_alert = False
-        contract1_credited_hours_min = 0
+        contract0_visible = INACTIF_CONTRACT_INPUT
+        contract0_total_type = CONSUMMED_TOTAL_TIME
+        contract0_email_alert = False
+        contract0_credited_hours_min = 0
 
         # maintenance contract, not visible for manager,
         # available total time with 80 credited hours
-        contract2_visible = 0  # FALSE
-        contract2_total_type = AVAILABLE_TOTAL_TIME
-        contract2_email_alert = True
-        contract2_credited_hours_min = 20
+        contract1_visible = 0  # FALSE
+        contract1_total_type = AVAILABLE_TOTAL_TIME
+        contract1_email_alert = True
+        contract1_credited_hours_min = 20
 
         # correction contract, visible for manager, consummed total time
-        contract3_visible = 1  # TRUE
-        contract3_total_type = CONSUMMED_TOTAL_TIME
-        contract3_email_alert = False
-        contract3_credited_hours_min = 0
+        contract2_visible = 1  # TRUE
+        contract2_total_type = CONSUMMED_TOTAL_TIME
+        contract2_email_alert = False
+        contract2_credited_hours_min = 0
 
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
@@ -232,24 +232,24 @@ class ProjectUpdateViewTestCase(TestCase):
                 "company_name": company_name,
                 "displayed_month_number": displayed_month_number,
                 "contact": operator.pk,
+                "contract0_visible": contract0_visible,
+                "contract0_total_type": contract0_total_type,
+                "contract0_counter_name": "Maintenance",
+                "contract0_date": datetime.date.today(),
+                "contract0_email_alert": contract0_email_alert,
+                "contract0_credited_hours_min": contract0_credited_hours_min,
                 "contract1_visible": contract1_visible,
                 "contract1_total_type": contract1_total_type,
-                "contract1_counter_name": "Maintenance",
+                "contract1_counter_name": "Support",
                 "contract1_date": datetime.date.today(),
                 "contract1_email_alert": contract1_email_alert,
                 "contract1_credited_hours_min": contract1_credited_hours_min,
                 "contract2_visible": contract2_visible,
                 "contract2_total_type": contract2_total_type,
-                "contract2_counter_name": "Support",
+                "contract2_counter_name": "Corrective",
                 "contract2_date": datetime.date.today(),
                 "contract2_email_alert": contract2_email_alert,
                 "contract2_credited_hours_min": contract2_credited_hours_min,
-                "contract3_visible": contract3_visible,
-                "contract3_total_type": contract3_total_type,
-                "contract3_counter_name": "Corrective",
-                "contract3_date": datetime.date.today(),
-                "contract3_email_alert": contract3_email_alert,
-                "contract3_credited_hours_min": contract3_credited_hours_min,
             },
             follow=True,
         )
@@ -675,11 +675,11 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         self.assertEqual(2, len(credits))
 
     def test_get_ordered_issues_and_credits(self):
-        company, contract1, _, _ = create_project(contract1={"start": datetime.date(2020, 2, 29)})
+        company, contract, _, _ = create_project(contract1={"start": datetime.date(2020, 2, 29)})
         month = datetime.date(2020, 2, 29)
-        MaintenanceIssueFactory(company=company, contract=contract1, date=datetime.date(2020, 2, 28))
-        MaintenanceCreditFactory(company=company, contract=contract1, date=datetime.date(2020, 2, 27))
-        MaintenanceCreditFactory(company=company, contract=contract1, date=datetime.date(2020, 2, 29))
+        MaintenanceIssueFactory(company=company, contract=contract, date=datetime.date(2020, 2, 28))
+        MaintenanceCreditFactory(company=company, contract=contract, date=datetime.date(2020, 2, 27))
+        MaintenanceCreditFactory(company=company, contract=contract, date=datetime.date(2020, 2, 29))
 
         view = ProjectDetailsView()
         view.company = company
@@ -687,13 +687,15 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         contracts = MaintenanceContract.objects.filter(company=company, disabled=False)
         events = view.get_ordered_issues_and_credits(month, contracts)
 
+        self.assertNotEqual(0, len(events))
         self.assertEqual(1, events[0])
-        self.assertEqual("credit", events[1][0]["type"])
-        self.assertEqual(datetime.date(2020, 2, 29), events[1][0]["date"])
-        self.assertEqual("issue", events[1][1]["type"])
-        self.assertEqual(datetime.date(2020, 2, 28), events[1][1]["date"])
-        self.assertEqual("credit", events[1][2]["type"])
-        self.assertEqual(datetime.date(2020, 2, 27), events[1][2]["date"])
+        self.assertEqual(3, len(events[1]))
+        expected = {"type": "credit", "date": datetime.date(2020, 2, 29)}
+        self.assertTrue(expected.items() <= events[1][0].items())
+        expected = {"type": "issue", "date": datetime.date(2020, 2, 28)}
+        self.assertTrue(expected.items() <= events[1][1].items())
+        expected = {"type": "credit", "date": datetime.date(2020, 2, 27)}
+        self.assertTrue(expected.items() <= events[1][2].items())
 
     def test_get_history(self):
         months_nb = 6
@@ -713,6 +715,7 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         history = view.get_history(months, contracts)
 
         self.assertEqual(months_nb, len(history))
+        self.assertEqual(4, len(history[0]))
         self.assertEqual(2, len(history[0][2]))  # how many issues in the first month
 
     def test_get_context_data(self):

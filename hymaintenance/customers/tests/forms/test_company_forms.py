@@ -172,7 +172,7 @@ class ProjectArchiveFormTestCase(TestCase):
 
     def test_archive_form_queryset(self):
         form = ProjectListArchiveForm(data={"projects": []})
-        project_choices = [project[0] for project in form.fields["projects"].choices]
+        project_choices = [project[0] for project in form.fields["projects"].choices if len(project) > 0]
         self.assertIn(self.c2.pk, project_choices)
         self.assertNotIn(self.c1.pk, project_choices)
 
@@ -192,7 +192,7 @@ class ProjectArchiveFormTestCase(TestCase):
 
     def test_unarchive_form_queryset(self):
         form = ProjectListUnarchiveForm(data={"projects": []})
-        project_choices = [project[0] for project in form.fields["projects"].choices]
+        project_choices = [project[0] for project in form.fields["projects"].choices if len(project) > 0]
         self.assertNotIn(self.c2.pk, project_choices)
         self.assertIn(self.c1.pk, project_choices)
 

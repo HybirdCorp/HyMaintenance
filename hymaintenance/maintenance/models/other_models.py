@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class MaintenanceType(models.Model):
     CSS_CLASSES = ("type-maintenance", "type-support", "type-correction")
+    FORM_LABELS = (_("Green counter"), _("Blue counter"), _("Grey counter"))
 
     name = models.CharField(_("Name"), max_length=255)
     default_visibility = models.BooleanField(_("Visible to manager"), default=True)
@@ -14,6 +15,10 @@ class MaintenanceType(models.Model):
 
     def css_class(self):
         return MaintenanceType.CSS_CLASSES[self.id - 1]
+
+    @property
+    def form_label(self):
+        return MaintenanceType.FORM_LABELS[self.id - 1]
 
     def __str__(self):
         return "%s" % self.name

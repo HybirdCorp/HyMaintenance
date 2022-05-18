@@ -318,39 +318,26 @@ class CreditChoicesUpdateViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_admin_can_post_form_to_update_credit_choices_values(self):
-        value1 = 10
-        value2 = 20
-        value3 = 30
-        value4 = 40
-        value5 = 50
         self.client.login(username=self.user.email, password="azerty")
 
         credit_choices = MaintenanceCreditChoices.objects.order_by("id")
-        response = self.client.post(
-            self.form_url,
-            {
-                "form-TOTAL_FORMS": "5",
-                "form-INITIAL_FORMS": "5",
-                "form-MAX_NUM_FORMS": "",
-                "form-0-id": credit_choices[0].id,
-                "form-0-value": value1,
-                "form-1-id": credit_choices[1].id,
-                "form-1-value": value2,
-                "form-2-id": credit_choices[2].id,
-                "form-2-value": value3,
-                "form-3-id": credit_choices[3].id,
-                "form-3-value": value4,
-                "form-4-id": credit_choices[4].id,
-                "form-4-value": value5,
-            },
-            follow=True,
-        )
+        credit_choices_number = len(credit_choices)
+        dict_to_post = {
+            "form-TOTAL_FORMS": credit_choices_number,
+            "form-INITIAL_FORMS": credit_choices_number,
+            "form-MAX_NUM_FORMS": "",
+        }
+        values = []
+        for count, credit_choice in enumerate(credit_choices):
+            value = (count + 1) * 10
+            dict_to_post[f"form-{count}-id"] = credit_choice.id
+            dict_to_post[f"form-{count}-value"] = value
+            values.append(value)
+
+        response = self.client.post(self.form_url, dict_to_post, follow=True)
 
         self.assertRedirects(response, reverse("high_ui:admin"))
 
-        credit_choices.all()
-        self.assertEqual(value1, credit_choices[0].value)
-        self.assertEqual(value2, credit_choices[1].value)
-        self.assertEqual(value3, credit_choices[2].value)
-        self.assertEqual(value4, credit_choices[3].value)
-        self.assertEqual(value5, credit_choices[4].value)
+        credit_choices = MaintenanceCreditChoices.objects.order_by("id")
+        for count, credit_choice in enumerate(credit_choices):
+            self.assertEqual(values[count], credit_choice.value)

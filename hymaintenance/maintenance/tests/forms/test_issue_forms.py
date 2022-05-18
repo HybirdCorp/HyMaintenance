@@ -528,7 +528,7 @@ class MaintenanceIssueListArchiveFormTestCase(TestCase):
 
     def test_unarchive_form_queryset(self):
         form = MaintenanceIssueListUnarchiveForm(data={"issues": []}, company=self.company)
-        issue_choices = [issue[0] for issue in form.fields["issues"].choices]
+        issue_choices = [issues[0] for issues in form.fields["issues"].choices if len(issues) > 0]
         self.assertNotIn(self.issue2.pk, issue_choices)
         self.assertIn(self.issue1.pk, issue_choices)
 
