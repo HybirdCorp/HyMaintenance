@@ -24,54 +24,28 @@
                         <div class="group-title-container">
                             <div class="group-title">{% trans "Default counters" %}</div>
                         </div>
-                        <div class="form-row {% if form.maintenance_type1_name.errors %}form-error{% endif %}">
-                            {% if form.maintenance_type1_name.errors %}
+                        {{form.management_form}}
+                        {% for sub_form in form %}
+                        <div class="form-row {% if sub_form.name.errors %}form-error{% endif %}">
+                            {% if sub_form.name.errors %}
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.maintenance_type1_name.id_for_label}}">{% trans "Green counter" %}</label>
-                            {{form.maintenance_type1_name}}
+                            <label for="{{sub_form.name.id_for_label}}">{{ sub_form.form_label.value }}</label>
+                            {{sub_form.name}}
 
-                            {% if form.maintenance_type1_name.errors %}
+                            {% if sub_form.name.errors %}
                             </div>
                             {% endif %}
 
-                            {% for error in form.maintenance_type1_name.errors %}
+                            {% for error in sub_form.name.errors %}
                             <div class="form-error-text">{{error|escape}}</div>
                             {% endfor %}
+                        {% for hidden in sub_form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
                         </div>
-                        <div class="form-row {% if form.maintenance_type2_name.errors %}form-error{% endif %}">
-                            {% if form.maintenance_type2_name.errors %}
-                            <div class="form-row-wrapper">
-                            {% endif %}
-
-                            <label for="{{form.maintenance_type2_name.id_for_label}}">{% trans "Blue counter" %}</label>
-                            {{form.maintenance_type2_name}}
-
-                            {% if form.maintenance_type2_name.errors %}
-                            </div>
-                            {% endif %}
-
-                            {% for error in form.maintenance_type2_name.errors %}
-                            <div class="form-error-text">{{error|escape}}</div>
-                            {% endfor %}
-                        </div>
-                        <div class="form-row {% if form.maintenance_type3_name.errors %}form-error{% endif %}">
-                            {% if form.maintenance_type3_name.errors %}
-                            <div class="form-row-wrapper">
-                            {% endif %}
-
-                            <label for="{{form.maintenance_type3_name.id_for_label}}">{% trans "Grey counter" %}</label>
-                            {{form.maintenance_type3_name}}
-
-                            {% if form.maintenance_type3_name.errors %}
-                            </div>
-                            {% endif %}
-
-                            {% for error in form.maintenance_type3_name.errors %}
-                            <div class="form-error-text">{{error|escape}}</div>
-                            {% endfor %}
-                        </div>
+                        {% endfor %}
                     </div>
 
 

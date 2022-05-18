@@ -81,7 +81,7 @@ class ViewsPerformancesTestCase(TestCase):
     def test_maintenance_types_update_view(self):
         url = reverse("high_ui:update_maintenance_types")
         self.client.force_login(self.admin)
-        with self.assertNumQueries(8):
+        with self.assertNumQueries(6):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -153,7 +153,7 @@ class ViewsPerformancesTestCase(TestCase):
     def test_project_create_view(self):
         url = reverse("high_ui:create_project")
         self.client.force_login(self.admin)
-        with self.assertNumQueries(18):
+        with self.assertNumQueries(16):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -177,7 +177,7 @@ class ViewsPerformancesTestCase(TestCase):
     def test_project_update_view(self):
         url = reverse("high_ui:update_project", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
-        with self.assertNumQueries(29):
+        with self.assertNumQueries(30):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)

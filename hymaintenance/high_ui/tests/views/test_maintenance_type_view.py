@@ -55,20 +55,25 @@ class MaintenanceTypeUpdateViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_admin_can_post_form_to_update_maintenance_types_names(self):
-        name1 = "The cake"
-        name2 = "is"
-        name3 = "a lie."
         self.client.login(username=self.user.email, password="azerty")
 
-        response = self.client.post(
-            self.form_url,
-            {"maintenance_type1_name": name1, "maintenance_type2_name": name2, "maintenance_type3_name": name3},
-            follow=True,
-        )
+        names = []
+        dict_to_post = {
+            "form-TOTAL_FORMS": "3",
+            "form-INITIAL_FORMS": "3",
+            "form-MAX_NUM_FORMS": "3",
+        }
+        maintenance_types = MaintenanceType.objects.order_by("id")
+        for count, maintenance_type in enumerate(maintenance_types):
+            name = "a" * (count + 1)
+            names.append(name)
+            dict_to_post[f"form-{count}-name"] = name
+            dict_to_post[f"form-{count}-id"] = maintenance_type.id
+
+        response = self.client.post(self.form_url, dict_to_post, follow=True)
 
         self.assertRedirects(response, reverse("high_ui:admin"))
 
         maintenance_types = MaintenanceType.objects.order_by("id")
-        self.assertEqual(name1, maintenance_types[0].name)
-        self.assertEqual(name2, maintenance_types[1].name)
-        self.assertEqual(name3, maintenance_types[2].name)
+        for count, maintenance_type in enumerate(maintenance_types):
+            self.assertEqual(names[count], maintenance_type.name)

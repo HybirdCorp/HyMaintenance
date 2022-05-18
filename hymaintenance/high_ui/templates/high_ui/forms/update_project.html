@@ -18,6 +18,66 @@
 <span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't Modify" %}</a></span>
 {% endblock %}
 
+{% block email_alert_0 %}
+<div class="form-row row-email-alert {% if form.contract0_total_type.errors %}form-error{% endif %}">
+    {% if form.contract0_email_alert.errors %}
+    <div class="form-row-wrapper">
+    {% endif %}
+
+    <label for="{{form.contract0_email_alert.id_for_label}}">{{form.contract0_email_alert.label}}</label>
+    <section class="segmented-selector {{maintenance_types.0.css_class}}">
+        <a href="" class="active" data-selector-key="disabled" data-selector-value="False" title="">{% trans "Disabled" %}</a>
+        <a href="" class="inactive" data-selector-key="enabled" data-selector-value="True" title="">{% trans "Enabled" %}</a>
+        {{form.contract0_email_alert}}
+    </section>
+    {% if form.contract0_email_alert.errors %}
+    </div>
+    {% endif %}
+
+    {% for error in form.contract0_email_alert.errors %}
+    <div class="form-error-text">{{error|escape}}</div>
+    {% endfor %}
+</div>
+
+<div class="form-row row-credit-min {% if form.contract0_credited_hours_min.errors %}form-error{% endif %}">
+    {% if form.contract0_credited_hours_min.errors %}
+    <div class="form-row-wrapper">
+    {% endif %}
+
+    <label for="{{form.contract0_credited_hours_min.id_for_label}}">{{form.contract0_credited_hours_min.label}} *</label>
+    {{form.contract0_credited_hours_min}}
+
+    {% if form.contract0_credited_hours_min.errors %}
+    </div>
+    {% endif %}
+
+    {% for error in form.contract0_credited_hours_min.errors %}
+    <div class="form-error-text">{{error|escape}}</div>
+    {% endfor %}
+</div>
+
+<div class="form-row row-recipient {% if form.contract0_recipient.errors %}form-error{% endif %}">
+    {% if form.contract0_recipient.errors %}
+    <div class="form-row-wrapper">
+    {% endif %}
+
+    <label for="{{form.contract0_recipient.id_for_label}}">{{form.contract0_recipient.label}} *</label>
+    {{form.contract0_recipient}}
+
+    {% if form.contract0_recipient.errors %}
+    </div>
+    {% endif %}
+
+    {% for error in form.contract0_recipient.errors %}
+    <div class="form-error-text">{{error|escape}}</div>
+    {% endfor %}
+</div>
+
+<div class="help help-email-alert">
+    <span class="counter-credit">The <em>to contact</em> manager will recieve an email alert when the <em>remaining hours</em> of the contract reach the <em>hour threshold</em>.</span>
+</div>
+{% endblock %}
+
 {% block email_alert_1 %}
 <div class="form-row row-email-alert {% if form.contract1_total_type.errors %}form-error{% endif %}">
     {% if form.contract1_email_alert.errors %}
@@ -25,7 +85,7 @@
     {% endif %}
 
     <label for="{{form.contract1_email_alert.id_for_label}}">{{form.contract1_email_alert.label}}</label>
-    <section class="segmented-selector {{maintenance_types.0.css_class}}">
+    <section class="segmented-selector {{maintenance_types.1.css_class}}">
         <a href="" class="active" data-selector-key="disabled" data-selector-value="False" title="">{% trans "Disabled" %}</a>
         <a href="" class="inactive" data-selector-key="enabled" data-selector-value="True" title="">{% trans "Enabled" %}</a>
         {{form.contract1_email_alert}}
@@ -85,7 +145,7 @@
     {% endif %}
 
     <label for="{{form.contract2_email_alert.id_for_label}}">{{form.contract2_email_alert.label}}</label>
-    <section class="segmented-selector {{maintenance_types.1.css_class}}">
+    <section class="segmented-selector {{maintenance_types.2.css_class}}">
         <a href="" class="active" data-selector-key="disabled" data-selector-value="False" title="">{% trans "Disabled" %}</a>
         <a href="" class="inactive" data-selector-key="enabled" data-selector-value="True" title="">{% trans "Enabled" %}</a>
         {{form.contract2_email_alert}}
@@ -129,66 +189,6 @@
     {% endif %}
 
     {% for error in form.contract2_recipient.errors %}
-    <div class="form-error-text">{{error|escape}}</div>
-    {% endfor %}
-</div>
-
-<div class="help help-email-alert">
-    <span class="counter-credit">The <em>to contact</em> manager will recieve an email alert when the <em>remaining hours</em> of the contract reach the <em>hour threshold</em>.</span>
-</div>
-{% endblock %}
-
-{% block email_alert_3 %}
-<div class="form-row row-email-alert {% if form.contract3_total_type.errors %}form-error{% endif %}">
-    {% if form.contract3_email_alert.errors %}
-    <div class="form-row-wrapper">
-    {% endif %}
-
-    <label for="{{form.contract3_email_alert.id_for_label}}">{{form.contract3_email_alert.label}}</label>
-    <section class="segmented-selector {{maintenance_types.2.css_class}}">
-        <a href="" class="active" data-selector-key="disabled" data-selector-value="False" title="">{% trans "Disabled" %}</a>
-        <a href="" class="inactive" data-selector-key="enabled" data-selector-value="True" title="">{% trans "Enabled" %}</a>
-        {{form.contract3_email_alert}}
-    </section>
-    {% if form.contract3_email_alert.errors %}
-    </div>
-    {% endif %}
-
-    {% for error in form.contract3_email_alert.errors %}
-    <div class="form-error-text">{{error|escape}}</div>
-    {% endfor %}
-</div>
-
-<div class="form-row row-credit-min {% if form.contract3_credited_hours_min.errors %}form-error{% endif %}">
-    {% if form.contract3_credited_hours_min.errors %}
-    <div class="form-row-wrapper">
-    {% endif %}
-
-    <label for="{{form.contract3_credited_hours_min.id_for_label}}">{{form.contract3_credited_hours_min.label}} *</label>
-    {{form.contract3_credited_hours_min}}
-
-    {% if form.contract3_credited_hours_min.errors %}
-    </div>
-    {% endif %}
-
-    {% for error in form.contract3_credited_hours_min.errors %}
-    <div class="form-error-text">{{error|escape}}</div>
-    {% endfor %}
-</div>
-
-<div class="form-row row-recipient {% if form.contract3_recipient.errors %}form-error{% endif %}">
-    {% if form.contract3_recipient.errors %}
-    <div class="form-row-wrapper">
-    {% endif %}
-
-    <label for="{{form.contract3_recipient.id_for_label}}">{{form.contract3_recipient.label}} *</label>
-    {{form.contract3_recipient}}
-
-    {% if form.contract3_recipient.errors %}
-    </div>
-    {% endif %}
-
-    {% for error in form.contract3_recipient.errors %}
     <div class="form-error-text">{{error|escape}}</div>
     {% endfor %}
 </div>
