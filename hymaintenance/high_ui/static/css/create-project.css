@@ -44,8 +44,7 @@
 .form-group.counter-total .row-email-alert,
 .form-group.counter-total .row-credit-min,
 .form-group.counter-total .row-recipient,
-.form-group.counter-total .help-email-alert,
-.form-group.counter-total .help-credit {
+.form-group.counter-total .help-email-alert {
     display: none;
 }
 
