@@ -33,6 +33,13 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = "customers.MaintenanceUser"
 
+MY_APPS = [
+    "customers",
+    "maintenance",
+    "high_ui",
+    "toolkit",
+]
+
 INSTALLED_APPS = [
     "django_extensions",
     "django.contrib.admin",
@@ -41,11 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "customers",
-    "maintenance",
-    "high_ui",
-    "toolkit",
-]
+] + MY_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -122,6 +125,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOCALE_PATHS = [os.path.join(BASE_DIR, my_app, "locale") for my_app in MY_APPS]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
