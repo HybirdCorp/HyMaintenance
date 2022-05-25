@@ -147,7 +147,7 @@
                         {% block credited_hours_0 %}{% endblock %}
 
                         <div class="help help-credit">
-                            <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
+                            <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}{% block alert_existing_credits_0 %}{% endblock %}</span>
                             <span class="counter-credit">{% blocktrans with name=general_info.name mtype=form.contract0_counter_name.initial %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
 
@@ -245,7 +245,7 @@
                         {% block credited_hours_1 %}{% endblock %}
 
                         <div class="help help-credit">
-                            <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
+                            <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}{% block alert_existing_credits_1 %}{% endblock %}</span>
                             <span class="counter-credit">{% blocktrans with name=general_info.name mtype=form.contract1_counter_name.initial %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
 
@@ -343,7 +343,7 @@
                         {% block credited_hours_2 %}{% endblock %}
 
                         <div class="help help-credit">
-                            <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}</span>
+                            <span class="counter-total">{% blocktrans with name=general_info.name %}This counter will display the <em>consumed total time</em> by the registered issues by {{name}}'s operators{% endblocktrans %}{% block alert_existing_credits_2 %}{% endblock %}</span>
                             <span class="counter-credit">{% blocktrans with name=general_info.name mtype=form.contract2_counter_name.initial %}This compteur will display the <em>available total time</em> on {{mtype}} credited hours, that will be consumed by {{name}}'s operators by register an issues.{% endblocktrans %}</span>
                         </div>
 

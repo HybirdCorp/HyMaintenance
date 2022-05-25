@@ -99,7 +99,7 @@
                             <td class="history-item-duration duration">+{{event.hours_number}}h</td>
                             <td class="history-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
                             {% if request.user.has_operator_or_admin_permissions %}
-                            <td class="history-item-summary"><a href="{% url 'high_ui:project-update_credit' company_name=event.slug_name pk=event.id %}">{% extra_credit_subject event.hours_number %}{% if event.subject %} &mdash; {{event.subject}}{% endif %}</a></td>
+                            <td class="history-item-summary">{% if event.is_available_time_counter %}<a href="{% url 'high_ui:project-update_credit' company_name=event.slug_name pk=event.id %}">{% endif %}{% extra_credit_subject event.hours_number %}{% if event.subject %} &mdash; {{event.subject}}{% endif %}{% if event.is_available_time_counter %}</a>{% endif %}</td>
                             {% else %}
                             <td class="history-item-summary">{% extra_credit_subject event.hours_number %}{% if event.subject %} &mdash; {{event.subject}}{% endif %}</td>
                             {% endif %}

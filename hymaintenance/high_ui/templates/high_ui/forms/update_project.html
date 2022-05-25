@@ -18,6 +18,10 @@
 <span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't Modify" %}</a></span>
 {% endblock %}
 
+{% block alert_existing_credits_0 %}
+{% if form.contract0_total_type.initial == 0 %}<em>{%  trans "Already existing credit additions will not be editable with that type." %}</em>{% endif %}
+{% endblock %}
+
 {% block email_alert_0 %}
 <div class="form-row row-email-alert {% if form.contract0_total_type.errors %}form-error{% endif %}">
     {% if form.contract0_email_alert.errors %}
@@ -78,6 +82,10 @@
 </div>
 {% endblock %}
 
+{% block alert_existing_credits_1 %}
+{% if form.contract1_total_type.initial == 0 %}<em>{%  trans "Already existing credit additions will not be editable with that type." %}</em>{% endif %}
+{% endblock %}
+
 {% block email_alert_1 %}
 <div class="form-row row-email-alert {% if form.contract1_total_type.errors %}form-error{% endif %}">
     {% if form.contract1_email_alert.errors %}
@@ -136,6 +144,10 @@
 <div class="help help-email-alert">
     <span class="counter-credit">The <em>to contact</em> manager will recieve an email alert when the <em>remaining hours</em> of the contract reach the <em>hour threshold</em>.</span>
 </div>
+{% endblock %}
+
+{% block alert_existing_credits_2 %}
+{% if form.contract2_total_type.initial == 0 %}<em>{%  trans "Already existing credit additions will not be editable with that type." %}</em>{% endif %}
 {% endblock %}
 
 {% block email_alert_2 %}

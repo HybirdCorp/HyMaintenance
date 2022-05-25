@@ -6,7 +6,9 @@ from maintenance.models.credit import MaintenanceCreditChoices
 
 from django import forms
 from django.forms import modelformset_factory
+from django.http import Http404
 from django.urls import reverse
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView
 from django.views.generic import FormView
 from django.views.generic import RedirectView
@@ -46,7 +48,10 @@ class CreditUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, Updat
     model = MaintenanceCredit
 
     def get_object(self, queryset=None):
-        return self.get_queryset().get(id=self.kwargs.get("pk"))
+        instance = self.get_queryset().get(id=self.kwargs.get("pk"))
+        if not instance.contract.is_available_time_counter():
+            raise Http404(_("No credit matches the given query."))
+        return instance
 
     def get_queryset(self):
         return MaintenanceCredit.objects.filter(company=self.company)
