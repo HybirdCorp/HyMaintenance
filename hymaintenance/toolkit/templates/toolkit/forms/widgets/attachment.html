@@ -13,5 +13,5 @@
 
 <div>
 <input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %} />
-<input type="button" id="{{widget.attrs.id}}-reset" value="{% trans "Reset"%}" style="float: right;"/>
+<input type="button" id="{{widget.attrs.id}}-reset" value="{% trans "Reset" context "Upload-attachment widget: button to remove uploaded attachment file."%}" style="float: right;"/>
 </div>
