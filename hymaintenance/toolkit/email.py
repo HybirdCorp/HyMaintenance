@@ -3,15 +3,16 @@ from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 from toolkit.pretty_print import pretty_print_minutes
 
 from django.core.mail import EmailMessage
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 
-email_content = """Hello {recipient},
-
-There are {hours} hours left on you {counter} contract.
-Please contact {sender} to add credits on your contract.
-
-{name} team"""
+email_content = pgettext_lazy(
+    "Email-alert body: the body of the email sent when the contract reaches its credit limit.",
+    "Hello {recipient},\n\n"
+    "There are {hours} hours left on you {counter} contract.\n"
+    "Please contact {sender} to add credits on your contract.\n\n"
+    "{name} team"
+)
 
 
 def is_credited_hours_min_exceeded(contract):
@@ -25,7 +26,8 @@ def create_email_alert(contract):
     hours = pretty_print_minutes(contract.get_number_remaining_minutes())
     counter = contract.get_counter_name()
     name = general_info.name
-    subject = _(
+    subject = pgettext_lazy(
+        "Email-alert subject: the subject of the email sent when the contract reaches its credit limit.",
         "{name} HyMaintenance, there are {hours} left on your {counter} contract".format(
             name=name, hours=hours, counter=counter
         )
@@ -33,7 +35,7 @@ def create_email_alert(contract):
     sender = contract.company.contact.email if contract.company.contact else general_info.email
     recipient_email = contract.recipient.email
     recipient_name = "{} {}".format(contract.recipient.first_name, contract.recipient.last_name)
-    content = _(email_content.format(recipient=recipient_name, hours=hours, counter=counter, sender=sender, name=name))
+    content = email_content.format(recipient=recipient_name, hours=hours, counter=counter, sender=sender, name=name)
 
     email = EmailMessage(subject, content, sender, [recipient_email])
     return email

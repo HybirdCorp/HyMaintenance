@@ -1,0 +1,56 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-24 15:46+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: toolkit/email.py:11
+#, python-brace-format
+msgctxt ""
+"Email-alert body: the body of the email sent when the contract reaches its "
+"credit limit."
+msgid ""
+"Hello {recipient},\n"
+"\n"
+"There are {hours} hours left on you {counter} contract.\n"
+"Please contact {sender} to add credits on your contract.\n"
+"\n"
+"{name} team"
+msgstr ""
+"Bonjour {recipient},\n"
+"\n"
+"Il ne reste que {hours} heures à votre compteur {counter}.\n"
+"Merci de contacter {sender} pour ajouter des crédits à votre compteur.\n"
+"\n"
+"L'équipe {name}"
+
+#: toolkit/email.py:31
+#, python-brace-format
+msgctxt ""
+"Email-alert subject: the subject of the email sent when the contract reaches "
+"its credit limit."
+msgid "{name} HyMaintenance, there are {hours} left on your {counter} contract"
+msgstr ""
+"{name} HyMaintenance, il ne reste que {hours} heures à votre compteur "
+"{counter}"
+
+#: toolkit/templates/toolkit/forms/widgets/attachment.html:16
+#, fuzzy
+#| msgid "Reset"
+msgctxt "Upload-attachment widget: button to remove uploaded attachment file."
+msgid "Reset"
+msgstr "Retirer"
