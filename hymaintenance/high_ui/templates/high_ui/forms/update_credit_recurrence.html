@@ -42,7 +42,7 @@
                             {% endif %}
 
                             <label for="{{sub_form.has_credit_recurrence.id_for_label}}">{{sub_form.has_credit_recurrence.label}} *</label>
-                            <section class="segmented-selector {{maintenance_types.0.css_class}}">
+                            <section class="segmented-selector {{sub_form.css_class.initial}}">
                                 <a href="" class="active" data-selector-key="disabled" data-selector-value="False" title="">{% trans "Disabled" %}</a>
                                 <a href="" class="inactive" data-selector-key="enabled" data-selector-value="True" title="">{% trans "Enabled" %}</a>
                                 {{sub_form.has_credit_recurrence}}
@@ -62,7 +62,7 @@
                             {% endif %}
 
                             <label for="{{sub_form.credit_recurrence.id_for_label}}">{{sub_form.credit_recurrence.label}} *</label>
-                            <section class="segmented-selector {{maintenance_types.0.css_class}}">
+                            <section class="segmented-selector {{sub_form.css_class.initial}}">
                                 <a href="" class="active" data-selector-key="monthly" data-selector-value="0" title="">{% trans "Monthly" %}</a>
                                 <a href="" class="inactive" data-selector-key="annual" data-selector-value="1" title="">{% trans "Annual" %}</a>
                                 {{sub_form.credit_recurrence}}

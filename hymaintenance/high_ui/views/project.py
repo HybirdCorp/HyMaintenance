@@ -5,6 +5,7 @@ from customers.forms.company import ProjectCustomizeForm
 from customers.forms.project import ProjectListArchiveForm
 from customers.forms.project import ProjectListUnarchiveForm
 from customers.models import Company
+from maintenance.forms.email import EmailAlertUpdateForm
 from maintenance.forms.project import ProjectCreateForm
 from maintenance.forms.project import ProjectUpdateForm
 from maintenance.forms.recurrence import RecurrenceContractsModelForm
@@ -210,13 +211,7 @@ class ProjectListUnarchiveView(IsAdminTestMixin, FormView):
 class EmailAlertUpdateView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, FormView):
     form_class = modelformset_factory(
         MaintenanceContract,
-        fields=["email_alert", "credited_hours_min", "recipient", "id"],
-        widgets={
-            "email_alert": forms.HiddenInput(),
-            "credited_hours_min": forms.TextInput(),
-            "id": forms.HiddenInput(attrs={"readonly": True}),
-        },
-        labels={"credited_hours_min": _("Hour threshold"), "recipient": _("To contact")},
+        form=EmailAlertUpdateForm,
         extra=0,
     )
     template_name = "high_ui/forms/update_email_alert.html"

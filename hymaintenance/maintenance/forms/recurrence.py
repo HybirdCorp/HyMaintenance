@@ -28,9 +28,13 @@ class RecurrenceContractsModelForm(forms.ModelForm):
         }
         labels = {"recurrence_start_date": _("Start"), "credit_recurrence": _("Frequency")}
 
+    css_class = forms.CharField(required=False, widget=forms.HiddenInput(attrs={"readonly": True}))
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.counter_name = self.instance.get_counter_name()
+        if self.instance:
+            self.fields['css_class'].initial = self.instance.maintenance_type.css_class
 
     def clean_recurrence_start_date(self):
         start_date = self.cleaned_data.get("recurrence_start_date")
