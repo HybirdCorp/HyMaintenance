@@ -309,7 +309,7 @@ class ViewsPerformancesTestCase(TestCase):
             "high_ui:project-update_credit", kwargs={"company_name": self.company.slug_name, "pk": self.credit.pk}
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(12):
+        with self.assertNumQueries(13):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)

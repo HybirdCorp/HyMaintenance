@@ -103,6 +103,7 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
                 "slug_name": credit.company.slug_name,
                 "id": credit.id,
                 "subject": credit.subject,
+                "is_available_time_counter": credit.contract.is_available_time_counter()
             }
             for credit in credits
         ]
