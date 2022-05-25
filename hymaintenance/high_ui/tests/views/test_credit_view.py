@@ -2,6 +2,8 @@ from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
 from maintenance.models import MaintenanceCredit
+from maintenance.models.contract import AVAILABLE_TOTAL_TIME
+from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 from maintenance.models.credit import MaintenanceCreditChoices
 from maintenance.tests.factories import MaintenanceCreditFactory
 from maintenance.tests.factories import create_project
@@ -173,6 +175,16 @@ class CreditUpdateViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_get_update_form__error_when_contract_debit(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        self.c1.total_type = CONSUMMED_TOTAL_TIME
+        self.c1.save()
+        response = self.client.get(self.form_url)
+
+        self.assertEqual(response.status_code, 404)
+        self.c1.total_type = AVAILABLE_TOTAL_TIME
+        self.c1.save()
+
     def test_admin_can_post_form_to_update_credit(self):
         self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
 
@@ -186,6 +198,19 @@ class CreditUpdateViewTestCase(TestCase):
         credit = MaintenanceCredit.objects.get(pk=self.credit.pk)
         self.assertEqual(self.c2, credit.contract)
         self.assertEqual(16, credit.hours_number)
+
+    def test_update_credit__error_when_contract_debit(self):
+        self.client.login(username="gordon.freeman@blackmesa.com", password="azerty")
+        self.c1.total_type = CONSUMMED_TOTAL_TIME
+        self.c1.save()
+
+        response = self.client.post(
+            self.form_url, {"hours_number": 16, "contract": self.c2.pk, "date": now().date()}, follow=True
+        )
+        self.assertEqual(response.status_code, 404)
+
+        self.c1.total_type = AVAILABLE_TOTAL_TIME
+        self.c1.save()
 
     def test_update_form_has_good_contract_ids(self):
         company, c1, c2, c3 = create_project(
