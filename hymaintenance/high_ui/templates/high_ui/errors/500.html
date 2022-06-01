@@ -1,0 +1,18 @@
+{% extends 'high_ui/errors/base_error.html' %}
+{% load i18n %}
+
+{% block page_title %}
+<title>{% trans 'Server Error' context '500 Error page, title: title of the error page' %}</title>
+{% endblock %}
+
+{% block content_title %}
+<div class="group-title">{% trans 'Server Error' context '500 Error page, content title: title of the error page content' %}</div>
+<label>{% trans 'Error' context '500 Error page, content title: title of the error page content' %}</label>
+<span>500</span>
+{% endblock %}
+
+{% block content_body %}
+<div class="form-row form-row-details">
+    {% trans 'There’s been an internal error.' context '500 Error page, content: content of the error page' %}
+</div>
+{% endblock %}

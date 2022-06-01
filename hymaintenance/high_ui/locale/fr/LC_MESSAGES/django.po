@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-24 15:46+0200\n"
+"POT-Creation-Date: 2022-06-02 16:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -308,6 +308,8 @@ msgstr "Compte"
 
 #: high_ui/templates/high_ui/company_details_header.html:6
 #: high_ui/templates/high_ui/dashboard_header.html:5
+#: high_ui/templates/high_ui/errors/base_error.html:23
+#: high_ui/templates/high_ui/errors/base_error.html:50
 #: high_ui/templates/high_ui/issue_details.html:24
 #: high_ui/templates/high_ui/user_header.html:6
 #: high_ui/templates/high_ui/user_header.html:8
@@ -362,6 +364,7 @@ msgstr "Votre Contact"
 
 #: high_ui/templates/high_ui/company_details_header.html:49
 #: high_ui/templates/high_ui/dashboard_header.html:39
+#: high_ui/templates/high_ui/errors/base_error.html:35
 #: high_ui/templates/high_ui/issue_details_header.html:32
 #: high_ui/templates/high_ui/user_header.html:18
 msgid "Quit the application"
@@ -369,6 +372,7 @@ msgstr "Quitter l'application"
 
 #: high_ui/templates/high_ui/company_details_header.html:49
 #: high_ui/templates/high_ui/dashboard_header.html:39
+#: high_ui/templates/high_ui/errors/base_error.html:35
 #: high_ui/templates/high_ui/issue_details_header.html:32
 #: high_ui/templates/high_ui/user_header.html:18
 msgid "Logout"
@@ -400,6 +404,7 @@ msgid "if you want to buy some credits, please contact :"
 msgstr "Si vous voulez commander des crédits, contactez s'il vous plait&nbsp;:"
 
 #: high_ui/templates/high_ui/contact.html:67
+#: high_ui/templates/high_ui/errors/base_error.html:50
 msgid "Back to the homepage"
 msgstr "Retour sur la page d'accueil"
 
@@ -474,12 +479,108 @@ msgid "Modify operator list"
 msgstr "Modifier la liste des intervenants"
 
 #: high_ui/templates/high_ui/dashboard_header.html:37
+#: high_ui/templates/high_ui/errors/base_error.html:33
 msgid "Access to HyMaintenance administration dashboard"
 msgstr "Accéder au tableau de bord administrateur"
 
 #: high_ui/templates/high_ui/dashboard_header.html:37
+#: high_ui/templates/high_ui/errors/base_error.html:33
+#: high_ui/tests/views/test_error_view.py:77
+#: high_ui/tests/views/test_error_view.py:85
+#: high_ui/tests/views/test_error_view.py:93
+#: high_ui/tests/views/test_error_view.py:101
+#: high_ui/tests/views/test_error_view.py:109
+#: high_ui/tests/views/test_error_view.py:117
+#: high_ui/tests/views/test_error_view.py:125
+#: high_ui/tests/views/test_error_view.py:133
 msgid "Administration"
 msgstr "Administration"
+
+#: high_ui/templates/high_ui/errors/400.html:5
+msgctxt "400 Error page, title: title of the error page"
+msgid "Bad Request"
+msgstr "Demande incorrecte"
+
+#: high_ui/templates/high_ui/errors/400.html:9
+msgctxt "400 Error page, content title: title of the error page content"
+msgid "Bad Request"
+msgstr "Demande incorrecte"
+
+#: high_ui/templates/high_ui/errors/400.html:10
+msgctxt "400 Error page, content title: title of the error page content"
+msgid "Error"
+msgstr "Erreur"
+
+#: high_ui/templates/high_ui/errors/400.html:16
+msgctxt "500 Error page, content: content of the error page"
+msgid "We’re sorry, but the requested page could not be found."
+msgstr "Nous sommes désolés, mais nous n'avons pas trouvé la page demandée."
+
+#: high_ui/templates/high_ui/errors/403.html:5
+msgctxt "403 Error page, title: title of the error page"
+msgid "Forbidden"
+msgstr "Interdit"
+
+#: high_ui/templates/high_ui/errors/403.html:9
+msgctxt "403 Error page, content title: title of the error page content"
+msgid "Forbidden"
+msgstr "Interdit"
+
+#: high_ui/templates/high_ui/errors/403.html:10
+msgctxt "403 Error page, content title: title of the error page content"
+msgid "Error"
+msgstr "Erreur"
+
+#: high_ui/templates/high_ui/errors/403.html:16
+msgctxt "403 Error page, content: content of the error page"
+msgid "We’re sorry, you are not allowed to access to the requested page."
+msgstr ""
+"Nous sommes désolés, mais nous vous n'êtes pas autorisé à accéder à la page "
+"demandée."
+
+#: high_ui/templates/high_ui/errors/404.html:5
+msgctxt "404 Error page, title: title of the error page"
+msgid "Page not found"
+msgstr "Page non trouvée"
+
+#: high_ui/templates/high_ui/errors/404.html:9
+msgctxt "404 Error page, content title: title of the error page content"
+msgid "Page not found"
+msgstr "Page non trouvée"
+
+#: high_ui/templates/high_ui/errors/404.html:10
+msgctxt "404 Error page, content title: title of the error page content"
+msgid "Error"
+msgstr "Erreur"
+
+#: high_ui/templates/high_ui/errors/404.html:16
+msgctxt "404 Error page, content: content of the error page"
+msgid "We’re sorry, but the requested page could not be found."
+msgstr "Nous sommes désolés, mais nous n'avons pas trouvé la page demandée."
+
+#: high_ui/templates/high_ui/errors/500.html:5
+msgctxt "500 Error page, title: title of the error page"
+msgid "Server Error"
+msgstr "Erreur serveur"
+
+#: high_ui/templates/high_ui/errors/500.html:9
+msgctxt "500 Error page, content title: title of the error page content"
+msgid "Server Error"
+msgstr "Erreur serveur"
+
+#: high_ui/templates/high_ui/errors/500.html:10
+msgctxt "500 Error page, content title: title of the error page content"
+msgid "Error"
+msgstr "Erreur"
+
+#: high_ui/templates/high_ui/errors/500.html:16
+msgctxt "500 Error page, content: content of the error page"
+msgid "There’s been an internal error."
+msgstr "Il y a eu une erreur interne."
+
+#: high_ui/templates/high_ui/errors/base_error.html:22
+msgid "Error page"
+msgstr "Page d'erreur"
 
 #: high_ui/templates/high_ui/footer.html:14
 msgid "is a FOSS, developed in France since 2017, by"
@@ -1618,6 +1719,30 @@ msgstr "aucun"
 #: high_ui/tests/templatetags/test_print_field.py:102
 msgid "projects:"
 msgstr "projets&nbsp;:"
+
+#: high_ui/tests/views/test_error_view.py:51
+#: high_ui/tests/views/test_error_view.py:76
+#: high_ui/tests/views/test_error_view.py:108
+msgid "Page not found"
+msgstr "Page non trouvée"
+
+#: high_ui/tests/views/test_error_view.py:57
+#: high_ui/tests/views/test_error_view.py:84
+#: high_ui/tests/views/test_error_view.py:116
+msgid "Server Error"
+msgstr "Erreur serveur"
+
+#: high_ui/tests/views/test_error_view.py:63
+#: high_ui/tests/views/test_error_view.py:92
+#: high_ui/tests/views/test_error_view.py:124
+msgid "Forbidden"
+msgstr "Interdit"
+
+#: high_ui/tests/views/test_error_view.py:69
+#: high_ui/tests/views/test_error_view.py:100
+#: high_ui/tests/views/test_error_view.py:132
+msgid "Bad Request"
+msgstr "Demande incorrecte"
 
 #: high_ui/tests/views/test_project_views.py:432
 msgid "Email alert"
