@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-24 15:46+0200\n"
+"POT-Creation-Date: 2022-06-02 16:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -283,22 +283,16 @@ msgid "%m/%d/%Y at %H:%M"
 msgstr "%d/%m/%Y à %H:%M"
 
 #: maintenance/models/other_models.py:7
-#, fuzzy
-#| msgid "Name of counter"
 msgid "Green counter"
-msgstr "Nom du compteur"
+msgstr "Compteur vert"
 
 #: maintenance/models/other_models.py:7
-#, fuzzy
-#| msgid "Name of counter"
 msgid "Blue counter"
-msgstr "Nom du compteur"
+msgstr "Compteur bleu"
 
 #: maintenance/models/other_models.py:7
-#, fuzzy
-#| msgid "Name of counter"
 msgid "Grey counter"
-msgstr "Nom du compteur"
+msgstr "Compteur gris"
 
 #: maintenance/models/other_models.py:13
 msgid "Maintenance's Type"

@@ -57,3 +57,12 @@ if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
     urlpatterns += [path("__debug__/", include(debug_toolbar.urls))] + staticfiles_urlpatterns()
+
+
+handler404 = 'high_ui.views.errors.not_found_handler'
+
+handler500 = 'high_ui.views.errors.internal_error_handler'
+
+handler403 = 'high_ui.views.errors.permission_denied_handler'
+
+handler400 = 'high_ui.views.errors.bad_request_handler'

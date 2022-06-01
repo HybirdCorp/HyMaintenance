@@ -1,0 +1,66 @@
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+{% block page_title %}{% endblock %}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<style>
+{% if company.color %}
+.dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
+    background-color: white;
+    color: {{company.color}};
+}
+{% endif %}
+</style>
+</head>
+<body>
+    <div class="dashboard type-maintenance">
+        <div class="dashboard-item dashboard-account">
+            <span class="dashboard-title">{% trans "Error page" %}</span>
+            <span class="dashboard-value"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="{% trans "Return to dashboard" %}">{{general_info.name}}</a></span>
+        </div>
+
+        <div class="dashboard-item dashboard-contact">
+        <span class="dashboard-title">{{general_info.name}}</span>
+            {% if not request.user.is_anonymous %}<span class="dashboard-value"><a href='{% url 'high_ui:update_user' %}'>{% pretty_print_name request.user.first_name request.user.last_name %}</a></span>{% endif %}
+        </div>
+        {% if not request.user.is_anonymous %}
+        <div class="dashboard-item dashboard-button">
+            <div class="dashboard-value">
+                {% if request.user.has_admin_permissions %}
+                <a href="{% url 'high_ui:admin' %}" title="{% trans "Access to HyMaintenance administration dashboard" %}">{% trans "Administration" %}</a>
+                {% endif %}
+                <a href="/logout" title="{% trans "Quit the application" %}">{% trans "Logout" %}</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="content-container">
+        <div class="content">
+            <div class="form-content auto-min-height">
+                <div class="form-group">
+                    <div class="group-title-container">
+                        {% block content_title %}{% endblock %}
+                    </div>
+                    {% block content_body %}{% endblock %}
+
+                    <div class="form-footer">
+                        <span class="cancel"><a href="{% url 'high_ui:dashboard' %}" class="home-link" title="{% trans "Return to dashboard" %}">{% trans "Back to the homepage" %}</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if company %}
+        {% include "high_ui/footer.html" with show_menu_client=True %}
+    {% else %}
+        {% include "high_ui/footer.html" %}
+    {% endif %}
+    <script src="/static/js/fast_click.js"></script>
+</body>
+</html>

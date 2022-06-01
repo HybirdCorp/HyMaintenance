@@ -1,0 +1,18 @@
+{% extends 'high_ui/errors/base_error.html' %}
+{% load i18n %}
+
+{% block page_title %}
+<title>{% trans 'Page not found' context '404 Error page, title: title of the error page' %}</title>
+{% endblock %}
+
+{% block content_title %}
+<div class="group-title">{% trans 'Page not found' context '404 Error page, content title: title of the error page content' %}</div>
+<label>{% trans 'Error' context '404 Error page, content title: title of the error page content' %}</label>
+<span>404</span>
+{% endblock %}
+
+{% block content_body %}
+<div class="form-row form-row-details">
+    {% trans 'We’re sorry, but the requested page could not be found.' context '404 Error page, content: content of the error page' %}
+</div>
+{% endblock %}
