@@ -123,11 +123,14 @@ class MaintenanceIssueTestCase(TestCase):
         contract.refresh_from_db()
         self.assertEqual(0, contract.consumed_minutes)
 
-    @freeze_time("2019-04-04")
+    @freeze_time("2021-02-02")
     def test_contract_consumed_minutes_update_when_old_issues(self):
+        start_date = datetime(day=4, month=4, year=2019).date()
         time1 = datetime(day=1, month=2, year=2021)
         time2 = datetime(day=19, month=1, year=2021)
-        company, contract, _, _ = create_project(contract1={"annual_recurrence": True, "reset_date": time1})
+        company, contract, _, _ = create_project(
+            contract1={"annual_recurrence": True, "reset_date": time1, "start": start_date}
+        )
 
         MaintenanceIssue.objects.create(company=company, date=time1, contract=contract, number_minutes=40)
         MaintenanceIssue.objects.create(company=company, date=time2, contract=contract, number_minutes=20 * 60 + 40)

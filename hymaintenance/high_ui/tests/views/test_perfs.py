@@ -161,7 +161,7 @@ class ViewsPerformancesTestCase(TestCase):
     def test_project_detail_view(self):
         url = reverse("high_ui:project_details", kwargs={"company_name": self.company.slug_name})
         self.client.force_login(self.admin)
-        with self.assertNumQueries(415):
+        with self.assertNumQueries(12):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -203,7 +203,7 @@ class ViewsPerformancesTestCase(TestCase):
             "high_ui:project-issue_details", kwargs={"company_name": self.company.slug_name, "company_issue_number": 1}
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(17):
+        with self.assertNumQueries(15):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -213,7 +213,7 @@ class ViewsPerformancesTestCase(TestCase):
             "high_ui:project-update_issue", kwargs={"company_name": self.company.slug_name, "company_issue_number": 1}
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(42):
+        with self.assertNumQueries(40):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
@@ -309,7 +309,7 @@ class ViewsPerformancesTestCase(TestCase):
             "high_ui:project-update_credit", kwargs={"company_name": self.company.slug_name, "pk": self.credit.pk}
         )
         self.client.force_login(self.admin)
-        with self.assertNumQueries(13):
+        with self.assertNumQueries(12):
             response = self.client.get(url)
             response.render()
             self.assertEqual(response.status_code, 200)
