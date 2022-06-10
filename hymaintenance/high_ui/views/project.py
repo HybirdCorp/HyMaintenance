@@ -1,10 +1,10 @@
 from datetime import datetime
-from datetime import timedelta
 
 from customers.forms.company import ProjectCustomizeForm
 from customers.forms.project import ProjectListArchiveForm
 from customers.forms.project import ProjectListUnarchiveForm
 from customers.models import Company
+from dateutil.relativedelta import relativedelta
 from maintenance.forms.email import EmailAlertUpdateForm
 from maintenance.forms.project import ProjectCreateForm
 from maintenance.forms.project import ProjectUpdateForm
@@ -76,100 +76,97 @@ class ProjectDetailsView(ViewWithCompany, IsAtLeastAllowedManagerTestMixin, Deta
     slug_url_kwarg = "company_name"
     slug_field = "slug_name"
 
-    def get_ordered_issues_and_credits(self, month, contracts):
-        issues = self.get_maintenance_issues(month, contracts)
-        credits = self.get_maintenance_credits(month, contracts)
-
-        events = [
-            {
-                "type": "issue",
-                "css_class": issue.contract.maintenance_type.css_class,
-                "date": issue.date,
-                "number_minutes": issue.number_minutes,
-                "counter_name": issue.get_counter_name,
-                "slug_name": issue.company.slug_name,
-                "company_issue_number": issue.company_issue_number,
-                "subject": issue.subject,
+    def initialize_history_data_structure(self, contracts):
+        current_month = datetime.strptime(datetime.now().strftime('%m/%Y'), '%m/%Y').date()
+        month = None
+        history = {}
+        for i in range(self.company.displayed_month_number):
+            month = current_month - relativedelta(months=i)
+            contracts_info = {}
+            for contract in contracts:
+                contracts_info[str(contract.id)] = {
+                    "css_class": contract.css_class,
+                    "counter_name": contract.displayed_counter_name,
+                    "is_available_time_counter": contract.is_available_time_counter(),
+                    "consumed": 0,
+                    "credited": 0
+                }
+            history[month] = {
+                "contracts": contracts_info,
+                "events_count": 0,
+                "events": []
             }
-            for issue in issues
-        ]
+        return month, history
 
-        events = events + [
-            {
-                "type": "credit",
-                "css_class": credit.contract.maintenance_type.css_class,
-                "date": credit.date,
-                "hours_number": credit.hours_number,
-                "counter_name": credit.get_counter_name,
-                "slug_name": credit.company.slug_name,
-                "id": credit.id,
-                "subject": credit.subject,
-                "is_available_time_counter": credit.contract.is_available_time_counter()
-            }
-            for credit in credits
-        ]
+    def get_history(self, contracts):
+        # initialize section for each months of this history
+        last_month, history = self.initialize_history_data_structure(contracts)
+
+        # get passed events lint of the asked months
+        issues = MaintenanceIssue.objects.home_history_values(self.company, contracts, last_month)
+        credits = MaintenanceCredit.objects.home_history_values(self.company, contracts, last_month)
+
+        events = list(issues) + list(credits)
         events.sort(key=lambda item: item["date"], reverse=True)
 
-        return issues.count(), events
+        # format history info
+        for event in events:
+            month = datetime.strptime(event["date"].strftime('%m/%Y'), '%m/%Y').date()
 
-    def get_maintenance_issues(self, month, contracts):
-        return MaintenanceIssue.objects.filter(
-            contract__in=contracts,
-            company_id=self.company,
-            date__month=month.month,
-            date__year=month.year,
-            is_deleted=False,
-        )
+            history[month]["events_count"] += 1
+            history[month]["events"].append(event)
 
-    def get_maintenance_credits(self, month, contracts):
-        return MaintenanceCredit.objects.filter(
-            contract__in=contracts, company_id=self.company, date__month=month.month, date__year=month.year
-        )
+            if event["type"] == "issue":
+                history[month]["contracts"][str(event["contract"])]["consumed"] += event["number_minutes"]
+            else:
+                history[month]["contracts"][str(event["contract"])]["credited"] += event["hours_number"]
 
-    def get_last_months(self, start=datetime.now()):
-        last_month = start - timedelta(days=(start.day + 1))
-        months = [start, last_month]
-        for i in range(self.company.displayed_month_number - 2):
-            last_month = last_month - timedelta(days=31)
-            months.append(last_month)
-        return months
-
-    @staticmethod
-    def get_contract_month_information(month, contract):
-        return (
-            contract,
-            contract.get_number_consumed_minutes_in_month(month),
-            contract.get_number_credited_hours_in_month(month),
-        )
-
-    def get_contracts_month_information(self, month, contracts):
-        info_contracts = []
-        for contract in contracts:
-            info_contracts.append(self.get_contract_month_information(month, contract))
-        return info_contracts
-
-    def get_activities(self, months, contracts):
-        activities = []
-        for month in months:
-            info_contract = self.get_contracts_month_information(month, contracts)
-            activities.append((month, info_contract))
-        return activities
-
-    def get_history(self, months, contracts):
-        history = []
-        for month in months:
-            info_contract = self.get_contracts_month_information(month, contracts)
-            issues_count, info_events = self.get_ordered_issues_and_credits(month, contracts)
-            history.append((month, issues_count, info_contract, info_events))
         return history
+
+    def get_forecast(self, contracts):
+        # get future events list
+        issues = MaintenanceIssue.objects.home_forecast_values(self.company, contracts)
+        credits = MaintenanceCredit.objects.home_forecast_values(self.company, contracts)
+
+        events = list(issues) + list(credits)
+        events.sort(key=lambda item: item["date"])
+
+        # format forecast info
+        forecast = {}
+        for event in events:
+            month = datetime.strptime(event["date"].strftime('%m/%Y'), '%m/%Y').date()
+            if month not in forecast:
+                contracts_info = {}
+                for contract in contracts:
+                    contracts_info[str(contract.id)] = {
+                        "css_class": contract.css_class,
+                        "counter_name": contract.displayed_counter_name,
+                        "is_available_time_counter": contract.is_available_time_counter(),
+                        "consumed": 0,
+                        "credited": 0
+                    }
+                forecast[month] = {
+                    "contracts": contracts_info,
+                    "events_count": 1,
+                    "events": [event, ]
+                }
+            else:
+                forecast[month]["events_count"] += 1
+                forecast[month]["events"].append(event)
+
+            if event["type"] == "issue":
+                forecast[month]["contracts"][str(event["contract"])]["consumed"] += event["number_minutes"]
+            else:
+                forecast[month]["contracts"][str(event["contract"])]["credited"] += event["hours_number"]
+
+        return forecast
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailsView, self).get_context_data(**kwargs)
         contracts = context["contracts"]
 
-        months = self.get_last_months()
-        context["activities"] = self.get_activities(months, contracts)
-        context["history"] = self.get_history(months, contracts)
+        context["history"] = self.get_history(contracts)
+        context["forecast"] = self.get_forecast(contracts)
 
         return context
 
