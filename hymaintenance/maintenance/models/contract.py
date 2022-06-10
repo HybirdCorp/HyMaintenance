@@ -3,7 +3,12 @@ from calendar import monthrange
 from customers.models import Company
 
 from django.db import models
+from django.db.models import Case
+from django.db.models import CharField
 from django.db.models import F
+from django.db.models import Value
+from django.db.models import When
+from django.db.models.functions import Coalesce
 from django.utils.timezone import datetime
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
@@ -24,16 +29,35 @@ ANNUAL = 1
 
 class MaintenanceContractManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().select_related("maintenance_type").order_by(F("maintenance_type__id").asc())
+        return super().get_queryset()\
+            .select_related("maintenance_type") \
+            .annotate(
+                displayed_counter_name=Coalesce(
+                    Case(
+                        When(counter_name__exact='', then=None),
+                        When(counter_name__isnull=False, then='counter_name'),
+                        default=None,
+                        output_field=CharField()
+                    ),
+                    "maintenance_type__name"
+                ),
+                css_class=Case(
+                    When(maintenance_type__id__exact=1, then=Value("type-maintenance", CharField())),
+                    When(maintenance_type__id__exact=2, then=Value("type-support", CharField())),
+                    When(maintenance_type__id__exact=3, then=Value("type-correction", CharField())),
+                    default=Value("type-maintenance", CharField()),
+                    output_field=CharField()
+                ),) \
+            .order_by(F("maintenance_type__id").asc())
 
-    def filter_enabled(self):
-        return self.get_queryset().filter(disabled=False)
+    def filter_enabled(self, **kwargs):
+        return self.get_queryset().filter(disabled=False, **kwargs)
 
-    def filter_enabled_and_visible(self):
-        return self.get_queryset().filter(disabled=False, visible=True)
+    def filter_enabled_and_visible(self, **kwargs):
+        return self.get_queryset().filter(disabled=False, visible=True, **kwargs)
 
-    def filter_enabled_and_available_counter(self):
-        return self.get_queryset().filter(disabled=False, total_type=AVAILABLE_TOTAL_TIME)
+    def filter_enabled_and_available_counter(self, **kwargs):
+        return self.get_queryset().filter(disabled=False, total_type=AVAILABLE_TOTAL_TIME, **kwargs)
 
 
 class MaintenanceContract(models.Model):
@@ -98,7 +122,7 @@ class MaintenanceContract(models.Model):
         return self.has_credit_recurrence and self.credit_recurrence == MONTHLY
 
     def get_current_issues(self):
-        issues = MaintenanceIssue.objects.filter(contract=self, is_deleted=False)
+        issues = MaintenanceIssue.objects.filter(contract=self, is_deleted=False, date__lte=now().date())
         if self.reset_date:
             issues = issues.exclude(date__lt=self.reset_date)
         return issues
@@ -112,7 +136,7 @@ class MaintenanceContract(models.Model):
             return MaintenanceIssue.objects.none()
 
     def get_current_credits(self):
-        credits = MaintenanceCredit.objects.filter(contract=self)
+        credits = MaintenanceCredit.objects.filter(contract=self, date__lte=now().date())
         if self.reset_date:
             credits = credits.exclude(date__lt=self.reset_date)
         return credits

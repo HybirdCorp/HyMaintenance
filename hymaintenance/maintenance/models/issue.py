@@ -13,7 +13,25 @@ from django.utils.translation import ugettext_lazy as _
 
 from .consumer import MaintenanceConsumer
 from .other_models import IncomingChannel
+from .utils import MaintenanceEventManager
 from .utils import get_counter_name
+
+
+class MaintenanceIssueManager(MaintenanceEventManager):
+    HOME_VALUES = (
+        "type",
+        "date",
+        "number_minutes",
+        "subject",
+        "counter_name",
+        "company_issue_number",
+        "css_class",
+        "company__slug_name",
+        "contract"
+    )
+    TYPE_VALUE = "issue"
+
+    SPECIFIC_FILTERS = {"is_deleted": False}
 
 
 class MaintenanceIssueAttachmentStorage(FileSystemStorage):
@@ -105,6 +123,8 @@ class MaintenanceIssue(models.Model):
         "context_description_file",
         "resolution_description_file",
     )
+
+    objects = MaintenanceIssueManager()
 
     class Meta:
         verbose_name = "Issue"

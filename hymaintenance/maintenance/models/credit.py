@@ -3,12 +3,45 @@ import datetime
 from customers.models import Company
 
 from django.db import models
+from django.db.models import BooleanField
+from django.db.models import Case
+from django.db.models import Value
+from django.db.models import When
 from django.db.models.signals import post_delete
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
+from .utils import MaintenanceEventManager
 from .utils import get_counter_name
+
+
+class MaintenanceCreditManager(MaintenanceEventManager):
+    HOME_VALUES = (
+        "type",
+        "css_class",
+        "date",
+        "hours_number",
+        "counter_name",
+        "company__slug_name",
+        "id",
+        "subject",
+        "contract",
+        "is_available_time_counter"
+    )
+    TYPE_VALUE = "credit"
+
+    def get_queryset(self):
+        from .contract import AVAILABLE_TOTAL_TIME
+        return super().get_queryset()\
+            .select_related("contract", "contract__maintenance_type") \
+            .annotate(
+            is_available_time_counter=Case(
+                When(contract__total_type=AVAILABLE_TOTAL_TIME, then=Value(True, BooleanField())),
+                default=Value(False, BooleanField()),
+                output_field=BooleanField()
+            ),
+        )
 
 
 class MaintenanceCredit(models.Model):
@@ -19,6 +52,8 @@ class MaintenanceCredit(models.Model):
     )
     hours_number = models.PositiveIntegerField(_("Quantity"), default=0)
     subject = models.CharField(_("Subject"), null=True, blank=True, max_length=500)
+
+    objects = MaintenanceCreditManager()
 
     def __str__(self):
         return "%s, the %s for %s and %s hours" % (
