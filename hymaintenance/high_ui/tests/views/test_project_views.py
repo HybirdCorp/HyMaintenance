@@ -6,8 +6,11 @@ from customers.tests.factories import AdminUserFactory
 from customers.tests.factories import CompanyFactory
 from customers.tests.factories import ManagerUserFactory
 from customers.tests.factories import OperatorUserFactory
+from freezegun import freeze_time
+from freezegun.api import FakeDate
 from maintenance.forms.project import INACTIF_CONTRACT_INPUT
 from maintenance.models import MaintenanceContract
+from maintenance.models import MaintenanceCredit
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 from maintenance.models.contract import CONSUMMED_TOTAL_TIME
 from maintenance.tests.factories import MaintenanceCreditFactory
@@ -529,200 +532,605 @@ class MonthDisplayInFrenchTestCase(TestCase):
         self.assertContains(response, french_months[month - 1])
 
 
-class GetContextDataProjectDetailsTestCase(TestCase):
+@freeze_time("2020, 2, 29")
+class GetContextDataProjectDetailsSpecificTestCase(TestCase):
+    def empty_month_info_assertion(self, contract, company, history):
+        expected_info = {
+            'contracts': {
+                str(contract.id): {
+                    'consumed': 0,
+                    'counter_name': 'Maintenance',
+                    'credited': 0,
+                    'css_class': 'type-maintenance',
+                    'is_available_time_counter': True,
+                },
+            },
+            'events': [],
+            'events_count': 0
+        }
+
+        self.assertEqual(company.displayed_month_number, len(history))
+
+        for month, month_info in history.items():
+            self.assertEqual(month_info, expected_info)
+
+    def test_initialize_history_data_structure(self):
+        company, contract, _, _ = create_project(
+            contract1={"disabled": True},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        last_month, history = view.initialize_history_data_structure(contracts)
+
+        expected_last_month = datetime.date(2019, 9, 1)
+        expected_months = [
+            expected_last_month,
+            datetime.date(2019, 10, 1),
+            datetime.date(2019, 11, 1),
+            datetime.date(2019, 12, 1),
+            datetime.date(2020, 1, 1),
+            datetime.date(2020, 2, 1)
+        ]
+        expected_info = {
+            'contracts': {},
+            'events': [],
+            'events_count': 0
+        }
+
+        self.assertEqual(expected_last_month, last_month)
+        self.assertEqual(len(expected_months), len(history))
+
+        for expected_month in expected_months:
+            self.assertIn(expected_month, history)
+
+        for expected_month in expected_months:
+            self.assertEqual(history[expected_month], expected_info)
+
+    def test_history_no_contract(self):
+        company, contract, _, _ = create_project(
+            contract1={"disabled": True},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        history = view.get_history(contracts)
+
+        expected_info = {
+            'contracts': {},
+            'events': [],
+            'events_count': 0
+        }
+
+        self.assertEqual(company.displayed_month_number, len(history))
+
+        for month, month_info in history.items():
+            self.assertEqual(month_info, expected_info)
+            self.assertEqual(month_info, expected_info)
+
+    def test_history_available_contract__no_event(self):
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": datetime.date(2019, 1, 1)},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        history = view.get_history(contracts)
+
+        self.empty_month_info_assertion(contract, company, history)
+
+    def test_history_available_contract__one_passed_issue(self):
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": datetime.date(2019, 1, 1)},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        event_date = datetime.date(2020, 2, 29)
+        event_month = datetime.date(2020, 2, 1)
+        passed_issue = MaintenanceIssueFactory(
+            company=company, contract=contract, number_minutes=12, date=event_date
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        history = view.get_history(contracts)
+
+        expected_info = {
+            'contracts': {
+                str(contract.id): {
+                    'consumed': 12,
+                    'counter_name': 'Maintenance',
+                    'credited': 0,
+                    'css_class': 'type-maintenance',
+                    'is_available_time_counter': True,
+                },
+            },
+            'events': [{
+                'company__slug_name': 'black-mesa',
+                'company_issue_number': passed_issue.company_issue_number,
+                'contract': passed_issue.contract.id,
+                'counter_name': 'Maintenance',
+                'css_class': 'type-maintenance',
+                'date': FakeDate(2020, 2, 29),
+                'number_minutes': 12,
+                'subject': "It's "
+                           'not '
+                           'working',
+                'type': 'issue'
+            }],
+            'events_count': 1
+        }
+
+        self.assertEqual(company.displayed_month_number, len(history))
+
+        self.assertEqual(history[event_month], expected_info)
+
+    def test_history_available_contract__one_passed_credit(self):
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": datetime.date(2019, 1, 1)},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        event_date = datetime.date(2020, 2, 29)
+        event_month = datetime.date(2020, 2, 1)
+        passed_credit = MaintenanceCreditFactory(
+            company=company, contract=contract, hours_number=10, date=event_date
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        history = view.get_history(contracts)
+
+        expected_info = {
+            'contracts': {
+                str(contract.id): {
+                    'consumed': 0,
+                    'counter_name': 'Maintenance',
+                    'credited': 10,
+                    'css_class': 'type-maintenance',
+                    'is_available_time_counter': True,
+                },
+            },
+            'events': [{
+                'company__slug_name': 'black-mesa',
+                'contract': passed_credit.contract.id,
+                'counter_name': 'Maintenance',
+                'css_class': 'type-maintenance',
+                'date': FakeDate(2020, 2, 29),
+                'hours_number': 10,
+                'id': passed_credit.id,
+                'subject': None,
+                'type': 'credit',
+                'is_available_time_counter': True,
+            }],
+            'events_count': 1
+        }
+
+        self.assertEqual(company.displayed_month_number, len(history))
+
+        self.assertEqual(history[event_month], expected_info)
+
+    def test_history_available_contract__one_future_issue(self):
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": datetime.date(2019, 1, 1)},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        event_date = datetime.date(2023, 2, 28)
+        MaintenanceIssueFactory(
+            company=company, contract=contract, number_minutes=12, date=event_date
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        history = view.get_history(contracts)
+
+        self.empty_month_info_assertion(contract, company, history)
+
+    def test_history_available_contract__one_future_credit(self):
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": datetime.date(2019, 1, 1)},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        event_date = datetime.date(2023, 2, 28)
+        MaintenanceCreditFactory(
+            company=company, contract=contract, hours_number=10, date=event_date
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        history = view.get_history(contracts)
+
+        self.empty_month_info_assertion(contract, company, history)
+
+    def test_forecast_no_contract(self):
+        company, contract, _, _ = create_project(
+            contract1={"disabled": True},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        forecast = view.get_forecast(contracts)
+
+        self.assertEqual(0, len(forecast))
+
+    def test_forecast_available_contract__no_event(self):
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": datetime.date(2019, 1, 1)},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        forecast = view.get_forecast(contracts)
+
+        self.assertEqual(0, len(forecast))
+
+    def test_forecast_available_contract__one_passed_issue(self):
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": datetime.date(2019, 1, 1)},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        event_date = datetime.date(2020, 2, 29)
+        MaintenanceIssueFactory(
+            company=company, contract=contract, number_minutes=12, date=event_date
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        forecast = view.get_forecast(contracts)
+
+        self.assertEqual(0, len(forecast))
+
+    def test_forecast_available_contract__one_passed_credit(self):
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": datetime.date(2019, 1, 1)},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        event_date = datetime.date(2020, 2, 29)
+        MaintenanceCreditFactory(
+            company=company, contract=contract, hours_number=10, date=event_date
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        forecast = view.get_forecast(contracts)
+
+        self.assertEqual(0, len(forecast))
+
+    def test_forecast_available_contract__one_future_issue(self):
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": datetime.date(2019, 1, 1)},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        event_date = datetime.date(2023, 2, 28)
+        event_month = datetime.date(2023, 2, 1)
+        future_issue = MaintenanceIssueFactory(
+            company=company, contract=contract, number_minutes=12, date=event_date
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        forecast = view.get_forecast(contracts)
+
+        expected_info = {
+            'contracts': {
+                str(contract.id): {
+                    'consumed': 12,
+                    'counter_name': 'Maintenance',
+                    'credited': 0,
+                    'css_class': 'type-maintenance',
+                    'is_available_time_counter': True,
+                },
+            },
+            'events': [{
+                'company__slug_name': 'black-mesa',
+                'company_issue_number': future_issue.company_issue_number,
+                'contract': future_issue.contract.id,
+                'counter_name': 'Maintenance',
+                'css_class': 'type-maintenance',
+                'date': FakeDate(2023, 2, 28),
+                'number_minutes': 12,
+                'subject': "It's "
+                           'not '
+                           'working',
+                'type': 'issue'
+            }],
+            'events_count': 1
+        }
+
+        self.assertEqual(1, len(forecast))
+
+        self.assertEqual(forecast[event_month], expected_info)
+
+    def test_forecast_available_contract__one_future_credit(self):
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": datetime.date(2019, 1, 1)},
+            contract2={"disabled": True},
+            contract3={"disabled": True}
+        )
+        event_date = datetime.date(2023, 2, 28)
+        event_month = datetime.date(2023, 2, 1)
+        future_credit = MaintenanceCreditFactory(
+            company=company, contract=contract, hours_number=10, date=event_date
+        )
+        contracts = MaintenanceContract.objects.filter_enabled(company=company)
+
+        view = ProjectDetailsView()
+        view.company = company
+
+        forecast = view.get_forecast(contracts)
+
+        expected_info = {
+            'contracts': {
+                str(contract.id): {
+                    'consumed': 0,
+                    'counter_name': 'Maintenance',
+                    'credited': 10,
+                    'css_class': 'type-maintenance',
+                    'is_available_time_counter': True,
+                },
+            },
+            'events': [{
+                'company__slug_name': 'black-mesa',
+                'contract': future_credit.contract.id,
+                'counter_name': 'Maintenance',
+                'css_class': 'type-maintenance',
+                'date': FakeDate(2023, 2, 28),
+                'hours_number': 10,
+                'id': future_credit.id,
+                'subject': None,
+                'type': 'credit',
+                'is_available_time_counter': True,
+            }],
+            'events_count': 1
+        }
+
+        self.assertEqual(1, len(forecast))
+
+        self.assertEqual(forecast[event_month], expected_info)
+
+
+@freeze_time("2020, 2, 29")
+class GetContextDataProjectDetailsGeneralTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.months_nb = 6
-        company, _, _, _ = create_project()
-        cls.view = ProjectDetailsView()
-        cls.view.company = company
-
-    def test_last_months_in_the_middle_of_the_year(self):
-        months = self.view.get_last_months(datetime.date(2018, 6, 1))
-
-        self.assertEqual(self.months_nb, len(months))
-
-        self.assertEqual("06/18", months[0].strftime("%m/%y"))
-        self.assertEqual("05/18", months[1].strftime("%m/%y"))
-        self.assertEqual("04/18", months[2].strftime("%m/%y"))
-        self.assertEqual("03/18", months[3].strftime("%m/%y"))
-        self.assertEqual("02/18", months[4].strftime("%m/%y"))
-        self.assertEqual("01/18", months[5].strftime("%m/%y"))
-
-    def test_last_months_at_the_beginning_of_the_year(self):
-        months = self.view.get_last_months(datetime.date(2018, 2, 1))
-
-        self.assertEqual(self.months_nb, len(months))
-
-        self.assertEqual("02/18", months[0].strftime("%m/%y"))
-        self.assertEqual("01/18", months[1].strftime("%m/%y"))
-        self.assertEqual("12/17", months[2].strftime("%m/%y"))
-        self.assertEqual("11/17", months[3].strftime("%m/%y"))
-        self.assertEqual("10/17", months[4].strftime("%m/%y"))
-        self.assertEqual("09/17", months[5].strftime("%m/%y"))
-
-    def test_last_months_at_the_end_of_a_month(self):
-        months = self.view.get_last_months(datetime.date(2018, 12, 31))
-
-        self.assertEqual(self.months_nb, len(months))
-
-        self.assertEqual("12/18", months[0].strftime("%m/%y"))
-        self.assertEqual("11/18", months[1].strftime("%m/%y"))
-        self.assertEqual("10/18", months[2].strftime("%m/%y"))
-        self.assertEqual("09/18", months[3].strftime("%m/%y"))
-        self.assertEqual("08/18", months[4].strftime("%m/%y"))
-        self.assertEqual("07/18", months[5].strftime("%m/%y"))
-
-    def test_last_months_at_the_end_of_february(self):
-        months = self.view.get_last_months(datetime.date(2018, 2, 28))
-
-        self.assertEqual(self.months_nb, len(months))
-
-        self.assertEqual("02/18", months[0].strftime("%m/%y"))
-        self.assertEqual("01/18", months[1].strftime("%m/%y"))
-        self.assertEqual("12/17", months[2].strftime("%m/%y"))
-        self.assertEqual("11/17", months[3].strftime("%m/%y"))
-        self.assertEqual("10/17", months[4].strftime("%m/%y"))
-        self.assertEqual("09/17", months[5].strftime("%m/%y"))
-
-    def test_last_months_at_the_end_of_february_leap_year(self):
-        months = self.view.get_last_months(datetime.date(2020, 2, 29))
-
-        self.assertEqual(self.months_nb, len(months))
-
-        self.assertEqual("02/20", months[0].strftime("%m/%y"))
-        self.assertEqual("01/20", months[1].strftime("%m/%y"))
-        self.assertEqual("12/19", months[2].strftime("%m/%y"))
-        self.assertEqual("11/19", months[3].strftime("%m/%y"))
-        self.assertEqual("10/19", months[4].strftime("%m/%y"))
-        self.assertEqual("09/19", months[5].strftime("%m/%y"))
-
-    def test_get_contract_month_info(self):
-        company, contract, _, _ = create_project(
-            contract1={"start": datetime.date(2020, 2, 29), "total_type": AVAILABLE_TOTAL_TIME, "credited_hours": 20}
+        cls.company, cls.avail_contract, cls.disabled_contract, cls.consu_contract = create_project(
+            contract1={"start": datetime.date(2020, 2, 29), "credit_counter": True},
+            contract2={"disabled": True},
+            contract3={"visible": False, "counter_name": "Custom"}
         )
-        MaintenanceIssueFactory(company=company, contract=contract, number_minutes=12, date=datetime.date(2020, 2, 29))
-        month = datetime.date(2020, 2, 29)
-
-        view = ProjectDetailsView()
-        view.company = company
-        contract_info = view.get_contract_month_information(month, contract)
-        self.assertEqual((contract, 12, 20), contract_info)
-
-    def test_get_contracts_month_info(self):
-        company, _, _, _ = create_project(contract1={"start": datetime.date(2020, 2, 29)})
-        month = datetime.date(2020, 2, 29)
-        contracts = MaintenanceContract.objects.filter(company=company)
-
-        view = ProjectDetailsView()
-        view.company = company
-        contracts_info = view.get_contracts_month_information(month, contracts)
-        self.assertEqual(3, len(contracts_info))
-
-    def test_get_activities(self):
-        company, _, _, _ = create_project(contract1={"start": datetime.date(2020, 2, 29)})
-        contracts = MaintenanceContract.objects.filter(company=company)
-
-        view = ProjectDetailsView()
-        view.company = company
-        months = view.get_last_months(datetime.date(2020, 2, 29))
-        activities = view.get_activities(months, contracts)
-        self.assertEqual(6, len(activities))
-
-    def test_get_maintenance_issues(self):
-        company, contract1, contract2, contract3 = create_project(
-            contract1={"start": datetime.date(2020, 2, 29)}, contract2={"disabled": True}, contract3={"visible": False}
-        )
-        month = datetime.date(2020, 2, 29)
-        issue1 = MaintenanceIssueFactory(
-            company=company, contract=contract1, number_minutes=12, date=datetime.date(2020, 2, 29)
-        )
-        MaintenanceIssueFactory(company=company, contract=contract1, number_minutes=12, date=datetime.date(2018, 2, 28))
-        MaintenanceIssueFactory(company=company, contract=contract2, number_minutes=12, date=datetime.date(2020, 2, 29))
-        issue2 = MaintenanceIssueFactory(
-            company=company, contract=contract3, number_minutes=12, date=datetime.date(2020, 2, 29)
+        cls.creation_credit = MaintenanceCredit.objects.filter(contract=cls.avail_contract).first()
+        cls.passed_issue1 = MaintenanceIssueFactory(
+            company=cls.company, contract=cls.avail_contract, number_minutes=12, date=datetime.date(2020, 2, 29)
         )
         MaintenanceIssueFactory(
-            company=company, contract=contract3, number_minutes=12, date=datetime.date(2020, 2, 29), is_deleted=True
+            company=cls.company, contract=cls.avail_contract, number_minutes=12, date=datetime.date(2018, 2, 28)
         )
-
-        view = ProjectDetailsView()
-        view.company = company
-
-        contracts = MaintenanceContract.objects.filter(company=company, disabled=False)
-        issues = view.get_maintenance_issues(month, contracts)
-
-        self.assertEqual(2, len(issues))
-        self.assertIn(issue1, issues)
-        self.assertIn(issue2, issues)
-
-    def test_get_maintenance_credits(self):
-        company, contract1, contract2, contract3 = create_project(
-            contract1={"start": datetime.date(2020, 2, 29)}, contract2={"disabled": True}, contract3={"visible": False}
+        MaintenanceIssueFactory(
+            company=cls.company, contract=cls.disabled_contract, number_minutes=12, date=datetime.date(2020, 2, 29)
         )
-        month = datetime.date(2020, 2, 29)
-        MaintenanceCreditFactory(company=company, contract=contract1, hours_number=12, date=datetime.date(2020, 2, 29))
-        MaintenanceCreditFactory(company=company, contract=contract1, hours_number=12, date=datetime.date(2018, 2, 28))
-        MaintenanceCreditFactory(company=company, contract=contract2, hours_number=12, date=datetime.date(2020, 2, 29))
-        MaintenanceCreditFactory(company=company, contract=contract3, hours_number=12, date=datetime.date(2020, 2, 29))
-
-        view = ProjectDetailsView()
-        view.company = company
-
-        contracts = MaintenanceContract.objects.filter(company=company, disabled=False)
-        credits = view.get_maintenance_credits(month, contracts)
-
-        self.assertEqual(2, len(credits))
-
-    def test_get_ordered_issues_and_credits(self):
-        company, contract, _, _ = create_project(contract1={"start": datetime.date(2020, 2, 29)})
-        month = datetime.date(2020, 2, 29)
-        MaintenanceIssueFactory(company=company, contract=contract, date=datetime.date(2020, 2, 28))
-        MaintenanceCreditFactory(company=company, contract=contract, date=datetime.date(2020, 2, 27))
-        MaintenanceCreditFactory(company=company, contract=contract, date=datetime.date(2020, 2, 29))
-
-        view = ProjectDetailsView()
-        view.company = company
-
-        contracts = MaintenanceContract.objects.filter(company=company, disabled=False)
-        events = view.get_ordered_issues_and_credits(month, contracts)
-
-        self.assertNotEqual(0, len(events))
-        self.assertEqual(1, events[0])
-        self.assertEqual(3, len(events[1]))
-        expected = {"type": "credit", "date": datetime.date(2020, 2, 29)}
-        self.assertTrue(expected.items() <= events[1][0].items())
-        expected = {"type": "issue", "date": datetime.date(2020, 2, 28)}
-        self.assertTrue(expected.items() <= events[1][1].items())
-        expected = {"type": "credit", "date": datetime.date(2020, 2, 27)}
-        self.assertTrue(expected.items() <= events[1][2].items())
+        cls.passed_issue2 = MaintenanceIssueFactory(
+            company=cls.company, contract=cls.consu_contract, number_minutes=12, date=datetime.date(2020, 2, 29)
+        )
+        cls.future_issue = MaintenanceIssueFactory(
+            company=cls.company, contract=cls.consu_contract, number_minutes=42, date=datetime.date(2022, 2, 20)
+        )
+        cls.future_credit = MaintenanceCreditFactory(
+            company=cls.company, contract=cls.avail_contract, hours_number=10, date=datetime.date(2022, 2, 20)
+        )
+        cls.contracts = MaintenanceContract.objects.filter(company=cls.company, disabled=False)
 
     def test_get_history(self):
-        months_nb = 6
-        company, c1, c2, c3 = create_project(
-            contract1={"start": datetime.date(2020, 2, 29)}, contract2={"disabled": True}, contract3={"visible": False}
-        )
-        MaintenanceIssueFactory(company=company, contract=c1, number_minutes=12, date=datetime.date(2020, 2, 29))
-        MaintenanceIssueFactory(company=company, contract=c1, number_minutes=12, date=datetime.date(2018, 2, 28))
-        MaintenanceIssueFactory(company=company, contract=c2, number_minutes=12, date=datetime.date(2020, 2, 29))
-        MaintenanceIssueFactory(company=company, contract=c3, number_minutes=12, date=datetime.date(2020, 2, 29))
-        contracts = MaintenanceContract.objects.filter(company=company, disabled=False)
-
         view = ProjectDetailsView()
-        view.company = company
+        view.company = self.company
 
-        months = view.get_last_months(datetime.date(2020, 2, 29))
-        history = view.get_history(months, contracts)
+        history = view.get_history(self.contracts)
 
-        self.assertEqual(months_nb, len(history))
-        self.assertEqual(4, len(history[0]))
-        self.assertEqual(2, len(history[0][2]))  # how many issues in the first month
+        expected_empty_months = [
+            datetime.date(2019, 9, 1),
+            datetime.date(2019, 10, 1),
+            datetime.date(2019, 11, 1),
+            datetime.date(2019, 12, 1),
+            datetime.date(2020, 1, 1),
+        ]
+        not_empty_month = datetime.date(2020, 2, 1)
+        expected_months = expected_empty_months + [not_empty_month, ]
+        expected_empty_info = {
+            'contracts': {
+                str(self.avail_contract.id): {
+                    'consumed': 0,
+                    'counter_name': 'Maintenance',
+                    'credited': 0,
+                    'css_class': 'type-maintenance',
+                    'is_available_time_counter': True,
+                },
+                str(self.consu_contract.id): {
+                    'consumed': 0,
+                    'counter_name': 'Custom',
+                    'credited': 0,
+                    'css_class': 'type-correction',
+                    'is_available_time_counter': False,
+                },
+            },
+            'events': [],
+            'events_count': 0
+        }
+
+        expected_not_empty_contracts_info = {
+            str(self.avail_contract.id): {
+                'consumed': 12,
+                'counter_name': 'Maintenance',
+                'credited': 20,
+                'css_class': 'type-maintenance',
+                'is_available_time_counter': True,
+            },
+            str(self.consu_contract.id): {
+                'consumed': 12,
+                'counter_name': 'Custom',
+                'credited': 0,
+                'css_class': 'type-correction',
+                'is_available_time_counter': False,
+            },
+        }
+
+        expected_not_empty_events_info = [
+            {
+                'company__slug_name': 'black-mesa',
+                'company_issue_number': self.passed_issue1.company_issue_number,
+                'contract': self.passed_issue1.contract.id,
+                'counter_name': 'Maintenance',
+                'css_class': 'type-maintenance',
+                'date': FakeDate(2020, 2, 29),
+                'number_minutes': 12,
+                'subject': "It's "
+                           'not '
+                           'working',
+                'type': 'issue'
+            }, {
+                'company__slug_name': 'black-mesa',
+                'company_issue_number': self.passed_issue2.company_issue_number,
+                'contract': self.passed_issue2.contract.id,
+                'counter_name': 'Custom',
+                'css_class': 'type-correction',
+                'date': FakeDate(2020, 2, 29),
+                'number_minutes': 12,
+                'subject': "It's "
+                           'not '
+                           'working',
+                'type': 'issue'
+            }, {
+                'company__slug_name': 'black-mesa',
+                'contract': self.creation_credit.contract.id,
+                'counter_name': 'Maintenance',
+                'css_class': 'type-maintenance',
+                'date': FakeDate(2020, 2, 29),
+                'hours_number': 20,
+                'id': self.creation_credit.id,
+                'subject': None,
+                'type': 'credit',
+                'is_available_time_counter': True,
+            }]
+
+        self.assertEqual(len(expected_months), len(history))
+
+        for expected_month in expected_months:
+            self.assertIn(expected_month, history)
+
+        for expected_empty_month in expected_empty_months:
+            self.assertEqual(history[expected_empty_month], expected_empty_info)
+
+        for key in ("contracts", "events_count", "events"):
+            self.assertIn(key, history[not_empty_month])
+
+        self.assertEqual(history[not_empty_month]['events_count'], 3)
+        self.assertEqual(history[not_empty_month]['contracts'], expected_not_empty_contracts_info)
+
+        self.assertEqual(history[not_empty_month]['events'], expected_not_empty_events_info)
+
+    def test_get_forecast(self):
+        self.maxDiff = None
+        view = ProjectDetailsView()
+        view.company = self.company
+
+        forecast = view.get_forecast(self.contracts)
+
+        expected_month = datetime.date(2022, 2, 1)
+
+        expected_contracts_info = {
+            str(self.avail_contract.id): {
+                'consumed': 0,
+                'counter_name': 'Maintenance',
+                'credited': 10,
+                'css_class': 'type-maintenance',
+                'is_available_time_counter': True,
+            },
+            str(self.consu_contract.id): {
+                'consumed': 42,
+                'counter_name': 'Custom',
+                'credited': 0,
+                'css_class': 'type-correction',
+                'is_available_time_counter': False,
+            },
+        }
+
+        expected_events_info = [
+            {
+                'company__slug_name': 'black-mesa',
+                'company_issue_number': self.future_issue.company_issue_number,
+                'contract': self.future_issue.contract.id,
+                'counter_name': 'Custom',
+                'css_class': 'type-correction',
+                'date': FakeDate(2022, 2, 20),
+                'number_minutes': 42,
+                'subject': "It's "
+                           'not '
+                           'working',
+                'type': 'issue'
+            }, {
+                'company__slug_name': 'black-mesa',
+                'contract': self.future_credit.contract.id,
+                'counter_name': 'Maintenance',
+                'css_class': 'type-maintenance',
+                'date': FakeDate(2022, 2, 20),
+                'hours_number': 10,
+                'id': self.future_credit.id,
+                'subject': None,
+                'type': 'credit',
+                'is_available_time_counter': True,
+            }]
+
+        self.assertEqual(1, len(forecast))
+
+        self.assertIn(expected_month, forecast)
+
+        for key in ("contracts", "events_count", "events"):
+            self.assertIn(key, forecast[expected_month])
+
+        self.assertEqual(forecast[expected_month]['events_count'], 2)
+        self.assertEqual(forecast[expected_month]['contracts'], expected_contracts_info)
+
+        self.assertEqual(forecast[expected_month]['events'], expected_events_info)
 
     def test_get_context_data(self):
-        company, c1, c2, c3 = create_project(
-            contract1={"start": datetime.date(2020, 2, 29)}, contract2={"disabled": True}, contract3={"visible": False}
-        )
-        form_url = reverse("high_ui:project_details", args=[company.slug_name])
+        form_url = reverse("high_ui:project_details", args=[self.company.slug_name])
         factory = RequestFactory()
         request = factory.get(form_url)
 
@@ -731,12 +1139,12 @@ class GetContextDataProjectDetailsTestCase(TestCase):
         view = ProjectDetailsView()
         view.request = request
         view.user = user
-        view.object = company
-        view.company = company
+        view.object = self.company
+        view.company = self.company
 
         context = view.get_context_data()
-        self.assertIn("activities", context.keys())
-        self.assertEqual(6, len(context["activities"]))
+        self.assertIn("forecast", context.keys())
+        self.assertEqual(1, len(context["forecast"]))
         self.assertIn("history", context.keys())
         self.assertEqual(6, len(context["history"]))
 
@@ -749,7 +1157,7 @@ class ProjectListArchiveViewTestCase(TestCase):
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
     def setUp(self):
-        self.c1 = CompanyFactory(name="Black Mesa", is_archived=True)
+        self.avail_contract = CompanyFactory(name="Black Mesa", is_archived=True)
         self.c2 = CompanyFactory(name="Aperture Science")
 
     def test_get_context_data(self):
@@ -810,7 +1218,7 @@ class ProjectListUnunarchiveViewTestCase(TestCase):
         cls.login_url = reverse("login") + "?next=" + cls.form_url
 
     def setUp(self):
-        self.c1 = CompanyFactory(name="Black Mesa", is_archived=True)
+        self.avail_contract = CompanyFactory(name="Black Mesa", is_archived=True)
         self.c2 = CompanyFactory(name="Aperture Science")
 
     def test_get_context_data(self):
@@ -855,12 +1263,12 @@ class ProjectListUnunarchiveViewTestCase(TestCase):
 
     def test_post_project_unarchive_form(self):
         self.client.login(username=self.admin.email, password="azerty")
-        response = self.client.post(self.form_url, {"projects": self.c1.pk}, follow=True)
+        response = self.client.post(self.form_url, {"projects": self.avail_contract.pk}, follow=True)
 
         self.assertRedirects(response, reverse("high_ui:admin"))
         companies = Company.objects.filter(is_archived=False)
         self.assertEqual(2, companies.count())
-        self.assertIn(self.c1, companies)
+        self.assertIn(self.avail_contract, companies)
 
 
 class ProjectCustomizeViewTestCase(TestCase):
