@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="/static/css/normalize.css" />
 <link rel="stylesheet" href="/static/css/style.css" />
 <link rel="stylesheet" href="/static/css/home.css" />
-<link rel="stylesheet" href="/static/css/create-project.css" />
 {% if company.color %}
 <style>
 .dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
@@ -22,80 +21,76 @@
     {% include "high_ui/company_details_header.html" %}
     <div class="content-container">
         <div class="content">
-        <div class="tmp-container tmp-left" style="width: calc(50%)">
-        <div class="container history-container">
-                <div class="container-title">{% trans "History" %}</div>
-                {% for month, month_data in history.items %}
-                <div class="history-month">
-                    <div class="dashboard">
-                        <div class="dashboard-item">
-                            <span class="dashboard-value">{{month|date:"F Y"}}</span>
-                        </div>
-
-                        <div class="dashboard-item history-month-issues">
-                            <span class="dashboard-title">Événements</span>
-                            <span class="dashboard-value">
-                                {% if month_data.events_count == 0 %} &mdash; {% else %} {{ month_data.events_count }} {% endif %}
-                            </span>
-                        </div>
-
-                        {% for _, contract in month_data.contracts.items %}
-                        <div class="dashboard-item {{contract.css_class}}">
-                            <span class="dashboard-title">{{contract.counter_name}}</span>
-                            <span class="dashboard-value">
-                                {% if contract.consumed == 0 %} &mdash; {% else %} {% pretty_print_minutes_tag contract.consumed use_long_minute_format=True %} {% endif %}
-                            </span>
-                            {%  if contract.is_available_time_counter  %}
-                            <span class="dashboard-value">
-                                {% if contract.credited == 0 %} &mdash; {% else %} +{{ contract.credited }}h {% endif %}
-                            </span>
-                            {% endif %}
-                        </div>
-                        {% endfor %}
+        <div class="container home-container">
+            <div class="container-title">{% trans "History" %}</div>
+            {% for month, month_data in history.items %}
+            <div class="home-month">
+                <div class="dashboard">
+                    <div class="dashboard-item">
+                        <span class="dashboard-value">{{month|date:"F Y"}}</span>
                     </div>
 
-                    {% if month_data.events_count %}
-                    <table class="history-items">
-                        {% for event in month_data.events %}
-                        {% if event.type == "issue" %}
-                        <tr class="history-item {{event.css_class}}">
-                            <td class="history-item-date">{{event.date|date:"d/m"}}</td>
-                            <td class="history-item-duration duration">{% pretty_print_minutes_tag event.number_minutes %}</td>
-                            <td class="history-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
-                            <td class="history-item-summary"><a href="{% url 'high_ui:project-issue_details' company_name=event.company__slug_name company_issue_number=event.company_issue_number %}">{{event.subject}}</a></td>
-                        </tr>
-                        {% else %}
-                        <tr class="history-item {{event.css_class}}">
-                            <td class="history-item-date">{{event.date|date:"d/m"}}</td>
-                            <td class="history-item-duration duration">+{{event.hours_number}}h</td>
-                            <td class="history-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
-                            {% if request.user.has_operator_or_admin_permissions %}
-                            <td class="history-item-summary">{% if event.is_available_time_counter %}<a href="{% url 'high_ui:project-update_credit' company_name=event.company__slug_name pk=event.id %}">{% endif %}{% extra_credit_subject event.hours_number %}{% if event.subject %} &mdash; {{event.subject}}{% endif %}{% if event.is_available_time_counter %}</a>{% endif %}</td>
-                            {% else %}
-                            <td class="history-item-summary">{% extra_credit_subject event.hours_number %}{% if event.subject %} &mdash; {{event.subject}}{% endif %}</td>
-                            {% endif %}
-                        </tr>
-                        {% endif %}
-                        {% endfor %}
-                    </table>
-                    {% endif %}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
+                    <div class="dashboard-item home-month-issues">
+                        <span class="dashboard-title">Événements</span>
+                        <span class="dashboard-value">
+                            {% if month_data.events_count == 0 %} &mdash; {% else %} {{ month_data.events_count }} {% endif %}
+                        </span>
+                    </div>
 
-        <div class="tmp-container tmp-right" style="width: calc(50%)">
-            <div class="container history-container">
+                    {% for _, contract in month_data.contracts.items %}
+                    <div class="dashboard-item {{contract.css_class}}">
+                        <span class="dashboard-title">{{contract.counter_name}}</span>
+                        <span class="dashboard-value">
+                            {% if contract.consumed == 0 %} &mdash; {% else %} {% pretty_print_minutes_tag contract.consumed use_long_minute_format=True %} {% endif %}
+                        </span>
+                        {%  if contract.is_available_time_counter  %}
+                        <span class="dashboard-value">
+                            {% if contract.credited == 0 %} &mdash; {% else %} +{{ contract.credited }}h {% endif %}
+                        </span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if month_data.events_count %}
+                <table class="home-items">
+                    {% for event in month_data.events %}
+                    {% if event.type == "issue" %}
+                    <tr class="home-item {{event.css_class}}">
+                        <td class="home-item-date">{{event.date|date:"d/m"}}</td>
+                        <td class="home-item-duration duration">{% pretty_print_minutes_tag event.number_minutes %}</td>
+                        <td class="home-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
+                        <td class="home-item-summary"><a href="{% url 'high_ui:project-issue_details' company_name=event.company__slug_name company_issue_number=event.company_issue_number %}">{{event.subject}}</a></td>
+                    </tr>
+                    {% else %}
+                    <tr class="home-item {{event.css_class}}">
+                        <td class="home-item-date">{{event.date|date:"d/m"}}</td>
+                        <td class="home-item-duration duration">+{{event.hours_number}}h</td>
+                        <td class="home-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
+                        {% if request.user.has_operator_or_admin_permissions %}
+                        <td class="home-item-summary"><a href="{% url 'high_ui:project-update_credit' company_name=event.company__slug_name pk=event.id %}">{% extra_credit_subject event.hours_number %}{% if event.subject %} &mdash; {{event.subject}}{% endif %}</a></td>
+                        {% else %}
+                        <td class="home-item-summary">{% if event.is_available_time_counter %}<a href="{% url 'high_ui:project-update_credit' company_name=event.company__slug_name pk=event.id %}">{% endif %}{% extra_credit_subject event.hours_number %}{% if event.subject %} &mdash; {{event.subject}}{% endif %}{% if event.is_available_time_counter %}</a>{% endif %}</td>
+                        {% endif %}
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="container home-container">
             <div class="container-title">{% trans "Forecast" context "projet details view: forecast content title" %}</div>
             {% if forecast|length %}
                 {% for month, month_data in forecast.items %}
-                    <div class="history-month">
+                    <div class="home-month">
                         <div class="dashboard">
                             <div class="dashboard-item">
                                 <span class="dashboard-value">{{month|date:"F Y"}}</span>
                             </div>
 
-                            <div class="dashboard-item history-month-issues">
+                            <div class="dashboard-item home-month-issues">
                                 <span class="dashboard-title">Événements</span>
                                 <span class="dashboard-value">
                                     {% if month_data.events_count %} {{ month_data.events_count }}{% else %} &mdash; {% endif %}
@@ -118,24 +113,24 @@
                         </div>
 
                         {% if month_data.events_count %}
-                        <table class="history-items">
+                        <table class="home-items">
                             {% for event in month_data.events %}
                             {% if event.type == "issue" %}
-                            <tr class="history-item {{event.css_class}}">
-                                <td class="history-item-date">{{event.date|date:"d/m"}}</td>
-                                <td class="history-item-duration duration">{% pretty_print_minutes_tag event.number_minutes %}</td>
-                                <td class="history-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
-                                <td class="history-item-summary"><a href="{% url 'high_ui:project-issue_details' company_name=event.company__slug_name company_issue_number=event.company_issue_number %}">{{event.subject}}</a></td>
+                            <tr class="home-item {{event.css_class}}">
+                                <td class="home-item-date">{{event.date|date:"d/m"}}</td>
+                                <td class="home-item-duration duration">{% pretty_print_minutes_tag event.number_minutes %}</td>
+                                <td class="home-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
+                                <td class="home-item-summary"><a href="{% url 'high_ui:project-issue_details' company_name=event.company__slug_name company_issue_number=event.company_issue_number %}">{{event.subject}}</a></td>
                             </tr>
                             {% else %}
-                            <tr class="history-item {{event.css_class}}">
-                                <td class="history-item-date">{{event.date|date:"d/m"}}</td>
-                                <td class="history-item-duration duration">+{{event.hours_number}}h</td>
-                                <td class="history-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
+                            <tr class="home-item {{event.css_class}}">
+                                <td class="home-item-date">{{event.date|date:"d/m"}}</td>
+                                <td class="home-item-duration duration">+{{event.hours_number}}h</td>
+                                <td class="home-item-type"><div class="type-tag">{{event.counter_name}}</div></td>
                                 {% if request.user.has_operator_or_admin_permissions %}
-                                <td class="history-item-summary">{% if event.is_available_time_counter %}<a href="{% url 'high_ui:project-update_credit' company_name=event.company__slug_name pk=event.id %}">{% endif %}{% extra_credit_subject event.hours_number %}{% if event.subject %} &mdash; {{event.subject}}{% endif %}{% if event.is_available_time_counter %}</a>{% endif %}</td>
+                                <td class="home-item-summary">{% if event.is_available_time_counter %}<a href="{% url 'high_ui:project-update_credit' company_name=event.company__slug_name pk=event.id %}">{% endif %}{% extra_credit_subject event.hours_number %}{% if event.subject %} &mdash; {{event.subject}}{% endif %}{% if event.is_available_time_counter %}</a>{% endif %}</td>
                                 {% else %}
-                                <td class="history-item-summary">{% extra_credit_subject event.hours_number %}{% if event.subject %} &mdash; {{event.subject}}{% endif %}</td>
+                                <td class="home-item-summary">{% extra_credit_subject event.hours_number %}{% if event.subject %} &mdash; {{event.subject}}{% endif %}</td>
                                 {% endif %}
                             </tr>
                             {% endif %}
@@ -150,8 +145,6 @@
                 </div>
             {% endif %}
             </div>
-
-        </div>
         </div>
     </div>
     {% include "high_ui/footer.html" with show_menu_client=True %}

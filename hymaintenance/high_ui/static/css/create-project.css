@@ -2,21 +2,8 @@
     min-height: auto;
 }
 
-.help {
-    font-size: 13px;
-    line-height: 130%;
-    margin-top: 5px;
-}
-
 .help + .form-row {
     margin-top: 15px;
-}
-
-.help em {
-    font-style: normal;
-    font-weight: 600;
-    color: #2f2f2f;
-
 }
 
 /* counter-activation state machine */
