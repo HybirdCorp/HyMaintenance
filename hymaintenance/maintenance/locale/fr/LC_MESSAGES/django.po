@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-02 16:10+0200\n"
+"POT-Creation-Date: 2022-06-10 17:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: maintenance/forms/email.py:21 maintenance/forms/project.py:154
+msgid "Hour threshold"
+msgstr "Seuil d'heures"
+
+#: maintenance/forms/email.py:21 maintenance/forms/project.py:161
+msgid "To contact"
+msgstr "À Contacter"
+
 #: maintenance/forms/issue.py:50
 #: maintenance/tests/forms/test_issue_forms.py:100
 #: maintenance/tests/forms/test_issue_forms.py:312
@@ -25,8 +33,8 @@ msgstr ""
 msgid "Invalid duration type: '%s'"
 msgstr "Unité invalide: '%s'"
 
-#: maintenance/forms/project.py:22 maintenance/models/contract.py:47
-#: maintenance/models/credit.py:15 maintenance/models/issue.py:43
+#: maintenance/forms/project.py:22 maintenance/models/contract.py:71
+#: maintenance/models/credit.py:48 maintenance/models/issue.py:61
 msgid "Company"
 msgstr "Société"
 
@@ -42,7 +50,7 @@ msgstr "Historique"
 msgid "Counter name"
 msgstr "Nom du compteur"
 
-#: maintenance/forms/project.py:42 maintenance/models/contract.py:48
+#: maintenance/forms/project.py:42 maintenance/models/contract.py:72
 msgid "Start Date"
 msgstr "Date de début"
 
@@ -50,7 +58,7 @@ msgstr "Date de début"
 msgid "Counter"
 msgstr "Compteur"
 
-#: maintenance/forms/project.py:53 maintenance/models/contract.py:56
+#: maintenance/forms/project.py:53 maintenance/models/contract.py:80
 msgid "Counter type"
 msgstr "Type de compteur"
 
@@ -59,8 +67,8 @@ msgstr "Type de compteur"
 msgid "You have to create at least one contract on the project."
 msgstr "Vous devez créer au moins un contrat sur le projet."
 
-#: maintenance/forms/project.py:65 maintenance/models/contract.py:69
-#: maintenance/models/contract.py:70
+#: maintenance/forms/project.py:65 maintenance/models/contract.py:93
+#: maintenance/models/contract.py:94
 msgid "Credited hours"
 msgstr "Heures créditées"
 
@@ -74,14 +82,6 @@ msgstr "Cette société existe déjà."
 msgid "Email Alert"
 msgstr "Email alerte"
 
-#: maintenance/forms/project.py:154
-msgid "Hour threshold"
-msgstr "Seuil d'heures"
-
-#: maintenance/forms/project.py:161
-msgid "To contact"
-msgstr "À Contacter"
-
 #: maintenance/forms/recurrence.py:29
 msgid "Start"
 msgstr "Début"
@@ -90,7 +90,7 @@ msgstr "Début"
 msgid "Frequency"
 msgstr "Fréquence"
 
-#: maintenance/forms/recurrence.py:46
+#: maintenance/forms/recurrence.py:50
 #, python-format
 msgid ""
 "Invalid Recurrence Start Date: %(value)s, the date can't be older than one "
@@ -99,6 +99,7 @@ msgstr ""
 "Date de début de récurrence invalide&bsp;: %(value)s, la date ne peut pas "
 "dater de plus d'un an"
 
+#: maintenance/management/commands/compute_contracts_times.py:12
 #: maintenance/management/commands/recurrence.py:12
 #: maintenance/management/commands/send_email_alerts.py:11
 msgid ""
@@ -129,156 +130,156 @@ msgstr "Corrective"
 msgid "Name"
 msgstr "Nom"
 
-#: maintenance/models/contract.py:41
+#: maintenance/models/contract.py:65
 msgid "Available total time"
 msgstr "Total disponible"
 
-#: maintenance/models/contract.py:42
+#: maintenance/models/contract.py:66
 msgid "Consummed total time"
 msgstr "Total du temps consommé"
 
-#: maintenance/models/contract.py:45
+#: maintenance/models/contract.py:69
 msgid "Monthly credit"
 msgstr "Crédit mensuel"
 
-#: maintenance/models/contract.py:45
+#: maintenance/models/contract.py:69
 msgid "Annual credit"
 msgstr "Crédit annuel"
 
-#: maintenance/models/contract.py:51
+#: maintenance/models/contract.py:75
 msgid "Name of counter"
 msgstr "Nom du compteur"
 
-#: maintenance/models/contract.py:53 maintenance/models/other_models.py:10
+#: maintenance/models/contract.py:77 maintenance/models/other_models.py:10
 msgid "Visible to manager"
 msgstr "Visible pour les managers"
 
-#: maintenance/models/contract.py:54
+#: maintenance/models/contract.py:78
 msgid "Disable the contract"
 msgstr "Désactive le contrat"
 
-#: maintenance/models/contract.py:58
+#: maintenance/models/contract.py:82
 msgid "Last reset date"
 msgstr "Dernière remise à zéro"
 
-#: maintenance/models/contract.py:60
+#: maintenance/models/contract.py:84
 msgid "Recurrence"
 msgstr "Récurrence"
 
-#: maintenance/models/contract.py:61
+#: maintenance/models/contract.py:85
 msgid "Credit-recurrence start date"
 msgstr "Date de début de récurrence de crédit"
 
-#: maintenance/models/contract.py:62
+#: maintenance/models/contract.py:86
 msgid "Credit-recurrence last date"
 msgstr "Dernière date de récurrence de crédit"
 
-#: maintenance/models/contract.py:63
+#: maintenance/models/contract.py:87
 msgid "Credit-recurrence next date"
 msgstr "Prochaine date de récurrence de crédit"
 
-#: maintenance/models/contract.py:65
+#: maintenance/models/contract.py:89
 msgid "Credit-recurrence frequency"
 msgstr "Fréquence de récurrence de crédit"
 
-#: maintenance/models/contract.py:67
+#: maintenance/models/contract.py:91
 msgid "Hours to credit"
 msgstr "Heures à créditer"
 
-#: maintenance/models/contract.py:72
+#: maintenance/models/contract.py:96
 msgid "Email alert"
 msgstr "Email alerte"
 
-#: maintenance/models/contract.py:73
+#: maintenance/models/contract.py:97
 msgid "Credited hours Threshold"
 msgstr "Seuil des heures créditées"
 
-#: maintenance/models/contract.py:270
+#: maintenance/models/contract.py:294
 msgid "{}'s credit recurrence"
 msgstr "Récurrence de crédit de {}'s"
 
-#: maintenance/models/credit.py:16
+#: maintenance/models/credit.py:49
 msgid "Effective date"
 msgstr "Date effective"
 
-#: maintenance/models/credit.py:18
+#: maintenance/models/credit.py:51
 msgid "Activity type"
 msgstr "Type de l'activité"
 
-#: maintenance/models/credit.py:20
+#: maintenance/models/credit.py:53
 msgid "Quantity"
 msgstr "Quantité"
 
-#: maintenance/models/credit.py:21 maintenance/models/issue.py:65
+#: maintenance/models/credit.py:54 maintenance/models/issue.py:83
 msgid "Subject"
 msgstr "Sujet"
 
-#: maintenance/models/credit.py:60
+#: maintenance/models/credit.py:95
 msgid "Value"
 msgstr "Valeur"
 
-#: maintenance/models/issue.py:42
+#: maintenance/models/issue.py:60
 msgid "Issue number"
 msgstr "Numéro de demande"
 
-#: maintenance/models/issue.py:46
+#: maintenance/models/issue.py:64
 msgid "Author"
 msgstr "Auteur"
 
-#: maintenance/models/issue.py:55
+#: maintenance/models/issue.py:73
 msgid "Operator"
 msgstr "Intervenant"
 
-#: maintenance/models/issue.py:62
+#: maintenance/models/issue.py:80
 msgid "Incoming Channel"
 msgstr "Canal d'entrée des demandes"
 
-#: maintenance/models/issue.py:65
+#: maintenance/models/issue.py:83
 msgid "a question"
 msgstr "une question"
 
-#: maintenance/models/issue.py:66
+#: maintenance/models/issue.py:84
 msgid "Issue Date"
 msgstr "Demande faite le"
 
-#: maintenance/models/issue.py:68
+#: maintenance/models/issue.py:86
 msgid "Type of activity"
 msgstr "Type de l'activité"
 
-#: maintenance/models/issue.py:70
+#: maintenance/models/issue.py:88
 msgid "Details"
 msgstr "Détails"
 
-#: maintenance/models/issue.py:72
+#: maintenance/models/issue.py:90
 msgid "Time spent"
 msgstr "Temps passé"
 
-#: maintenance/models/issue.py:73
+#: maintenance/models/issue.py:91
 msgid "Resolution date"
 msgstr "Demande résolue le"
 
-#: maintenance/models/issue.py:74
+#: maintenance/models/issue.py:92
 msgid "Delivery date"
 msgstr "Livraison le"
 
-#: maintenance/models/issue.py:75
+#: maintenance/models/issue.py:93
 msgid "Comments"
 msgstr "Commentaire"
 
-#: maintenance/models/issue.py:77 maintenance/models/issue.py:85
+#: maintenance/models/issue.py:95 maintenance/models/issue.py:103
 msgid "Attachment"
 msgstr "Pièce jointe"
 
-#: maintenance/models/issue.py:92
+#: maintenance/models/issue.py:110
 msgid "Deleted"
 msgstr "Supprimé"
 
-#: maintenance/models/issue.py:115
+#: maintenance/models/issue.py:135
 #, python-brace-format
 msgid "Date: {date}, Subject: {subject}, For: {company} , Type: {contract} "
 msgstr "Date : {date}, sujet : {subject}, for : {company}, type : {contract} "
 
-#: maintenance/models/issue.py:116
+#: maintenance/models/issue.py:136
 msgid "%m/%d/%Y at %H:%M"
 msgstr "%d/%m/%Y à %H:%M"
 

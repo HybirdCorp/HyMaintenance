@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-02 16:10+0200\n"
+"POT-Creation-Date: 2022-06-10 17:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -274,31 +274,19 @@ msgstr "Réactiver des projets archivés"
 msgid "Activate projects"
 msgstr "Activer des projets"
 
-#: high_ui/templates/high_ui/company_details.html:28
-msgid "Summary"
-msgstr "Résumé"
-
-#: high_ui/templates/high_ui/company_details.html:45
-msgctxt "fp"
-msgid "consumed"
-msgstr "consommées"
-
-#: high_ui/templates/high_ui/company_details.html:48
-msgctxt "fp"
-msgid "credited"
-msgstr "créditées"
-
-#: high_ui/templates/high_ui/company_details.html:59
+#: high_ui/templates/high_ui/company_details.html:25
 msgid "History"
 msgstr "Historique"
 
-#: high_ui/templates/high_ui/company_details.html:65
-msgid "Months"
-msgstr "Mois"
+#: high_ui/templates/high_ui/company_details.html:84
+msgctxt "projet details view: forecast content title"
+msgid "Forecast"
+msgstr "Prévisionnel"
 
-#: high_ui/templates/high_ui/company_details.html:70
-msgid "Issues"
-msgstr "Demandes"
+#: high_ui/templates/high_ui/company_details.html:144
+msgctxt "projet details view: forecast content when nothing has been planned"
+msgid "Nothing has been planned yet"
+msgstr "Rien n'a été planifié pour l'instant"
 
 #: high_ui/templates/high_ui/company_details_header.html:5
 #: high_ui/templates/high_ui/dashboard.html:20
@@ -308,8 +296,8 @@ msgstr "Compte"
 
 #: high_ui/templates/high_ui/company_details_header.html:6
 #: high_ui/templates/high_ui/dashboard_header.html:5
-#: high_ui/templates/high_ui/errors/base_error.html:23
-#: high_ui/templates/high_ui/errors/base_error.html:50
+#: high_ui/templates/high_ui/errors/base_error.html:24
+#: high_ui/templates/high_ui/errors/base_error.html:53
 #: high_ui/templates/high_ui/issue_details.html:24
 #: high_ui/templates/high_ui/user_header.html:6
 #: high_ui/templates/high_ui/user_header.html:8
@@ -322,34 +310,34 @@ msgstr "Retour à l'accueil"
 
 #: high_ui/templates/high_ui/company_details_header.html:19
 #: high_ui/templates/high_ui/dashboard.html:44
-#: high_ui/tests/views/test_project_views.py:453
-#: high_ui/tests/views/test_project_views.py:463
-#: high_ui/tests/views/test_project_views.py:472
+#: high_ui/tests/views/test_project_views.py:456
+#: high_ui/tests/views/test_project_views.py:466
+#: high_ui/tests/views/test_project_views.py:475
 msgid "Register an issue"
 msgstr "Enregistrer une demande"
 
 #: high_ui/templates/high_ui/company_details_header.html:23
 #: high_ui/templates/high_ui/forms/create_credit.html:9
 #: high_ui/templates/high_ui/forms/create_credit.html:30
-#: high_ui/tests/views/test_project_views.py:390
-#: high_ui/tests/views/test_project_views.py:416
+#: high_ui/tests/views/test_project_views.py:393
+#: high_ui/tests/views/test_project_views.py:419
 msgid "Add hours"
 msgstr "Ajouter des crédits"
 
 #: high_ui/templates/high_ui/company_details_header.html:24
-#: high_ui/tests/views/test_project_views.py:481
-#: high_ui/tests/views/test_project_views.py:491
-#: high_ui/tests/views/test_project_views.py:500
+#: high_ui/tests/views/test_project_views.py:484
+#: high_ui/tests/views/test_project_views.py:494
+#: high_ui/tests/views/test_project_views.py:503
 msgid "Manage recurrence"
 msgstr "Gestion récurrence"
 
 #: high_ui/templates/high_ui/company_details_header.html:26
-#: high_ui/tests/views/test_project_views.py:401
+#: high_ui/tests/views/test_project_views.py:404
 msgid "Buy hours"
 msgstr "Commander des heures"
 
 #: high_ui/templates/high_ui/company_details_header.html:28
-#: high_ui/tests/views/test_project_views.py:444
+#: high_ui/tests/views/test_project_views.py:447
 msgid "Email alerts"
 msgstr "alertes par email"
 
@@ -364,7 +352,7 @@ msgstr "Votre Contact"
 
 #: high_ui/templates/high_ui/company_details_header.html:49
 #: high_ui/templates/high_ui/dashboard_header.html:39
-#: high_ui/templates/high_ui/errors/base_error.html:35
+#: high_ui/templates/high_ui/errors/base_error.html:37
 #: high_ui/templates/high_ui/issue_details_header.html:32
 #: high_ui/templates/high_ui/user_header.html:18
 msgid "Quit the application"
@@ -372,7 +360,7 @@ msgstr "Quitter l'application"
 
 #: high_ui/templates/high_ui/company_details_header.html:49
 #: high_ui/templates/high_ui/dashboard_header.html:39
-#: high_ui/templates/high_ui/errors/base_error.html:35
+#: high_ui/templates/high_ui/errors/base_error.html:37
 #: high_ui/templates/high_ui/issue_details_header.html:32
 #: high_ui/templates/high_ui/user_header.html:18
 msgid "Logout"
@@ -404,7 +392,7 @@ msgid "if you want to buy some credits, please contact :"
 msgstr "Si vous voulez commander des crédits, contactez s'il vous plait&nbsp;:"
 
 #: high_ui/templates/high_ui/contact.html:67
-#: high_ui/templates/high_ui/errors/base_error.html:50
+#: high_ui/templates/high_ui/errors/base_error.html:53
 msgid "Back to the homepage"
 msgstr "Retour sur la page d'accueil"
 
@@ -479,12 +467,12 @@ msgid "Modify operator list"
 msgstr "Modifier la liste des intervenants"
 
 #: high_ui/templates/high_ui/dashboard_header.html:37
-#: high_ui/templates/high_ui/errors/base_error.html:33
+#: high_ui/templates/high_ui/errors/base_error.html:35
 msgid "Access to HyMaintenance administration dashboard"
 msgstr "Accéder au tableau de bord administrateur"
 
 #: high_ui/templates/high_ui/dashboard_header.html:37
-#: high_ui/templates/high_ui/errors/base_error.html:33
+#: high_ui/templates/high_ui/errors/base_error.html:35
 #: high_ui/tests/views/test_error_view.py:77
 #: high_ui/tests/views/test_error_view.py:85
 #: high_ui/tests/views/test_error_view.py:93
@@ -578,7 +566,7 @@ msgctxt "500 Error page, content: content of the error page"
 msgid "There’s been an internal error."
 msgstr "Il y a eu une erreur interne."
 
-#: high_ui/templates/high_ui/errors/base_error.html:22
+#: high_ui/templates/high_ui/errors/base_error.html:23
 msgid "Error page"
 msgstr "Page d'erreur"
 
@@ -1744,7 +1732,7 @@ msgstr "Interdit"
 msgid "Bad Request"
 msgstr "Demande incorrecte"
 
-#: high_ui/tests/views/test_project_views.py:432
+#: high_ui/tests/views/test_project_views.py:435
 msgid "Email alert"
 msgstr "Alerte par email"
 
@@ -1756,17 +1744,32 @@ msgstr "Les modifications ont bien été prises en compte!"
 msgid "No credit matches the given query."
 msgstr "Aucun crédit ne correspond à la requête donnée."
 
-#: high_ui/views/project.py:219
-msgid "Hour threshold"
-msgstr "Seuil d'heures"
-
-#: high_ui/views/project.py:219
-msgid "To contact"
-msgstr "À prévenir"
-
-#: high_ui/views/project.py:261
+#: high_ui/views/project.py:253
 msgid "Reset date"
 msgstr "Réinitialisé le"
+
+#~ msgid "Summary"
+#~ msgstr "Résumé"
+
+#~ msgctxt "fp"
+#~ msgid "consumed"
+#~ msgstr "consommées"
+
+#~ msgctxt "fp"
+#~ msgid "credited"
+#~ msgstr "créditées"
+
+#~ msgid "Months"
+#~ msgstr "Mois"
+
+#~ msgid "Issues"
+#~ msgstr "Demandes"
+
+#~ msgid "Hour threshold"
+#~ msgstr "Seuil d'heures"
+
+#~ msgid "To contact"
+#~ msgstr "À prévenir"
 
 #~ msgid "Green counter"
 #~ msgstr "Compteur vert"
