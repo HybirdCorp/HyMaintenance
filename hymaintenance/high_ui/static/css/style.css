@@ -106,6 +106,19 @@ table td {
     color: #2f2f2f;
 }
 
+.help {
+    font-size: 13px;
+    line-height: 130%;
+    margin-top: 5px;
+}
+
+.help em {
+    font-style: normal;
+    font-weight: 600;
+    color: #2f2f2f;
+
+}
+
 /* containers - end */
 
 /* dashboard */

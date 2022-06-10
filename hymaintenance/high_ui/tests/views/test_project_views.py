@@ -346,7 +346,7 @@ class ProjectDetailsViewTestCase(TestCase):
         response = self.client.get(self.form_url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<td class="history-item-duration duration">+10h</td>')
+        self.assertContains(response, '<td class="home-item-duration duration">+10h</td>')
 
     def test_display_extra_credit_optional_subject(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
