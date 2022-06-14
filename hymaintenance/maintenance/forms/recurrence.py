@@ -18,6 +18,7 @@ class RecurrenceContractsModelForm(forms.ModelForm):
             "credit_recurrence",
             "recurrence_next_date",
             "id",
+            "has_reset_recurrence"
         )
         widgets = {
             "id": forms.HiddenInput(attrs={"readonly": True}),
@@ -25,8 +26,13 @@ class RecurrenceContractsModelForm(forms.ModelForm):
             "credit_recurrence": forms.HiddenInput(),
             "has_credit_recurrence": forms.HiddenInput(),
             "hours_to_credit": forms.TextInput(),
+            "has_reset_recurrence": forms.HiddenInput(),
         }
-        labels = {"recurrence_start_date": _("Start"), "credit_recurrence": _("Frequency")}
+        labels = {
+            "recurrence_start_date": _("Start"),
+            "credit_recurrence": _("Frequency"),
+            "has_reset_recurrence": _("Reset counter")
+        }
 
     css_class = forms.CharField(required=False, widget=forms.HiddenInput(attrs={"readonly": True}))
 
