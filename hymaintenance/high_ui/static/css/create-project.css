@@ -56,7 +56,8 @@
 
 .form-group.has-credit-recurrence-disabled .row-credit-recurrence,
 .form-group.has-credit-recurrence-disabled .row-recurrence-start-date,
-.form-group.has-credit-recurrence-disabled .row-hours-to-credit {
+.form-group.has-credit-recurrence-disabled .row-hours-to-credit,
+.form-group.has-credit-recurrence-disabled .row-has-reset-recurrence {
     display: none;
 }
 

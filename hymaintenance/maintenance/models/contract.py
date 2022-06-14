@@ -11,12 +11,11 @@ from django.db.models import When
 from django.db.models.functions import Coalesce
 from django.utils.timezone import datetime
 from django.utils.timezone import now
+from django.utils.translation import pgettext_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from .credit import MaintenanceCredit
-from .credit import calcul_credited_hours
 from .issue import MaintenanceIssue
-from .issue import calcul_consumed_minutes
 from .other_models import MaintenanceType
 
 
@@ -89,6 +88,10 @@ class MaintenanceContract(models.Model):
         _("Credit-recurrence frequency"), choices=RECURRENCE_CHOICES, null=True, blank=True
     )
     hours_to_credit = models.PositiveIntegerField(_("Hours to credit"), null=True, blank=True)
+    has_reset_recurrence = models.BooleanField(
+        pgettext_lazy("Contract-model's attribute: verbose name", "Automatic counter reset"),
+        default=False
+    )
 
     credited_hours = models.PositiveIntegerField(_("Credited hours"), null=True, blank=True)
     consumed_minutes = models.PositiveIntegerField(_("Credited hours"), default=0)
@@ -206,6 +209,28 @@ class MaintenanceContract(models.Model):
             credited = 0
         return credited
 
+    def compute_and_set_consumed_minutes(self):
+        minutes_sum = self.get_current_issues().aggregate(models.Sum("number_minutes"))
+        minutes_sum = minutes_sum["number_minutes__sum"]
+        if minutes_sum is None:
+            minutes_sum = 0
+        if self.is_available_time_counter():
+            delta_time = self.get_delta_credits_minutes()
+            if delta_time < 0:
+                minutes_sum = minutes_sum - delta_time
+        self.consumed_minutes = minutes_sum
+
+    def compute_and_set_credited_hours(self):
+        hours_sum = self.get_current_credits().aggregate(models.Sum("hours_number"))
+        hours_sum = hours_sum["hours_number__sum"]
+        if hours_sum is None:
+            hours_sum = 0
+        if self.is_available_time_counter():
+            delta_time = self.get_delta_credits_minutes()
+            if delta_time > 0:
+                hours_sum = hours_sum + delta_time / 60
+        self.credited_hours = hours_sum
+
     def get_recurrence_next_date(self):
         if self.has_monthly_credit_recurrence():
             return get_next_month_date(self.recurrence_start_date, self.recurrence_next_date)
@@ -230,6 +255,28 @@ class MaintenanceContract(models.Model):
         self.set_recurrence_dates_and_create_all_old_credit_occurrences()
         self.save()
 
+    def create_credit_occurrence(self, date=None):
+        hours_number = self.hours_to_credit
+        if hours_number is not None and hours_number > 0 and date is not None:
+            MaintenanceCredit.objects.create(
+                contract=self,
+                company=self.company,
+                date=date,
+                hours_number=hours_number,
+                subject=_("{}'s credit recurrence".format(date.strftime("%B"))),
+            )
+
+    def apply_recurrence_at(self, date=None):
+        if date is None:
+            date = self.recurrence_next_date
+        self.create_credit_occurrence(date)
+        self.recurrence_last_date = date
+        self.recurrence_next_date = self.get_recurrence_next_date()
+        if self.has_reset_recurrence:
+            self.reset_date = self.recurrence_last_date
+            self.compute_and_set_consumed_minutes()
+            self.compute_and_set_credited_hours()
+
     def set_recurrence_dates_and_create_all_old_credit_occurrences(self, now_date=None):
         if now_date is None:
             now_date = now().date()
@@ -239,14 +286,12 @@ class MaintenanceContract(models.Model):
         ):
             self.recurrence_next_date = self.recurrence_start_date
             while self.recurrence_next_date <= now_date:
-                create_old_occurrence_credit(self.recurrence_next_date, self)
-                self.recurrence_last_date = self.recurrence_next_date
-                self.recurrence_next_date = self.get_recurrence_next_date()
+                self.apply_recurrence_at(self.recurrence_next_date)
 
     def save(self, *args, **kwargs):
         if self.id is not None:
-            self.consumed_minutes = calcul_consumed_minutes(contract=self)
-            self.credited_hours = calcul_credited_hours(contract=self)
+            self.compute_and_set_consumed_minutes()
+            self.compute_and_set_credited_hours()
         super().save(*args, **kwargs)
 
 
@@ -281,15 +326,3 @@ def is_valid_date(day, month, year):
 def get_last_day_of_the_month(month, year):
     _, last_day = monthrange(year, month)
     return last_day
-
-
-def create_old_occurrence_credit(date, contract):
-    hours_number = contract.hours_to_credit
-    if hours_number is not None and hours_number > 0:
-        MaintenanceCredit.objects.create(
-            contract=contract,
-            company=contract.company,
-            date=date,
-            hours_number=hours_number,
-            subject=_("{}'s credit recurrence".format(date.strftime("%B"))),
-        )

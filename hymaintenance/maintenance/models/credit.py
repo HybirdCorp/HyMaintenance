@@ -69,26 +69,14 @@ class MaintenanceCredit(models.Model):
 
 @receiver(post_save, sender=MaintenanceCredit, dispatch_uid="update_credited_hours")
 def update_credited_hours_after_save(sender, instance, **kwargs):
-    instance.contract.credited_hours = calcul_credited_hours(contract=instance.contract)
+    instance.contract.compute_and_set_credited_hours()
     instance.contract.save()
 
 
 @receiver(post_delete, sender=MaintenanceCredit, dispatch_uid="update_credited_hours")
 def update_credited_hours_after_delete(sender, instance, **kwargs):
-    instance.contract.credited_hours = calcul_credited_hours(contract=instance.contract)
+    instance.contract.compute_and_set_credited_hours()
     instance.contract.save()
-
-
-def calcul_credited_hours(contract):
-    hours_sum = contract.get_current_credits().aggregate(models.Sum("hours_number"))
-    hours_sum = hours_sum["hours_number__sum"]
-    if hours_sum is None:
-        hours_sum = 0
-    if contract.is_available_time_counter():
-        delta_time = contract.get_delta_credits_minutes()
-        if delta_time > 0:
-            hours_sum = hours_sum + delta_time / 60
-    return hours_sum
 
 
 class MaintenanceCreditChoices(models.Model):

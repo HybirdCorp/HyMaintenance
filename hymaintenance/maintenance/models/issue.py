@@ -166,23 +166,11 @@ class MaintenanceIssue(models.Model):
 
 @receiver(post_save, sender=MaintenanceIssue, dispatch_uid="update_consumed_minutes")
 def update_consumed_minutes_after_save(sender, instance, **kwargs):
-    instance.contract.consumed_minutes = calcul_consumed_minutes(contract=instance.contract)
+    instance.contract.compute_and_set_consumed_minutes()
     instance.contract.save()
 
 
 @receiver(post_delete, sender=MaintenanceIssue, dispatch_uid="update_consumed_minutes")
 def update_consumed_minutes_after_delete(sender, instance, **kwargs):
-    instance.contract.consumed_minutes = calcul_consumed_minutes(contract=instance.contract)
+    instance.contract.compute_and_set_consumed_minutes()
     instance.contract.save()
-
-
-def calcul_consumed_minutes(contract):
-    minutes_sum = contract.get_current_issues().aggregate(models.Sum("number_minutes"))
-    minutes_sum = minutes_sum["number_minutes__sum"]
-    if minutes_sum is None:
-        minutes_sum = 0
-    if contract.is_available_time_counter():
-        delta_time = contract.get_delta_credits_minutes()
-        if delta_time < 0:
-            minutes_sum = minutes_sum - delta_time
-    return minutes_sum
