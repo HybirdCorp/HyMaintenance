@@ -81,22 +81,48 @@ class RecurrenceCommandTestCase(TestCase):
     def test_annual_recurrence_reached(self):
         time = datetime(day=1, month=2, year=2021, tzinfo=utc).date()
         _, contract, _, _ = create_project(contract1={"annual_recurrence": True, "recurrence_start_date": time})
+        self.assertEqual(1, contract.maintenancecredit_set.count())
+
         check_and_apply_credit_recurrence(time)
         contract.refresh_from_db()
 
         self.assertEqual(1, contract.recurrence_next_date.day)
         self.assertEqual(2, contract.recurrence_next_date.month)
         self.assertEqual(2022, contract.recurrence_next_date.year)
+        self.assertEqual(2, contract.maintenancecredit_set.count())
+
+    def test_annual_recurrence_reached__with_reset(self):
+        time = datetime(day=1, month=2, year=2021, tzinfo=utc).date()
+        _, contract, _, _ = create_project(contract1={
+            "annual_recurrence": True,
+            "recurrence_start_date": time,
+            "has_reset_recurrence": True
+        })
+        self.assertEqual(1, contract.maintenancecredit_set.count())
+
+        check_and_apply_credit_recurrence(time)
+        contract.refresh_from_db()
+
+        self.assertEqual(1, contract.recurrence_next_date.day)
+        self.assertEqual(2, contract.recurrence_next_date.month)
+        self.assertEqual(2022, contract.recurrence_next_date.year)
+        self.assertEqual(2, contract.maintenancecredit_set.count())
+        self.assertEqual(1, contract.reset_date.day)
+        self.assertEqual(2, contract.reset_date.month)
+        self.assertEqual(2021, contract.reset_date.year)
 
     def test_monthly_recurrence_reached(self):
         time = datetime(day=1, month=2, year=2021, tzinfo=utc).date()
         _, contract, _, _ = create_project(contract1={"monthly_recurrence": True, "recurrence_start_date": time})
+        self.assertEqual(1, contract.maintenancecredit_set.count())
+
         check_and_apply_credit_recurrence(time)
         contract.refresh_from_db()
 
         self.assertEqual(1, contract.recurrence_next_date.day)
         self.assertEqual(3, contract.recurrence_next_date.month)
         self.assertEqual(2021, contract.recurrence_next_date.year)
+        self.assertEqual(2, contract.maintenancecredit_set.count())
 
     def test_annual_monthly_recurrence_not_reached(self):
         time1 = datetime(day=1, month=2, year=2021, tzinfo=utc).date()
@@ -105,12 +131,17 @@ class RecurrenceCommandTestCase(TestCase):
             contract1={"annual_recurrence": True, "recurrence_start_date": time2},
             contract2={"monthly_recurrence": True, "recurrence_start_date": time2},
         )
+        self.assertEqual(1, contract1.maintenancecredit_set.count())
+        self.assertEqual(1, contract2.maintenancecredit_set.count())
+
         check_and_apply_credit_recurrence(time1)
         contract1.refresh_from_db()
         contract2.refresh_from_db()
 
         self.assertEqual(time2, contract1.recurrence_next_date)
         self.assertEqual(time2, contract2.recurrence_next_date)
+        self.assertEqual(1, contract1.maintenancecredit_set.count())
+        self.assertEqual(1, contract2.maintenancecredit_set.count())
 
     def test_run_recurrence_command(self):
         now_date = now().date()

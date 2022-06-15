@@ -7,6 +7,7 @@ from django.utils.timezone import datetime
 from django.utils.timezone import now
 
 from ...models import MaintenanceContract
+from ...models.contract import MONTHLY
 from ...models.contract import get_next_month_date
 from ...models.contract import get_next_year_date
 from ..factories import IncomingChannelFactory
@@ -285,6 +286,270 @@ class MaintenanceContractTestCase(TestCase):
         self.assertFalse(contract1.is_consumed_time_counter())
         self.assertTrue(contract2.is_consumed_time_counter())
 
+    def test_get_delta_credits_minutes_when_no_reset_date(self):
+        company, contract, _, _ = create_project()
+
+        self.assertEqual(0, contract.get_delta_credits_minutes())
+
+    def test_get_delta_credits_minutes_when_only_issues(self):
+        time1 = datetime(day=1, month=6, year=2021).date()
+        time2 = datetime(day=1, month=5, year=2021).date()
+        company, contract, _, _ = create_project(contract1={"reset_date": time1})
+        MaintenanceIssueFactory(contract=contract, company=company, number_minutes=60, date=time2)
+
+        self.assertEqual(-60, contract.get_delta_credits_minutes())
+
+    def test_get_delta_credits_minutes_when_only_credits(self):
+        time1 = datetime(day=1, month=6, year=2021).date()
+        time2 = datetime(day=1, month=5, year=2021).date()
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": time2, "reset_date": time1}
+        )
+
+        self.assertEqual(20 * 60, contract.get_delta_credits_minutes())
+
+    def test_get_delta_credits_minutes_credits_and_issues(self):
+        time1 = datetime(day=1, month=6, year=2021).date()
+        time2 = datetime(day=1, month=5, year=2021).date()
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "start": time2, "reset_date": time1}
+        )
+        MaintenanceCreditFactory(contract=contract, company=company, hours_number=20, date=time1)
+
+        MaintenanceIssueFactory(contract=contract, company=company, number_minutes=60, date=time2)
+        MaintenanceIssueFactory(contract=contract, company=company, number_minutes=60, date=time1)
+
+        self.assertEqual(20 * 60 - 60, contract.get_delta_credits_minutes())
+
+
+@freeze_time("2022/06/01")
+class MaintenanceContractComputeTimesTestCase(TestCase):
+    def setup_contract_issues_and_credits(self, credit_counter=False, reset_date=None, issues=None, credits=None):
+        start_date = datetime(day=1, month=1, year=2022).date()
+        contract1_data = {"start": start_date}
+        if credit_counter:
+            contract1_data["credit_counter"] = True
+        if reset_date:
+            contract1_data["reset_date"] = reset_date
+        company, contract, _, _ = create_project(contract1=contract1_data)
+
+        event_data = {"contract": contract, "company": company}
+        if issues is not None:
+            old_issue_data = {
+                **event_data,
+                "number_minutes": issues[0],
+                "date": datetime(day=1, month=2, year=2022).date()
+            }
+            passed_issue_data = {
+                **event_data,
+                "number_minutes": issues[1],
+                "date": datetime(day=1, month=3, year=2022).date()
+            }
+            future_issue_data = {
+                **event_data,
+                "number_minutes": issues[2],
+                "date": datetime(day=1, month=12, year=2022).date()
+            }
+
+            MaintenanceIssueFactory(**old_issue_data)
+            MaintenanceIssueFactory(**passed_issue_data)
+            MaintenanceIssueFactory(**future_issue_data)
+
+        if credits is not None:
+            old_credit_data = {
+                **event_data,
+                "hours_number": credits[0],
+                "date": datetime(day=1, month=2, year=2022).date()
+            }
+            passed_credit_data = {
+                **event_data,
+                "hours_number": credits[1],
+                "date": datetime(day=1, month=3, year=2022).date()
+            }
+            future_credit_data = {
+                **event_data,
+                "hours_number": credits[2],
+                "date": datetime(day=1, month=12, year=2022).date()
+            }
+
+            MaintenanceCreditFactory(**old_credit_data)
+            MaintenanceCreditFactory(**passed_credit_data)
+            MaintenanceCreditFactory(**future_credit_data)
+        return contract
+
+    def test_compute_and_set_consumed_minutes__consumed_contract__nothing(self):
+        contract = self.setup_contract_issues_and_credits()
+
+        contract.compute_and_set_consumed_minutes()
+
+        expected = 0
+        self.assertEqual(expected, contract.consumed_minutes)
+
+    def test_compute_and_set_consumed_minutes__consumed_contract__without_reset(self):
+        old_issue_number_minutes = 10
+        passed_issue_number_minutes = 25
+        future_issue_number_minutes = 40
+
+        contract = self.setup_contract_issues_and_credits(
+            issues=(old_issue_number_minutes, passed_issue_number_minutes, future_issue_number_minutes)
+        )
+
+        contract.compute_and_set_consumed_minutes()
+
+        expected = old_issue_number_minutes + passed_issue_number_minutes
+        self.assertEqual(expected, contract.consumed_minutes)
+
+    def test_compute_and_set_consumed_minutes__consumed_contract__with_reset(self):
+        old_issue_number_minutes = 10
+        passed_issue_number_minutes = 25
+        future_issue_number_minutes = 40
+
+        contract = self.setup_contract_issues_and_credits(
+            reset_date=datetime(day=10, month=2, year=2022).date(),
+            issues=(old_issue_number_minutes, passed_issue_number_minutes, future_issue_number_minutes)
+        )
+
+        contract.compute_and_set_consumed_minutes()
+
+        expected = passed_issue_number_minutes
+        self.assertEqual(expected, contract.consumed_minutes)
+
+    def test_compute_and_set_consumed_minutes__available_contract__without_reset__credits_and_issues(self):
+        old_issue_number_minutes = 10
+        passed_issue_number_minutes = 25
+        future_issue_number_minutes = 40
+
+        old_credit_hours_number = 10
+        passed_credit_hours_number = 25
+        future_credit_hours_number = 40
+
+        contract = self.setup_contract_issues_and_credits(
+            credit_counter=True,
+            issues=(old_issue_number_minutes, passed_issue_number_minutes, future_issue_number_minutes),
+            credits=(old_credit_hours_number, passed_credit_hours_number, future_credit_hours_number)
+        )
+
+        contract.compute_and_set_consumed_minutes()
+
+        expected = old_issue_number_minutes + passed_issue_number_minutes
+        self.assertEqual(float(expected), contract.consumed_minutes)
+
+    def test_compute_and_set_consumed_minutes__available_contract__with_reset__credits_and_issues(self):
+        delta_reset = 3
+        creation_credit_hours_number = 20
+        old_credit_hours_number = 10
+        passed_credit_hours_number = 25
+        future_credit_hours_number = 40
+
+        old_issue_number_minutes = (creation_credit_hours_number + old_credit_hours_number + delta_reset) * 60
+        passed_issue_number_minutes = 25
+        future_issue_number_minutes = 40
+
+        contract = self.setup_contract_issues_and_credits(
+            credit_counter=True,
+            reset_date=datetime(day=10, month=2, year=2022).date(),
+            issues=(old_issue_number_minutes, passed_issue_number_minutes, future_issue_number_minutes),
+            credits=(old_credit_hours_number, passed_credit_hours_number, future_credit_hours_number)
+        )
+
+        contract.compute_and_set_consumed_minutes()
+
+        expected = delta_reset * 60 + passed_issue_number_minutes
+        self.assertEqual(float(expected), contract.consumed_minutes)
+
+    def test_compute_and_set_credited_hours__consumed_contract__nothing(self):
+        contract = self.setup_contract_issues_and_credits()
+
+        contract.compute_and_set_credited_hours()
+
+        expected = 0
+        self.assertEqual(expected, contract.consumed_minutes)
+
+    def test_compute_and_set_credited_hours__available_contract__nothing(self):
+        contract = self.setup_contract_issues_and_credits(credit_counter=True)
+
+        contract.compute_and_set_credited_hours()
+
+        expected = 0
+        self.assertEqual(expected, contract.consumed_minutes)
+
+    def test_compute_and_set_credited_hours__available_contract__without_reset__credits_only(self):
+        creation_credit_hours_number = 20
+        old_credit_hours_number = 10
+        passed_credit_hours_number = 25
+        future_credit_hours_number = 40
+
+        contract = self.setup_contract_issues_and_credits(
+            credit_counter=True,
+            credits=(old_credit_hours_number, passed_credit_hours_number, future_credit_hours_number)
+        )
+
+        contract.compute_and_set_credited_hours()
+
+        expected = creation_credit_hours_number + old_credit_hours_number + passed_credit_hours_number
+        self.assertEqual(expected, contract.credited_hours)
+
+    def test_compute_and_set_credited_hours__available_contract__with_reset__credits_only(self):
+        creation_credit_hours_number = 20
+        old_credit_hours_number = 10
+        passed_credit_hours_number = 25
+        future_credit_hours_number = 40
+
+        contract = self.setup_contract_issues_and_credits(
+            credit_counter=True,
+            reset_date=datetime(day=10, month=2, year=2022).date(),
+            credits=(old_credit_hours_number, passed_credit_hours_number, future_credit_hours_number)
+        )
+
+        contract.compute_and_set_credited_hours()
+
+        expected = creation_credit_hours_number + old_credit_hours_number + passed_credit_hours_number
+        self.assertEqual(float(expected), contract.credited_hours)
+
+    def test_compute_and_set_credited_hours__available_contract__without_reset__credits_and_issues(self):
+        creation_credit_hours_number = 20
+        old_credit_hours_number = 10
+        passed_credit_hours_number = 25
+        future_credit_hours_number = 40
+
+        old_issue_number_minutes = 10
+        passed_issue_number_minutes = 25
+        future_issue_number_minutes = 40
+
+        contract = self.setup_contract_issues_and_credits(
+            credit_counter=True,
+            issues=(old_issue_number_minutes, passed_issue_number_minutes, future_issue_number_minutes),
+            credits=(old_credit_hours_number, passed_credit_hours_number, future_credit_hours_number)
+        )
+
+        contract.compute_and_set_credited_hours()
+
+        expected = creation_credit_hours_number + old_credit_hours_number + passed_credit_hours_number
+        self.assertEqual(float(expected), contract.credited_hours)
+
+    def test_compute_and_set_credited_hours__available_contract__with_reset__credits_and_issues(self):
+        delta_reset = 3
+        creation_credit_hours_number = 20
+        old_credit_hours_number = 10
+        passed_credit_hours_number = 25
+        future_credit_hours_number = 40
+
+        old_issue_number_minutes = (creation_credit_hours_number + old_credit_hours_number - delta_reset) * 60
+        passed_issue_number_minutes = 25
+        future_issue_number_minutes = 40
+
+        contract = self.setup_contract_issues_and_credits(
+            reset_date=datetime(day=10, month=2, year=2022).date(),
+            credit_counter=True,
+            issues=(old_issue_number_minutes, passed_issue_number_minutes, future_issue_number_minutes),
+            credits=(old_credit_hours_number, passed_credit_hours_number, future_credit_hours_number)
+        )
+
+        expected = delta_reset + passed_credit_hours_number
+        self.assertEqual(float(expected), contract.credited_hours)
+
+
+class MaintenanceContractRecurrenceTestCase(TestCase):
     def test_has_annual_credit_recurrence(self):
         company, contract1, contract2, _ = create_project(
             contract1={"annual_recurrence": True}, contract2={"monthly_recurrence": False}
@@ -387,40 +652,152 @@ class MaintenanceContractTestCase(TestCase):
 
         self.assertFalse(contract.has_credit_recurrence)
 
-    def test_get_delta_credits_minutes_when_no_reset_date(self):
-        company, contract, _, _ = create_project()
-
-        self.assertEqual(0, contract.get_delta_credits_minutes())
-
-    def test_get_delta_credits_minutes_when_only_issues(self):
-        time1 = datetime(day=1, month=6, year=2021).date()
-        time2 = datetime(day=1, month=5, year=2021).date()
-        company, contract, _, _ = create_project(contract1={"reset_date": time1})
-        MaintenanceIssueFactory(contract=contract, company=company, number_minutes=60, date=time2)
-
-        self.assertEqual(-60, contract.get_delta_credits_minutes())
-
-    def test_get_delta_credits_minutes_when_only_credits(self):
-        time1 = datetime(day=1, month=6, year=2021).date()
-        time2 = datetime(day=1, month=5, year=2021).date()
+    @freeze_time("2021/10/1")
+    def test_set_annual_recurrence(self):
+        time = datetime(day=1, month=5, year=2021).date()
         company, contract, _, _ = create_project(
-            contract1={"credit_counter": True, "start": time2, "reset_date": time1}
+            contract1={"credit_counter": True, "recurrence_start_date": time, "hours_to_credit": 20}
+        )
+        self.assertEqual(1, MaintenanceCredit.objects.filter(contract=contract).count())
+
+        contract.set_annual_recurrence()
+
+        self.assertEqual(2, MaintenanceCredit.objects.filter(contract=contract).count())
+        self.assertEqual(1, contract.recurrence_next_date.day)
+        self.assertEqual(5, contract.recurrence_next_date.month)
+        self.assertEqual(2022, contract.recurrence_next_date.year)
+
+    @freeze_time("2021/10/1")
+    def test_set_monthly_recurrence(self):
+        time = datetime(day=1, month=5, year=2021).date()
+        company, contract, _, _ = create_project(
+            contract1={"credit_counter": True, "recurrence_start_date": time, "hours_to_credit": 20}
+        )
+        self.assertEqual(1, MaintenanceCredit.objects.filter(contract=contract).count())
+
+        contract.set_monthly_recurrence()
+
+        self.assertEqual(7, MaintenanceCredit.objects.filter(contract=contract).count())
+        self.assertEqual(1, contract.recurrence_next_date.day)
+        self.assertEqual(11, contract.recurrence_next_date.month)
+        self.assertEqual(2021, contract.recurrence_next_date.year)
+
+    @freeze_time("2021/1/1")
+    def test_create_credit_occurrence__no_hours_to_credit(self):
+        time = datetime(day=1, month=5, year=2021).date()
+        company, contract, _, _ = create_project(contract1={"credit_counter": True})
+
+        contract.create_credit_occurrence(time)
+
+        self.assertEqual(0, MaintenanceCredit.objects.filter(contract=contract, date=time).count())
+
+    @freeze_time("2021/1/1")
+    def test_create_credit_occurrence__zero_hours_to_credit(self):
+        time = datetime(day=1, month=5, year=2021).date()
+        company, contract, _, _ = create_project(contract1={"credit_counter": True, "hours_to_credit": 0})
+
+        contract.create_credit_occurrence(time)
+
+        self.assertEqual(0, MaintenanceCredit.objects.filter(contract=contract, date=time).count())
+
+    @freeze_time("2021/1/1")
+    def test_create_credit_occurrence__no_date(self):
+        company, contract, _, _ = create_project(contract1={"credit_counter": True, "hours_to_credit": 0})
+
+        contract.create_credit_occurrence()
+
+        self.assertEqual(1, MaintenanceCredit.objects.filter(contract=contract).count())
+
+    @freeze_time("2021/1/1")
+    def test_create_credit_occurrence(self):
+        time = datetime(day=1, month=5, year=2021).date()
+        company, contract, _, _ = create_project(contract1={"credit_counter": True, "hours_to_credit": 20})
+
+        contract.create_credit_occurrence(time)
+
+        self.assertEqual(1, MaintenanceCredit.objects.filter(contract=contract, date=time).count())
+
+    @freeze_time("2021/10/1")
+    def test_apply_recurrence_at__without_date__no_reset(self):
+        time = datetime(day=1, month=5, year=2021).date()
+        next_time = datetime(day=1, month=6, year=2021).date()
+        company, contract, _, _ = create_project(
+            contract1={
+                "credit_counter": True,
+                "has_credit_recurrence": True,
+                "recurrence_start_date": time,
+                "recurrence_next_date": next_time,
+                "credit_recurrence": MONTHLY,
+                "hours_to_credit": 20
+            }
         )
 
-        self.assertEqual(20 * 60, contract.get_delta_credits_minutes())
+        contract.apply_recurrence_at()
 
-    def test_get_delta_credits_minutes_credits_and_issues(self):
-        time1 = datetime(day=1, month=6, year=2021).date()
-        time2 = datetime(day=1, month=5, year=2021).date()
+        credits = MaintenanceCredit.objects.filter(contract=contract, date=next_time)
+        self.assertEqual(1, credits.count())
+        credit = credits.first()
+        self.assertEqual(20, credit.hours_number)
+        self.assertEqual(1, contract.recurrence_next_date.day)
+        self.assertEqual(7, contract.recurrence_next_date.month)
+        self.assertEqual(2021, contract.recurrence_next_date.year)
+        self.assertIsNone(contract.reset_date)
+
+    @freeze_time("2021/10/1")
+    def test_apply_recurrence_at__without_date__with_reset(self):
+        time = datetime(day=1, month=5, year=2021).date()
+        next_time = datetime(day=1, month=6, year=2021).date()
         company, contract, _, _ = create_project(
-            contract1={"credit_counter": True, "start": time2, "reset_date": time1}
+            contract1={
+                "credit_counter": True,
+                "has_credit_recurrence": True,
+                "recurrence_start_date": time,
+                "recurrence_next_date": next_time,
+                "credit_recurrence": MONTHLY,
+                "hours_to_credit": 20,
+                "has_reset_recurrence": True
+            }
         )
-        MaintenanceCreditFactory(contract=contract, company=company, hours_number=20, date=time1)
 
-        MaintenanceIssueFactory(contract=contract, company=company, number_minutes=60, date=time2)
-        MaintenanceIssueFactory(contract=contract, company=company, number_minutes=60, date=time1)
+        contract.apply_recurrence_at()
 
-        self.assertEqual(20 * 60 - 60, contract.get_delta_credits_minutes())
+        credits = MaintenanceCredit.objects.filter(contract=contract, date=next_time)
+        self.assertEqual(1, credits.count())
+        credit = credits.first()
+        self.assertEqual(20, credit.hours_number)
+        self.assertEqual(1, contract.recurrence_next_date.day)
+        self.assertEqual(7, contract.recurrence_next_date.month)
+        self.assertEqual(2021, contract.recurrence_next_date.year)
+        self.assertEqual(1, contract.reset_date.day)
+        self.assertEqual(6, contract.reset_date.month)
+        self.assertEqual(2021, contract.reset_date.year)
+
+    @freeze_time("2021/10/1")
+    def test_apply_recurrence_at__with_date(self):
+        start_time = datetime(day=1, month=5, year=2021).date()
+        next_time = datetime(day=1, month=6, year=2021).date()
+        time = datetime(day=5, month=6, year=2021).date()
+        company, contract, _, _ = create_project(
+            contract1={
+                "credit_counter": True,
+                "has_credit_recurrence": True,
+                "recurrence_start_date": start_time,
+                "recurrence_next_date": next_time,
+                "credit_recurrence": MONTHLY,
+                "hours_to_credit": 20
+            }
+        )
+
+        contract.apply_recurrence_at(time)
+
+        credits = MaintenanceCredit.objects.filter(contract=contract, date=time)
+        self.assertEqual(1, credits.count())
+        credit = credits.first()
+        self.assertEqual(20, credit.hours_number)
+        self.assertEqual(1, contract.recurrence_next_date.day)
+        self.assertEqual(7, contract.recurrence_next_date.month)
+        self.assertEqual(2021, contract.recurrence_next_date.year)
+        self.assertIsNone(contract.reset_date)
 
     def test_set_recurrence_dates_and_create_all_old_credit_occurrences(self):
         time1 = datetime(day=1, month=5, year=2021).date()
