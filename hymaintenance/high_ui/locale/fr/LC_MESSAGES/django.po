@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-10 17:11+0200\n"
+"POT-Creation-Date: 2022-06-16 14:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -719,7 +719,7 @@ msgstr "Invisible aux clients"
 #: high_ui/templates/high_ui/forms/base_project.html:108
 #: high_ui/templates/high_ui/forms/base_project.html:206
 #: high_ui/templates/high_ui/forms/base_project.html:304
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:46
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:47
 #: high_ui/templates/high_ui/forms/update_email_alert.html:46
 #: high_ui/templates/high_ui/forms/update_project.html:33
 #: high_ui/templates/high_ui/forms/update_project.html:97
@@ -839,7 +839,7 @@ msgstr "Ajouter cet admin"
 #: high_ui/templates/high_ui/forms/update_credit.html:34
 #: high_ui/templates/high_ui/forms/update_credit.html:46
 #: high_ui/templates/high_ui/forms/update_credit_choices.html:60
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:138
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:159
 #: high_ui/templates/high_ui/forms/update_email_alert.html:112
 #: high_ui/templates/high_ui/forms/update_infos.html:121
 #: high_ui/templates/high_ui/forms/update_issue.html:20
@@ -1034,7 +1034,7 @@ msgstr "Modifier ce projet"
 #: high_ui/templates/high_ui/forms/update_consumers.html:24
 #: high_ui/templates/high_ui/forms/update_credit.html:34
 #: high_ui/templates/high_ui/forms/update_credit_choices.html:60
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:138
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:159
 #: high_ui/templates/high_ui/forms/update_email_alert.html:112
 #: high_ui/templates/high_ui/forms/update_infos.html:121
 #: high_ui/templates/high_ui/forms/update_issue.html:20
@@ -1070,7 +1070,7 @@ msgstr ""
 
 #: high_ui/templates/high_ui/forms/reset_contracts.html:73
 #: high_ui/templates/high_ui/forms/update_credit_choices.html:59
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:137
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:158
 #: high_ui/templates/high_ui/forms/update_email_alert.html:111
 msgid "Modify this configuration"
 msgstr "Modifier cette configuration"
@@ -1343,12 +1343,12 @@ msgstr "Valeurs de crédits par défaut"
 msgid "Modify %(company)s credit recurrence"
 msgstr "Modifier la récurrence des crédits de %(company)s"
 
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:37
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:38
 #, python-format
 msgid "%(name)s's credit-recurrence configuration"
 msgstr "Configuration de la récurrence des crédits de %(name)s"
 
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:47
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:48
 #: high_ui/templates/high_ui/forms/update_email_alert.html:47
 #: high_ui/templates/high_ui/forms/update_project.html:34
 #: high_ui/templates/high_ui/forms/update_project.html:98
@@ -1356,20 +1356,20 @@ msgstr "Configuration de la récurrence des crédits de %(name)s"
 msgid "Enabled"
 msgstr "Actif"
 
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:66
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:67
 msgid "Monthly"
 msgstr "Mensuel"
 
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:67
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:68
 msgid "Annual"
 msgstr "Annuel"
 
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:115
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:116
 #, python-format
 msgid "Next scheduled occurrence: %(date)s"
 msgstr "Prochaine occurence programmée&nbsp;: %(date)s"
 
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:122
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:121
 msgid ""
 "If you activate the credit's recurrence, each month or year, hours will be "
 "credited to your contract."
@@ -1377,11 +1377,19 @@ msgstr ""
 "Si vous activez la récurrence de crédit, tous les mois ou années, votre "
 "contract sera crédité du nombre d'heures souhaités."
 
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:123
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:122
 msgid "Caution, outdated credit will be automatically create."
 msgstr ""
 "Attention, les crédits ultérieures à aujourd'hui seront créées "
 "automatiquement."
+
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:132
+msgid "No"
+msgstr "Non"
+
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:133
+msgid "Yes"
+msgstr "Oui"
 
 #: high_ui/templates/high_ui/forms/update_email_alert.html:37
 #, python-format
