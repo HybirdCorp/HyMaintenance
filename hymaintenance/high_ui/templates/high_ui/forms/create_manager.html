@@ -15,6 +15,13 @@
 <span>{{company}}</span>
 {% endblock %}
 
+{% block manager_form_customer_part %}
+<div class="form-row checkbox-row">
+    {{form.create_consumer}}
+    <span> {% trans "Create corresponding customer" %}</span>
+</div>
+{% endblock %}
+
 {% block form_footer %}
 <button type="submit">{% trans "Add this manager" %}</button>
 <span class="cancel">{% trans "or" %} <a href="{{previous_page}}">{% trans "Don't add" %}</a></span>

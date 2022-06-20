@@ -12,6 +12,7 @@ from customers.forms.users_list.list import OperatorUsersListArchiveForm
 from customers.forms.users_list.list import OperatorUsersListUnarchiveForm
 from customers.forms.users_list.list_by_company import ManagerUsersListUpdateForm
 from customers.forms.users_list.list_by_company import OperatorUsersListUpdateForm
+from maintenance.models import MaintenanceConsumer
 
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
@@ -69,14 +70,38 @@ class UserCreateFormTestCase(TestCase):
         self.assertTrue(user.check_password(self.password))
 
     def test_if_create_manager_form_works(self):
+        dic_for_post = self.__get_dict_for_post()
+        dic_for_post["create_consumer"] = False
         self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
-        form = ManagerUserCreateForm(company=self.company, data=self.__get_dict_for_post())
+
+        form = ManagerUserCreateForm(company=self.company, data=dic_for_post)
+
         self.assertTrue(form.is_valid())
         self.assertTrue(form.save())
         self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=False).count())
         manager = MaintenanceUser.objects.filter(is_superuser=False).first()
         self.assertEqual(self.email, manager.email)
         self.assertTrue(manager.check_password(self.password))
+        self.assertEqual(0, MaintenanceConsumer.objects.all().count())
+
+    def test_if_create_manager_form_works__create_consumer(self):
+        dic_for_post = self.__get_dict_for_post()
+        dic_for_post["create_consumer"] = True
+        self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
+        self.assertEqual(0, MaintenanceConsumer.objects.all().count())
+
+        form = ManagerUserCreateForm(company=self.company, data=dic_for_post)
+
+        self.assertTrue(form.is_valid())
+        self.assertTrue(form.save())
+        self.assertEqual(1, MaintenanceUser.objects.filter(is_superuser=False).count())
+        manager = MaintenanceUser.objects.filter(is_superuser=False).first()
+        self.assertEqual(self.email, manager.email)
+        self.assertTrue(manager.check_password(self.password))
+        consumers = MaintenanceConsumer.objects.all()
+        self.assertEqual(1, consumers.count())
+        consumer = consumers.first()
+        self.assertEqual("Gordon Freeman", consumer.name)
 
     def test_if_create_operator_form_works(self):
         self.assertEqual(0, MaintenanceUser.objects.filter(is_superuser=False).count())
