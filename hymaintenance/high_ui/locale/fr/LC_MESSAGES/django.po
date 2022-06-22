@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-16 14:36+0200\n"
+"POT-Creation-Date: 2022-07-05 15:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -326,8 +326,8 @@ msgstr "Ajouter des crédits"
 
 #: high_ui/templates/high_ui/company_details_header.html:24
 #: high_ui/tests/views/test_project_views.py:484
-#: high_ui/tests/views/test_project_views.py:494
-#: high_ui/tests/views/test_project_views.py:503
+#: high_ui/tests/views/test_project_views.py:495
+#: high_ui/tests/views/test_project_views.py:505
 msgid "Manage recurrence"
 msgstr "Gestion récurrence"
 
@@ -336,21 +336,28 @@ msgstr "Gestion récurrence"
 msgid "Buy hours"
 msgstr "Commander des heures"
 
-#: high_ui/templates/high_ui/company_details_header.html:28
+#: high_ui/templates/high_ui/company_details_header.html:27
+#: high_ui/tests/views/test_project_views.py:485
+#: high_ui/tests/views/test_project_views.py:496
+#: high_ui/tests/views/test_project_views.py:506
+msgid "Recurrence details"
+msgstr "Details récurrences"
+
+#: high_ui/templates/high_ui/company_details_header.html:29
 #: high_ui/tests/views/test_project_views.py:447
 msgid "Email alerts"
 msgstr "alertes par email"
 
-#: high_ui/templates/high_ui/company_details_header.html:31
+#: high_ui/templates/high_ui/company_details_header.html:32
 msgid "Reset counter"
 msgstr "Réinitialiser compteur"
 
-#: high_ui/templates/high_ui/company_details_header.html:39
+#: high_ui/templates/high_ui/company_details_header.html:40
 #: high_ui/templates/high_ui/issue_details_header.html:22
 msgid "Your Contact"
 msgstr "Votre Contact"
 
-#: high_ui/templates/high_ui/company_details_header.html:49
+#: high_ui/templates/high_ui/company_details_header.html:50
 #: high_ui/templates/high_ui/dashboard_header.html:39
 #: high_ui/templates/high_ui/errors/base_error.html:37
 #: high_ui/templates/high_ui/issue_details_header.html:32
@@ -358,7 +365,7 @@ msgstr "Votre Contact"
 msgid "Quit the application"
 msgstr "Quitter l'application"
 
-#: high_ui/templates/high_ui/company_details_header.html:49
+#: high_ui/templates/high_ui/company_details_header.html:50
 #: high_ui/templates/high_ui/dashboard_header.html:39
 #: high_ui/templates/high_ui/errors/base_error.html:37
 #: high_ui/templates/high_ui/issue_details_header.html:32
@@ -395,6 +402,65 @@ msgstr "Si vous voulez commander des crédits, contactez s'il vous plait&nbsp;:"
 #: high_ui/templates/high_ui/errors/base_error.html:53
 msgid "Back to the homepage"
 msgstr "Retour sur la page d'accueil"
+
+#: high_ui/templates/high_ui/credit_recurrence_details.html:6
+#: high_ui/templates/high_ui/forms/credit_recurrence_details.html:6
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:6
+#, python-format
+msgid "Modify %(company)s credit recurrence"
+msgstr "Modifier la récurrence des crédits de %(company)s"
+
+#: high_ui/templates/high_ui/credit_recurrence_details.html:36
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:38
+#, python-format
+msgid "%(name)s's credit-recurrence configuration"
+msgstr "Configuration de la récurrence des crédits de %(name)s"
+
+#: high_ui/templates/high_ui/credit_recurrence_details.html:40
+msgid "Recurrence"
+msgstr "Récurrence"
+
+#: high_ui/templates/high_ui/credit_recurrence_details.html:43
+#: high_ui/templates/high_ui/forms/credit_recurrence_details.html:41
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:48
+#: high_ui/templates/high_ui/forms/update_email_alert.html:47
+#: high_ui/templates/high_ui/forms/update_project.html:34
+#: high_ui/templates/high_ui/forms/update_project.html:98
+#: high_ui/templates/high_ui/forms/update_project.html:162
+msgid "Enabled"
+msgstr "Actif"
+
+#: high_ui/templates/high_ui/credit_recurrence_details.html:45
+#: high_ui/templates/high_ui/forms/base_project.html:108
+#: high_ui/templates/high_ui/forms/base_project.html:206
+#: high_ui/templates/high_ui/forms/base_project.html:304
+#: high_ui/templates/high_ui/forms/credit_recurrence_details.html:39
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:47
+#: high_ui/templates/high_ui/forms/update_email_alert.html:46
+#: high_ui/templates/high_ui/forms/update_project.html:33
+#: high_ui/templates/high_ui/forms/update_project.html:97
+#: high_ui/templates/high_ui/forms/update_project.html:161
+msgid "Disabled"
+msgstr "Inactif"
+
+#: high_ui/templates/high_ui/credit_recurrence_details.html:52
+msgid "Frequency"
+msgstr "Fréquence"
+
+#: high_ui/templates/high_ui/credit_recurrence_details.html:60
+msgid "Start"
+msgstr "Début"
+
+#: high_ui/templates/high_ui/credit_recurrence_details.html:66
+msgid "Hours to credit"
+msgstr "Heures à créditer"
+
+#: high_ui/templates/high_ui/credit_recurrence_details.html:73
+#: high_ui/templates/high_ui/forms/credit_recurrence_details.html:67
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:116
+#, python-format
+msgid "Next scheduled occurrence: %(date)s"
+msgstr "Prochaine occurence programmée&nbsp;: %(date)s"
 
 #: high_ui/templates/high_ui/dashboard.html:6
 #, python-format
@@ -716,17 +782,6 @@ msgstr "Visible à tous"
 msgid "Invisible to managers"
 msgstr "Invisible aux clients"
 
-#: high_ui/templates/high_ui/forms/base_project.html:108
-#: high_ui/templates/high_ui/forms/base_project.html:206
-#: high_ui/templates/high_ui/forms/base_project.html:304
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:47
-#: high_ui/templates/high_ui/forms/update_email_alert.html:46
-#: high_ui/templates/high_ui/forms/update_project.html:33
-#: high_ui/templates/high_ui/forms/update_project.html:97
-#: high_ui/templates/high_ui/forms/update_project.html:161
-msgid "Disabled"
-msgstr "Inactif"
-
 #: high_ui/templates/high_ui/forms/base_project.html:121
 #: high_ui/templates/high_ui/forms/base_project.html:219
 #: high_ui/templates/high_ui/forms/base_project.html:317
@@ -800,8 +855,8 @@ msgstr ""
 msgid ""
 "This counter can be renamed to replace the default name <em>%(mtype)s</em>."
 msgstr ""
-"Ce compteur peut être renommé pour remplacer son nom par défaut, <em>"
-"%(mtype)s</em>."
+"Ce compteur peut être renommé pour remplacer son nom par défaut, "
+"<em>%(mtype)s</em>."
 
 #: high_ui/templates/high_ui/forms/base_project.html:187
 #: high_ui/templates/high_ui/forms/base_project.html:285
@@ -823,7 +878,7 @@ msgstr "Ajouter cet admin"
 #: high_ui/templates/high_ui/forms/create_consumer.html:18
 #: high_ui/templates/high_ui/forms/create_credit.html:31
 #: high_ui/templates/high_ui/forms/create_issue.html:20
-#: high_ui/templates/high_ui/forms/create_manager.html:20
+#: high_ui/templates/high_ui/forms/create_manager.html:27
 #: high_ui/templates/high_ui/forms/create_operator.html:18
 #: high_ui/templates/high_ui/forms/create_project.html:75
 #: high_ui/templates/high_ui/forms/customize_project.html:164
@@ -862,7 +917,7 @@ msgstr "ou"
 #: high_ui/templates/high_ui/forms/create_company_operator.html:20
 #: high_ui/templates/high_ui/forms/create_consumer.html:18
 #: high_ui/templates/high_ui/forms/create_credit.html:31
-#: high_ui/templates/high_ui/forms/create_manager.html:20
+#: high_ui/templates/high_ui/forms/create_manager.html:27
 #: high_ui/templates/high_ui/forms/create_operator.html:18
 msgid "Don't add"
 msgstr "Ne pas ajouter"
@@ -934,7 +989,11 @@ msgstr "Nouveau manager de"
 msgid "New manager"
 msgstr "Nouveau manager"
 
-#: high_ui/templates/high_ui/forms/create_manager.html:19
+#: high_ui/templates/high_ui/forms/create_manager.html:21
+msgid "Create corresponding customer"
+msgstr ""
+
+#: high_ui/templates/high_ui/forms/create_manager.html:26
 msgid "Add this manager"
 msgstr "Ajouter ce manager"
 
@@ -977,6 +1036,21 @@ msgstr "Compte utilisateur"
 #: high_ui/templates/high_ui/forms/create_user.html:152
 msgid "Confirm password"
 msgstr "Confirmez le mot de passe"
+
+#: high_ui/templates/high_ui/forms/credit_recurrence_details.html:33
+#, python-format
+msgid "%(name)s's credit-recurrence"
+msgstr "Récurrence des crédits de %(name)s"
+
+#: high_ui/templates/high_ui/forms/credit_recurrence_details.html:50
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:67
+msgid "Monthly"
+msgstr "Mensuel"
+
+#: high_ui/templates/high_ui/forms/credit_recurrence_details.html:52
+#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:68
+msgid "Annual"
+msgstr "Annuel"
 
 #: high_ui/templates/high_ui/forms/customize_project.html:6
 #, python-format
@@ -1337,37 +1411,6 @@ msgstr "Modifier les alertes par email de %(company)s"
 #: high_ui/templates/high_ui/forms/update_credit_choices.html:26
 msgid "Default credit's values"
 msgstr "Valeurs de crédits par défaut"
-
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:6
-#, python-format
-msgid "Modify %(company)s credit recurrence"
-msgstr "Modifier la récurrence des crédits de %(company)s"
-
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:38
-#, python-format
-msgid "%(name)s's credit-recurrence configuration"
-msgstr "Configuration de la récurrence des crédits de %(name)s"
-
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:48
-#: high_ui/templates/high_ui/forms/update_email_alert.html:47
-#: high_ui/templates/high_ui/forms/update_project.html:34
-#: high_ui/templates/high_ui/forms/update_project.html:98
-#: high_ui/templates/high_ui/forms/update_project.html:162
-msgid "Enabled"
-msgstr "Actif"
-
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:67
-msgid "Monthly"
-msgstr "Mensuel"
-
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:68
-msgid "Annual"
-msgstr "Annuel"
-
-#: high_ui/templates/high_ui/forms/update_credit_recurrence.html:116
-#, python-format
-msgid "Next scheduled occurrence: %(date)s"
-msgstr "Prochaine occurence programmée&nbsp;: %(date)s"
 
 #: high_ui/templates/high_ui/forms/update_credit_recurrence.html:121
 msgid ""
@@ -1752,7 +1795,7 @@ msgstr "Les modifications ont bien été prises en compte!"
 msgid "No credit matches the given query."
 msgstr "Aucun crédit ne correspond à la requête donnée."
 
-#: high_ui/views/project.py:253
+#: high_ui/views/project.py:255
 msgid "Reset date"
 msgstr "Réinitialisé le"
 
