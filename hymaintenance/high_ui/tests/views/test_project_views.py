@@ -482,6 +482,7 @@ class ProjectDetailsViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, _("Manage recurrence"))
+        self.assertContains(response, _("Recurrence details"))
 
     def test_operator_has_add_recurrence_button(self):
         operator = OperatorUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -492,6 +493,7 @@ class ProjectDetailsViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _("Manage recurrence"))
+        self.assertNotContains(response, _("Recurrence details"))
 
     def test_admin_has_add_recurrence_button(self):
         AdminUserFactory(email="gordon.freeman@blackmesa.com", password="azerty")
@@ -501,6 +503,7 @@ class ProjectDetailsViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _("Manage recurrence"))
+        self.assertNotContains(response, _("Recurrence details"))
 
 
 class MonthDisplayInFrenchTestCase(TestCase):
