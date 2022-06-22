@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-16 14:36+0200\n"
+"POT-Creation-Date: 2022-07-05 15:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,21 +82,19 @@ msgstr "Cette société existe déjà."
 msgid "Email Alert"
 msgstr "Email alerte"
 
-#: maintenance/forms/recurrence.py:32
+#: maintenance/forms/recurrence.py:30 maintenance/forms/recurrence.py:62
 msgid "Start"
 msgstr "Début"
 
-#: maintenance/forms/recurrence.py:33
+#: maintenance/forms/recurrence.py:30 maintenance/forms/recurrence.py:63
 msgid "Frequency"
 msgstr "Fréquence"
 
-#: maintenance/forms/recurrence.py:34
-#, fuzzy
-#| msgid "Green counter"
+#: maintenance/forms/recurrence.py:64
 msgid "Reset counter"
-msgstr "Compteur vert"
+msgstr "Réinitialiser compteur"
 
-#: maintenance/forms/recurrence.py:56
+#: maintenance/forms/recurrence.py:86
 #, python-format
 msgid ""
 "Invalid Recurrence Start Date: %(value)s, the date can't be older than one "
