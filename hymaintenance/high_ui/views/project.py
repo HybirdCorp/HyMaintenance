@@ -9,6 +9,7 @@ from maintenance.forms.email import EmailAlertUpdateForm
 from maintenance.forms.project import ProjectCreateForm
 from maintenance.forms.project import ProjectUpdateForm
 from maintenance.forms.recurrence import RecurrenceContractsModelForm
+from maintenance.forms.recurrence import RecurrenceContractsReadOnlyForm
 from maintenance.formsets.recurrence import RecurrenceContractsModelFormSet
 from maintenance.models import MaintenanceContract
 from maintenance.models import MaintenanceCredit
@@ -16,6 +17,7 @@ from maintenance.models import MaintenanceIssue
 from maintenance.models.contract import AVAILABLE_TOTAL_TIME
 
 from django import forms
+from django.core.exceptions import PermissionDenied
 from django.forms import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView
@@ -280,12 +282,7 @@ class ProjectResetCountersView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixi
         return self.company.get_absolute_url()
 
 
-class ProjectCreditRecurrenceUpdateView(ViewWithCompany, IsAtLeastAllowedOperatorTestMixin, FormView):
-    form_class = modelformset_factory(
-        model=MaintenanceContract, formset=RecurrenceContractsModelFormSet, form=RecurrenceContractsModelForm, extra=0
-    )
-    template_name = "high_ui/forms/update_credit_recurrence.html"
-
+class ProjectCreditRecurrenceBaseView(ViewWithCompany, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_maintenance_types())
@@ -296,6 +293,26 @@ class ProjectCreditRecurrenceUpdateView(ViewWithCompany, IsAtLeastAllowedOperato
         kwargs = super().get_form_kwargs()
         kwargs["company"] = self.company
         return kwargs
+
+
+class ProjectCreditRecurrenceDetailView(IsAtLeastAllowedManagerTestMixin, ProjectCreditRecurrenceBaseView):
+    form_class = modelformset_factory(
+        model=MaintenanceContract,
+        formset=RecurrenceContractsModelFormSet,
+        form=RecurrenceContractsReadOnlyForm,
+        extra=0
+    )
+    template_name = "high_ui/forms/credit_recurrence_details.html"
+
+    def form_valid(self, form):
+        raise PermissionDenied
+
+
+class ProjectCreditRecurrenceUpdateView(IsAtLeastAllowedOperatorTestMixin, ProjectCreditRecurrenceBaseView):
+    form_class = modelformset_factory(
+        model=MaintenanceContract, formset=RecurrenceContractsModelFormSet, form=RecurrenceContractsModelForm, extra=0
+    )
+    template_name = "high_ui/forms/update_credit_recurrence.html"
 
     def form_valid(self, form):
         for sub_form in form:

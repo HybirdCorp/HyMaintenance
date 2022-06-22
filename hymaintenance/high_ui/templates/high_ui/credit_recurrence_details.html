@@ -1,0 +1,122 @@
+{% load static %}
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance {{general_info.name}} &mdash; {% blocktrans %}Modify {{company}} credit recurrence{% endblocktrans %}</title> {# TMP #}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/create-project.css" />
+<link rel="stylesheet" href="/static/css/date-picker.css" />
+<script src="/static/js/segmented-selector.js"></script>
+<script src="/static/js/date-picker.js"></script>
+{% if company.color %}
+<style>
+.dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
+    background-color: white;
+    color: {{company.color}};
+}
+</style>
+{% endif %}
+</head>
+<body>
+    {% include "high_ui/company_details_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content">
+                    {% for contract in contracts %}
+                    <div class="form-group has-credit-recurrence-disabled">
+
+                        <div class="group-title-container">
+                            <div class="group-title">{% blocktrans with name=contract.get_counter_name %}{{name}}'s credit-recurrence configuration{% endblocktrans %}</div>
+                        </div>
+                        <div class="form-row row-has-credit-recurrence">
+
+                            <label>{% trans "Recurrence" %}</label>
+                            <section class="segmented-selector {{contract.maintenance_type.css_class}}">
+                                {% if contract.has_credit_recurrence %}
+                                    <a href="" class="active" data-selector-key="enabled" data-selector-value="True" title="">{% trans "Enabled" %}</a>
+                                {% else %}
+                                    <a href="" class="active" data-selector-key="disabled" data-selector-value="False" title="">{% trans "Disabled" %}</a>
+                                {% endif %}
+                            </section>
+                        </div>
+
+                        <div class="form-row row-credit-recurrence">
+
+                            <label>{% trans "Frequency" %}</label>
+                            <section class="segmented-selector {{contract.maintenance_type.css_class}}">
+                                <a href="" class="active" data-selector-key="" data-selector-value="" title="">{{contract.credit_recurrence}}</a>
+                            </section>
+                        </div>
+
+                        <div class="form-row row-recurrence-start-date ">
+                        
+                            <label>{% trans "Start" %}</label>
+                            {{contract.recurrence_start_date}}
+                        </div>
+
+                        <div class="form-row row-hours-to-credit">
+
+                            <label>{% trans "Hours to credit" %}</label>
+                            {{contract.hours_to_credit}}
+
+                        </div>
+
+                        {% if contract.recurrence_next_date %}
+                        <div class="help help-recurrence-next-date">
+                            <span class="has-credit-recurrence-enabled"><em>{% blocktrans with date=contract.recurrence_next_date %}Next scheduled occurrence: {{ date }}{% endblocktrans %}</em></span>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script>
+        var hasRecurrences = document.querySelectorAll(".form-row.row-has-credit-recurrence");
+        for (var i = 0; i < hasRecurrences.length; ++i) {
+            var hasRecurrence = hasRecurrences[i];
+            new SegmentedSelector(hasRecurrence.querySelector(".segmented-selector"),
+                                  function (node, currentKey, selectedKey) {
+                var currentType = "has-credit-recurrence-" + currentKey;
+                var selectedType = "has-credit-recurrence-" + selectedKey;
+
+                var parent = node.parentElement;
+                parent.className = parent.className.replace(currentType, selectedType);
+
+                var hoursToCreditInput = parent.querySelector(".row-hours-to-credit input");
+                hoursToCreditInput.required = selectedType === "has-credit-recurrence-enabled";
+
+                var recurrenceStartDateInput = parent.querySelector(".row-recurrence-start-date input");
+                recurrenceStartDateInput.required = selectedType === "has-credit-recurrence-enabled";
+
+                var creditRecurrenceInput = parent.querySelector(".row-credit-recurrence input");
+                creditRecurrenceInput.required = selectedType === "has-credit-recurrence-enabled";
+            }.bind(null, hasRecurrence));
+        }
+        var creditRecurrences = document.querySelectorAll(".form-row.row-credit-recurrence");
+        for (var i = 0; i < creditRecurrences.length; ++i) {
+            var creditRecurrence = creditRecurrences[i];
+            new SegmentedSelector(creditRecurrence.querySelector(".segmented-selector"),
+                                  function (node, currentKey, selectedKey) {
+            }.bind(null, hasRecurrence));
+        }
+        var dateFields = document.querySelectorAll(".row-recurrence-start-date input");
+        for (var i = 0; i < dateFields.length; ++i) {
+            var fieldId = dateFields[i].id;
+            new DatePicker(document.getElementById(fieldId));
+        }
+    </script>
+    <script src="/static/js/fast_click.js"></script>
+</body>
+</html>

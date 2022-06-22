@@ -1,0 +1,78 @@
+{% load static %}
+{% load i18n print_fields %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Maintenance {{general_info.name}} &mdash; {% blocktrans %}Modify {{company}} credit recurrence{% endblocktrans %}</title> {# TMP #}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/static/css/normalize.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/create.css" />
+<link rel="stylesheet" href="/static/css/create-project.css" />
+{% if company.color %}
+<style>
+.dashboard.dark .dashboard-button a:hover, .dashboard.light .dashboard-button a:hover {
+    background-color: white;
+    color: {{company.color}};
+}
+</style>
+{% endif %}
+</head>
+<body>
+    {% include "high_ui/company_details_header.html" %}
+    <div class="content-container">
+        <div class="content">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content">
+                    {{form.management_form}}
+                    {% for sub_form in form %}
+                    <div class="form-group has-credit-recurrence-{% if not sub_form.has_credit_recurrence.initial %}disabled{% else %}enabled{% endif %}">
+                        <div class="group-title-container">
+                            <div class="group-title">{% blocktrans with name=sub_form.counter_name %}{{name}}'s credit-recurrence{% endblocktrans %}</div>
+                        </div>
+                        <div class="form-row row-has-credit-recurrence ">
+                            <label for="{{sub_form.has_credit_recurrence.id_for_label}}">{{sub_form.has_credit_recurrence.label}} </label>
+                            <section class="segmented-selector {{sub_form.css_class.initial}}">
+                                {% if not sub_form.has_credit_recurrence.initial %}
+                                    <a href="" class="active readonly" data-selector-key="disabled" data-selector-value="False" title="">{% trans "Disabled" %}</a>
+                                {% else %}
+                                    <a href="" class="active readonly" data-selector-key="enabled" data-selector-value="True" title="">{% trans "Enabled" %}</a>
+                                {% endif %}
+                                {{sub_form.has_credit_recurrence}}
+                            </section>
+                        </div>
+                        <div class="form-row row-credit-recurrence ">
+                            <label for="{{sub_form.credit_recurrence.id_for_label}}">{{sub_form.credit_recurrence.label}} </label>
+                            <section class="segmented-selector {{sub_form.css_class.initial}}">
+                                {% if not sub_form.credit_recurrence.initial %}
+                                    <a href="" class="active readonly" data-selector-key="monthly" data-selector-value="0" title="">{% trans "Monthly" %}</a>
+                                {% else %}
+                                    <a href="" class="active readonly" data-selector-key="annual" data-selector-value="1" title="">{% trans "Annual" %}</a>
+                                {% endif %}
+                                {{sub_form.credit_recurrence}}
+                            </section>
+                        </div>
+                        <div class="form-row row-recurrence-start-date ">
+                            <label for="{{sub_form.recurrence_start_date.id_for_label}}">{{sub_form.recurrence_start_date.label}}</label>
+                            {{sub_form.recurrence_start_date}}
+                        </div>
+                        <div class="form-row row-hours-to-credit ">
+                            <label for="{{sub_form.hours_to_credit.id_for_label}}">{{sub_form.hours_to_credit.label}}</label>
+                            {{sub_form.hours_to_credit}}
+                        </div>
+                        {% if sub_form.recurrence_next_date.initial %}
+                        <div class="help help-recurrence-next-date">
+                            <span class="has-credit-recurrence-enabled"><em>{% blocktrans with date=sub_form.recurrence_next_date.initial %}Next scheduled occurrence: {{ date }}{% endblocktrans %}</em></span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include "high_ui/footer.html" with show_menu_client=True %}
+</body>
+</html>
