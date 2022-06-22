@@ -16,6 +16,7 @@ from .views.issue import IssueUpdateView
 from .views.maintenance_type import MaintenanceTypeUpdateView
 from .views.project import EmailAlertUpdateView
 from .views.project import ProjectCreateView
+from .views.project import ProjectCreditRecurrenceDetailView
 from .views.project import ProjectCreditRecurrenceUpdateView
 from .views.project import ProjectCustomizeView
 from .views.project import ProjectDetailsView
@@ -147,6 +148,11 @@ urlpatterns = [
         r"projects/<slug:company_name>/credit-recurrence/",
         ProjectCreditRecurrenceUpdateView.as_view(),
         name="project-update_credit_recurrence",
+    ),
+    path(
+        r"projects/<slug:company_name>/credit-recurrence-details/",
+        ProjectCreditRecurrenceDetailView.as_view(),
+        name="project-credit_recurrence_details",
     ),
     path(r"operators/", OperatorUserCreateView.as_view(), name="create_operator"),
     path(r"operators/update/", OperatorUsersListUpdateView.as_view(), name="update_operators"),

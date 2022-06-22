@@ -24,6 +24,7 @@
                     <a href='{% url 'high_ui:project-update_credit_recurrence' company_name=company.slug_name %}'>{% trans "Manage recurrence" %}</a>
                 {% else %}
                     <a href='{% url 'high_ui:project-contact' company_name=company.slug_name %}'>{% trans "Buy hours" %}</a>
+                    <a href='{% url 'high_ui:project-credit_recurrence_details' company_name=company.slug_name %}'>{% trans "Recurrence details" %}</a>
                 {% endif %}
                 <a href='{% url 'high_ui:project-update_email_alert' company_name=company.slug_name %}'>{% trans "Email alerts" %}</a>
             {% endif %}

@@ -248,6 +248,11 @@
     border-radius: 0px 2px 2px 0px;
 }
 
+.segmented-selector a.readonly  {
+    cursor: default;
+    pointer-events: none;
+}
+
 /* type themes - maintenance */
 
 .segmented-selector.type-maintenance {
@@ -381,6 +386,17 @@ select {
     min-width: 200px;
     padding-left: 4px;
     padding-right: 4px;
+}
+
+input[type="text"]:read-only
+{
+    background: #ececec;
+    cursor: default;
+}
+
+input[type="text"]:read-only:focus
+{
+    outline: none;
 }
 
 textarea {

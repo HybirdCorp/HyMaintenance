@@ -8,6 +8,36 @@ from django.utils.translation import ugettext_lazy as _
 from ..models import MaintenanceContract
 
 
+class RecurrenceContractsReadOnlyForm(forms.ModelForm):
+    class Meta:
+        model = MaintenanceContract
+        fields = (
+            "recurrence_start_date",
+            "hours_to_credit",
+            "has_credit_recurrence",
+            "credit_recurrence",
+            "recurrence_next_date",
+            "id",
+        )
+        widgets = {
+            "recurrence_start_date": forms.TextInput(attrs={"readonly": True}),
+            "hours_to_credit": forms.TextInput(attrs={"readonly": True}),
+            "has_credit_recurrence": forms.HiddenInput(attrs={"readonly": True}),
+            "credit_recurrence": forms.HiddenInput(attrs={"readonly": True}),
+            "recurrence_next_date": forms.TextInput(attrs={"readonly": True}),
+            "id": forms.HiddenInput(attrs={"readonly": True}),
+        }
+        labels = {"recurrence_start_date": _("Start"), "credit_recurrence": _("Frequency")}
+
+    css_class = forms.CharField(required=False, widget=forms.HiddenInput(attrs={"readonly": True}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.counter_name = self.instance.get_counter_name()
+        if self.instance:
+            self.fields['css_class'].initial = self.instance.maintenance_type.css_class
+
+
 class RecurrenceContractsModelForm(forms.ModelForm):
     class Meta:
         model = MaintenanceContract
