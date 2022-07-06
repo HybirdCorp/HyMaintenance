@@ -1,6 +1,7 @@
 {% load i18n print_fields %}
 <!DOCTYPE html>
-<html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
 <title>Maintenance {{general_info.name}} &mdash; {% trans "Modify general information of"%} {{object.company.name}}</title> {# TMP #}
 <meta charset="utf-8" />

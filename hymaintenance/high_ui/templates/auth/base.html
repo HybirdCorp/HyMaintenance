@@ -1,6 +1,7 @@
 {% load i18n backgrounds %}
 <!DOCTYPE html>
-<html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     {% block page_title %}{% endblock %}
     <style>

@@ -1,7 +1,8 @@
 {% load static %}
 {% load i18n print_fields %}
 <!DOCTYPE html>
-<html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
 {% block page_title %}{% endblock %}
 <meta charset="utf-8" />
@@ -39,7 +40,7 @@
                             <div class="form-row-wrapper">
                             {% endif %}
 
-                            <label for="{{form.company_name.id_for_label}}">{{form.company_name.label}}</label>
+                            <label for="{{form.company_name.id_for_label}}">{{form.company_name.label}} *</label>
                             {{form.company_name}}
 
                             {% if form.company_name.errors %}
@@ -159,7 +160,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{form.contract0_counter_name.id_for_label}}">{{form.contract0_counter_name.label}}</label>
+                                <label for="{{form.contract0_counter_name.id_for_label}}">{{form.contract0_counter_name.label}} *</label>
                                 {{form.contract0_counter_name}}
 
                                 {% if form.contract0_counter_name.errors %}
@@ -173,7 +174,7 @@
                             <div class="help">{%  blocktrans with mtype=maintenance_types.0.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
 
                             <div class="form-row {% if form.contract0_date.errors %}form-error{% endif %}">
-                                <label for="{{form.contract0_date.id_for_label}}">{{form.contract0_date.label}}</label>
+                                <label for="{{form.contract0_date.id_for_label}}">{{form.contract0_date.label}} *</label>
                                 {{form.contract0_date}}
 
                                 {% if form.contract0_date.errors %}
@@ -257,7 +258,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{form.contract1_counter_name.id_for_label}}">{{form.contract1_counter_name.label}}</label>
+                                <label for="{{form.contract1_counter_name.id_for_label}}">{{form.contract1_counter_name.label}} *</label>
                                 {{form.contract1_counter_name}}
 
                                 {% if form.contract1_counter_name.errors %}
@@ -271,7 +272,7 @@
                             <div class="help">{%  blocktrans with mtype=maintenance_types.1.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
 
                             <div class="form-row {% if form.contract1_date.errors %}form-error{% endif %}">
-                                <label for="{{form.contract1_date.id_for_label}}">{{form.contract1_date.label}}</label>
+                                <label for="{{form.contract1_date.id_for_label}}">{{form.contract1_date.label}} *</label>
                                 {{form.contract1_date}}
 
                                 {% if form.contract1_date.errors %}
@@ -355,7 +356,7 @@
                                 <div class="form-row-wrapper">
                                 {% endif %}
 
-                                <label for="{{form.contract2_counter_name.id_for_label}}">{{form.contract2_counter_name.label}}</label>
+                                <label for="{{form.contract2_counter_name.id_for_label}}">{{form.contract2_counter_name.label}} *</label>
                                 {{form.contract2_counter_name}}
 
                                 {% if form.contract2_counter_name.errors %}
@@ -369,7 +370,7 @@
                             <div class="help">{%  blocktrans with mtype=maintenance_types.2.name %}This counter can be renamed to replace the default name <em>{{mtype}}</em>.{%  endblocktrans %}</div>
 
                             <div class="form-row {% if form.contract2_date.errors %}form-error{% endif %}">
-                                <label for="{{form.contract2_date.id_for_label}}">{{form.contract2_date.label}}</label>
+                                <label for="{{form.contract2_date.id_for_label}}">{{form.contract2_date.label}} *</label>
                                 {{form.contract2_date}}
 
                                 {% if form.contract2_date.errors %}
@@ -401,7 +402,15 @@
         </div>
     </div>
     {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script src="/static/js/error_message_required_fields.js"></script>
     <script>
+        // setup error message for required fields
+        ERROR_MESSAGE_REQUIRED_FIELDS.init([
+            "{% blocktrans context "Form required field: force browser required-field error message when empty"%}Please fill out this field.{% endblocktrans %}"
+        ]);
+        ERROR_MESSAGE_REQUIRED_FIELDS.ErrorMessageRequiredFields();
+
+        // setup segmented selectors
         var activationTypes = document.querySelectorAll(".form-row.row-activation-type");
         for (var i = 0; i < activationTypes.length; ++i) {
             var activationType = activationTypes[i];

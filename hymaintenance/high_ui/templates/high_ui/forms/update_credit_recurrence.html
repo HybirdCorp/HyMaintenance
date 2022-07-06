@@ -1,7 +1,8 @@
 {% load static %}
 {% load i18n print_fields %}
 <!DOCTYPE html>
-<html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
 <title>Maintenance {{general_info.name}} &mdash; {% blocktrans %}Modify {{company}} credit recurrence{% endblocktrans %}</title> {# TMP #}
 <meta charset="utf-8" />
@@ -163,7 +164,15 @@
         </div>
     </div>
     {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script src="/static/js/error_message_required_fields.js"></script>
     <script>
+        // setup error message for required fields
+        ERROR_MESSAGE_REQUIRED_FIELDS.init([
+            "{% blocktrans context "Form required field: force browser required-field error message when empty"%}Please fill out this field.{% endblocktrans %}"
+        ]);
+        ERROR_MESSAGE_REQUIRED_FIELDS.ErrorMessageRequiredFields();
+
+        // setup segmented selectors
         var hasRecurrences = document.querySelectorAll(".form-row.row-has-credit-recurrence");
         for (var i = 0; i < hasRecurrences.length; ++i) {
             var hasRecurrence = hasRecurrences[i];

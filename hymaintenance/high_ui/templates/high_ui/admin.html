@@ -1,6 +1,7 @@
 {% load i18n %}
 <!DOCTYPE html>
-<html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
 <title>Maintenance {{general_info.name}} &mdash; {% trans "Administration dashboard" %}</title> {# TMP #}
 <meta charset="utf-8" />

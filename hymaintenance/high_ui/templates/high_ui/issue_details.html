@@ -1,7 +1,8 @@
 {% load i18n print_fields print_files %}
 
 <!DOCTYPE html>
-<html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
 <title>Maintenance {{general_info.name}} &mdash; {{object.company.name}}, {% trans "issue of" %} {{object.get_counter_name}} {% trans "#" %}{{object.id}}</title>
 <meta charset="utf-8" />

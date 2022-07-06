@@ -1,7 +1,8 @@
 {% load i18n print_fields %}
 
 <!DOCTYPE html>
-<html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
 <title>Maintenance {{general_info.name}} &mdash; {{company.name}}</title>
 <meta charset="utf-8" />

@@ -1,6 +1,7 @@
 {% load i18n print_fields %}
 <!DOCTYPE html>
-<html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
 {% block page_title %}{% endblock %}
 <meta charset="utf-8" />
@@ -132,7 +133,15 @@
     </div>
     {% endwith %}
     {% include "high_ui/footer.html" with show_menu_client=True %}
+    <script src="/static/js/error_message_required_fields.js"></script>
     <script>
+        // setup error message for required fields
+        ERROR_MESSAGE_REQUIRED_FIELDS.init([
+            "{% blocktrans context "Form required field: force browser required-field error message when empty"%}Please fill out this field.{% endblocktrans %}"
+        ]);
+        ERROR_MESSAGE_REQUIRED_FIELDS.ErrorMessageRequiredFields();
+
+        // setup segmented selectors
         var hoursSelector = document.querySelector(".selector-hours_number");
         new SegmentedSelector (hoursSelector, function (currentKey, selectedKey) {
             var customHoursNumber = document.querySelector(".form-row-custom-hours-number");
