@@ -4,13 +4,13 @@
 #
 #    pip-compile hymaintenance/requirements/requirements.in
 #
-asgiref==3.5.1
+asgiref==3.5.2
     # via django
 asttokens==2.0.5
     # via stack-data
 backcall==0.2.0
     # via ipython
-certifi==2021.10.8
+certifi==2022.6.15
     # via sentry-sdk
 decorator==5.1.1
     # via ipython
@@ -22,7 +22,7 @@ django-extensions==3.1.5
     # via -r hymaintenance/requirements/requirements.in
 executing==0.8.3
     # via stack-data
-ipython==8.3.0
+ipython==8.4.0
     # via -r hymaintenance/requirements/requirements.in
 jedi==0.18.1
     # via ipython
@@ -34,7 +34,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pillow==9.1.0
+pillow==9.1.1
     # via -r hymaintenance/requirements/requirements.in
 prompt-toolkit==3.0.29
     # via ipython
@@ -58,9 +58,9 @@ six==1.16.0
     # via python-dateutil
 sqlparse==0.4.2
     # via django
-stack-data==0.2.0
+stack-data==0.3.0
     # via ipython
-traitlets==5.2.0
+traitlets==5.3.0
     # via
     #   ipython
     #   matplotlib-inline
